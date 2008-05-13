@@ -1,0 +1,45 @@
+#sermon-filter .half {
+	margin-bottom: 4px;
+	width: 275px;
+	float: left;
+}
+#sermon-filter .title {
+	width: 100px;
+	float: left;
+}
+#sermon-filter input {
+	width: 160px;
+}
+#sermon-filter select {
+	width: 160px;
+}
+#sermon-filter input#date, #sermon-filter input#enddate {
+	width: 140px !important;
+}
+#sermon-filter input.filter {
+	width: 100px;
+}
+.sermon-browser h2 {
+	clear: both;
+}
+
+div.sermon-browser table.sermons td.sermon-title {
+	font-weight:bold;
+	font-size: 140%;
+	padding-top: 2em;
+}
+
+div.sermon-browser table.sermons td.sermon-passage {
+	font-weight:bold;
+	font-size: 110%;
+}
+
+div.sermon-browser table.sermons td.preacher {
+	border-bottom: 1px solid #444444;
+}
+
+div.sermon-browser table.sermons td.files img {
+	border: none;
+	margin-right: 12px;
+}
+
