@@ -1,0 +1,101 @@
+.sermon-browser h2 {
+	clear: both;
+}
+
+div.sermon-browser table.sermons td.sermon-title {
+	font-weight:bold;
+	font-size: 140%;
+	padding-top: 2em;
+}
+
+div.sermon-browser table.sermons td.sermon-passage {
+	font-weight:bold;
+	font-size: 110%;
+}
+
+div.sermon-browser table.sermons td.preacher {
+	border-bottom: 1px solid #444444;
+}
+
+div.sermon-browser table.sermons td.files img {
+	border: none;
+	margin-right: 24px;
+}
+
+table.sermonbrowser td.fieldname {
+	font-weight:bold;
+	padding-right: 10px;
+	vertical-align:bottom;
+}
+
+table.sermonbrowser td.field input, table.sermonbrowser td.field select{
+	width: 170px;
+}
+
+table.sermonbrowser td.field  #date, table.sermonbrowser td.field #enddate {
+	width: 150px; /* This width should be 20 pixels less than the width above */
+}
+
+table.sermonbrowser td {
+	white-space: nowrap;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+table.sermonbrowser td.rightcolumn {
+	padding-left: 10px;
+}
+
+div.sermon-browser div.floatright {
+	float: right
+}
+
+div.sermon-browser div.floatleft {
+	float: left
+}
+
+img.sermon-icon , img.site-icon{
+	border: none;
+}
+
+div.esv span.chapter-num, div.ebSnippet-title, div.chapterHeading, div.paragraphHeading {
+	font-weight: bold;
+	font-size: 150%;
+	margin: 0.75em 0;
+}
+
+div.esv span.verse-num, span.verseNum {
+	vertical-align:super;
+	line-height: 1em;
+	font-size: 65%;
+}
+
+table.nearby-sermons {
+	width:100%
+}
+
+table.nearby-sermons th {
+	font-weight: bold;
+}
+
+table.nearby-sermons th, table.nearby-sermons td {
+	text-align: center;
+	line-height: 1.2em;
+	padding: 0 1em;
+	width: 33%;
+	vertical-align: top;
+}
+
+table.nearby-sermons .earlier {
+	text-align: left;
+	padding: 0;
+}
+
+table.nearby-sermons .later {
+	text-align: right;
+	padding: 0;
+}
+
+div.sermon-browser-results span.scripture{
+	font-size: 80%
+}
