@@ -14,20 +14,20 @@
     	<itunes:email>webmaster@example.com</itunes:email>
     </itunes:owner>
 
-    <lastBuildDate><?php sb_print_iso_date($sermon[0]) ?></lastBuildDate>
-    <pubDate><?php sb_print_iso_date($sermon[0]) ?></pubDate>
+    <lastBuildDate><?php bb_print_iso_date($sermon[0]) ?></lastBuildDate>
+    <pubDate><?php bb_print_iso_date($sermon[0]) ?></pubDate>
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     <category>Religion &amp; Spirituality</category>
     <itunes:category text="Religion &amp; Spirituality"></itunes:category>
-		<?php foreach ($sermons as $sermon):  ++$i; if($i>15) break; ?>
+		<?php foreach ($sermons as $sermon): ?>
 		<item>
-			<guid><?php sb_print_first_mp3($sermon) ?></guid>
+			<guid><?php bb_print_first_mp3($sermon) ?></guid>
         	<title><?php echo stripslashes($sermon->title) ?></title>
-        	<link><?php sb_print_first_mp3($sermon) ?></link>
+        	<link><?php bb_print_first_mp3($sermon) ?></link>
         	<description><?php echo stripslashes($sermon->description) ?></description>
-        	<enclosure url="<?php sb_print_first_mp3($sermon) ?>" length="<?php sb_print_first_mp3_size($sermon) ?>" type="audio/mpeg"/>
+        	<enclosure url="<?php bb_print_first_mp3($sermon) ?>" length="1" type="audio/mpeg"/>
         	<category><?php echo stripslashes($sermon->service) ?></category>
-        	<pubDate><?php sb_print_iso_date($sermon) ?></pubDate>
+        	<pubDate><?php bb_print_iso_date($sermon) ?></pubDate>
         </item>
 		<?php endforeach ?>
 </channel>

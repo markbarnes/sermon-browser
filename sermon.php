@@ -1,10 +1,10 @@
 <?php 
 /*
 Plugin Name: Sermon Browser
-Plugin URI: http://www.4-14.org.uk/sermon-browser
+Plugin URI: http://www.4-14.org.uk/category/sermonbrowser
 Description: Add sermons to your Wordpress blog. Coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design 
 Author: Mark Barnes
-Version: 0.24
+Version: 0.23
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -24,12 +24,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// Localization and set-up
-require_once('dictionary.php'); // Template functions
-$sermon_domain = 'sermonbrowser';
-load_plugin_textdomain($sermon_domain, 'wp-content/plugins/sermonbrowser');
-include_once('filetypes.php'); // User-defined icons
-include('frontend.php'); // Everything related to displaying sermons
+// Localization
+$sermon_domain = 'tdxsm';
+$sermon_is_setup = 0;
+
+require_once('dictionary.php');
+
+function sermon_setup()
+{
+   global $sermon_domain, $sermon_is_setup;
+
+   if($sermon_is_setup) {
+      return;
+   } 
+
+   load_plugin_textdomain($sermon_domain, 'wp-content/plugins/sermonbrowser');
+}
+
+// user-defined icons
+include_once('filetypes.php');
 
 // URLs and paths
 $ser_ver = '1.1';
@@ -39,18 +52,26 @@ $wordpressRealPath = str_replace("\\", "/", dirname(dirname(dirname(dirname(__FI
 global $defaultSermonPath;
 $defaultSermonPath = '/'.get_option('upload_path').'/sermons/';
 $defaultSermonURL = get_bloginfo('url').'/'.get_option('upload_path').'/sermons/';
-$books = array('Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalm', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation');
 
 //Attempt to set php.ini directives
-if (sb_return_kbytes(ini_get('upload_max_filesize'))<15360) ini_set('upload_max_filesize', '15M');
-if (sb_return_kbytes(ini_get('post_max_size'))<15360) ini_set('post_max_size', '15M');
-if (sb_return_kbytes(ini_get('memory_limit'))<16384) ini_set('memory_limit', '16M');
+if (return_kbytes(ini_get('upload_max_filesize'))<15360) ini_set('upload_max_filesize', '15M');
+if (return_kbytes(ini_get('post_max_size'))<15360) ini_set('post_max_size', '15M');
+if (return_kbytes(ini_get('memory_limit'))<16384) ini_set('memory_limit', '16M');
 if (intval(ini_get('max_input_time'))<600) ini_set('max_input_time','600');
 if (intval(ini_get('max_execution_time'))<600) ini_set('max_execution_time', '600');
 if (ini_get('file_uploads')<>'1') ini_set('file_uploads', '1');
 
+// install if needed
+sermon_setup();
+
+// Bible books
+$books = array('Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalm', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation');
+
+// everything related to front end
+include('frontend.php');
+
 //Processing for php.ini values
-function sb_return_kbytes($val) {
+function return_kbytes($val) {
 	$val = trim($val);
 	$last = strtolower($val[strlen($val)-1]);
 	switch($last) {
@@ -62,8 +83,8 @@ function sb_return_kbytes($val) {
    return intval($val);
 }
 
-// Ajax stuff
-// Throughout this plugin, p stands for preacher, s stands for service and ss stands for series
+// ajax stuff
+// through out this plugin, p stands for preacher, s stands for service and ss stands for series
 if ($_POST['sermon'] == 1) {	
 	if ($_POST['pname']) { // preacher
 		$pname = mysql_real_escape_string($_POST['pname']);
@@ -117,7 +138,7 @@ if ($_POST['sermon'] == 1) {
 			$fid = (int) $_POST['fid'];
 			$oname = mysql_real_escape_string($_POST['oname']);			
 			if ($_POST['del']) {
-				if (!file_exists($wordpressRealPath.get_option('sb_sermon_upload_dir').$fname) || unlink($wordpressRealPath.get_option('sb_sermon_upload_dir').$fname)) {
+				if (unlink($wordpressRealPath.get_option('sb_sermon_upload_dir').$fname)) {
 					$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE id = $fid;");
 					echo 'deleted';
 				} else {
@@ -185,6 +206,17 @@ if ($_POST['sermon'] == 1) {
 		}		
 ?>
 	<?php if (count($abc) >= 1): ?>
+		<?php
+		// sync db & upload dir
+		/*$wanted = array(-1);
+		foreach ((array) $abc as $k => $file) {
+			if (!file_exists($wordpressRealPath.get_option('sb_sermon_upload_dir').$file->name)) {
+				$wanted[] = $file->id;				
+				unset($abc[$k]);
+			}			
+		}*/
+		//$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE id IN (".implode(', ', (array) $wanted).")");
+		?>
 		<?php foreach ($abc as $file): ?>
 			<tr class="file <?php echo (++$i % 2 == 0) ? 'alternate' : '' ?>" id="<?php echo $_POST['fetchU'] ? '' : 's' ?>file<?php echo $file->id ?>">
 				<th style="text-align:center" scope="row"><?php echo $file->id ?></th>
@@ -203,7 +235,9 @@ if ($_POST['sermon'] == 1) {
 						return false;
 					}
                     </script>
+                    <?php if (is_writable($wordpressRealPath.get_option('sb_sermon_upload_dir').$file->name)): ?>
 						<a id="link<?php echo $file->id ?>" href="javascript:rename(<?php echo $file->id ?>, '<?php echo $file->name ?>')"><?php _e('Rename', $sermon_domain) ?></a> | <a onclick="return deletelinked_<?php echo $file->id;?>('<?php echo str_replace("'", '', $file->name) ?>', '<?php echo str_replace("'", '', $file->title) ?>');" href="javascript:kill(<?php echo $file->id ?>, '<?php echo $file->name ?>');"><?php _e('Delete', $sermon_domain) ?></a>
+					<?php endif ?>	 
 				</td>
 			</tr>
 		<?php endforeach ?>	
@@ -217,8 +251,13 @@ if ($_POST['sermon'] == 1) {
 	die();
 }
 
-// Installer
-function sb_sermon_install () {
+// hooks 
+add_action('admin_menu', 'bb_add_pages');
+register_activation_hook(__FILE__,'sermon_install');
+//sermon_install();
+
+// installer
+function sermon_install () {
    global $wpdb, $mdict, $sdict, $books;	
    global $ser_ver;
    global $sermon_domain, $sef;
@@ -234,7 +273,7 @@ function sb_sermon_install () {
 
    $sermonUploadDir = $defaultSermonPath;
 
-	//Try to create the folder if it doesn't exist
+	//Try to create the folder if not exist
    if (!is_dir($wordpressRealPath.$sermonUploadDir)) {
       //Create that folder
       if (@mkdir($wordpressRealPath.$sermonUploadDir)) {
@@ -425,20 +464,21 @@ function sb_sermon_install () {
 }
 
 // admin cp pages
-function sb_add_pages() {
+function bb_add_pages() {
 	global $sermon_domain;
-	add_menu_page(__('Sermons', $sermon_domain), __('Sermons', $sermon_domain), 'edit_posts', __FILE__, 'sb_manage_sermons');
-	add_submenu_page(__FILE__, __('Sermons', $sermon_domain), __('Sermons', $sermon_domain), 'edit_posts', __FILE__, 'sb_manage_sermons');
-	add_submenu_page(__FILE__, __('New Sermon', $sermon_domain), __('New Sermon', $sermon_domain), 'publish_posts', 'sermonbrowser/new_sermon.php', 'sb_new_sermon');
-	add_submenu_page(__FILE__, __('Preachers', $sermon_domain), __('Preachers', $sermon_domain), 'manage_categories', 'sermonbrowser/preachers.php', 'sb_manage_preachers');
-	add_submenu_page(__FILE__, __('Series &amp; Services', $sermon_domain), __('Series &amp; Services', $sermon_domain), 'manage_categories', 'sermonbrowser/manage.php', 'sb_manage_everything');
-	add_submenu_page(__FILE__, __('Uploads', $sermon_domain), __('Uploads', $sermon_domain), 'upload_files', 'sermonbrowser/uploads.php', 'sb_uploads');
-	add_submenu_page(__FILE__, __('Options', $sermon_domain), __('Options', $sermon_domain), 'manage_options', 'sermonbrowser/options.php', 'sb_options');
-	add_submenu_page(__FILE__, __('Help', $sermon_domain), __('Help', $sermon_domain), 'read', 'sermonbrowser/help.php', 'sb_help');
+	add_menu_page(__('Sermons', $sermon_domain), __('Sermons', $sermon_domain), 'edit_posts', __FILE__, 'bb_manage_sermons');
+	add_submenu_page(__FILE__, __('Sermons', $sermon_domain), __('Sermons', $sermon_domain), 'edit_posts', __FILE__, 'bb_manage_sermons');
+	add_submenu_page(__FILE__, __('New Sermon', $sermon_domain), __('New Sermon', $sermon_domain), 'publish_posts', 'sermonbrowser/new_sermon.php', 'bb_new_sermon');
+	add_submenu_page(__FILE__, __('Preachers', $sermon_domain), __('Preachers', $sermon_domain), 'manage_categories', 'sermonbrowser/preachers.php', 'bb_manage_preachers');
+	add_submenu_page(__FILE__, __('Series &amp; Services', $sermon_domain), __('Series &amp; Services', $sermon_domain), 'manage_categories', 'sermonbrowser/manage.php', 'bb_manage_everything');
+	add_submenu_page(__FILE__, __('Uploads', $sermon_domain), __('Uploads', $sermon_domain), 'upload_files', 'sermonbrowser/uploads.php', 'bb_uploads');
+	add_submenu_page(__FILE__, __('Options', $sermon_domain), __('Options', $sermon_domain), 'manage_options', 'sermonbrowser/options.php', 'bb_options');
+	add_submenu_page(__FILE__, __('Help', $sermon_domain), __('Help', $sermon_domain), 'read', 'sermonbrowser/help.php', 'bb_help');
 }
 
 // textarea @ option
-function sb_build_textarea($name, $html) {
+// dirty trick, i know
+function bb_build_textarea($name, $html) {
 	$out = '<textarea name="'.$name.'" cols="75" rows="15">';
 	$out .= stripslashes(str_replace('\r\n', "\n", base64_decode($html))); 
 	$out .= '</textarea>';
@@ -446,7 +486,7 @@ function sb_build_textarea($name, $html) {
 }
 
 // configuration
-function sb_options() {
+function bb_options() {
 	global $wpdb, $sermon_domain, $mdict, $sdict, $sef;
 	global $wordpressRealPath;
 	global $defaultSermonPath, $defaultSermonURL;
@@ -466,7 +506,7 @@ function sb_options() {
 	    if(!is_dir($wordpressRealPath.$sermonUploadDir.'images') && @mkdir($wordpressRealPath.$sermonUploadDir.'images')){
 	     @chmod($wordpressRealPath.$sermonUploadDir.'images', 0777);
 	   }	   	   	
-	   	$checkSermonUpload = sb_checkSermonUploadable();
+	   	$checkSermonUpload = checkSermonUploadable();
 	   	switch ($checkSermonUpload) {
 	   	case "unwriteable":
 			echo '<div id="message" class="updated fade"><p><b>';
@@ -500,7 +540,7 @@ function sb_options() {
 	if(!is_dir($wordpressRealPath.$dir.'images') && @mkdir($wordpressRealPath.$sermonUploadDir.'images')){
 	     @chmod($wordpressRealPath.$dir.'images', 0777);
 	   }	   	   	
-	   	$checkSermonUpload = sb_checkSermonUploadable();
+	   	$checkSermonUpload = checkSermonUploadable();
 	   	switch ($checkSermonUpload) {
 	   	case "unwriteable":
 			echo '<div id="message" class="updated fade"><p><b>';
@@ -597,11 +637,11 @@ function sb_options() {
 		echo '<div id="message" class="updated fade"><p><b>'.__('Uninstall completed. Please deactivate the plugin', $sermon_domain).'</b></div>';
 	}
 	
-	function sb_display_error ($message) {
+	function display_error ($message) {
 		return	'<tr><td align="right" style="color:#AA0000; font-weight:bold">'.__('Error', $sermon_domain).':</td>'.
 				'<td style="color: #AA0000">'.$message.'</td></tr>';
 	}
-	function sb_display_warning ($message) {
+	function display_warning ($message) {
 		return	'<tr><td align="right" style="color:#FF8C00; font-weight:bold">'.__('Warning', $sermon_domain).':</td>'.
 				'<td style="color: #FF8C00">'.$message.'</td></tr>';
 	}
@@ -623,23 +663,23 @@ function sb_options() {
 				<td><?php echo $sef.'/?podcast' ?></td>
 			</tr>
 			<?php
-				$checkSermonUpload = sb_checkSermonUploadable();
+				$checkSermonUpload = checkSermonUploadable();
 				if ($checkSermonUpload=="unwriteable") 
-					echo sb_display_error (__('The upload folder is not writeable. You need to CHMOD the folder to 666 or 777.', $sermon_domain));
+					echo display_error (__('The upload folder is not writeable. You need to CHMOD the folder to 666 or 777.', $sermon_domain));
 				elseif ($checkSermonUpload=="notexist") 
-					sb_display_error (__('The upload folder you have specified does not exist.', $sermon_domain));
+					display_error (__('The upload folder you have specified does not exist.', $sermon_domain));
 				$allow_uploads = ini_get('file_uploads');
-				$max_filesize = sb_return_kbytes(ini_get('upload_max_filesize'));
-				$max_post = sb_return_kbytes(ini_get('post_max_size'));
+				$max_filesize = return_kbytes(ini_get('upload_max_filesize'));
+				$max_post = return_kbytes(ini_get('post_max_size'));
 				$max_execution = ini_get('max_execution_time');
 				$max_input = ini_get('max_input_time');
-				$max_memory = sb_return_kbytes(ini_get('memory_limit'));
-				if ($allow_uploads == '0') echo sb_display_error(__('Your php.ini file does not allow uploads. Please change file_uploads in php.ini.', $sermon_domain));
-				if ($max_filesize < 15360) echo sb_display_warning(__('The maximum file size you can upload is only ', $sermon_domain).$max_filesize.__('k. Please change upload_max_filesize to at least 15M in php.ini.', $sermon_domain));
-				if ($max_post < 15360) echo sb_display_warning(__('The maximum file size you send through the browser is only ', $sermon_domain).$max_post.__('k. Please change post_max_size to at least 15M in php.ini.', $sermon_domain));
-				if ($max_execution < 600) echo sb_display_warning(__('The maximum time allowed for any script to run is only ', $sermon_domain).$max_execution.__(' seconds. Please change max_execution_time to at least 600 in php.ini.', $sermon_domain));
-				if ($max_input < 600) echo sb_display_warning(__('The maximum time allowed for an upload script to run is only ', $sermon_domain).$max_input.__(' seconds. Please change max_input_time to at least 600 in php.ini.', $sermon_domain));
-				if ($max_memory < 16384) echo sb_display_warning(__('The maximum amount of memory allowed is only ', $sermon_domain).$max_memory.__('k. Please change memory_limit to at least 16M in php.ini.', $sermon_domain));
+				$max_memory = return_kbytes(ini_get('memory_limit'));
+				if ($allow_uploads == '0') echo display_error(__('Your php.ini file does not allow uploads. Please change file_uploads in php.ini.', $sermon_domain));
+				if ($max_filesize < 15360) echo display_warning(__('The maximum file size you can upload is only ', $sermon_domain).$max_filesize.__('k. Please change upload_max_filesize to at least 15M in php.ini.', $sermon_domain));
+				if ($max_post < 15360) echo display_warning(__('The maximum file size you send through the browser is only ', $sermon_domain).$max_post.__('k. Please change post_max_size to at least 15M in php.ini.', $sermon_domain));
+				if ($max_execution < 600) echo display_warning(__('The maximum time allowed for any script to run is only ', $sermon_domain).$max_execution.__(' seconds. Please change max_execution_time to at least 600 in php.ini.', $sermon_domain));
+				if ($max_input < 600) echo display_warning(__('The maximum time allowed for an upload script to run is only ', $sermon_domain).$max_input.__(' seconds. Please change max_input_time to at least 600 in php.ini.', $sermon_domain));
+				if ($max_memory < 16384) echo display_warning(__('The maximum amount of memory allowed is only ', $sermon_domain).$max_memory.__('k. Please change memory_limit to at least 16M in php.ini.', $sermon_domain));
 			?>
 		</table>		
 		<p class="submit"><input type="submit" name="resetdefault" value="<?php _e('Reset to defaults', $sermon_domain) ?>"  />&nbsp;<input type="submit" name="save" value="<?php _e('Save', $sermon_domain) ?> &raquo;" /></p> 
@@ -650,19 +690,19 @@ function sb_options() {
 			<tr>
 				<td align="right"><?php _e('Multi-sermons form', $sermon_domain) ?>: </td>
 				<td>
-					<?php sb_build_textarea('multi', get_option('sb_sermon_multi_form')) ?>
+					<?php bb_build_textarea('multi', get_option('sb_sermon_multi_form')) ?>
 				</td>
 			</tr>
 			<tr>
 				<td align="right"><?php _e('Single sermon form', $sermon_domain) ?>: </td>
 				<td>
-					<?php sb_build_textarea('single', get_option('sb_sermon_single_form')) ?>
+					<?php bb_build_textarea('single', get_option('sb_sermon_single_form')) ?>
 				</td>
 			</tr>
 			<tr>
 				<td align="right"><?php _e('Style', $sermon_domain) ?>: </td>
 				<td>
-					<?php sb_build_textarea('style', get_option('sb_sermon_style')) ?>
+					<?php bb_build_textarea('style', get_option('sb_sermon_style')) ?>
 				</td>
 			</tr>			
 		</table>				
@@ -678,16 +718,10 @@ function sb_options() {
 		<p class="submit"><input type="submit" name="uninstall" value="<?php _e('Uninstall', $sermon_domain) ?>" onclick="return confirm('Are you sure?')" /></p> 
 	</div>
 	</form>
-	<script>
-		jQuery("form").submit(function() {
-			var yes = confirm("Are you sure ?");
-			if(!yes) return false;
-		});
-	</script>
 <?php 
 }
 
-function sb_manage_preachers() {
+function bb_manage_preachers() {
 	global $wpdb, $sermon_domain;
 	global $wordpressRealPath;
 	
@@ -827,7 +861,7 @@ function sb_manage_preachers() {
 
 // manage <strike>preachers</strike>, services & series
 // lots of ajaxy stuff
-function sb_manage_everything() {
+function bb_manage_everything() {
 	global $wpdb, $sermon_domain;
 	
 	$url = get_bloginfo('wpurl');
@@ -1029,11 +1063,11 @@ function sb_manage_everything() {
 }
 
 // upload page
-function sb_uploads() {
+function bb_uploads() {
 	global $wpdb, $filetypes, $sermon_domain;
 	global $wordpressRealPath;
 	// sync
-	sb_scan_dir();
+	bb_scan_dir();
 	
 	$url = get_bloginfo('wpurl');
 	
@@ -1224,9 +1258,9 @@ function sb_uploads() {
 							<td width="50%" id="<?php echo $file->id ?>"><?php echo substr($file->name, 0, strrpos($file->name, '.')) ?></td>
 							<td width="20%" style="text-align:center"><?php echo isset($filetypes[substr($file->name, strrpos($file->name, '.') + 1)]['name']) ? $filetypes[substr($file->name, strrpos($file->name, '.') + 1)]['name'] : strtoupper(substr($file->name, strrpos($file->name, '.') + 1)) ?></td>
 							<td width="20%" style="text-align:center">
-								<?php //if (is_writable($wordpressRealPath.get_option('sb_sermon_upload_dir').$file->name)): ?>
+								<?php if (is_writable($wordpressRealPath.get_option('sb_sermon_upload_dir').$file->name)): ?>
 								<a id="link<?php echo $file->id ?>" href="javascript:rename(<?php echo $file->id ?>, '<?php echo $file->name ?>')"><?php _e('Rename', $sermon_domain) ?></a> | <a onclick="return confirm('Do you really want to delete <?php echo str_replace("'", '', $file->name) ?>?');" href="javascript:kill(<?php echo $file->id ?>, '<?php echo $file->name ?>');"><?php _e('Delete', $sermon_domain) ?></a> 
-								<?php //endif ?>
+								<?php endif ?>
 							</td>
 						</tr>
 					<?php endforeach ?>			
@@ -1270,9 +1304,9 @@ function sb_uploads() {
 								return false;
 							}
                             </script>
-								<?php //if (is_writable($wordpressRealPath.get_option('sb_sermon_upload_dir').$file->name)): ?>
+								<?php if (is_writable($wordpressRealPath.get_option('sb_sermon_upload_dir').$file->name)): ?>
 								<a id="link<?php echo $file->id ?>" href="javascript:rename(<?php echo $file->id ?>, '<?php echo $file->name ?>')"><?php _e('Rename', $sermon_domain) ?></a> | <a onclick="return deletelinked_<?php echo $file->id;?>('<?php echo str_replace("'", '', $file->name) ?>', '<?php echo str_replace("'", '', $file->title) ?>');" href="javascript:kill(<?php echo $file->id ?>, '<?php echo $file->name ?>');"><?php _e('Delete', $sermon_domain) ?></a> 
-								<?php //endif ?>
+								<?php endif ?>
 							</td>
 						</tr>
 					<?php endforeach ?>			
@@ -1288,7 +1322,7 @@ function sb_uploads() {
 	<div class="wrap">
 		<h2><?php _e('Upload Files', $sermon_domain) ?></h2>		
         <?php
-		$checkSermonUpload = sb_checkSermonUploadable();
+		$checkSermonUpload = checkSermonUploadable();
 		if ($checkSermonUpload == 'writeable') {
 		?>	
 		<form method="post" enctype="multipart/form-data">
@@ -1371,7 +1405,7 @@ function sb_uploads() {
 }
 
 // manage sermon of coz
-function sb_manage_sermons() {
+function bb_manage_sermons() {
 	global $wpdb, $sermon_domain;
 
 	$url = get_bloginfo('wpurl');
@@ -1494,12 +1528,12 @@ function sb_manage_sermons() {
 
 // new sermon
 // where everything is put together
-function sb_new_sermon() {
+function bb_new_sermon() {
 	global $wpdb, $books, $sermon_domain;
 	global $wordpressRealPath;
 	$error = false;
 	// sync
-	sb_scan_dir();
+	bb_scan_dir();
 	
 	$url = get_bloginfo('wpurl');
 
@@ -2023,7 +2057,7 @@ function sb_new_sermon() {
 }
 
 // looking for new files
-function sb_scan_dir() {
+function bb_scan_dir() {
 	global $wpdb;
 	global $wordpressRealPath;
 	
@@ -2045,7 +2079,7 @@ function sb_scan_dir() {
 }
 
 // no need to explain here
-function sb_checkSermonUploadable() {
+function checkSermonUploadable() {
 	global $wordpressRealPath;
 	$sermonUploadDir = $wordpressRealPath.get_option('sb_sermon_upload_dir');	
 	if (is_dir($sermonUploadDir)) {
@@ -2067,7 +2101,7 @@ function sb_checkSermonUploadable() {
 }
 
 // manual
-function sb_help() {
+function bb_help() {
 ?>	
 	<style>div.wrap h3, div.wrap h4, div.wrap h5 {margin-bottom: 0; margin-top: 2em} div.wrap p {margin-left: 2em; margin-top: 0.5em} div.wrap h3 {border-top: 1px solid #555555; padding-top: 0.5em}</style>
 	<div class="wrap">
@@ -2472,8 +2506,4 @@ ul.sermon-widget li span.sermon-title{
 HERE;
    return $css;
 }
-
-// Hooks 
-add_action('admin_menu', 'sb_add_pages');
-register_activation_hook(__FILE__,'sb_sermon_install');
 ?>

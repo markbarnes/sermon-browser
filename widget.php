@@ -1,13 +1,6 @@
 <?php
 
-//Fix for users of versions prior to 0.24
-if (!function_exists('display_sermons')) {
-	function display_sermons($params) {
-		return sb_display_sermons($params);
-	}
-}
-
-function sb_display_sermons($options = array()) {
+function display_sermons($options = array()) {
 	$default = array(
 		'display_preacher' => 1,
 		'display_passage' => 1,
@@ -20,7 +13,7 @@ function sb_display_sermons($options = array()) {
 	$options = array_merge($default, (array) $options);
 	extract($options);
 	// Do stuff for this widget, drawing data from $options[$number]
-	$sermons = sb_get_sermons(array(
+	$sermons = bb_get_sermons(array(
 			'preacher' => $preacher,
 			'service' => $service,
 			'series' => $series
@@ -30,9 +23,9 @@ function sb_display_sermons($options = array()) {
 ?>
 	<ul class="sermon-widget">
 	<?php foreach ((array) $sermons as $sermon): ?>
-		<li><span class="sermon-title"><a href="<?php sb_print_sermon_link($sermon) ?>"><?php echo stripslashes($sermon->title) ?></a></span>
-			<?php 	if ($display_passage): ?><span class="sermon-passage">(<?php $foo = unserialize($sermon->start); $bar = unserialize($sermon->end); echo sb_get_books($foo[0], $bar[0]) ?>)</span><?php endif; 
-					if ($display_preacher): ?><span class="sermon-preacher"> <?php _e('by', $sermon_domain) ?> <a href="<?php sb_print_preacher_link($sermon) ?>"><?php echo stripslashes($sermon->preacher) ?></a></span><?php endif; 
+		<li><span class="sermon-title"><a href="<?php bb_print_sermon_link($sermon) ?>"><?php echo stripslashes($sermon->title) ?></a></span>
+			<?php 	if ($display_passage): ?><span class="sermon-passage">(<?php $foo = unserialize($sermon->start); $bar = unserialize($sermon->end); echo bb_get_books($foo[0], $bar[0]) ?>)</span><?php endif; 
+					if ($display_preacher): ?><span class="sermon-preacher"> <?php _e('by', $sermon_domain) ?> <a href="<?php bb_print_preacher_link($sermon) ?>"><?php echo stripslashes($sermon->preacher) ?></a></span><?php endif; 
 					if ($display_date): ?><span class="sermon-date"><?php _e(' on ', $sermon_domain); echo date("j F Y", strtotime($sermon->date)); ?></span><?php endif ?>.
 		</li>		
 	<?php endforeach ?>
@@ -41,9 +34,9 @@ function sb_display_sermons($options = array()) {
 }
 
 
-function sb_widget_sermon_init() {
+function widget_sermon_init() {
 	global $sermon_domain;
-	if ( !$options = get_option('sb_widget_sermon') )
+	if ( !$options = get_option('widget_sermon') )
 		$options = array();
 
 	$widget_ops = array('classname' => 'sermon', 'description' => __('Sermon', $sermon_domain));
@@ -59,18 +52,18 @@ function sb_widget_sermon_init() {
 		// $id should look like {$id_base}-{$o}
 		$id = "sermon-$o"; // Never never never translate an id
 		$registered = true;
-		wp_register_sidebar_widget( $id, $name, 'sb_widget_sermon', $widget_ops, array( 'number' => $o ) );
-		wp_register_widget_control( $id, $name, 'sb_widget_sermon_control', $control_ops, array( 'number' => $o ) );
+		wp_register_sidebar_widget( $id, $name, 'widget_sermon', $widget_ops, array( 'number' => $o ) );
+		wp_register_widget_control( $id, $name, 'widget_sermon_control', $control_ops, array( 'number' => $o ) );
 	}
 
 	// If there are none, we register the widget's existance with a generic template
 	if ( !$registered ) {
-		wp_register_sidebar_widget( 'sermon-1', $name, 'sb_widget_sermon', $widget_ops, array( 'number' => -1 ) );
-		wp_register_widget_control( 'sermon-1', $name, 'sb_widget_sermon_control', $control_ops, array( 'number' => -1 ));
+		wp_register_sidebar_widget( 'sermon-1', $name, 'widget_sermon', $widget_ops, array( 'number' => -1 ) );
+		wp_register_widget_control( 'sermon-1', $name, 'widget_sermon_control', $control_ops, array( 'number' => -1 ));
 	}
 }
 
-function sb_widget_sermon( $args, $widget_args = 1 ) {
+function widget_sermon( $args, $widget_args = 1 ) {
 	global $sermon_domain;
 	extract( $args, EXTR_SKIP );
 	if ( is_numeric($widget_args) )
@@ -79,7 +72,7 @@ function sb_widget_sermon( $args, $widget_args = 1 ) {
 	extract( $widget_args, EXTR_SKIP );
 
 	// Data should be stored as array:  array( number => data for that instance of the widget, ... )
-	$options = get_option('sb_widget_sermon');
+	$options = get_option('widget_sermon');
 	if ( !isset($options[$number]) )
 		return;
 		
@@ -88,7 +81,7 @@ function sb_widget_sermon( $args, $widget_args = 1 ) {
 	echo $before_widget;
 	echo $before_title . $title . $after_title;
 	// Do stuff for this widget, drawing data from $options[$number]
-	$sermons = sb_get_sermons(array(
+	$sermons = bb_get_sermons(array(
 			'preacher' => $preacher,
 			'service' => $service,
 			'series' => $series
@@ -98,9 +91,9 @@ function sb_widget_sermon( $args, $widget_args = 1 ) {
 ?>
 	<ul class="sermon-widget">
 	<?php foreach ((array) $sermons as $sermon): ?>
-		<li><span class="sermon-title"><a href="<?php sb_print_sermon_link($sermon) ?>"><?php echo stripslashes($sermon->title) ?></a></span>
-			<?php	if ($book): ?><span class="sermon-passage">(<?php $foo = unserialize($sermon->start); $bar = unserialize($sermon->end); echo sb_get_books($foo[0], $bar[0]) ?>)</span><?php endif;
-					if ($preacherz): ?><span class="sermon-preacher"> <?php _e('by', $sermon_domain) ?> <a href="<?php sb_print_preacher_link($sermon) ?>"><?php echo stripslashes($sermon->preacher) ?></a></span><?php endif;
+		<li><span class="sermon-title"><a href="<?php bb_print_sermon_link($sermon) ?>"><?php echo stripslashes($sermon->title) ?></a></span>
+			<?php	if ($book): ?><span class="sermon-passage">(<?php $foo = unserialize($sermon->start); $bar = unserialize($sermon->end); echo bb_get_books($foo[0], $bar[0]) ?>)</span><?php endif;
+					if ($preacherz): ?><span class="sermon-preacher"> <?php _e('by', $sermon_domain) ?> <a href="<?php bb_print_preacher_link($sermon) ?>"><?php echo stripslashes($sermon->preacher) ?></a></span><?php endif;
 					if ($date): ?><span class="sermon-date"> <?php _e(' on ', $sermon_domain); echo date("j F Y", strtotime($sermon->date)); ?></span><?php endif ?>.
 		</li>		
 	<?php endforeach ?>
@@ -108,7 +101,7 @@ function sb_widget_sermon( $args, $widget_args = 1 ) {
 <?php echo $after_widget; ?>
 <?php
 }
-function sb_widget_sermon_control( $widget_args = 1 ) {
+function widget_sermon_control( $widget_args = 1 ) {
 	global $wpdb, $sermon_domain, $books;
 	global $wp_registered_widgets;
 	static $updated = false; // Whether or not we have already updated the data after a POST submit
@@ -123,7 +116,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 	extract( $widget_args, EXTR_SKIP );
 
 	// Data should be stored as array:  array( number => data for that instance of the widget, ... )
-	$options = get_option('sb_widget_sermon');
+	$options = get_option('widget_sermon');
 	if ( !is_array($options) )
 		$options = array();
 		
@@ -142,7 +135,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 		foreach ( $this_sidebar as $_widget_id ) {
 			// Remove all widgets of this type from the sidebar.  We'll add the new data in a second.  This makes sure we don't get any duplicate data
 			// since widget ids aren't necessarily persistent across multiple updates
-			if ( 'sb_widget_sermon' == $wp_registered_widgets[$_widget_id]['callback'] && isset($wp_registered_widgets[$_widget_id]['params'][0]['number']) ) {
+			if ( 'widget_sermon' == $wp_registered_widgets[$_widget_id]['callback'] && isset($wp_registered_widgets[$_widget_id]['params'][0]['number']) ) {
 				$widget_number = $wp_registered_widgets[$_widget_id]['params'][0]['number'];
 				if ( !in_array( "sermon-$widget_number", $_POST['widget-id'] ) ) // the widget has been removed. "many-$widget_number" is "{id_base}-{widget_number}
 					unset($options[$widget_number]);
@@ -164,7 +157,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 			$options[$widget_number] = array( 'limit' => $limit, 'preacherz' => $preacherz, 'book' => $book, 'preacher' => $preacher, 'service' => $service, 'series' => $series, 'title' => $title, 'date' => $date);  // Even simple widgets should store stuff in array, rather than in scalar
 		}
 
-		update_option('sb_widget_sermon', $options);
+		update_option('widget_sermon', $options);
 
 		$updated = true; // So that we don't go through this more than once
 	}
