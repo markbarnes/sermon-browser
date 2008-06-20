@@ -32,7 +32,7 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 
 == Frequently Asked Questions ==
 
-=I've activated the plugin, and entered in a few sermons, but they are not showing up to my website users. Where are they?=
+### I've activated the plugin, and entered in a few sermons, but they are not showing up to my website users. Where are they?
 
 SermonBrowser only displays your sermons where you choose. You need to create the page/post where you want the sermons to appear (or edit an existing one), and add [sermons] to the page/post. You can also add some explantory text if you wish. If you do so, the text will appear on all your sermons pages. If you want your text to only appear on the list of sermons, not on individual sermon pages, you need to edit the SermonBrowser templates (see below).
 
