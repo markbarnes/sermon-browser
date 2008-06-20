@@ -1,7 +1,7 @@
 <?php 
 /*
 Plugin Name: Sermon Browser
-Plugin URI: http://www.4-14.org.uk/category/sermonbrowser
+Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design 
 Author: Mark Barnes
 Version: 0.24
