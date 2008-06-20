@@ -44,12 +44,12 @@ SermonBrowser tries to set the correct permissions on your folders for you, but 
 
 The most likely cause is that you're reaching either the maximum filesize that can be uploaded, or the maximum time a PHP script can run for. Editing your php.ini may help overcome these problems - but if you're on shared hosting, it's possible your host has set maximum limits you cannot change. If that's the case, you should upload your files via FTP. This is generally a better option than using your browser, particularly if you have several files to upload. If you do edit your php.ini file, these settings should be adequate:
 
-file_uploads = On
-upload_max_filesize = 15M
-post_max_size = 15M
-max_execution_time = 600
-max_input_time = 600
-memory_limit = 16M
+file\_uploads = On
+upload\_max\_filesize = 15M
+post\_max\_size = 15M
+max\_execution\_time = 600
+max\_input\_time = 600
+memory\_limit = 16M
 
 =Why are my MP3 files are appearing as an icon, rather than as a player, as I've seen on other SermonBrowser sites?=
 
@@ -72,9 +72,9 @@ How do I get recent sermons to display in my sidebar?
 
 If your WordPress theme supports widgets, just go to Design and choose Widgets. There you easily can add the Sermons widget to your sidebar. If your theme doesn't support widgets, you'll need to edit your theme manually. Usually, you'll be editing a file called sidebar.php, but your theme may give it a different name. Add the following code:
 
-`<?php if (function_exists('display_sermons')) display_sermons(array('display_preacher' => 0, 'display_passage' => 1, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5)) ?>`
+`<?php if (function\_exists('display\_sermons')) display\_sermons(array('display\_preacher' => 0, 'display\_passage' => 1, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5)) ?>`
 
-Each of the numbers in that line can be changed. display_preacher and display_passage affect what is displayed (0 is off, 1 is on). preacher, service and series allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series. limit is simply the maximum number of sermons you want displayed.
+Each of the numbers in that line can be changed. display\_preacher and display\_passage affect what is displayed (0 is off, 1 is on). preacher, service and series allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series. limit is simply the maximum number of sermons you want displayed.
 
 =My host only allows me a certain amount of disk space, and I have so many sermons uploaded, I've run out of space! What can I do?=
 
@@ -115,7 +115,7 @@ The search form is set to roughly 500 pixels, which should be about right for mo
 
 =Why is sometimes the Bible text missing?=
 
-This usually happens for one of three reasons: (1) If the website providing the service is down. They're rarely down for long. (2) If you specify an invalid bible passage (e.g. Romans 22). If this is the case your sermon page will display <em>ERROR: No results were found for your search.</em> (3) If you never get the bible passages for any bible version, it's probably your webhost has disabled <strong>allow_url_fopen</strong> and cURL. Some cheaper webhosts have these essential features switched off. If they have, you won't be able to use this facility.
+This usually happens for one of three reasons: (1) If the website providing the service is down. They're rarely down for long. (2) If you specify an invalid bible passage (e.g. Romans 22). If this is the case your sermon page will display <em>ERROR: No results were found for your search.</em> (3) If you never get the bible passages for any bible version, it's probably your webhost has disabled <strong>allow\_url\_fopen</strong> and cURL. Some cheaper webhosts have these essential features switched off. If they have, you won't be able to use this facility.
 
 =Why does my sermon page say I have exceeded my quota for ESV lookups?=
 
@@ -143,40 +143,40 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 =Results page only=
 
-* [filters_form] - The search form which allows filtering by preacher, series, date, etc. multi-sermons page only
-* [sermons_count] - The number of sermons which match the current search critera.
-* [sermons_loop][/sermons_loop] - These two tags should be placed around the output for one sermon. (That is all of the tags that return data about sermons should come between these two tags.)
-* [first_passage] - The main bible passage for this sermon
-* [previous_page] - Displays the link to the previous page of search results (if needed)
-* [next_page] - Displays the link to the next page of search results (if needed)
+* [filters\_form] - The search form which allows filtering by preacher, series, date, etc. multi-sermons page only
+* [sermons\_count] - The number of sermons which match the current search critera.
+* [sermons\_loop][/sermons\_loop] - These two tags should be placed around the output for one sermon. (That is all of the tags that return data about sermons should come between these two tags.)
+* [first\_passage] - The main bible passage for this sermon
+* [previous\_page] - Displays the link to the previous page of search results (if needed)
+* [next\_page] - Displays the link to the next page of search results (if needed)
 * [podcast] - Link to the podcast of all sermons
-* [podcast_for_search] - Link to the podcast of sermons that match the current search
-* [itunes_podcast] - iTunes (itpc://) link to the podcast of all sermons
-* [itunes_podcast_for_search] - iTunes (itpc://) link to the podcast of sermons that match the current search
+* [podcast\_for\_search] - Link to the podcast of sermons that match the current search
+* [itunes\_podcast] - iTunes (itpc://) link to the podcast of all sermons
+* [itunes\_podcast\_for\_search] - iTunes (itpc://) link to the podcast of sermons that match the current search
 * [podcasticon] - Displays the icon used for the main podcast
-* [podcasticon_for_search] - Displays the icon used for the custom podcast
+* [podcasticon\_for\_search] - Displays the icon used for the custom podcast
 
 =Both results page and sermon page=
 
-* [sermon_title] - The title of the sermon
-* [preacher_link] - The name of the preacher (hyperlinked to his search results)
-* [series_link] - The name of the series (hyperlinked to search results)
-* [service_link] - The name of the service (hyperlinked to search results)
+* [sermon\_title] - The title of the sermon
+* [preacher\_link] - The name of the preacher (hyperlinked to his search results)
+* [series\_link] - The name of the series (hyperlinked to search results)
+* [service\_link] - The name of the service (hyperlinked to search results)
 * [date] - The date of the sermon
-* [files_loop][/files_loop] - These two tags should be placed around the [file] tag if you want to display all the files linked with to sermon. They are not needed if you only want to display the first file.
+* [files\_loop][/files\_loop] - These two tags should be placed around the [file] tag if you want to display all the files linked with to sermon. They are not needed if you only want to display the first file.
 * [file] - Displays the files and external URLs
-* [embed_loop][/embed_loop] - These two tags should be placed around the [embed] tag if you want to display all the embedded objects linked to this sermon. They are not needed if you only want to display the first embedded object.
+* [embed\_loop][/embed\_loop] - These two tags should be placed around the [embed] tag if you want to display all the embedded objects linked to this sermon. They are not needed if you only want to display the first embedded object.
 * [embed] - Displays an embedded object (e.g. video)
 * [creditlink] - displays a "Powered by Sermon Browser" link.
 
 =Sermon page only=
-* [preacher_description] - The description of the preacher.
-* [preacher_image] - The photo of the preacher.
-* [passages_loop][/passages_loop] - These two tags should be placed around the [passage] tag if you want to display all the passages linked with to sermon.
+* [preacher\_description] - The description of the preacher.
+* [preacher\_image] - The photo of the preacher.
+* [passages\_loop][/passages\_loop] - These two tags should be placed around the [passage] tag if you want to display all the passages linked with to sermon.
 * [passage] - Displays the reference of the bible passage with the book name hyperlinked to search results.
-* [next_sermon] - Displays a link to the next sermon preached (excluding ones preached on the same day)
-* [prev_sermon] - Displays a link to the previous sermon preached
-* [sameday_sermon] - Displays a link to other sermons preached on that day
+* [next\_sermon] - Displays a link to the next sermon preached (excluding ones preached on the same day)
+* [prev\_sermon] - Displays a link to the previous sermon preached
+* [sameday\_sermon] - Displays a link to other sermons preached on that day
 * [tags] - Displays the tags for that sermons
 * [esvtext] - Displays the full text of the ESV Bible for all passages linked to that sermon.
 * [asvtext] - Displays the full text of the ASV Bible for all passages linked to that sermon.
