@@ -44,12 +44,12 @@ SermonBrowser tries to set the correct permissions on your folders for you, but 
 
 The most likely cause is that you're reaching either the maximum filesize that can be uploaded, or the maximum time a PHP script can run for. Editing your php.ini may help overcome these problems - but if you're on shared hosting, it's possible your host has set maximum limits you cannot change. If that's the case, you should upload your files via FTP. This is generally a better option than using your browser, particularly if you have several files to upload. If you do edit your php.ini file, these settings should be adequate:
 
-file\_uploads = On
-upload\_max\_filesize = 15M
-post\_max\_size = 15M
-max\_execution\_time = 600
-max\_input\_time = 600
-memory\_limit = 16M
+    file\_uploads = On
+    upload\_max\_filesize = 15M
+    post\_max\_size = 15M
+    max\_execution\_time = 600
+    max\_input\_time = 600
+    memory\_limit = 16M
 
 =Why are my MP3 files are appearing as an icon, rather than as a player, as I've seen on other SermonBrowser sites?=
 
@@ -72,7 +72,7 @@ How do I get recent sermons to display in my sidebar?
 
 If your WordPress theme supports widgets, just go to Design and choose Widgets. There you easily can add the Sermons widget to your sidebar. If your theme doesn't support widgets, you'll need to edit your theme manually. Usually, you'll be editing a file called sidebar.php, but your theme may give it a different name. Add the following code:
 
-`<?php if (function\_exists('display\_sermons')) display\_sermons(array('display\_preacher' => 0, 'display\_passage' => 1, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5)) ?>`
+    <?php if (function\_exists('display\_sermons')) display\_sermons(array('display\_preacher' => 0, 'display\_passage' => 1, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5)) ?>
 
 Each of the numbers in that line can be changed. display\_preacher and display\_passage affect what is displayed (0 is off, 1 is on). preacher, service and series allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series. limit is simply the maximum number of sermons you want displayed.
 
