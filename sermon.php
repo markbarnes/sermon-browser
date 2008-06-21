@@ -556,7 +556,7 @@ function sb_options() {
 			fclose($fh);
 		} else {
 			echo '<div id="message" class="updated fade"><p><b>';
-			_e('Could not save style template. Please check permission for stlye.css in plugin folder', $sermon_domain);
+			_e('Could not save style template. Please check permission for style.css in plugin folder', $sermon_domain);
 			echo '</b></div>';			
 		}
 		echo '<div id="message" class="updated fade"><p><b>';
