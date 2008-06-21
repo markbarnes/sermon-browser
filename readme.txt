@@ -4,7 +4,7 @@ Donate link: http://www.4-14.org.uk/sermon-browser#support
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv
 Requires at least: 2.2
 Tested up to: 2.5
-Stable tag: 0.24
+Stable tag: trunk
 
 Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 
