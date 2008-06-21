@@ -221,7 +221,7 @@ function sb_hijack() {
 		);
 		header('Content-Type: application/rss+xml');
 		echo '<?xml version="1.0" encoding="UTF-8"?>';
-		include($wordpressRealPath.'/wp-content/plugins/sermonbrowser/podcast.php');
+		include($wordpressRealPath.'/wp-content/plugins/sermon-browser/podcast.php');
 		die();
 	}
 }
@@ -240,7 +240,7 @@ function sb_sermons_filter($content) {
 	if ($_GET['sermon_id']) {
 		$clr = true;
 		$sermon = sb_get_single_sermon((int) $_GET['sermon_id']);
-		include($wordpressRealPath.'/wp-content/plugins/sermonbrowser/single.php');
+		include($wordpressRealPath.'/wp-content/plugins/sermon-browser/single.php');
 	} else {
 		$clr = false;
 		$sermons = sb_get_sermons(array(
@@ -259,7 +259,7 @@ function sb_sermons_filter($content) {
 		),
 		$_REQUEST['page'] ? $_REQUEST['page'] : 1			
 		);
-		include($wordpressRealPath.'/wp-content/plugins/sermonbrowser/multi.php');		
+		include($wordpressRealPath.'/wp-content/plugins/sermon-browser/multi.php');		
 	}			
 	$content = str_replace('[sermons]', ob_get_contents(), $content);
 	
@@ -286,10 +286,10 @@ function sb_print_header() {
 	$url = get_bloginfo('wpurl');
 ?>
 	<link rel="alternate" type="application/rss+xml" title="<?php _e('Sermon podcast', $sermon_domain) ?>" href="<?php echo get_option('sb_podcast') ?>" />
-	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermonbrowser/datepicker.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermonbrowser/style.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermon-browser/datepicker.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermon-browser/style.css" type="text/css"/>
 	<script type="text/javascript" src="<?php echo $url ?>/wp-includes/js/jquery/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo $url ?>/wp-content/plugins/sermonbrowser/datePicker.js"></script>
+	<script type="text/javascript" src="<?php echo $url ?>/wp-content/plugins/sermon-browser/datePicker.js"></script>
 <?php
 }
 
@@ -442,7 +442,7 @@ function sb_print_iso_date($sermon) {
 
 function sb_print_url($url) {
 	global $siteicons, $default_site_icon ,$filetypes;
-	$icon_url = get_bloginfo('wpurl').'/wp-content/plugins/sermonbrowser/icons/';
+	$icon_url = get_bloginfo('wpurl').'/wp-content/plugins/sermon-browser/icons/';
 	$uicon = $default_site_icon;
 	foreach ($siteicons as $site => $icon) {
 		if (strpos($url, $site) !== false) {
