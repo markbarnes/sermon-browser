@@ -26,8 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Localization and set-up
 require_once('dictionary.php'); // Template functions
-$sermon_domain = 'sermonbrowser';
-load_plugin_textdomain($sermon_domain, 'wp-content/plugins/sermonbrowser');
+$sermon_domain = 'sermon-browser';
+load_plugin_textdomain($sermon_domain, 'wp-content/plugins/sermon-browser');
 include_once('filetypes.php'); // User-defined icons
 include('frontend.php'); // Everything related to displaying sermons
 
@@ -157,7 +157,7 @@ if ($_POST['sermon'] == 1) {
 				<td><?php echo stripslashes($sermon->sname) ?></td>
 				<td><?php echo stripslashes($sermon->ssname) ?></td>
 				<td style="text-align:center">
-					<a href="<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
+					<a href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
 				</td>
 			</tr>
 		<?php endforeach ?>
@@ -429,12 +429,12 @@ function sb_add_pages() {
 	global $sermon_domain;
 	add_menu_page(__('Sermons', $sermon_domain), __('Sermons', $sermon_domain), 'edit_posts', __FILE__, 'sb_manage_sermons');
 	add_submenu_page(__FILE__, __('Sermons', $sermon_domain), __('Sermons', $sermon_domain), 'edit_posts', __FILE__, 'sb_manage_sermons');
-	add_submenu_page(__FILE__, __('New Sermon', $sermon_domain), __('New Sermon', $sermon_domain), 'publish_posts', 'sermonbrowser/new_sermon.php', 'sb_new_sermon');
-	add_submenu_page(__FILE__, __('Preachers', $sermon_domain), __('Preachers', $sermon_domain), 'manage_categories', 'sermonbrowser/preachers.php', 'sb_manage_preachers');
-	add_submenu_page(__FILE__, __('Series &amp; Services', $sermon_domain), __('Series &amp; Services', $sermon_domain), 'manage_categories', 'sermonbrowser/manage.php', 'sb_manage_everything');
-	add_submenu_page(__FILE__, __('Uploads', $sermon_domain), __('Uploads', $sermon_domain), 'upload_files', 'sermonbrowser/uploads.php', 'sb_uploads');
-	add_submenu_page(__FILE__, __('Options', $sermon_domain), __('Options', $sermon_domain), 'manage_options', 'sermonbrowser/options.php', 'sb_options');
-	add_submenu_page(__FILE__, __('Help', $sermon_domain), __('Help', $sermon_domain), 'read', 'sermonbrowser/help.php', 'sb_help');
+	add_submenu_page(__FILE__, __('New Sermon', $sermon_domain), __('New Sermon', $sermon_domain), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
+	add_submenu_page(__FILE__, __('Preachers', $sermon_domain), __('Preachers', $sermon_domain), 'manage_categories', 'sermon-browser/preachers.php', 'sb_manage_preachers');
+	add_submenu_page(__FILE__, __('Series &amp; Services', $sermon_domain), __('Series &amp; Services', $sermon_domain), 'manage_categories', 'sermon-browser/manage.php', 'sb_manage_everything');
+	add_submenu_page(__FILE__, __('Uploads', $sermon_domain), __('Uploads', $sermon_domain), 'upload_files', 'sermon-browser/uploads.php', 'sb_uploads');
+	add_submenu_page(__FILE__, __('Options', $sermon_domain), __('Options', $sermon_domain), 'manage_options', 'sermon-browser/options.php', 'sb_options');
+	add_submenu_page(__FILE__, __('Help', $sermon_domain), __('Help', $sermon_domain), 'read', 'sermon-browser/help.php', 'sb_help');
 }
 
 // textarea @ option
@@ -532,7 +532,7 @@ function sb_options() {
 		update_option('sb_sermon_multi_form', base64_encode($multi));
 		update_option('sb_sermon_single_form', base64_encode($single));
 		update_option('sb_sermon_style', base64_encode($style));
-		$fh = @fopen($wordpressRealPath.'/wp-content/plugins/sermonbrowser/multi.php', 'w');
+		$fh = @fopen($wordpressRealPath.'/wp-content/plugins/sermon-browser/multi.php', 'w');
 		if ($fh) {
 			fwrite($fh, strtr(stripslashes($multi), $mdict));
 			fclose($fh);
@@ -541,7 +541,7 @@ function sb_options() {
 			_e('Could not save multi template. Please check permission for multi.php in plugin folder', $sermon_domain);
 			echo '</b></div>';			
 		}
-		$fh = @fopen($wordpressRealPath.'/wp-content/plugins/sermonbrowser/single.php', 'w');
+		$fh = @fopen($wordpressRealPath.'/wp-content/plugins/sermon-browser/single.php', 'w');
 		if ($fh) {
 			fwrite($fh, strtr(stripslashes($single), $sdict));
 			fclose($fh);
@@ -550,7 +550,7 @@ function sb_options() {
 			_e('Could not save single template. Please check permission for single.php in plugin folder', $sermon_domain);
 			echo '</b></div>';			
 		}
-   	    $fh = @fopen($wordpressRealPath.'/wp-content/plugins/sermonbrowser/style.css', 'w');
+   	    $fh = @fopen($wordpressRealPath.'/wp-content/plugins/sermon-browser/style.css', 'w');
 		if ($fh) {
 			fwrite($fh, $style);
 			fclose($fh);
@@ -734,7 +734,7 @@ function sb_manage_preachers() {
 		    $wpdb->query("UPDATE {$wpdb->prefix}sb_preachers SET name = '$name', description = '$description', image = '' WHERE id = $pid");
 		    @unlink($wordpressRealPath.get_option('sb_sermon_upload_dir').'images/'.mysql_real_escape_string($_POST['old']));
 		}
-		if(!$error) echo "<script>document.location = '$url/wp-admin/admin.php?page=sermonbrowser/preachers.php&saved=true';</script>";
+		if(!$error) echo "<script>document.location = '$url/wp-admin/admin.php?page=sermon-browser/preachers.php&saved=true';</script>";
 	}
 	
 	if ($_GET['act'] == 'kill') {
@@ -798,7 +798,7 @@ function sb_manage_preachers() {
 	$preachers = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_preachers ORDER BY name asc");
 ?>
 	<div class="wrap">
-		<h2><?php _e('Manage Preachers', $sermon_domain) ?> (<a href="<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/preachers.php&act=new"><?php _e('add new', $sermon_domain) ?></a>)</h2>
+		<h2><?php _e('Manage Preachers', $sermon_domain) ?> (<a href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/preachers.php&act=new"><?php _e('add new', $sermon_domain) ?></a>)</h2>
 		<table class="widefat">
 			<thead>
 			<tr>
@@ -815,7 +815,7 @@ function sb_manage_preachers() {
 						<td><?php echo stripslashes($preacher->name) ?></td>
 						<td><img src="<?php echo empty($preacher->image) ? '' : $url.get_option('sb_sermon_upload_dir').'images/'.$preacher->image ?>"></td>
 						<td align="center">
-							<a href="<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/preachers.php&act=edit&pid=<?php echo $preacher->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/preachers.php&act=kill&pid=<?php echo $preacher->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
+							<a href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/preachers.php&act=edit&pid=<?php echo $preacher->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/preachers.php&act=kill&pid=<?php echo $preacher->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
 						</td>
 					</tr>
 				<?php endforeach ?>
@@ -876,7 +876,7 @@ function sb_manage_everything() {
 				if (s == null) { break;	}
 			}
 			if (s != null) {
-				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php', {sname: s, sermon: 1}, function(r) {				
+				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php', {sname: s, sermon: 1}, function(r) {				
 					if (r) {
 						sz = s.match(/(.*?)@(.*)/)[1];
 						t = s.match(/(.*?)@(.*)/)[2];
@@ -900,7 +900,7 @@ function sb_manage_everything() {
 		function createNewSeries(s) {
 			var ss = prompt("New series' name?", "Series' name");
 			if (ss != null) {
-				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php', {ssname: ss, sermon: 1}, function(r) {
+				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php', {ssname: ss, sermon: 1}, function(r) {
 					if (r) {
 						jQuery('#Series-list').append('\
 							<tr style="display:none" class="Series" id="rowSeries' + r + '">\
@@ -919,7 +919,7 @@ function sb_manage_everything() {
 			}
 		}
 		function deleteSeries(id) {
-			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php', {ssname: 'dummy', ssid: id, del: 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php', {ssname: 'dummy', ssid: id, del: 1, sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#rowSeries' + id).fadeOut(function() {
 						updateClass('Series');
@@ -928,7 +928,7 @@ function sb_manage_everything() {
 			});			
 		}
 		function deleteServices(id) {
-			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php', {sname: 'dummy', sid: id, del: 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php', {sname: 'dummy', sid: id, del: 1, sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#rowServices' + id).fadeOut(function() {
 						updateClass('Services');
@@ -939,7 +939,7 @@ function sb_manage_everything() {
 		function renameSeries(id, old) {
 			var ss = prompt("New series' name?", old);
 			if (ss != null) {
-				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php', {ssid: id, ssname: ss, sermon: 1}, function(r) {
+				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php', {ssid: id, ssname: ss, sermon: 1}, function(r) {
 					if (r) {
 						jQuery('#Series' + id).text(ss);
 						jQuery('#linkSeries' + id).attr('href', 'javascript:renameSeries(' + id + ', "' + ss + '")');
@@ -955,7 +955,7 @@ function sb_manage_everything() {
 				if (s == null) { break;	}
 			}
 			if (s != null) {
-				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php', {sid: id, sname: s, sermon: 1}, function(r) {
+				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php', {sid: id, sname: s, sermon: 1}, function(r) {
 					if (r) {
 						sz = s.match(/(.*?)@(.*)/)[1];
 						t = s.match(/(.*?)@(.*)/)[2];						
@@ -1109,7 +1109,7 @@ function sb_uploads() {
 		function rename(id, old) {
 			var f = prompt("New file name?", old);
 			if (f != null) {
-				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/uploads.php', {fid: id, oname: old, fname: f, sermon: 1}, function(r) {
+				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/uploads.php', {fid: id, oname: old, fname: f, sermon: 1}, function(r) {
 					if (r) {
 						if (r == 'renamed') {
 							jQuery('#' + id).text(f.substring(0,f.lastIndexOf(".")));
@@ -1126,7 +1126,7 @@ function sb_uploads() {
 			}
 		}
 		function kill(id, f) {
-			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/uploads.php', {fname: f, fid: id, del: 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/uploads.php', {fname: f, fid: id, del: 1, sermon: 1}, function(r) {
 				if (r) {
 					if (r == 'deleted') {
 						jQuery('#file' + id).fadeOut(function() {
@@ -1152,7 +1152,7 @@ function sb_uploads() {
 			});	
 		}
 		function fetchU(st) {
-			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/uploads.php', {fetchU: st + 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/uploads.php', {fetchU: st + 1, sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#the-list-u').html(r);					
 					if (st >= 15) {
@@ -1171,7 +1171,7 @@ function sb_uploads() {
 			});	
 		}
 		function fetchL(st) {
-			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/uploads.php', {fetchL: st + 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/uploads.php', {fetchL: st + 1, sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#the-list-l').html(r);					
 					if (st >= 15) {
@@ -1190,7 +1190,7 @@ function sb_uploads() {
 			});	
 		}
 		function findNow() {
-			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/uploads.php', {search: jQuery('#search').val(), sermon: 1}, function(r) {
+			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/uploads.php', {search: jQuery('#search').val(), sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#the-list-s').html(r);										
 				};
@@ -1400,7 +1400,7 @@ function sb_manage_sermons() {
 	<script type="text/javascript" src="<?php echo $url ?>/wp-includes/js/jquery/jquery.js"></script>
 	<script>
 		function fetch(st) {
-			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php', {fetch: st + 1, sermon: 1, title: jQuery('#search').val(), preacher: jQuery('#preacher option[@selected]').val(), series: jQuery('#series option[@selected]').val() }, function(r) {
+			jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php', {fetch: st + 1, sermon: 1, title: jQuery('#search').val(), preacher: jQuery('#preacher option[@selected]').val(), series: jQuery('#series option[@selected]').val() }, function(r) {
 				if (r) {
 					jQuery('#the-list').html(r);					
 					if (st >= 15) {
@@ -1472,7 +1472,7 @@ function sb_manage_sermons() {
 						<td><?php echo stripslashes($sermon->sname) ?></td>
 						<td><?php echo stripslashes($sermon->ssname) ?></td>
 						<td style="text-align:center">
-							<a href="<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
+							<a href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
 						</td>
 					</tr>
 					<?php endforeach ?>
@@ -1594,7 +1594,7 @@ function sb_new_sermon() {
 			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_sermons_tags VALUES (null, $id, $tag_id)");
 		}
 		// everything is fine, get out of here!
-		if(!$error) echo "<script>document.location = '$url/wp-admin/admin.php?page=sermonbrowser/sermon.php&saved=true';</script>";
+		if(!$error) echo "<script>document.location = '$url/wp-admin/admin.php?page=sermon-browser/sermon.php&saved=true';</script>";
 	}		
 	
 	// load existing data
@@ -1637,11 +1637,11 @@ function sb_new_sermon() {
 		$tags = implode(', ', (array) $tags);
 	}
 ?>
-	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermonbrowser/style.css" type="text/css">
-	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermonbrowser/datepicker.css" type="text/css">
+	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermon-browser/style.css" type="text/css">
+	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermon-browser/datepicker.css" type="text/css">
 	<script type="text/javascript" src="<?php echo $url ?>/wp-includes/js/jquery/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo $url ?>/wp-content/plugins/sermonbrowser/datePicker.js"></script>
-	<script type="text/javascript" src="<?php echo $url ?>/wp-content/plugins/sermonbrowser/64.js"></script>
+	<script type="text/javascript" src="<?php echo $url ?>/wp-content/plugins/sermon-browser/datePicker.js"></script>
+	<script type="text/javascript" src="<?php echo $url ?>/wp-content/plugins/sermon-browser/64.js"></script>
 	<script type="text/javascript">		
 		var timeArr = new Array();
 		<?php echo $timeArr ?>		
@@ -1649,7 +1649,7 @@ function sb_new_sermon() {
 			if (jQuery('*[@selected]', s).text() != 'Create new preacher') return;
 			var p = prompt("New preacher's name?", "Preacher's name");
 			if (p != null) {
-				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php', {pname: p, sermon: 1}, function(r) {
+				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php', {pname: p, sermon: 1}, function(r) {
 					if (r) {
 						jQuery('#preacher option:first').before('<option value="' + r + '">' + p + '</option>');
 						jQuery("#preacher option[@value='" + r + "']").attr('selected', 'selected');				
@@ -1670,7 +1670,7 @@ function sb_new_sermon() {
 				if (s == null) { break;	}
 			}
 			if (s != null) {
-				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php', {sname: s, sermon: 1}, function(r) {
+				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php', {sname: s, sermon: 1}, function(r) {
 					if (r) {
 						jQuery('#service option:first').before('<option value="' + r + '">' + s.match(/(.*?)@/)[1] + '</option>');	
 						jQuery("#service option[@value='" + r + "']").attr('selected', 'selected');					
@@ -1683,7 +1683,7 @@ function sb_new_sermon() {
 			if (jQuery('*[@selected]', s).text() != 'Create new series') return;
 			var ss = prompt("New series' name?", "Series' name");
 			if (ss != null) {
-				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermonbrowser/sermon.php', {ssname: ss, sermon: 1}, function(r) {
+				jQuery.post('<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php', {ssname: ss, sermon: 1}, function(r) {
 					if (r) {
 						jQuery('#series option:first').before('<option value="' + r + '">' + ss + '</option>');			
 						jQuery("#series option[@value='" + r + "']").attr('selected', 'selected');	
@@ -2073,7 +2073,7 @@ function sb_help() {
 	<div class="wrap">
 		<h2><?php _e('Help page', $sermon_domain) ?></h2>
 		<h3>Screencasts</h3>
-		<p>If you need help with using sermonbrowser for the first time, these five minute screencast tutorials should be your first port of call:</p>
+		<p>If you need help with using Sermon Browser for the first time, these five minute screencast tutorials should be your first port of call:</p>
 		<ul>
 			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-1.html" target="_blank">Installation and Overview</a>.</li>
 			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-2.html" target="_blank">Basic Options</a>.</li>
