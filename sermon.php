@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design 
 Author: Mark Barnes
-Version: 0.24
+Version: 0.25
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -2075,11 +2075,11 @@ function sb_help() {
 		<h3>Screencasts</h3>
 		<p>If you need help with using Sermon Browser for the first time, these five minute screencast tutorials should be your first port of call:</p>
 		<ul>
-			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-1.html" target="_blank">Installation and Overview</a>.</li>
-			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-2.html" target="_blank">Basic Options</a>.</li>
-			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-3.html" target="_blank">Preachers, Series and Services</a>.</li>
-			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-4.html" target="_blank">Entering a new sermon</a>.</li>
-			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-5.html" target="_blank">Editing a sermon and adding embedded video</a>.</li>
+			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-1.html" target="_blank">Installation and Overview</a></li>
+			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-2.html" target="_blank">Basic Options</a></li>
+			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-3.html" target="_blank">Preachers, Series and Services</a></li>
+			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-4.html" target="_blank">Entering a new sermon</a></li>
+			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-5.html" target="_blank">Editing a sermon and adding embedded video</a></li>
 		</ul>
 		<h4>Template tags</h4>
 		<p>If you want to change the way SermonBrowser displays on your website, you'll need to edit the templates and/or CSS file. Check out <a href="#templatetags">this guide to the template tags</a>.</p>
@@ -2186,14 +2186,17 @@ function sb_help() {
 			<li><b>[date]</b> - The date of the sermon</li>
 			<li><b>[files_loop][/files_loop]</b> - These two tags should be placed around the [file] tag if you want to display all the files linked with to sermon. They are not needed if you only want to display the first file.</li>
 			<li><b>[file]</b> - Displays the files and external URLs</li>
+			<li><b>[file_with_download]</b> - As above, but also adds a download link if the AudioPlayer is displayed</li>
 			<li><b>[embed_loop][/embed_loop]</b> - These two tags should be placed around the [embed] tag if you want to display all the embedded objects linked to this sermon. They are not needed if you only want to display the first embedded object.</li>
 			<li><b>[embed]</b> - Displays an embedded object (e.g. video)</li>
+			<li><b>[editlink]</b> - displays an "Edit Sermon" link if currently logged-in user has edit rights.</li>
 			<li><b>[creditlink]</b> - displays a "Powered by Sermon Browser" link.</li>
 		</ul>
 		<h4>Sermon page only</h4>
 		<ul>
 			<li><b>[preacher_description]</b> - The description of the preacher.</li>
 			<li><b>[preacher_image]</b> - The photo of the preacher.</li>
+			<li><b>[sermon_description]</b> - The description of the sermon</li>
 			<li><b>[passages_loop][/passages_loop]</b> - These two tags should be placed around the [passage] tag if you want to display all the passages linked with to sermon.</li>
 			<li><b>[passage]</b> - Displays the reference of the bible passage with the book name hyperlinked to search results.</li>
 			<li><b>[next_sermon]</b> - Displays a link to the next sermon preached (excluding ones preached on the same day)</li>
@@ -2233,13 +2236,10 @@ $multi = <<<HERE
 			<td class="files">[files_loop][file][/files_loop]</td>
 		</tr>
 		<tr>
-			<td class="urls">[urls_loop][url][/urls_loop]</td>
-		</tr>
-		<tr>
 			<td class="embed">[embed_loop][embed][/embed_loop]</td>
 		</tr>
 		<tr>
-			<td class="preacher">Preached by [preacher_link] on [date] ([service_link]).</td>
+			<td class="preacher">Preached by [preacher_link] on [date] ([service_link]). [editlink]</td>
 		</tr>
    	[/sermons_loop]
 	</table>
@@ -2254,16 +2254,13 @@ HERE;
 function sb_default_single_template () {
 $single = <<<HERE
 <div class="sermon-browser-results">
-	<h2>[sermon_title] <span class="scripture">([passages_loop][passage] [/passages_loop])</span></h2>
+	<h2>[sermon_title] <span class="scripture">([passages_loop][passage] [/passages_loop])</span> [editlink]</h2>
 	[preacher_image]<span class="preacher">[preacher_link], [date]</span><br />
 	Part of the [series_link] series, preached at a [service_link] service<br />
 	Tags: [tags]<br />
-	[files_loop]	
-		[file]  
+	[files_loop]
+		[file_with_download]
 	[/files_loop]
-	[urls_loop]
-		[url]  
-	[/urls_loop]
 	[embed_loop]
 		<br />[embed]<br />
 	[/embed_loop]
@@ -2466,8 +2463,18 @@ ul.sermon-widget li {
 	padding: 0.25em 0;
 }
 
-ul.sermon-widget li span.sermon-title{
+ul.sermon-widget li span.sermon-title {
 	font-weight:bold;
+}
+
+p.audioplayer-container {
+	display:inline !important;
+}
+div.sb_edit_link {
+	display:inline;
+}
+h2 div.sb_edit_link {
+	font-size: 80%;
 }
 HERE;
    return $css;

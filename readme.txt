@@ -165,14 +165,17 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 * **[date]** - The date of the sermon
 * **[files\_loop][/files\_loop]** - These two tags should be placed around the [file] tag if you want to display all the files linked with to sermon. They are not needed if you only want to display the first file.
 * **[file]** - Displays the files and external URLs
+* **[file_with_download]** - As above, but also adds a download link if the AudioPlayer is displayed
 * **[embed\_loop][/embed\_loop]** - These two tags should be placed around the [embed] tag if you want to display all the embedded objects linked to this sermon. They are not needed if you only want to display the first embedded object.
 * **[embed]** - Displays an embedded object (e.g. video)
+* **[editlink]** - displays an "Edit Sermon" link if currently logged-in user has edit rights.
 * **[creditlink]** - displays a "Powered by Sermon Browser" link.
 
 #### Sermon page only
 
 * **[preacher\_description]** - The description of the preacher.
 * **[preacher\_image]** - The photo of the preacher.
+* **[sermon\_description]** - The description of the sermon.
 * **[passages\_loop][/passages\_loop]** - These two tags should be placed around the [passage] tag if you want to display all the passages linked with to sermon.
 * **[passage]** - Displays the reference of the bible passage with the book name hyperlinked to search results.
 * **[next\_sermon]** - Displays a link to the next sermon preached (excluding ones preached on the same day)

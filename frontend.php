@@ -34,7 +34,7 @@ function sb_page_title($title) {
 	global $wpdb;
 	if ($_GET['sermon_id']) {
 		$id = $_GET['sermon_id'];
-		$sermon = $wpdb->get_row("SELECT m.id, m.title, m.date, m.start, m.end, p.id as pid, p.name as preacher, s.id as sid, s.name as service, ss.id as ssid, ss.name as series FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_preachers as p, {$wpdb->prefix}sb_services as s, {$wpdb->prefix}sb_series as ss where m.preacher_id = p.id and m.service_id = s.id and m.series_id = ss.id and m.id = $id");
+		$sermon = $wpdb->get_row("SELECT m.title as title, p.name as preacher FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_preachers as p where m.id = $id");
 		return $title.' ('.stripslashes($sermon->title).' - '.stripslashes($sermon->preacher).')';
 	}
 	else
@@ -46,6 +46,11 @@ if (!function_exists('ap_insert_player_widgets') & function_exists('insert_audio
 	function ap_insert_player_widgets($params) {
 		return insert_audio_player($params);
 	}
+}
+
+function sb_edit_link ($id) {
+	if (current_user_can('edit_posts')) 
+		echo '<div class="sb_edit_link"><a href="'.get_bloginfo('wpurl').'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$id.'">Edit Sermon</a></div>';
 }
 
 //Download external webpage
@@ -198,10 +203,10 @@ function sb_print_bible_passage ($start, $end) {
 	echo "<p class='bible-passage'>".$reference."</p>";
 }
 
-// Display podcast
+// Display podcast or do download
 function sb_hijack() {
-	global $wordpressRealPath;
 	if (isset($_REQUEST['podcast'])) {
+		global $wordpressRealPath;
 		$sermons = sb_get_sermons(array(
 			'title' => $_REQUEST['title'],
 			'preacher' => $_REQUEST['preacher'],
@@ -224,7 +229,101 @@ function sb_hijack() {
 		include($wordpressRealPath.'/wp-content/plugins/sermon-browser/podcast.php');
 		die();
 	}
+	if (isset($_REQUEST['download']) AND isset($_REQUEST['file_name'])) {
+		global $wordpressRealPath;
+		$file_name = urldecode($_GET['file_name']);
+		header("Pragma: public");
+		header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+		header("Content-Type: application/force-download");
+		header("Content-Type: application/octet-stream");
+		header("Content-Type: application/download");
+		header("Content-Disposition: attachment; filename=".$file_name.";");
+		header("Content-Transfer-Encoding: binary");
+		$file_name = $wordpressRealPath.get_option("sb_sermon_upload_dir").$file_name;
+		header("Content-Length: ".filesize($file_name));
+		@readfile($file_name);
+		exit();
+	}
+	if (isset($_REQUEST['download']) AND isset($_REQUEST['url'])) {
+		$url = urldecode($_GET['url']);
+		if(ini_get('allow_url_fopen')) {
+			$headers = array_change_key_case(get_headers($url, 1),CASE_LOWER);
+			$filesize = $headers['content-length'];
+			$cd =  $headers['content-disposition'];
+			$location =  $headers['location'];
+			if ($location) {
+				header('Location: '.get_bloginfo('wpurl').'?download&url='.$location);
+				die();
+			}
+			header("Pragma: public");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+			header("Content-Type: application/force-download");
+			header("Content-Type: application/octet-stream");
+			header("Content-Type: application/download");
+			if ($cd) {
+				header ("Content-Disposition: ".$cd); }
+			else {
+				header("Content-Disposition: attachment; filename=".basename($url).";"); }
+			header("Content-Transfer-Encoding: binary");
+			if ($filesize) header("Content-Length: ".$filesize);
+			@readfile($url);
+			exit();
+		}
+		else {
+			header('Location: '.$url);
+		}
+	}
 }
+
+//Emulates get_headers on PHP 4
+if (!function_exists('get_headers')) {
+function get_headers($Url, $Format= 0, $Depth= 0) {
+    if ($Depth > 5) return;
+    $Parts = parse_url($Url);
+    if (!array_key_exists('path', $Parts))   $Parts['path'] = '/';
+    if (!array_key_exists('port', $Parts))   $Parts['port'] = 80;
+    if (!array_key_exists('scheme', $Parts)) $Parts['scheme'] = 'http';
+
+    $Return = array();
+    $fp = fsockopen($Parts['host'], $Parts['port'], $errno, $errstr, 30);
+    if ($fp) {
+        $Out = 'GET '.$Parts['path'].(isset($Parts['query']) ? '?'.@$Parts['query'] : '')." HTTP/1.1\r\n".
+               'Host: '.$Parts['host'].($Parts['port'] != 80 ? ':'.$Parts['port'] : '')."\r\n".
+               'Connection: Close'."\r\n";
+        fwrite($fp, $Out."\r\n");
+        $Redirect = false; $RedirectUrl = '';
+        while (!feof($fp) && $InLine = fgets($fp, 1280)) {
+            if ($InLine == "\r\n") break;
+            $InLine = rtrim($InLine);
+
+            list($Key, $Value) = explode(': ', $InLine, 2);
+            if ($Key == $InLine) {
+                if ($Format == 1)
+                        $Return[$Depth] = $InLine;
+                else    $Return[] = $InLine;
+
+                if (strpos($InLine, 'Moved') > 0) $Redirect = true;
+            } else {
+                if ($Key == 'Location') $RedirectUrl = $Value;
+                if ($Format == 1)
+                        $Return[$Key] = $Value;
+                else    $Return[] = $Key.': '.$Value;
+            }
+        }
+        fclose($fp);
+        if ($Redirect && !empty($RedirectUrl)) {
+            $NewParts = parse_url($RedirectUrl);
+            if (!array_key_exists('host', $NewParts))   $RedirectUrl = $Parts['host'].$RedirectUrl;
+            if (!array_key_exists('scheme', $NewParts)) $RedirectUrl = $Parts['scheme'].'://'.$RedirectUrl;
+            $RedirectHeaders = get_headers($RedirectUrl, $Format, $Depth+1);
+            if ($RedirectHeaders) $Return = array_merge_recursive($Return, $RedirectHeaders);
+        }
+        return $Return;
+    }
+    return false;
+}}
 
 // main entry
 function sb_sermons_filter($content) {
@@ -430,18 +529,20 @@ function sb_print_prev_page_link($limit = 15) {
 		echo '<a href="'.$url.'">'.__('&laquo; Previous page', $sermon_domain).'</a>';
 	}	
 }
-
+/*
 function sb_print_file($name) {
 	$file_url = get_option('sb_sermon_upload_url').$name;
 	sb_print_url($file_url);
 }
-
+*/
 function sb_print_iso_date($sermon) {
 	echo date('d M Y H:i:s O', strtotime($sermon->date.' '.$sermon->time));
 }
 
 function sb_print_url($url) {
 	global $siteicons, $default_site_icon ,$filetypes;
+	if (!substr($url,0,7) == "http://")
+		$url=get_option('sb_sermon_upload_url').$url;
 	$icon_url = get_bloginfo('wpurl').'/wp-content/plugins/sermon-browser/icons/';
 	$uicon = $default_site_icon;
 	foreach ($siteicons as $site => $icon) {
@@ -454,13 +555,37 @@ function sb_print_url($url) {
 	$ext = $pathinfo['extension'];
 	$uicon = isset($filetypes[$ext]['icon']) ? $filetypes[$ext]['icon'] : $uicon;
 	if (strtolower($ext) == 'mp3' && function_exists('ap_insert_player_widgets')) {
-	    echo '<div class="audioplayer">'.ap_insert_player_widgets('[audio:'.$url.']').'</div>';
+	    echo ap_insert_player_widgets('[audio:'.$url.']');
 	} else {
 	    echo '<a href="'.$url.'"><img class="site-icon" alt="'.$url.'" title="'.$url.'" src="'.$icon_url.$uicon.'"></a>';
 	}
     
 }
 
+function sb_print_url_link($url) {
+	echo '<div class="sermon_file">';
+	sb_print_url ($url);
+	if (substr($url,0,7) == "http://") {
+		$param="url"; }
+	else {
+		$param="file_name"; }
+	if (substr($url, -4) == ".mp3" && function_exists('ap_insert_player_widgets')) {
+		$url = URLencode($url);
+		echo ' <a href="'.sb_display_url().'?download&'.$param.'='.$url.'">Download</a>';
+	}
+	echo '</div>';
+}
+/*
+function sb_print_download_link($name) {
+	echo '<div class="sermon_file">';
+	sb_print_url($name);
+	if (substr($name, -4) == ".mp3" && function_exists('ap_insert_player_widgets')) {
+		$url = URLencode($name);
+		echo ' <a href="'.sb_display_url().'?download&file_name='.$url.'">Download</a>';
+	}
+	echo '</div>';
+}
+*/
 function sb_print_code($code) {
 	echo base64_decode($code);
 }
@@ -513,21 +638,28 @@ function sb_print_sameday_sermon_link($sermon) {
 function sb_get_single_sermon($id) {
 	global $wpdb;
 	$id = (int) $id;
-	$sermon = $wpdb->get_row("SELECT m.id, m.title, m.date, m.start, m.end, p.id as pid, p.name as preacher, p.image as image, p.description as preacher_description, s.id as sid, s.name as service, ss.id as ssid, ss.name as series FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_preachers as p, {$wpdb->prefix}sb_services as s, {$wpdb->prefix}sb_series as ss where m.preacher_id = p.id and m.service_id = s.id and m.series_id = ss.id and m.id = $id");
-	$stuff = $wpdb->get_results("SELECT f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $id ORDER BY id desc");	
+	$sermon = $wpdb->get_row("SELECT m.id, m.title, m.date, m.start, m.end, m.description, p.id as pid, p.name as preacher, p.image as image, p.description as preacher_description, s.id as sid, s.name as service, ss.id as ssid, ss.name as series FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_preachers as p, {$wpdb->prefix}sb_services as s, {$wpdb->prefix}sb_series as ss where m.preacher_id = p.id and m.service_id = s.id and m.series_id = ss.id and m.id = $id");
+	$stuff = $wpdb->get_results("SELECT f.id, f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $id ORDER BY id desc");	
 	$rawtags = $wpdb->get_results("SELECT t.name FROM {$wpdb->prefix}sb_sermons_tags as st LEFT JOIN {$wpdb->prefix}sb_tags as t ON st.tag_id = t.id WHERE st.sermon_id = $sermon->id ORDER BY t.name asc");
 	foreach ($rawtags as $tag) {
 		$tags[] = $tag->name;
 	}
 	foreach ($stuff as $cur) {
-		${$cur->type}[] = $cur->name;
+		switch ($cur->type) {
+			case "file":
+			case "url":
+				$file[] = $cur->name;
+				break;
+			default:
+				${$cur->type}[] = $cur->name;
+		}
 	}
 	$sermon->start = unserialize($sermon->start);
 	$sermon->end = unserialize($sermon->end);
+	print_r ($url);
 	return array(		
 		'Sermon' => $sermon,
 		'Files' => $file,
-		'URLs' => $url,
 		'Code' => $code,
 		'Tags' => $tags,
 	);

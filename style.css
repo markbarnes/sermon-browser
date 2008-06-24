@@ -175,6 +175,16 @@ ul.sermon-widget li {
 	padding: 0.25em 0;
 }
 
-ul.sermon-widget li span.sermon-title{
+ul.sermon-widget li span.sermon-title {
 	font-weight:bold;
+}
+
+p.audioplayer-container {
+	display:inline !important;
+}
+div.sb_edit_link {
+	display:inline;
+}
+h2 div.sb_edit_link {
+	font-size: 80%;
 }

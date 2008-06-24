@@ -15,16 +15,13 @@
 			<td class="sermon-passage"><?php $foo = unserialize($sermon->start); $bar = unserialize($sermon->end); echo sb_get_books($foo[0], $bar[0]) ?> (Part of the <a href="<?php sb_print_series_link($sermon) ?>"><?php echo stripslashes($sermon->series) ?></a> series).</td>
 		</tr>
 		<tr>
-			<td class="files"><?php foreach ((array) $stuff["Files"] as $file): ?><?php sb_print_file($file) ?><?php endforeach ?></td>
-		</tr>
-		<tr>
-			<td class="urls"><?php foreach ((array) $stuff["URLs"] as $url): ?><?php sb_print_url($url) ?><?php endforeach ?></td>
+			<td class="files"><?php foreach ((array) $stuff["Files"] as $file): ?><?php sb_print_url($file) ?><?php endforeach ?></td>
 		</tr>
 		<tr>
 			<td class="embed"><?php foreach ((array) $stuff["Code"] as $code): ?><?php sb_print_code($code) ?><?php endforeach ?></td>
 		</tr>
 		<tr>
-			<td class="preacher">Preached by <a href="<?php sb_print_preacher_link($sermon) ?>"><?php echo stripslashes($sermon->preacher) ?></a> on <?php echo date("j F Y", strtotime($sermon->date)) ?> (<a href="<?php sb_print_service_link($sermon) ?>"><?php echo stripslashes($sermon->service) ?></a>).</td>
+			<td class="preacher">Preached by <a href="<?php sb_print_preacher_link($sermon) ?>"><?php echo stripslashes($sermon->preacher) ?></a> on <?php echo date("j F Y", strtotime($sermon->date)) ?> (<a href="<?php sb_print_service_link($sermon) ?>"><?php echo stripslashes($sermon->service) ?></a>). <?php sb_edit_link($sermon->id) ?></td>
 		</tr>
    	<?php endforeach ?>
 	</table>
