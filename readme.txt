@@ -21,7 +21,8 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 7. The **full Bible text** of the passage being preached on can be included on each sermon page (five different versions, including ESV).
 8. Files can be uploaded to your own site **through the browser or via FTP**. Alternatively you can use other free audio hosting sites such as Odeo.
 9. Powerful **templating function** allows complete customisation to complement the look of your site.
-10. Extensive **help and tutorial** screencasts.
+10. Simple statistics show how often each sermon has been listened to.
+11. Extensive **help and tutorial** screencasts.
 
 == Installation ==
 
