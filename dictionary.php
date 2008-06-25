@@ -3,7 +3,7 @@
 $mdict = array(
 	'[filters_form]' => '<?php sb_print_filters() ?>',
 	'[tag_cloud]' => '<?php sb_print_tag_clouds() ?>',
-	'[sermons_count]' => '<?php sb_print_sermons_count() ?>',
+	'[sermons_count]' => '<?php echo $record_count ?>',
 	'[sermons_loop]' => '<?php foreach ($sermons as $sermon): ?><?php $stuff = sb_get_stuff($sermon) ?>',
 	'[/sermons_loop]' => '<?php endforeach ?>',
 	'[sermon_title]' => '<a href="<?php sb_print_sermon_link($sermon) ?>"><?php echo stripslashes($sermon->title) ?></a>',

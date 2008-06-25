@@ -2,7 +2,8 @@
 	<h2><?php echo stripslashes($sermon["Sermon"]->title) ?> <span class="scripture">(<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): ?><?php echo sb_get_books($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i]) ?> <?php endfor ?>)</span> <?php sb_edit_link($_GET["sermon_id"]) ?></h2>
 	<?php sb_print_preacher_image($sermon["Sermon"]) ?><span class="preacher"><a href="<?php sb_print_preacher_link($sermon["Sermon"]) ?>"><?php echo stripslashes($sermon["Sermon"]->preacher) ?></a>, <?php echo date("j F Y", strtotime($sermon["Sermon"]->date)) ?></span><br />
 	Part of the <a href="<?php sb_print_series_link($sermon["Sermon"]) ?>"><?php echo stripslashes($sermon["Sermon"]->series) ?></a> series, preached at a <a href="<?php sb_print_service_link($sermon["Sermon"]) ?>"><?php echo stripslashes($sermon["Sermon"]->service) ?></a> service<br />
-	Tags: <?php sb_print_tags($sermon["Tags"]) ?><br />
+	<p class="sermon-description"><?php echo stripslashes($sermon["Sermon"]->description) ?></p>
+	<p class="sermon-tags">Tags: <?php sb_print_tags($sermon["Tags"]) ?></p>
 	<?php foreach ((array) $sermon["Files"] as $file): ?>
 		<?php sb_print_url_link($file) ?>
 	<?php endforeach ?>

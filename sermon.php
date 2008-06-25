@@ -2,9 +2,9 @@
 /*
 Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
-Description: Add sermons to your Wordpress blog. Coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design 
+Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.25
+Version: 0.30
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -156,6 +156,7 @@ if ($_POST['sermon'] == 1) {
 				<td><?php echo stripslashes($sermon->date) ?></td>
 				<td><?php echo stripslashes($sermon->sname) ?></td>
 				<td><?php echo stripslashes($sermon->ssname) ?></td>
+				<td><?php echo sb_sermon_stats($sermon->id) ?></td>
 				<td style="text-align:center">
 					<a href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
 				</td>
@@ -226,11 +227,9 @@ function sb_sermon_install () {
    global $defaultSermonPath, $defaultSermonURL, $defaultMultiForm, $defaultSingleForm, $defaultStyle;
    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
    
-   if(get_option('sb_sermon_db_version') =='1.2'){
+   if(get_option('sb_sermon_db_version') =='1.3'){
        return;
    }
-   delete_option('sb_sermon_style');
-   add_option('sb_sermon_style', base64_encode($defaultStyle));
 
    $sermonUploadDir = $defaultSermonPath;
 
@@ -248,8 +247,6 @@ function sb_sermon_install () {
 	//Upgrade database from earlier versions
 	switch (get_option('sb_sermon_db_version')) {
 		case '1.0':
-			// db
-			
 			// move files
 			$oldSermonPath = "/wp-content/plugins/sermonbrowser/files/";
 			$files = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' ORDER BY name asc");	
@@ -260,23 +257,31 @@ function sb_sermon_install () {
 			//Now alter tables
 			$table_name = $wpdb->prefix . "sb_preachers";
 			if($wpdb->get_var("show tables like '$table_name'") == $table_name) {            
-				  $sql = "ALTER TABLE " . $table_name . " ADD `description` TEXT NOT NULL, ADD `image` VARCHAR( 255 ) NOT NULL ;";
-				  dbDelta($sql);
+				  $wpdb->query("ALTER TABLE " . $table_name . " ADD `description` TEXT NOT NULL, ADD `image` VARCHAR( 255 ) NOT NULL ;");
 			}
-			
 			update_option('sb_sermon_db_version', '1.1');		
-			return;
-			break;
 		case '1.1':
    	        add_option('sb_sermon_style', base64_encode($defaultStyle));
-	if(!is_dir($wordpressRealPath.$sermonUploadDir.'images') && @mkdir($wordpressRealPath.$sermonUploadDir.'images')){
-	     @chmod($wordpressRealPath.$sermonUploadDir.'images', 0777);
-	   }
+			if(!is_dir($wordpressRealPath.$sermonUploadDir.'images') && @mkdir($wordpressRealPath.$sermonUploadDir.'images')){
+				@chmod($wordpressRealPath.$sermonUploadDir.'images', 0777);
+			}
    	        update_option('sb_sermon_db_version', '1.2');	
-		    return;
-		    break;
+		case '1.2':
+			//Alter tables
+			$table_name = $wpdb->prefix . "sb_stuff";
+			if($wpdb->get_var("show tables like '$table_name'") == $table_name)
+				  $wpdb->query("ALTER TABLE ".$table_name." ADD count INT(10) NOT NULL");
+			$table_name = $wpdb->prefix . "sb_books_sermons";
+			if($wpdb->get_var("show tables like '$table_name'") == $table_name)
+				  $wpdb->query("ALTER TABLE ".$table_name." ADD INDEX (sermon_id)");
+			$table_name = $wpdb->prefix . "sb_sermons_tags";
+			if($wpdb->get_var("show tables like '$table_name'") == $table_name)
+				  $wpdb->query("ALTER TABLE ".$table_name." ADD INDEX (sermon_id)");
+			update_option('sb_sermon_db_version', '1.3');
+			return;
+			break;
 		default:
-			update_option('sb_sermon_db_version', '1.2');
+			update_option('sb_sermon_db_version', '1.3');
 			break;
 	}   	
 
@@ -358,7 +363,8 @@ function sb_sermon_install () {
 		`verse` INT(10) NOT NULL,
 		`order` INT(10) NOT NULL,
 		`type` VARCHAR ( 30 ), 
-		`sermon_id` INT( 10 ) NOT NULL ,
+		`sermon_id` INT( 10 ) NOT NULL,
+		INDEX (`sermon_id`),
 		PRIMARY KEY ( `id` )
 		);";
       dbDelta($sql);
@@ -381,6 +387,7 @@ function sb_sermon_install () {
 		`type` VARCHAR( 30 ) NOT NULL ,
 		`name` TEXT NOT NULL ,
 		`sermon_id` INT( 10 ) NOT NULL ,
+		`count` INT( 10 ) NOT NULL ,
 		PRIMARY KEY ( `id` )
 		);";
       dbDelta($sql);
@@ -402,6 +409,7 @@ function sb_sermon_install () {
 			`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
 			`sermon_id` INT( 10 ) NOT NULL ,
 			`tag_id` INT( 10 ) NOT NULL ,
+			INDEX (`sermon_id`),
 			PRIMARY KEY ( `id` )
 			);";
 	      dbDelta($sql);
@@ -1370,6 +1378,13 @@ function sb_uploads() {
 <?php	
 }
 
+//Count download stats for sermon
+function sb_sermon_stats($sermonid) {
+	global $wpdb;
+	$stats = $wpdb->get_var("SELECT SUM(count) FROM ".$wpdb->prefix."sb_stuff WHERE sermon_id=".$sermonid);
+	if ($stats > 0) return $stats;
+}
+
 // manage sermon of coz
 function sb_manage_sermons() {
 	global $wpdb, $sermon_domain;
@@ -1458,6 +1473,7 @@ function sb_manage_sermons() {
 				<th scope="col"><div style="text-align:center"><?php _e('Date', $sermon_domain) ?></div></th>
 				<th scope="col"><div style="text-align:center"><?php _e('Service', $sermon_domain) ?></div></th>
 				<th scope="col"><div style="text-align:center"><?php _e('Series', $sermon_domain) ?></div></th>
+				<th scope="col"><div style="text-align:center"><?php _e('Stats', $sermon_domain) ?></div></th>
 				<th scope="col"><div style="text-align:center"><?php _e('Actions', $sermon_domain) ?></div></th>
 			</tr>
 			</thead>	
@@ -1471,6 +1487,7 @@ function sb_manage_sermons() {
 						<td><?php echo $sermon->date ?></td>
 						<td><?php echo stripslashes($sermon->sname) ?></td>
 						<td><?php echo stripslashes($sermon->ssname) ?></td>
+						<td><?php echo sb_sermon_stats($sermon->id) ?></td>
 						<td style="text-align:center">
 							<a href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $url ?>/wp-admin/admin.php?page=sermon-browser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
 						</td>
@@ -1560,7 +1577,7 @@ function sb_new_sermon() {
 				$dest = $wordpressRealPath.get_option('sb_sermon_upload_dir').$prefix.$filename;
 				if ($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = '$filename'") == 0 && move_uploaded_file($_FILES['upload']['tmp_name'][$uid], $dest)) {
 					$filename = $prefix.mysql_real_escape_string($filename);
-					$queryz = "INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '$filename', $id);";
+					$queryz = "INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '$filename', $id, 0);";
 					$wpdb->query($queryz);					
 				} else {
 				    echo '<div id="message" class="updated fade"><p><b>'.__($filename. ' has already existed.', $sermon_domain).'</b></div>';
@@ -1574,14 +1591,14 @@ function sb_new_sermon() {
 		foreach ((array) $_POST['url'] as $urlz) {
 			if (!empty($urlz)) {
 				$urlz = mysql_real_escape_string($urlz);
-				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'url', '$urlz', $id);");
+				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'url', '$urlz', $id, 0);");
 			}			
 		}
 		// embed code next
 		foreach ((array) $_POST['code'] as $code) {
 			if (!empty($code)) {
 				$code = base64_encode(stripslashes($code));
-				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'code', '$code', $id);");
+				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'code', '$code', $id), 0;");
 			}
 		}
 		// tags
@@ -2257,7 +2274,8 @@ $single = <<<HERE
 	<h2>[sermon_title] <span class="scripture">([passages_loop][passage] [/passages_loop])</span> [editlink]</h2>
 	[preacher_image]<span class="preacher">[preacher_link], [date]</span><br />
 	Part of the [series_link] series, preached at a [service_link] service<br />
-	Tags: [tags]<br />
+	<p class="sermon-description">[sermon_description]</p>
+	<p class="sermon-tags">Tags: [tags]</p>
 	[files_loop]
 		[file_with_download]
 	[/files_loop]
@@ -2467,7 +2485,7 @@ ul.sermon-widget li span.sermon-title {
 	font-weight:bold;
 }
 
-p.audioplayer-container {
+p.audioplayer_container {
 	display:inline !important;
 }
 div.sb_edit_link {

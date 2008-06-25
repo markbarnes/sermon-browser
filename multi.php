@@ -3,7 +3,7 @@
 	<?php sb_print_filters() ?>
    	<div style="clear:both"><div class="podcastcustom"><a href="<?php echo sb_podcast_url() ?>"><img alt="Subscribe to custom podcast" title="Subscribe to custom podcast" class="podcasticon" src="<?php echo get_bloginfo("wpurl") ?>/wp-content/plugins/sermon-browser/icons/podcast_custom.png"/></a><span><a href="<?php echo sb_podcast_url() ?>">Subscribe to custom podcast</a></span><br />(new sermons that match this <b>search</b>)</div><div class="podcastall"><a href="<?php echo get_option("sb_podcast") ?>"><img alt="Subscribe to full podcast" title="Subscribe to full podcast" class="podcasticon" src="<?php echo get_bloginfo("wpurl") ?>/wp-content/plugins/sermon-browser/icons/podcast.png"/></a><span><a href="<?php echo get_option("sb_podcast") ?>">Subscribe to full podcast</a></span><br />(<b>all</b> new sermons)</div>
 </div>
-	<h2>Sermons (<?php sb_print_sermons_count() ?>)</h2>   	
+	<h2>Sermons (<?php echo $record_count ?>)</h2>   	
    	<div class="floatright"><?php sb_print_next_page_link() ?></div>
    	<div class="floatleft"><?php sb_print_prev_page_link() ?></div>
 	<table class="sermons">
