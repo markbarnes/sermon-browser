@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.30
+Version: 0.30.1
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -32,7 +32,6 @@ include_once('filetypes.php'); // User-defined icons
 include('frontend.php'); // Everything related to displaying sermons
 
 // URLs and paths
-$ser_ver = '1.1';
 $url = get_bloginfo('wpurl');
 global $wordpressRealPath;
 $wordpressRealPath = str_replace("\\", "/", dirname(dirname(dirname(dirname(__FILE__)))));
@@ -221,7 +220,6 @@ if ($_POST['sermon'] == 1) {
 // Installer
 function sb_sermon_install () {
    global $wpdb, $mdict, $sdict, $books;	
-   global $ser_ver;
    global $sermon_domain, $sef;
    global $wordpressRealPath;
    global $defaultSermonPath, $defaultSermonURL, $defaultMultiForm, $defaultSingleForm, $defaultStyle;
@@ -1053,7 +1051,7 @@ function sb_uploads() {
 			if($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = '$filename'") == 0) {
 			    if (move_uploaded_file($_FILES['upload']['tmp_name'], $dest)) {
 				    $filename = $prefix.mysql_real_escape_string($filename);
-				    $query = "INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '$filename', 0);";
+				    $query = "INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '$filename', 0, 0);";
 				    $wpdb->query($query);
 				    echo '<div id="message" class="updated fade"><p><b>'.__('Files saved to database.', $sermon_domain).'</b></div>';
 			    }
@@ -1577,7 +1575,7 @@ function sb_new_sermon() {
 				$dest = $wordpressRealPath.get_option('sb_sermon_upload_dir').$prefix.$filename;
 				if ($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = '$filename'") == 0 && move_uploaded_file($_FILES['upload']['tmp_name'][$uid], $dest)) {
 					$filename = $prefix.mysql_real_escape_string($filename);
-					$queryz = "INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '$filename', $id, 0);";
+					$queryz = "INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '$filename', $id, 0, 0);";
 					$wpdb->query($queryz);					
 				} else {
 				    echo '<div id="message" class="updated fade"><p><b>'.__($filename. ' has already existed.', $sermon_domain).'</b></div>';
@@ -1591,14 +1589,14 @@ function sb_new_sermon() {
 		foreach ((array) $_POST['url'] as $urlz) {
 			if (!empty($urlz)) {
 				$urlz = mysql_real_escape_string($urlz);
-				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'url', '$urlz', $id, 0);");
+				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'url', '$urlz', $id, 0, 0);");
 			}			
 		}
 		// embed code next
 		foreach ((array) $_POST['code'] as $code) {
 			if (!empty($code)) {
 				$code = base64_encode(stripslashes($code));
-				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'code', '$code', $id), 0;");
+				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'code', '$code', $id, 0, 0)");
 			}
 		}
 		// tags
@@ -2054,7 +2052,7 @@ function sb_scan_dir() {
 	if ($dh = @opendir($dir)) {
 		while (false !== ($file = readdir($dh))) {
 	    	if ($file != "." && $file != ".." && !is_dir($dir.$file) && !in_array($file, $bnn)) {	    		
-	    		$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '$file', 0);");
+	    		$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '$file', 0, 0);");
 	       	}	
 		}
 	   	closedir($dh);

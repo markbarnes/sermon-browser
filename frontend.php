@@ -30,6 +30,16 @@ function sb_display_url() {
 	return $sef;
 }
 
+function sb_query_char () {
+	global $sef;
+	if (strpos($sef, '?')===FALSE) {
+		return '?';
+	} else {
+		return '&';
+	}
+}
+
+
 //Modify page title
 function sb_page_title($title) {
 	global $wpdb;
@@ -46,11 +56,12 @@ function sb_page_title($title) {
 function sb_footer_stats() {
 	if (SAVEQUERIES) {
 		global $wpdb;
-		echo '<!--';
+		echo '<!-- ';
 		echo($wpdb->num_queries.' queries. '.timer_stop().' seconds.');
-		echo '\n';
+		echo chr(13);
 		print_r($wpdb->queries);
-		echo '--!>';
+		echo chr(13);
+		echo ' -->';
 	}
 }
 
@@ -457,11 +468,7 @@ function sb_build_url($arr, $clear = false) {
 			$bar[] = "$k=$v";
 		}
 	}
-	if (strpos($sef, '?')===FALSE) {
-		return $sef.'?' . implode('&', $bar);
-	} else {
-		return $sef.'&' . implode('&', $bar);
-	}
+	return $sef.sb_query_char().implode('&', $bar);
 }
 
 function sb_print_header() {
@@ -653,7 +660,7 @@ function sb_print_url_link($url) {
 		else {
 			$param="file_name"; }
 		$url = URLencode($url);
-		echo ' <a href="'.sb_display_url().'?download&'.$param.'='.$url.'">Download</a>';
+		echo ' <a href="'.sb_display_url().sb_query_char().'download&'.$param.'='.$url.'">Download</a>';
 	}
 	echo '</div>';
 }
@@ -825,10 +832,10 @@ function sb_print_filters() {
 	
 	$url = get_bloginfo('wpurl');
 	
-	$preachers = $wpdb->get_results("SELECT p.*, count(p.id) AS count FROM {$wpdb->prefix}sb_preachers AS p LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON p.id = s.preacher_id GROUP BY p.id ORDER BY count DESC, s.date DESC");	
-	$series = $wpdb->get_results("SELECT ss.*, count(ss.id) AS count FROM {$wpdb->prefix}sb_series AS ss LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON ss.id = sermons.series_id GROUP BY ss.id ORDER BY sermons.date DESC");
-	$services = $wpdb->get_results("SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id GROUP BY s.id ORDER BY count DESC");
-	$book_count = $wpdb->get_results("SELECT bs.book_name AS name, count( b.id ) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs LEFT JOIN {$wpdb->prefix}sb_books AS b ON bs.book_name = b.name WHERE bs.type = 'start' GROUP BY b.id");	
+	$preachers = $wpdb->get_results("SELECT p.*, count(p.id) AS count FROM {$wpdb->prefix}sb_preachers AS p JOIN {$wpdb->prefix}sb_sermons AS s ON p.id = s.preacher_id GROUP BY p.id ORDER BY count DESC, s.date DESC");	
+	$series = $wpdb->get_results("SELECT ss.*, count(ss.id) AS count FROM {$wpdb->prefix}sb_series AS ss JOIN {$wpdb->prefix}sb_sermons AS sermons ON ss.id = sermons.series_id GROUP BY ss.id ORDER BY sermons.date DESC");
+	$services = $wpdb->get_results("SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id GROUP BY s.id ORDER BY count DESC");
+	$book_count = $wpdb->get_results("SELECT bs.book_name AS name, count( b.id ) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs JOIN {$wpdb->prefix}sb_books AS b ON bs.book_name = b.name WHERE bs.type = 'start' GROUP BY b.id");	
 	$sb = array(		
 		'Title' => 'm.title',
 		'Preacher' => 'preacher',
