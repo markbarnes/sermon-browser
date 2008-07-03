@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-25 03:44-0000\n"
+"POT-Creation-Date: 2008-07-03 09:21-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mark Barnes <mark@4-14.org.uk>\n"
 "Language-Team: \n"
@@ -13,30 +13,30 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: frontend.php:455
+#: frontend.php:481
 msgid "Sermon podcast"
 msgstr ""
 
-#: frontend.php:588
-msgid "Next page &raquo;"
+#: frontend.php:573
+msgid "Next page"
 msgstr ""
 
-#: frontend.php:597
-msgid "&laquo; Previous page"
+#: frontend.php:584
+msgid "Previous page"
 msgstr ""
 
-#: frontend.php:652
+#: frontend.php:639
 msgid "About"
 msgstr ""
 
-#: frontend.php:684
+#: frontend.php:675
 msgid "None"
 msgstr ""
 
 #: frontend.php:836
-#: sermon.php:1446
-#: sermon.php:1473
-#: sermon.php:1789
+#: sermon.php:1313
+#: sermon.php:1340
+#: sermon.php:1667
 msgid "Preacher"
 msgstr ""
 
@@ -59,9 +59,9 @@ msgid "Book"
 msgstr ""
 
 #: frontend.php:862
-#: sermon.php:1455
-#: sermon.php:1476
-#: sermon.php:1802
+#: sermon.php:1322
+#: sermon.php:1343
+#: sermon.php:1680
 msgid "Series"
 msgstr ""
 
@@ -89,474 +89,530 @@ msgstr ""
 msgid "Filter &raquo;"
 msgstr ""
 
-#: sermon.php:161
-#: sermon.php:764
-#: sermon.php:827
-#: sermon.php:1015
-#: sermon.php:1493
-msgid "Edit"
-msgstr ""
-
-#: sermon.php:161
-#: sermon.php:207
-#: sermon.php:418
-#: sermon.php:827
-#: sermon.php:1015
-#: sermon.php:1025
-#: sermon.php:1237
-#: sermon.php:1283
-#: sermon.php:1493
-msgid "Delete"
-msgstr ""
-
-#: sermon.php:207
-#: sermon.php:1015
-#: sermon.php:1237
-#: sermon.php:1283
-msgid "Rename"
-msgstr ""
-
-#: sermon.php:213
-msgid "No results"
-msgstr ""
-
-#: sermon.php:419
-msgid "Congratulations, you just completed the installation!"
-msgstr ""
-
-#: sermon.php:439
-#: sermon.php:440
-#: sermon.php:1466
+#: sermon.php:53
+#: sermon.php:54
+#: sermon.php:1333
 #: widget.php:51
 msgid "Sermons"
 msgstr ""
 
-#: sermon.php:441
+#: sermon.php:55
 msgid "New Sermon"
 msgstr ""
 
-#: sermon.php:442
+#: sermon.php:56
+#: sermon.php:723
 msgid "Preachers"
 msgstr ""
 
-#: sermon.php:443
+#: sermon.php:57
 msgid "Series &amp; Services"
 msgstr ""
 
-#: sermon.php:444
+#: sermon.php:58
 msgid "Uploads"
 msgstr ""
 
-#: sermon.php:445
-#: sermon.php:620
+#: sermon.php:59
+#: sermon.php:454
 msgid "Options"
 msgstr ""
 
-#: sermon.php:446
-msgid "Help"
-msgstr ""
-
-#: sermon.php:482
-#: sermon.php:516
-msgid "Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
-msgstr ""
-
-#: sermon.php:487
-#: sermon.php:521
-msgid "Error: The upload folder you have specified does not exist."
-msgstr ""
-
-#: sermon.php:492
-msgid "Default loaded properly."
-msgstr ""
-
-#: sermon.php:526
-#: sermon.php:572
-msgid "Options saved properly."
-msgstr ""
-
-#: sermon.php:550
-msgid "Could not save multi template. Please check permission for multi.php in plugin folder"
-msgstr ""
-
-#: sermon.php:559
-msgid "Could not save single template. Please check permission for single.php in plugin folder"
-msgstr ""
-
-#: sermon.php:568
-msgid "Could not save style template. Please check permission for style.css in plugin folder"
-msgstr ""
-
-#: sermon.php:606
-msgid "Uninstall completed. Please deactivate the plugin"
-msgstr ""
-
-#: sermon.php:610
-msgid "Error"
-msgstr ""
-
-#: sermon.php:614
-msgid "Warning"
-msgstr ""
-
-#: sermon.php:623
-msgid "Upload directory"
-msgstr ""
-
-#: sermon.php:627
-msgid "Public podcast feed"
-msgstr ""
-
-#: sermon.php:631
-msgid "Private podcast feed"
-msgstr ""
-
-#: sermon.php:637
-msgid "The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
-msgstr ""
-
-#: sermon.php:639
-msgid "The upload folder you have specified does not exist."
-msgstr ""
-
-#: sermon.php:646
-msgid "Your php.ini file does not allow uploads. Please change file_uploads in php.ini."
-msgstr ""
-
-#: sermon.php:647
-msgid "The maximum file size you can upload is only "
-msgstr ""
-
-#: sermon.php:647
-msgid "k. Please change upload_max_filesize to at least 15M in php.ini."
-msgstr ""
-
-#: sermon.php:648
-msgid "The maximum file size you send through the browser is only "
-msgstr ""
-
-#: sermon.php:648
-msgid "k. Please change post_max_size to at least 15M in php.ini."
-msgstr ""
-
-#: sermon.php:649
-msgid "The maximum time allowed for any script to run is only "
-msgstr ""
-
-#: sermon.php:649
-msgid " seconds. Please change max_execution_time to at least 600 in php.ini."
-msgstr ""
-
-#: sermon.php:650
-msgid "The maximum time allowed for an upload script to run is only "
-msgstr ""
-
-#: sermon.php:650
-msgid " seconds. Please change max_input_time to at least 600 in php.ini."
-msgstr ""
-
-#: sermon.php:651
-msgid "The maximum amount of memory allowed is only "
-msgstr ""
-
-#: sermon.php:651
-msgid "k. Please change memory_limit to at least 16M in php.ini."
-msgstr ""
-
-#: sermon.php:654
-#: sermon.php:678
-msgid "Reset to defaults"
-msgstr ""
-
-#: sermon.php:654
-#: sermon.php:678
-#: sermon.php:800
-#: sermon.php:1930
-msgid "Save"
-msgstr ""
-
-#: sermon.php:657
+#: sermon.php:60
+#: sermon.php:558
 msgid "Templates"
 msgstr ""
 
-#: sermon.php:660
-msgid "Multi-sermons form"
+#: sermon.php:61
+msgid "Help"
 msgstr ""
 
-#: sermon.php:666
-msgid "Single sermon form"
+#: sermon.php:276
+#: sermon.php:740
+#: sermon.php:910
+#: sermon.php:920
+#: sermon.php:1138
+#: sermon.php:1182
+#: sermon.php:1362
+#: sermon.php:2212
+#: sermon.php:2255
+msgid "Delete"
 msgstr ""
 
-#: sermon.php:672
-msgid "Style"
+#: sermon.php:277
+msgid "Congratulations, you just completed the installation!"
 msgstr ""
 
-#: sermon.php:681
-#: sermon.php:687
+#: sermon.php:312
+msgid "You do not have the correct permissions to edit the Sermon Browser options"
+msgstr ""
+
+#: sermon.php:335
+#: sermon.php:385
+msgid "Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
+msgstr ""
+
+#: sermon.php:340
+#: sermon.php:390
+msgid "Error: The upload folder you have specified does not exist."
+msgstr ""
+
+#: sermon.php:345
+msgid "Default loaded successfully."
+msgstr ""
+
+#: sermon.php:395
+msgid "Options saved successfully."
+msgstr ""
+
+#: sermon.php:435
+msgid "Uninstall completed. Please deactivate the plugin."
+msgstr ""
+
+#: sermon.php:440
+msgid "Error"
+msgstr ""
+
+#: sermon.php:446
+msgid "Warning"
+msgstr ""
+
+#: sermon.php:458
+msgid "Upload directory"
+msgstr ""
+
+#: sermon.php:462
+msgid "Public podcast feed"
+msgstr ""
+
+#: sermon.php:466
+msgid "Private podcast feed"
+msgstr ""
+
+#: sermon.php:481
+msgid "Sermons per page"
+msgstr ""
+
+#: sermon.php:487
+msgid "The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
+msgstr ""
+
+#: sermon.php:489
+msgid "The upload folder you have specified does not exist."
+msgstr ""
+
+#: sermon.php:496
+msgid "Your php.ini file does not allow uploads. Please change file_uploads in php.ini."
+msgstr ""
+
+#: sermon.php:497
+msgid "The maximum file size you can upload is only "
+msgstr ""
+
+#: sermon.php:497
+msgid "k. Please change upload_max_filesize to at least 15M in php.ini."
+msgstr ""
+
+#: sermon.php:498
+msgid "The maximum file size you send through the browser is only "
+msgstr ""
+
+#: sermon.php:498
+msgid "k. Please change post_max_size to at least 15M in php.ini."
+msgstr ""
+
+#: sermon.php:499
+msgid "The maximum time allowed for any script to run is only "
+msgstr ""
+
+#: sermon.php:499
+msgid " seconds. Please change max_execution_time to at least 600 in php.ini."
+msgstr ""
+
+#: sermon.php:500
+msgid "The maximum time allowed for an upload script to run is only "
+msgstr ""
+
+#: sermon.php:500
+msgid " seconds. Please change max_input_time to at least 600 in php.ini."
+msgstr ""
+
+#: sermon.php:501
+msgid "The maximum amount of memory allowed is only "
+msgstr ""
+
+#: sermon.php:501
+msgid "k. Please change memory_limit to at least 16M in php.ini."
+msgstr ""
+
+#: sermon.php:504
+#: sermon.php:579
+msgid "Reset to defaults"
+msgstr ""
+
+#: sermon.php:504
+#: sermon.php:579
+#: sermon.php:713
+#: sermon.php:1808
+msgid "Save"
+msgstr ""
+
+#: sermon.php:507
+#: sermon.php:514
 msgid "Uninstall"
 msgstr ""
 
-#: sermon.php:684
+#: sermon.php:511
 msgid "Remove all files"
 msgstr ""
 
-#: sermon.php:706
+#: sermon.php:531
+msgid "You do not have the correct permissions to edit the Sermon Browser templates"
+msgstr ""
+
+#: sermon.php:550
+msgid "Templates saved successfully."
+msgstr ""
+
+#: sermon.php:561
+msgid "Multi-sermons form"
+msgstr ""
+
+#: sermon.php:567
+msgid "Single sermon form"
+msgstr ""
+
+#: sermon.php:573
+msgid "Style"
+msgstr ""
+
+#: sermon.php:597
+msgid "You do not have the correct permissions to manage the preachers' database"
+msgstr ""
+
+#: sermon.php:600
 msgid "Preacher saved to database."
 msgstr ""
 
-#: sermon.php:726
-#: sermon.php:730
-msgid "Upload failed."
+#: sermon.php:624
+msgid "Could not save uploaded file. Please try again."
 msgstr ""
 
-#: sermon.php:752
+#: sermon.php:629
+msgid "Could not upload file. Please check the Options page for any errors or warnings."
+msgstr ""
+
+#: sermon.php:650
 msgid "You can't delete this preacher."
 msgstr ""
 
-#: sermon.php:764
+#: sermon.php:664
 msgid "Add"
 msgstr ""
 
-#: sermon.php:764
+#: sermon.php:664
+#: sermon.php:740
+#: sermon.php:910
+#: sermon.php:1362
+#: sermon.php:2212
+msgid "Edit"
+msgstr ""
+
+#: sermon.php:664
 msgid "preacher"
 msgstr ""
 
-#: sermon.php:771
-#: sermon.php:815
-#: sermon.php:999
+#: sermon.php:675
+msgid "The images folder is not writeable. You won't be able to upload images."
+msgstr ""
+
+#: sermon.php:684
+#: sermon.php:728
+#: sermon.php:894
 msgid "Name"
 msgstr ""
 
-#: sermon.php:779
-#: sermon.php:1823
+#: sermon.php:692
+#: sermon.php:1701
 msgid "Description"
 msgstr ""
 
-#: sermon.php:791
-#: sermon.php:816
+#: sermon.php:704
+#: sermon.php:729
 msgid "Image"
 msgstr ""
 
-#: sermon.php:810
-msgid "Manage Preachers"
-msgstr ""
-
-#: sermon.php:810
-#: sermon.php:993
+#: sermon.php:723
+#: sermon.php:888
 msgid "add new"
 msgstr ""
 
-#: sermon.php:814
-#: sermon.php:998
-#: sermon.php:1222
-#: sermon.php:1258
-#: sermon.php:1356
-#: sermon.php:1471
+#: sermon.php:727
+#: sermon.php:893
+#: sermon.php:1124
+#: sermon.php:1158
+#: sermon.php:1207
+#: sermon.php:1338
 msgid "ID"
 msgstr ""
 
-#: sermon.php:817
-#: sermon.php:1001
-#: sermon.php:1225
-#: sermon.php:1262
-#: sermon.php:1360
-#: sermon.php:1478
+#: sermon.php:730
+#: sermon.php:896
+#: sermon.php:1127
+#: sermon.php:1162
+#: sermon.php:1211
+#: sermon.php:1345
 msgid "Actions"
 msgstr ""
 
-#: sermon.php:984
-msgid "Manage Series"
+#: sermon.php:755
+msgid "You do not have the correct permissions to manage the series and services database"
 msgstr ""
 
-#: sermon.php:985
-msgid "Manage Services"
-msgstr ""
-
-#: sermon.php:1000
+#: sermon.php:895
 msgid "Default time"
 msgstr ""
 
-#: sermon.php:1017
+#: sermon.php:910
+#: sermon.php:1138
+#: sermon.php:1182
+#: sermon.php:2255
+msgid "Rename"
+msgstr ""
+
+#: sermon.php:912
 msgid "Some sermons are currently assigned to that service. You can only delete services that are not used in the database."
 msgstr ""
 
-#: sermon.php:1020
+#: sermon.php:915
 msgid "Some sermons are currently in that series. You can only delete series that are empty."
 msgstr ""
 
-#: sermon.php:1023
+#: sermon.php:918
 msgid "That preacher has sermons in the database. You can only delete preachers who have no sermons in the database."
 msgstr ""
 
-#: sermon.php:1059
+#: sermon.php:941
+msgid "You do not have the correct permissions to upload sermons"
+msgstr ""
+
+#: sermon.php:957
 msgid "Files saved to database."
 msgstr ""
 
-#: sermon.php:1062
-#: sermon.php:1584
-msgid " has already existed."
+#: sermon.php:960
+#: sermon.php:1462
+msgid " already exists."
 msgstr ""
 
-#: sermon.php:1211
+#: sermon.php:998
+msgid "New file name?"
+msgstr ""
+
+#: sermon.php:1010
+msgid "The script is unable to rename your file."
+msgstr ""
+
+#: sermon.php:1037
+msgid "The script is unable to delete your file."
+msgstr ""
+
+#: sermon.php:1048
+#: sermon.php:1067
+msgid "Previous"
+msgstr ""
+
+#: sermon.php:1054
+#: sermon.php:1073
+msgid "Next"
+msgstr ""
+
+#: sermon.php:1090
+msgid "Upload Files"
+msgstr ""
+
+#: sermon.php:1100
+msgid "File to upload"
+msgstr ""
+
+#: sermon.php:1105
+msgid "Upload"
+msgstr ""
+
+#: sermon.php:1113
+msgid "Upload is disabled. Please check your folder setting in Options."
+msgstr ""
+
+#: sermon.php:1119
 msgid "Unlinked files"
 msgstr ""
 
-#: sermon.php:1212
-msgid "Linked files"
-msgstr ""
-
-#: sermon.php:1213
-#: sermon.php:1344
-msgid "Search for files"
-msgstr ""
-
-#: sermon.php:1223
-#: sermon.php:1259
-#: sermon.php:1347
-#: sermon.php:1357
+#: sermon.php:1125
+#: sermon.php:1159
+#: sermon.php:1208
 msgid "File name"
 msgstr ""
 
-#: sermon.php:1224
-#: sermon.php:1260
-#: sermon.php:1358
+#: sermon.php:1126
+#: sermon.php:1160
+#: sermon.php:1209
 msgid "File type"
 msgstr ""
 
-#: sermon.php:1261
-#: sermon.php:1318
-#: sermon.php:1359
+#: sermon.php:1153
+msgid "Linked files"
+msgstr ""
+
+#: sermon.php:1161
+#: sermon.php:1210
 #: widget.php:49
 msgid "Sermon"
 msgstr ""
 
-#: sermon.php:1298
-msgid "Upload Files"
+#: sermon.php:1197
+msgid "Search for files"
 msgstr ""
 
-#: sermon.php:1307
-msgid "Current file"
-msgstr ""
-
-#: sermon.php:1312
-msgid "File to upload"
-msgstr ""
-
-#: sermon.php:1332
-msgid "Upload"
-msgstr ""
-
-#: sermon.php:1332
-msgid "Clean up"
-msgstr ""
-
-#: sermon.php:1337
-msgid "Upload is disabled. Please check your folder setting (Sermons / Options)."
-msgstr ""
-
-#: sermon.php:1350
+#: sermon.php:1201
 msgid "Search"
 msgstr ""
 
-#: sermon.php:1365
+#: sermon.php:1216
 msgid "Search results will appear here."
 msgstr ""
 
-#: sermon.php:1396
+#: sermon.php:1234
+msgid "Clean up"
+msgstr ""
+
+#: sermon.php:1236
+msgid "Pressing the button below scans every sermon in the database, and removes missing attachments. Use with caution!"
+msgstr ""
+
+#: sermon.php:1237
+msgid "Clean up missing files"
+msgstr ""
+
+#: sermon.php:1256
+#: sermon.php:1433
+msgid "You do not have the correct permissions to edit sermons"
+msgstr ""
+
+#: sermon.php:1260
 msgid "Sermon saved to database."
 msgstr ""
 
-#: sermon.php:1406
+#: sermon.php:1266
+msgid "You do not have the correct permissions to delete sermons"
+msgstr ""
+
+#: sermon.php:1273
 msgid "Sermon removed from database."
 msgstr ""
 
-#: sermon.php:1442
-#: sermon.php:1472
-#: sermon.php:1775
+#: sermon.php:1309
+#: sermon.php:1339
+#: sermon.php:1653
 msgid "Title"
 msgstr ""
 
-#: sermon.php:1463
+#: sermon.php:1330
 msgid "Filter"
 msgstr ""
 
-#: sermon.php:1474
-#: sermon.php:1817
+#: sermon.php:1341
+#: sermon.php:1695
 msgid "Date"
 msgstr ""
 
-#: sermon.php:1475
-#: sermon.php:1831
+#: sermon.php:1342
+#: sermon.php:1709
 msgid "Service"
 msgstr ""
 
-#: sermon.php:1477
+#: sermon.php:1344
 msgid "Stats"
 msgstr ""
 
-#: sermon.php:1781
+#: sermon.php:1389
+msgid "You do not have the correct permissions to edit or create sermons"
+msgstr ""
+
+#: sermon.php:1426
+msgid "You do not have the correct permissions to create sermons"
+msgstr ""
+
+#: sermon.php:1659
 msgid "Tags (comma separated)"
 msgstr ""
 
-#: sermon.php:1798
+#: sermon.php:1676
 msgid "Create new preacher"
 msgstr ""
 
-#: sermon.php:1811
+#: sermon.php:1689
 msgid "Create new series"
 msgstr ""
 
-#: sermon.php:1840
+#: sermon.php:1718
 msgid "Create new service"
 msgstr ""
 
-#: sermon.php:1846
+#: sermon.php:1724
 msgid "Time"
 msgstr ""
 
-#: sermon.php:1849
+#: sermon.php:1727
 msgid "Override default time"
 msgstr ""
 
-#: sermon.php:1855
+#: sermon.php:1733
 msgid "Bible passage"
 msgstr ""
 
-#: sermon.php:1855
-#: sermon.php:1898
+#: sermon.php:1733
+#: sermon.php:1776
 msgid "add more"
 msgstr ""
 
-#: sermon.php:1859
+#: sermon.php:1737
 msgid "From"
 msgstr ""
 
-#: sermon.php:1860
+#: sermon.php:1738
 msgid "To"
 msgstr ""
 
-#: sermon.php:1898
-msgid "Files"
+#: sermon.php:1776
+msgid "Attachments"
 msgstr ""
 
-#: sermon.php:1907
+#: sermon.php:1785
 msgid "Choose existing file:"
 msgstr ""
 
-#: sermon.php:1908
+#: sermon.php:1786
 msgid "Upload a new one:"
 msgstr ""
 
-#: sermon.php:1909
+#: sermon.php:1787
 msgid "Enter an URL:"
 msgstr ""
 
-#: sermon.php:1910
+#: sermon.php:1788
 msgid "Enter embed code:"
 msgstr ""
 
-#: sermon.php:2092
+#: sermon.php:1972
 msgid "Help page"
+msgstr ""
+
+#: sermon.php:2261
+msgid "No results"
+msgstr ""
+
+#: sermon.php:2270
+msgid "You must create a post or page that includes the code [sermons] in order for your sermons to be displayed on your site."
 msgstr ""
 
 #: widget.php:35

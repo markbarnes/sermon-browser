@@ -2,7 +2,7 @@
 
 // Required files
 require_once('dictionary.php'); //Imports template tags
-require_once('widget.php');
+require_once('widget.php'); // Displays widget if requested
 
 // Word list for URL building purpose
 $wl = array('preacher', 'title', 'date', 'enddate', 'series', 'service', 'sortby', 'dir', 'page', 'sermon_id', 'book', 'stag', 'podcast');
@@ -18,27 +18,22 @@ if (SAVEQUERIES) add_action('admin_footer', 'sb_footer_stats');
 
 // Get the URL of the sermons page
 function sb_display_url() {
-	global $sef, $wpdb, $isMe, $post;
-	if (!$sef) {
-		if ($isMe && $permalink_structure) $display_url=get_permalink( $post->ID );
-		else {
-			$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content = '[sermons]' AND post_status = 'publish' AND post_date < NOW();");
-			$display_url = get_permalink($pageid);
-		}
-		$sef=$display_url;
+	global $display_url, $wpdb;
+	if (!$display_url) {
+		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content = '[sermons]' AND post_status = 'publish' AND post_date < NOW();");
+		$display_url = get_permalink($pageid);
 	}
-	return $sef;
+	return $display_url;
 }
 
+//Are we appending sermon-browser query to an existing query, or not?
 function sb_query_char () {
-	global $sef;
-	if (strpos($sef, '?')===FALSE) {
+	if (strpos(sb_display_url(), '?')===FALSE) {
 		return '?';
 	} else {
 		return '&';
 	}
 }
-
 
 //Modify page title
 function sb_page_title($title) {
@@ -65,19 +60,14 @@ function sb_footer_stats() {
 	}
 }
 
-//Fix for AudioPlayer v2
-if (!function_exists('ap_insert_player_widgets') & function_exists('insert_audio_player')) {
+//Fix to ensure AudioPlayer v2 and AudioPlayer v1 both work
+if (!function_exists('ap_insert_player_widgets') && function_exists('insert_audio_player')) {
 	function ap_insert_player_widgets($params) {
 		return insert_audio_player($params);
 	}
 }
 
-function sb_edit_link ($id) {
-	if (current_user_can('edit_posts')) 
-		echo '<div class="sb_edit_link"><a href="'.get_bloginfo('wpurl').'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$id.'">Edit Sermon</a></div>';
-}
-
-//Download external webpage
+//Downloads external webpage. Used to add Bible passages to sermon page.
 function sb_download_page ($page_url) {
 	if (function_exists(curl_init)) {
 		$curl = curl_init();
@@ -111,12 +101,20 @@ function sb_download_page ($page_url) {
 	return $contents;
 }
 
-//Tidy Bible reference
-function sb_tidy_reference ($start, $end) {
-	$r1 = $start['book'];
+// Returns human friendly Bible reference (e.g. John 3:1-16, not John 3:1-John 3:16)
+function sb_tidy_reference ($start, $end, $add_link = FALSE) {
+	if ($add_link) {
+		$r1 = '<a href="'.sb_get_book_link($start['book']).'">'.$start['book'].'</a>';
+	} else {
+		$r1 = $start['book'];
+	}
 	$r2 = $start['chapter'];
 	$r3 = $start['verse'];
-	$r4 = $end['book'];
+	if ($add_link) {
+		$r4 = '<a href="'.sb_get_book_link($end['book']).'">'.$end['book'].'</a>';
+	} else {
+		$r4 = $end['book'];
+	}
 	$r5 = $end['chapter'];
 	$r6 = $end['verse'];
 	if (empty($start['book'])) {
@@ -132,11 +130,14 @@ function sb_tidy_reference ($start, $end) {
 	return $reference;
 }
 
-//Add ESV text
-function sb_add_esv_text ($start, $end) {
-	// If you are experiencing errors, you should sign up for an ESV API key, and insert the name of your key in place of the letters IP in the URL below (.e.g. ...passageQuery?key=YOURAPIKEY&passage=...)
-	$esv_url = 'http://www.esvapi.org/v2/rest/passageQuery?key=IP&passage='.urlencode(sb_tidy_reference ($start, $end)).'&include-headings=false&include-footnotes=false';
-	return sb_download_page ($esv_url);
+//Print unstyled bible passage
+function sb_print_bible_passage ($start, $end) {
+	echo "<p class='bible-passage'>".sb_tidy_reference($start, $end)."</p>";
+}
+
+// Returns human friendly Bible reference with link to filter
+function sb_get_books($start, $end) {
+	return sb_tidy_reference ($start, $end, TRUE);
 }
 
 //Add Bible text to single sermon page
@@ -206,42 +207,35 @@ function sb_add_bible_text ($start, $end, $version) {
 	}
 }
 
-//Print unstyled bible passage
-function sb_print_bible_passage ($start, $end) {
-	$r1 = $start['book'];
-	$r2 = $start['chapter'];
-	$r3 = $start['verse'];
-	$r4 = $end['book'];
-	$r5 = $end['chapter'];
-	$r6 = $end['verse'];
-	if (empty($start['book'])) {
-		return '';
-	}
-	if ($start['book'] == $end['book']) {
-		if ($start['chapter'] == $end['chapter']) {
-			$reference = "$r1 $r2:$r3-$r6";
-		}
-		else $reference = "$r1 $r2:$r3-$r5:$r6";
-	}	
-	else $reference =  "$r1 $r2:$r3 - $r4 $r5:$r6";
-	echo "<p class='bible-passage'>".$reference."</p>";
+//Returns ESV text
+function sb_add_esv_text ($start, $end) {
+	// If you are experiencing errors, you should sign up for an ESV API key, and insert the name of your key in place of the letters IP in the URL below (.e.g. ...passageQuery?key=YOURAPIKEY&passage=...)
+	$esv_url = 'http://www.esvapi.org/v2/rest/passageQuery?key=IP&passage='.urlencode(sb_tidy_reference ($start, $end)).'&include-headings=false&include-footnotes=false';
+	return sb_download_page ($esv_url);
 }
 
-// Display podcast or do download
+//Adds edit sermon link if current user has edit rights
+function sb_edit_link ($id) {
+	if (current_user_can('edit_posts')) 
+		echo '<div class="sb_edit_link"><a href="'.get_bloginfo('wpurl').'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$id.'">Edit Sermon</a></div>';
+}
+
+// Display podcast, or download linked files
 function sb_hijack() {
-	function sb_get_stuff_count ($stuff_name) {
+	function sb_get_download_count ($stuff_name) {
 		global $wpdb;
 		$count = $wpdb->get_var("SELECT COUNT FROM ".$wpdb->prefix."sb_stuff WHERE name='".mysql_real_escape_string($stuff_name)."'");
 		return $count;
 	}
 	
-	function sb_increase_stuff_count ($stuff_name) {
+	function sb_increase_download_count ($stuff_name) {
 		global $wpdb;
 		$wpdb->query("UPDATE ".$wpdb->prefix."sb_stuff SET COUNT=COUNT+1 WHERE name='".mysql_real_escape_string($stuff_name)."'");
 	}
 	
 	global $filetypes;
 	
+	//Displays podcast
 	if (isset($_REQUEST['podcast'])) {
 		global $wordpressRealPath;
 		$sermons = sb_get_sermons(array(
@@ -266,6 +260,8 @@ function sb_hijack() {
 		include($wordpressRealPath.'/wp-content/plugins/sermon-browser/podcast.php');
 		die();
 	}
+	
+	//Forces sermon download of local file
 	if (isset($_REQUEST['download']) AND isset($_REQUEST['file_name'])) {
 		global $wordpressRealPath;
 		$file_name = urldecode($_GET['file_name']);
@@ -277,12 +273,14 @@ function sb_hijack() {
 		header("Content-Type: application/download");
 		header("Content-Disposition: attachment; filename=".$file_name.";");
 		header("Content-Transfer-Encoding: binary");
-		sb_increase_stuff_count ($file_name);
+		sb_increase_download_count ($file_name);
 		$file_name = $wordpressRealPath.get_option("sb_sermon_upload_dir").$file_name;
 		header("Content-Length: ".filesize($file_name));
 		@readfile($file_name);
 		exit();
 	}
+	
+	//Forces sermon download of external URL
 	if (isset($_REQUEST['download']) AND isset($_REQUEST['url'])) {
 		$url = urldecode($_GET['url']);
 		if(ini_get('allow_url_fopen')) {
@@ -311,15 +309,17 @@ function sb_hijack() {
 				header("Content-Disposition: attachment; filename=".basename($url).";"); }
 			header("Content-Transfer-Encoding: binary");
 			if ($filesize) header("Content-Length: ".$filesize);
-			sb_increase_stuff_count ($url);
+			sb_increase_download_count ($url);
 			@readfile($url);
 			exit();
 		}
 		else {
-			sb_increase_stuff_count ($url);
+			sb_increase_download_count ($url);
 			header('Location: '.$url);
 		}
 	}
+	
+	//Returns local file (doesn't force download)
 	if (isset($_REQUEST['show']) AND isset($_REQUEST['file_name'])) {
 		global $wordpressRealPath, $filetypes;
 		$file_name = urldecode($_GET['file_name']);
@@ -328,13 +328,15 @@ function sb_hijack() {
 			header ("Content-Type: ".$filetypes[$ext]['content-type']); }
 		else {
 			header ("Content-Type: application/octet-stream"); }
-		sb_increase_stuff_count ($file_name);
+		sb_increase_download_count ($file_name);
 		$file_name = $wordpressRealPath.get_option("sb_sermon_upload_dir").$file_name;
 		header("Content-Length: ".filesize($file_name));
 		header("Content-Transfer-Encoding: binary");
 		@readfile($file_name);
 		exit();
 	}
+	
+	//Returns contents of external URL(doesn't force download)
 	if (isset($_REQUEST['show']) AND isset($_REQUEST['url'])) {
 		$url = URLDecode($_GET['url']);
 		if(ini_get('allow_url_fopen')) {
@@ -358,12 +360,12 @@ function sb_hijack() {
 				header("Content-Disposition: attachment; filename=".basename($url).";"); }
 			header("Content-Transfer-Encoding: binary");
 			if ($filesize) header("Content-Length: ".$filesize);
-			sb_increase_stuff_count ($url);
+			sb_increase_download_count ($url);
 			@readfile($url);
 			exit();
 		}
 		else {
-			sb_increase_stuff_count ($url);
+			sb_increase_download_count ($url);
 			header('Location: '.$url);
 		}
 	}
@@ -417,21 +419,16 @@ function get_headers($Url, $Format= 0, $Depth= 0) {
     return false;
 }}
 
-// main entry
+// Display single sermon or multi-sermons page
 function sb_sermons_filter($content) {
 	global $wpdb, $clr, $record_count;
-	global $wordpressRealPath, $isMe;
-	if (!strstr($content, '[sermons]')) { 
-	    $isMe = false; return $content;
-    } else {
-        $isMe = true;
-    }
+	global $wordpressRealPath;
 	ob_start();
 	
 	if ($_GET['sermon_id']) {
 		$clr = true;
 		$sermon = sb_get_single_sermon((int) $_GET['sermon_id']);
-		include($wordpressRealPath.'/wp-content/plugins/sermon-browser/single.php');
+		eval('?>'.base64_decode(get_option('sb_sermon_single_output')));
 	} else {
 		$clr = false;
 		$sermons = sb_get_sermons(array(
@@ -450,121 +447,86 @@ function sb_sermons_filter($content) {
 		),
 		$_REQUEST['page'] ? $_REQUEST['page'] : 1			
 		);
-		include($wordpressRealPath.'/wp-content/plugins/sermon-browser/multi.php');		
+		eval('?>'.base64_decode(get_option('sb_sermon_multi_output')));
 	}			
 	$content = str_replace('[sermons]', ob_get_contents(), $content);
-	
 	ob_end_clean();		
-	
 	return $content;
 }
 
+// Returns URL for search links
 function sb_build_url($arr, $clear = false) {
-	global $wl, $post, $sef, $wpdb;
-	$sef = sb_display_url();
+	global $wl, $post, $wpdb;
 	$foo = array_merge((array) $_GET, (array) $_POST, $arr);
+	if ($foo['page'] && (strpos ($foo['page'], 'sermon-browser/options.php') != FALSE)) { //Remove unwanted parameters passed by the admin page when re-generating pages/posts
+		unset($foo['page']);
+		if ($foo['rewrite']) unset($foo['rewrite']);
+		if ($foo['start']) unset($foo['start']);
+		if ($foo['start']) unset($foo['method']);
+		if ($foo['start']) unset($foo['mode']);
+	}
 	foreach ($foo as $k => $v) {
 		if ((!$clear || in_array($k, array_keys($arr)) || !in_array($k, $wl)) && $k != 'page_id' && $k != 'p') {
 			$bar[] = "$k=$v";
 		}
 	}
-	return $sef.sb_query_char().implode('&', $bar);
+	return sb_display_url().sb_query_char().implode('&', $bar);
 }
 
+// Adds sermon-browser code to Wordpress header
 function sb_print_header() {
 	global $sermon_domain, $sermompage;
 	$url = get_bloginfo('wpurl');
 ?>
 	<link rel="alternate" type="application/rss+xml" title="<?php _e('Sermon podcast', $sermon_domain) ?>" href="<?php echo get_option('sb_podcast') ?>" />
 	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermon-browser/datepicker.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermon-browser/style.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermon-browser/style.php" type="text/css"/>
 	<script type="text/javascript" src="<?php echo $url ?>/wp-includes/js/jquery/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $url ?>/wp-content/plugins/sermon-browser/datePicker.js"></script>
 <?php
 }
 
-// pretty books
-function sb_get_books($start, $end) {
-	$r1 = '<a href="'.sb_get_book_link($start['book']).'">'.$start['book'].'</a>';
-	$r2 = $start['chapter'];
-	$r3 = $start['verse'];
-	
-	$r4 = '<a href="'.sb_get_book_link($end['book']).'">'.$end['book'].'</a>';
-	$r5 = $end['chapter'];
-	$r6 = $end['verse'];
-	
-	if (empty($start['book'])) {
-		return '';
-	}
-	
-	if ($start['book'] == $end['book']) {
-		if ($start['chapter'] == $end['chapter']) {
-		    if($start['verse'] == $end['verse']){
-		        return "$r1 $r2:$r3";
-		    }
-			return "$r1 $r2:$r3-$r6";
-		}
-		return "$r1 $r2:$r3-$r5:$r6";
-	}	
-	return "$r1 $r2:$r3 - $r4 $r5:$r6";
-}
-
+// Returns podcast URL
 function sb_podcast_url() {
 	return str_replace(' ', '%20', sb_build_url(array('podcast' => 1, 'dir'=>'desc', 'sortby'=>'m.date')));
 }
 
-function sb_print_first_mp3($sermon) {
-	$stuff = sb_get_stuff($sermon);
-	foreach ((array) $stuff['Files'] as $file) {
-		$ext = substr($file, strrpos($file, '.') + 1);
-		if (strtolower($ext) == 'mp3') {
-			echo str_replace(' ', '%20', get_option('sb_sermon_upload_url').$file);
-			break;
-		}
-	}
-}
-function sb_print_first_mp3_size($sermon) {
-    global $wordpressRealPath;
-	$stuff = sb_get_stuff($sermon);
-	foreach ((array) $stuff['Files'] as $file) {
-		$ext = substr($file, strrpos($file, '.') + 1);
-		if (strtolower($ext) == 'mp3') {
-		    $filename = $wordpressRealPath.get_option('sb_sermon_upload_dir').$file;
-			echo @filesize($filename);
-			break;
-		}
-	}
-}
-
+// Prints sermon search URL
 function sb_print_sermon_link($sermon) {
 	echo sb_build_url(array('sermon_id' => $sermon->id), true);
 }
 
+// Prints preacher search URL
 function sb_print_preacher_link($sermon) {
 	global $clr;
 	echo sb_build_url(array('preacher' => $sermon->pid), $clr);
 }
 
+// Prints series search URL
 function sb_print_series_link($sermon) {
 	global $clr;	
 	echo sb_build_url(array('series' => $sermon->ssid), $clr);
 }
 
+// Prints service search URL
 function sb_print_service_link($sermon) {
 	global $clr;
 	echo sb_build_url(array('service' => $sermon->sid), $clr);
 }
 
+// Prints bible book search URL
 function sb_get_book_link($book_name) {
 	global $clr;
 	return sb_build_url(array('book' => $book_name), $clr);
 }
 
+// Prints tag search URL
 function sb_get_tag_link($tag) {
 	global $clr;
 	return sb_build_url(array('stag' => $tag), $clr);
 }
 
+// Prints tags
 function sb_print_tags($tags) {
 	foreach ((array) $tags as $tag) {
 		$out[] = '<a href="'.sb_get_tag_link($tag).'">'.$tag.'</a>';
@@ -573,15 +535,15 @@ function sb_print_tags($tags) {
 	echo $tags;
 }
 
+//Prints tag cloud
 function sb_print_tag_clouds() {
 	global $wpdb;
 	$rawtags = $wpdb->get_results("SELECT name FROM {$wpdb->prefix}sb_tags as t RIGHT JOIN {$wpdb->prefix}sb_sermons_tags as st ON t.id = st.tag_id");
 	foreach ($rawtags as $tag) {
 		$cnt[$tag->name]++;
 	}
-	
-	$minfont = 10;
-	$maxfont = 26;
+	$minfont = 80;
+	$maxfont = 200;
 	$fontrange = $maxfont - $minfont;
 	$maxcnt = 0;
 	$mincnt = 1000000;
@@ -590,41 +552,40 @@ function sb_print_tag_clouds() {
 		if ($cur < $mincnt) $minct = $cur; 
 	}
 	$cntrange = $maxcnt + 1 - $mincnt;
-	
 	$minlog = log($mincnt);
 	$maxlog = log($maxcnt);
 	$logrange = $maxlog == $minlog ? 1 : $maxlog - $minlog;
 	arsort($cnt);
-	
 	foreach ($cnt as $tag => $count) {
 		$size = $minfont + $fontrange * (log($count) - $minlog) / $logrange;
-		$out[] = '<a style="font-size:'.(int) $size.'px" href="'.sb_get_tag_link($tag).'">'.$tag.'</a>';
+		$out[] = '<a style="font-size:'.(int) $size.'%" href="'.sb_get_tag_link($tag).'">'.$tag.'</a>';
 	}
 	echo implode(' ', $out);
 }
 
-function sb_print_next_page_link($limit = 15) {
-	global $sermon_domain;
+//Prints link to next page
+function sb_print_next_page_link($limit = 0) {
+	global $sermon_domain, $record_count, $sermons_per_page;
+	if ($limit == 0) $limit = $sermons_per_page;
 	$current = $_REQUEST['page'] ? (int) $_REQUEST['page'] : 1;
 	if ($current < ceil($record_count / $limit)) {
 		$url = sb_build_url(array('page' => ++$current));
-		echo '<a href="'.$url.'">'.__('Next page &raquo;', $sermon_domain).'</a>';
+		echo '<a href="'.$url.'">'.__('Next page', $sermon_domain).' &raquo;</a>';
 	}	
 }
 
-function sb_print_prev_page_link($limit = 15) {
-	global $sermon_domain;
+//Prints link to previous page
+function sb_print_prev_page_link($limit = 0) {
+	global $sermon_domain, $sermons_per_page;
+	if ($limit == 0) $limit = $sermons_per_page;
 	$current = $_REQUEST['page'] ? (int) $_REQUEST['page'] : 1;
 	if ($current > 1) {
 		$url = sb_build_url(array('page' => --$current));
-		echo '<a href="'.$url.'">'.__('&laquo; Previous page', $sermon_domain).'</a>';
+		echo '<a href="'.$url.'">&laquo; '.__('Previous page', $sermon_domain).'</a>';
 	}	
 }
 
-function sb_print_iso_date($sermon) {
-	echo date('d M Y H:i:s O', strtotime($sermon->date.' '.$sermon->time));
-}
-
+// Print link to attached files
 function sb_print_url($url) {
 	global $siteicons, $default_site_icon ,$filetypes;
 	if (substr($url,0,7) == "http://") {
@@ -651,6 +612,7 @@ function sb_print_url($url) {
     
 }
 
+// Print link to attached external URLs
 function sb_print_url_link($url) {
 	echo '<div class="sermon_file">';
 	sb_print_url ($url);
@@ -665,10 +627,12 @@ function sb_print_url_link($url) {
 	echo '</div>';
 }
 
+//Decode base64 encoded data
 function sb_print_code($code) {
 	echo base64_decode($code);
 }
 
+//Prints preacher description
 function sb_print_preacher_description($sermon) {
 	global $sermon_domain;
 	if (strlen($sermon->preacher_description)>0) {
@@ -677,11 +641,13 @@ function sb_print_preacher_description($sermon) {
 	}
 }
 
+//Prints preacher image
 function sb_print_preacher_image($sermon) {
 	if ($sermon->image) 
 		echo "<img alt='".stripslashes($sermon->preacher)."' class='preacher' src='".get_bloginfo("wpurl").get_option("sb_sermon_upload_dir")."images/".$sermon->image."'>";
 }
 
+//Prints link to next sermon
 function sb_print_next_sermon_link($sermon) {
 	global $wpdb;
 	$next = $wpdb->get_row("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE date > '$sermon->date' AND id <> $sermon->id ORDER BY date asc");
@@ -691,6 +657,7 @@ function sb_print_next_sermon_link($sermon) {
 	echo '">'.stripslashes($next->title).' &raquo;</a>';
 }
 
+//Prints link to previous sermon
 function sb_print_prev_sermon_link($sermon) {
 	global $wpdb;
 	$prev = $wpdb->get_row("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE date < '$sermon->date' AND id <> $sermon->id ORDER BY date desc");
@@ -700,6 +667,7 @@ function sb_print_prev_sermon_link($sermon) {
 	echo '">&laquo; '.stripslashes($prev->title).'</a>';
 }
 
+//Prints links to other sermons preached on the same day
 function sb_print_sameday_sermon_link($sermon) {
 	global $wpdb, $sermon_domain;
 	$same = $wpdb->get_results("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE date = '$sermon->date' AND id <> $sermon->id");
@@ -714,6 +682,7 @@ function sb_print_sameday_sermon_link($sermon) {
 	}
 }
 
+//Gets single sermon from the database
 function sb_get_single_sermon($id) {
 	global $wpdb;
 	$id = (int) $id;
@@ -744,8 +713,10 @@ function sb_get_single_sermon($id) {
 	);
 }
 
-function sb_get_sermons($filter, $order, $page = 1, $limit = 15) {
-	global $wpdb, $record_count;
+//Get multiple sermons from the database
+function sb_get_sermons($filter, $order, $page = 1, $limit = 0) {
+	global $wpdb, $record_count, $sermons_per_page;
+	if ($limit == 0) $limit = $sermons_per_page;
 	$default_filter = array(
 		'title' => '',
 		'preacher' => 0,
@@ -755,6 +726,7 @@ function sb_get_sermons($filter, $order, $page = 1, $limit = 15) {
 		'service' => 0,
 		'book' => '',
 		'tag' => '',
+		'id' => '',
 	);
 	$default_order = array(
 		'by' => 'm.date',
@@ -791,6 +763,9 @@ function sb_get_sermons($filter, $order, $page = 1, $limit = 15) {
 	if ($filter['tag'] != '') {
 		$cond .= "AND t.name LIKE '%" . mysql_real_escape_string($filter['tag']) . "%' ";
 	}
+	if ($filter['id'] != '') {
+		$cond .= "AND m.id LIKE '" . mysql_real_escape_string($filter['id']) . "' ";
+	}
 	$offset = $limit * ($page - 1);
 	if ($order['by'] == 'm.date' ) {
 	    if(!isset($order['dir'])) $order['dir'] = 'desc';
@@ -814,6 +789,7 @@ function sb_get_sermons($filter, $order, $page = 1, $limit = 15) {
 	return $query;
 }
 
+//Gets attachments from database
 function sb_get_stuff($sermon) {
 	global $wpdb;
 	$stuff = $wpdb->get_results("SELECT f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $sermon->id ORDER BY id desc");
@@ -827,6 +803,7 @@ function sb_get_stuff($sermon) {
 	);
 }
 
+//Displays the filter on sermon search page
 function sb_print_filters() {
 	global $wpdb, $sermon_domain, $books;
 	

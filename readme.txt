@@ -29,7 +29,8 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 1. Download the plugin, and unzip it.
 2. Place the sermonbrowser folder in your wp-content/plugins folder and upload it to your website.
 3. Activate the plugin from the plugins tab of your Wordpress admin.
-4. You may have to change the permissions on some files/folders: the upload folder (by default wp-content/uploads/sermons), and three files in the sermonbrowser folder (multi.php, single.php and styles.css).
+4. You may have to change the permissions the upload folder (by default wp-content/uploads/sermons).
+5. Create a Wordpress page with the text [sermons]. The plugin will display your sermons on this page.
 
 == Frequently Asked Questions ==
 

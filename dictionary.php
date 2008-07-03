@@ -33,7 +33,7 @@ $mdict = array(
 
 $sdict = array(
 	'[sermon_title]' => '<?php echo stripslashes($sermon["Sermon"]->title) ?>',
-	'[sermon_description]' => '<?php echo stripslashes($sermon["Sermon"]->description) ?>',
+	'[sermon_description]' => '<?php echo wpautop(stripslashes($sermon["Sermon"]->description)) ?>',
 	'[preacher_link]' => '<a href="<?php sb_print_preacher_link($sermon["Sermon"]) ?>"><?php echo stripslashes($sermon["Sermon"]->preacher) ?></a>',
 	'[preacher_description]' => '<?php sb_print_preacher_description($sermon["Sermon"]) ?>',
 	'[preacher_image]' => '<?php sb_print_preacher_image($sermon["Sermon"]) ?>',
