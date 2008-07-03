@@ -1532,7 +1532,7 @@ function sb_new_sermon() {
 		$tags = implode(', ', (array) $tags);
 	}
 ?>
-	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermon-browser/style.css" type="text/css">
+	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermon-browser/style.php" type="text/css">
 	<link rel="stylesheet" href="<?php echo $url ?>/wp-content/plugins/sermon-browser/datepicker.css" type="text/css">
 	<script type="text/javascript" src="<?php echo $url ?>/wp-includes/js/jquery/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo $url ?>/wp-content/plugins/sermon-browser/datePicker.js"></script>
