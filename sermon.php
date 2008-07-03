@@ -85,6 +85,11 @@ function sb_sermon_install () {
 	if(!is_dir($wordpressRealPath.$sermonUploadDir.'images') && @mkdir($wordpressRealPath.$sermonUploadDir.'images')){
 		@chmod($wordpressRealPath.$sermonUploadDir.'images', 0777);
 	}
+	//Hack for people previously using 0.30
+	for ($i=1; $i < count($books)+1; $i++) { 
+		$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES ({$i}, '$books[$i]') ON DUPLICATE KEY UPDATE name='$books[$i]'");
+	}
+	// End hack
 	//Upgrade database from earlier versions
 	switch (get_option('sb_sermon_db_version')) {
 		case '1.0': // Also moves files from old default folder to new default folder
