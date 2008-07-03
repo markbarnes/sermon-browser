@@ -43,7 +43,7 @@ function sb_first_mp3_size($sermon) {
 <rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
 	<atom:link href="<?php echo get_option('sb_podcast') ?>" rel="self" type="application/rss+xml" />
-    <title><?php echo get_bloginfo('name') Podcast?></title>
+    <title><?php echo get_bloginfo('name')?> Podcast</title>
     <itunes:author></itunes:author>
     <description><?php echo get_bloginfo('description') ?></description>
     <link><?php echo get_bloginfo('url') ?></link>
