@@ -71,12 +71,6 @@ function sb_sermon_install () {
 	if (intval(ini_get('max_input_time'))<600) ini_set('max_input_time','600');
 	if (intval(ini_get('max_execution_time'))<600) ini_set('max_execution_time', '600');
 	if (ini_get('file_uploads')<>'1') ini_set('file_uploads', '1');
-	//Hack for people previously using 0.30
-	if($wpdb->get_var("show tables like $wpdb->prefix}sb_books") == $wpdb->prefix.sb_books)
-		for ($i=1; $i < count($books)+1; $i++) { 
-			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES ({$i}, '$books[$i]') ON DUPLICATE KEY UPDATE name='$books[$i]'");
-		}
-	// End hack
 	// Only proceed with install if necessary
 	if(get_option('sb_sermon_db_version') =='1.4') return;
 	global $wpdb, $mdict, $sdict, $books;	
@@ -131,10 +125,9 @@ function sb_sermon_install () {
 				  $wpdb->query("ALTER TABLE ".$table_name." ADD page_id INT(10) NOT NULL");
 			add_option('sb_display_method', 'dynamic');
 			add_option('sb_sermons_per_page', '15');
-			if ($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_books") == 0) {
-				for ($i=0; $i < count($books); $i++) { 
-					$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, '$books[$i]')"); // Fix missing data bug from earlier versions
-				}
+			$wpdb->query("TRUNCATE TABLE {$wpdb->prefix}sb_books"); // Fix missing data bug from earlier versions
+			for ($i=0; $i < count($books); $i++) { 
+				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, '$books[$i]')"); 
 			}
 			add_option('sb_sermon_multi_output', base64_encode(strtr(stripslashes(get_option('sb_sermon_multi_form')), $mdict)));
 			add_option('sb_sermon_single_output', base64_encode(strtr(stripslashes(get_option('sb_sermon_single_form')), $sdict)));
@@ -142,10 +135,8 @@ function sb_sermon_install () {
 			add_option('sb_sermon_style_date_modified', strtotime('now'));
 			update_option('sb_sermon_db_version', '1.4');
 			return;
-			break;
 		default:
-			update_option('sb_sermon_db_version', '1.4');
-			break;
+			update_option('sb_sermon_db_version', '1.0');
 	}   	
 
 	//Create default tables
@@ -312,7 +303,7 @@ function sb_build_textarea($name, $html) {
 // Display the options page and handle changes
 function sb_options() {
 	global $wpdb, $sermon_domain, $mdict, $sdict, $url, $display_method;
-	global $wordpressRealPath, $defaultSermonPath, $defaultSermonURL;
+	global $wordpressRealPath, $defaultSermonPath, $defaultSermonURL, $books;
 	//Security check
 	if (function_exists('current_user_can')&&!current_user_can('manage_options'))
 			wp_die(__("You do not have the correct permissions to edit the Sermon Browser options", $sermon_domain));
@@ -324,6 +315,10 @@ function sb_options() {
 		update_option('sb_sermon_upload_url', $defaultSermonURL);
 		update_option('sb_display_method', 'dynamic');
 		update_option('sb_sermons_per_page', '15');
+		$wpdb->query("TRUNCATE TABLE {$wpdb->prefix}sb_books"); // Reset bible books database
+		for ($i=0; $i < count($books); $i++) { 
+			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, '$books[$i]')");
+		}
 	   	if (!is_dir($wordpressRealPath.$dir)) {
 	      //Create that folder
 	      if (@mkdir($wordpressRealPath.$dir)) {
