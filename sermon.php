@@ -72,9 +72,10 @@ function sb_sermon_install () {
 	if (intval(ini_get('max_execution_time'))<600) ini_set('max_execution_time', '600');
 	if (ini_get('file_uploads')<>'1') ini_set('file_uploads', '1');
 	//Hack for people previously using 0.30
-	for ($i=1; $i < count($books)+1; $i++) { 
-		$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES ({$i}, '$books[$i]') ON DUPLICATE KEY UPDATE name='$books[$i]'");
-	}
+	if($wpdb->get_var("show tables like $wpdb->prefix}sb_books") == $wpdb->prefix.sb_books)
+		for ($i=1; $i < count($books)+1; $i++) { 
+			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES ({$i}, '$books[$i]') ON DUPLICATE KEY UPDATE name='$books[$i]'");
+		}
 	// End hack
 	// Only proceed with install if necessary
 	if(get_option('sb_sermon_db_version') =='1.4') return;
