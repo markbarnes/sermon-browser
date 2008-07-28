@@ -3,7 +3,11 @@
 // Outputs sermon-browser styles as a CSS file
 
 $wordpressRealPath = str_replace("\\", "/", dirname(dirname(dirname(dirname(__FILE__)))));
-include_once($wordpressRealPath.'/wp-config.php');
+if (file_exists($wordpressRealPath.'/wp-load.php')) {
+	require_once($wordpressRealPath.'/wp-load.php');
+} else {
+	require_once($wordpressRealPath.'/wp-config.php');
+}
 include_once($wordpressRealPath.'/wp-includes/wp-db.php');
 
 header('Content-Type: text/css');
