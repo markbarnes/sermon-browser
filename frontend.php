@@ -597,9 +597,9 @@ function sb_print_prev_page_link($limit = 0) {
 function sb_print_url($url) {
 	global $siteicons, $default_site_icon ,$filetypes;
 	if (substr($url,0,7) == "http://") {
-		$url=sb_get_value('wordpress_url').'?show&url='.URLencode($url);
+		$url=sb_display_url().sb_query_char().'show&url='.URLencode($url);
 	} else {
-		$url=sb_get_value('wordpress_url').'?show&file_name='.URLencode($url);
+		$url=sb_display_url().sb_query_char().'show&file_name='.URLencode($url);
 	}
 	$icon_url = sb_get_value('plugin_url').'/icons/';
 	$uicon = $default_site_icon;
