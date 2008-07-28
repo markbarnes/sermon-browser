@@ -2373,7 +2373,6 @@ $multi = <<<HERE
 	</table>
    	<div class="floatright">[next_page]</div>
    	<div class="floatleft">[previous_page]</div>
-   	[creditlink]
 </div>
 HERE;
 	return $multi;
@@ -2408,7 +2407,6 @@ $single = <<<HERE
 		</tr>
 	</table>
 	[esvtext]
-   	[creditlink]
 </div>
 HERE;
 	return $single;
