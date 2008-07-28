@@ -302,8 +302,8 @@ function sb_options() {
 	         @chmod(sb_get_value('wordpress_path').$dir, 0777); 
 	      }
 	   	}
-	    if(!is_dir(sb_get_value('wordpress_path').$sermonUploadDir.'images') && @mkdir(sb_get_value('wordpress_path').$sermonUploadDir.'images')){
-	     @chmod(sb_get_value('wordpress_path').$sermonUploadDir.'images', 0777);
+	    if(!is_dir(sb_get_value('wordpress_path').$dir.'images') && @mkdir(sb_get_value('wordpress_path').$dir.'images')){
+	     @chmod(sb_get_value('wordpress_path').$dir.'images', 0777);
 		}
 		$books = sb_get_default('bible_books');
 		$wpdb->query("TRUNCATE TABLE {$wpdb->prefix}sb_books"); 
@@ -726,8 +726,6 @@ function sb_manage_everything() {
 	);
 	sb_check_sermon_tag();
 ?>
-	<script type="text/javascript" src="<?php echo sb_get_value('wordpress_url') ?>/wp-includes/js/jquery/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo sb_get_value('wordpress_url') ?>/wp-includes/js/fat.js"></script>
 	<script type="text/javascript">
 		//<![CDATA[
 		function updateClass(type) {
@@ -2373,6 +2371,7 @@ $multi = <<<HERE
 	</table>
    	<div class="floatright">[next_page]</div>
    	<div class="floatleft">[previous_page]</div>
+   	<!--[creditlink]-->
 </div>
 HERE;
 	return $multi;
@@ -2407,6 +2406,7 @@ $single = <<<HERE
 		</tr>
 	</table>
 	[esvtext]
+   	<!--[creditlink]-->
 </div>
 HERE;
 	return $single;

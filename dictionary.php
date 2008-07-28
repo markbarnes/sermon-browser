@@ -27,7 +27,7 @@ function sb_search_results_dictionary() {
 		'[itunes_podcast]' => '<?php echo str_replace("http://", "itpc://", get_option("sb_podcast")) ?>',
 		'[itunes_podcast_for_search]' => '<?php echo str_replace("http://", "itpc://", sb_podcast_url()) ?>',
 		'[podcasticon]' => '<img alt="Subscribe to full podcast" title="Subscribe to full podcast" class="podcasticon" src="<?php echo sb_get_value("plugin_url") ?>/icons/podcast.png"/>',
-		'[podcasticon_for_search]' => '<img alt="Subscribe to custom podcast" title="Subscribe to custom podcast" class="podcasticon" src="<?php sb_get_value("plugin_url") ?>/icons/podcast_custom.png"/>',
+		'[podcasticon_for_search]' => '<img alt="Subscribe to custom podcast" title="Subscribe to custom podcast" class="podcasticon" src="<?php echo sb_get_value("plugin_url") ?>/icons/podcast_custom.png"/>',
 		'[editlink]' => '<?php sb_edit_link($sermon->id) ?>',
 		'[creditlink]' => '<div id="poweredbysermonbrowser">Powered by <a href="http://www.4-14.org.uk/sermon-browser">Sermon Browser</a></div>',
 	);
