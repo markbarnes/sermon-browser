@@ -5,9 +5,10 @@
 //	'ext' => array(
 //		'name' => 'Description of filetype',
 //		'icon' => 'iconfilename.png',
-//		'icon' => 'content-type', 
+//		'content-type' => 'content-type', 
 //	),		
-// Consult http://www.w3schools.com/media/media_mimeref.asp for contenty-type reference. Use application/octet-stream if unsure.
+// Consult http://www.w3schools.com/media/media_mimeref.asp for content-type reference. Use application/octet-stream
+// if unsure.
 
 $filetypes = array(
 	'mp3' => array(

@@ -109,7 +109,7 @@ function sb_widget_sermon( $args, $widget_args = 1 ) {
 <?php
 }
 function sb_widget_sermon_control( $widget_args = 1 ) {
-	global $wpdb, $sermon_domain, $books;
+	global $wpdb, $sermon_domain;
 	global $wp_registered_widgets;
 	static $updated = false; // Whether or not we have already updated the data after a POST submit
 	
