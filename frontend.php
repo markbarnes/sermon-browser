@@ -474,6 +474,7 @@ function sb_build_url($arr, $clear = false) {
 // Adds sermon-browser code to Wordpress header
 function sb_print_header() {
 ?>
+	<!-- Added by SermonBrowser (version <?php echo SB_CURRENT_VERSION ?>) - http://www.4-14.org.uk/sermon-browser -->
 	<link rel="alternate" type="application/rss+xml" title="<?php _e('Sermon podcast', $sermon_domain) ?>" href="<?php echo get_option('sb_podcast') ?>" />
 <?php
 	global $sermon_domain, $post, $wpdb;

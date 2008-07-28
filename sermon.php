@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /***************************************
  ** Set up                            **
  **************************************/
-
+define('SB_CURRENT_VERSION', '0.33');
 $sermon_domain = 'sermon-browser';
 load_plugin_textdomain($sermon_domain, 'wp-content/plugins/sermon-browser');
 require_once('dictionary.php'); // Template functions

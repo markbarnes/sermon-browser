@@ -12,12 +12,12 @@ function sb_first_mp3($sermon) {
 	foreach ((array) $stuff['Files'] as $file) {
 		if (strtolower(substr($file, strrpos($file, '.') + 1)) == 'mp3') {
 			if (substr($file,0,7) == "http://") {
-				if (!$itunes) $file=sb_get_value('wordpress_url').'?show&amp;url='.URLencode($file);
+				if (!$itunes) $file=sb_display_url().sb_query_char().'show&amp;url='.URLencode($file);
 			} else {
 				if ($itunes)
 					$file=sb_get_value('wordpress_url').get_option('sb_sermon_upload_dir').URLencode($file);
 				else
-					$file=sb_get_value('wordpress_url').'?show&amp;file_name='.URLencode($file);
+					$file=sb_display_url().sb_query_char().'show&amp;file_name='.URLencode($file);
 			}
 			return $file;
 			break;
