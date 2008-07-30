@@ -116,7 +116,7 @@ function sb_sermon_install () {
 			$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_sermons ADD page_id INT(10) NOT NULL");
 			add_option('sb_display_method', 'dynamic');
 			add_option('sb_sermons_per_page', '15');
-			add_option('sb_sermon_multi_output', base64_encode(strtr(sb_get_value('multi_form')), sb_search_results_dictionary()));
+			add_option('sb_sermon_multi_output', base64_encode(strtr(sb_get_value('multi_form'), sb_search_results_dictionary())));
 			add_option('sb_sermon_single_output', base64_encode(strtr(sb_get_value('single_form'), sb_sermon_page_dictionary())));
 			add_option('sb_sermon_style_output', base64_encode(stripslashes(base64_decode(get_option('sb_sermon_style')))));
 			add_option('sb_sermon_style_date_modified', strtotime('now'));
