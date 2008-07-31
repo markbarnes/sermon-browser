@@ -428,6 +428,8 @@ function sb_options() {
 		delete_option('sb_sermon_single_output');
 		delete_option('sb_sermon_style_output');
 		delete_option('sb_sermon_style_date_modified');
+		delete_option('sb_display_method');
+		delete_option('sb_sermons_per_page');
 		if (IS_MU) {
 			echo '<div id="message" class="updated fade"><p><b>'.__('All sermon data has been removed.', $sermon_domain).'</b></div>';
 		} else {
@@ -1012,7 +1014,7 @@ function sb_uploads() {
 		function rename(id, old) {
 			var f = prompt("<?php _e('New file name?', $sermon_domain) ?>", old);
 			if (f != null) {
-				jQuery.post('<?php echo sb_get_value('admin_url') ?>'sermon-browser/uploads.php', {fid: id, oname: old, fname: f, sermon: 1}, function(r) {
+				jQuery.post('<?php echo sb_get_value('wordpress_url') ?>'/wp-admin/admin.php?page=sermon-browser/uploads.php', {fid: id, oname: old, fname: f, sermon: 1}, function(r) {
 					if (r) {
 						if (r == 'renamed') {
 							jQuery('#' + id).text(f.substring(0,f.lastIndexOf(".")));
@@ -1033,7 +1035,7 @@ function sb_uploads() {
 			}
 		}
 		function kill(id, f) {
-			jQuery.post('<?php echo sb_get_value('admin_url') ?>'sermon-browser/uploads.php', {fname: f, fid: id, del: 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>'/wp-admin/admin.php?page=sermon-browser/uploads.php', {fname: f, fid: id, del: 1, sermon: 1}, function(r) {
 				if (r) {
 					if (r == 'deleted') {
 						jQuery('#file' + id).fadeOut(function() {
@@ -1059,7 +1061,7 @@ function sb_uploads() {
 			});	
 		}
 		function fetchU(st) {
-			jQuery.post('<?php echo sb_get_value('admin_url') ?>'sermon-browser/uploads.php', {fetchU: st + 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>'/wp-admin/admin.php?page=sermon-browser/uploads.php', {fetchU: st + 1, sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#the-list-u').html(r);					
 					if (st >= <?php echo sb_get_value('sermons_per_page') ?>) {
@@ -1078,7 +1080,7 @@ function sb_uploads() {
 			});	
 		}
 		function fetchL(st) {
-			jQuery.post('<?php echo sb_get_value('admin_url') ?>'sermon-browser/uploads.php', {fetchL: st + 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>'/wp-admin/admin.php?page=sermon-browser/uploads.php', {fetchL: st + 1, sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#the-list-l').html(r);					
 					if (st >= <?php echo sb_get_value('sermons_per_page') ?>) {
@@ -1097,7 +1099,7 @@ function sb_uploads() {
 			});	
 		}
 		function findNow() {
-			jQuery.post('<?php echo sb_get_value('admin_url') ?>'sermon-browser/uploads.php', {search: jQuery('#search').val(), sermon: 1}, function(r) {
+			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>'/wp-admin/admin.php?page=sermon-browser/uploads.php', {search: jQuery('#search').val(), sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#the-list-s').html(r);										
 				};
@@ -1375,7 +1377,7 @@ function sb_manage_sermons() {
 						<td style="text-align:center">
 							<?php //Security check
 									if (function_exists('current_user_can')&&current_user_can('edit_posts')) { ?>
-									<a href="<?php echo sb_get_value('admin_url') ?>sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo sb_get_value('admin_url') ?>sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain); ?></a>
+									<a href="<?php echo sb_get_value('wordpress_url') ?>/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo sb_get_value('admin_url') ?>sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain); ?></a>
 							<?php } else { ?>&nbsp;<?php } ?>
 						</td>
 					</tr>
@@ -2233,7 +2235,7 @@ function sb_return_ajax_data () {
 				<td><?php echo stripslashes($sermon->ssname) ?></td>
 				<td><?php echo sb_sermon_stats($sermon->id) ?></td>
 				<td style="text-align:center">
-					<a href="<?php echo sb_get_value('admin_url') ?>sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo sb_get_value('admin_url') ?>sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
+					<a href="<?php echo sb_get_value('wordpress_url') ?>/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo sb_get_value('admin_url') ?>sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
 				</td>
 			</tr>
 		<?php endforeach ?>
