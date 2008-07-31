@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: mark8barnes
 Donate link: http://www.4-14.org.uk/sermon-browser#support
-Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv
+Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu
 Requires at least: 2.2
 Tested up to: 2.6
 Stable tag: trunk
@@ -22,15 +22,21 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 8. Files can be uploaded to your own site **through the browser or via FTP**. Alternatively you can use other free audio hosting sites such as Odeo.
 9. Powerful **templating function** allows complete customisation to complement the look of your site.
 10. Simple statistics show how often each sermon has been listened to.
-11. Extensive **help and tutorial** screencasts.
+11. Support for Wordpress MU (WPMU)
+12. Extensive **help and tutorial** screencasts.
 
 == Installation ==
 
 1. Download the plugin, and unzip it.
-2. Place the sermonbrowser folder in your wp-content/plugins folder and upload it to your website.
+2. Place the sermon-browser folder in your wp-content/plugins folder and upload it to your website.
 3. Activate the plugin from the plugins tab of your Wordpress admin.
 4. You may have to change the permissions the upload folder (by default wp-content/uploads/sermons).
 5. Create a Wordpress page with the text [sermons]. The plugin will display your sermons on this page.
+
+#### Installation in Wordpress MU
+1. Download the plugin, and unzip it.
+2. Place the contents of the sermon-browser folder in your wp-content/mu-plugins folder and upload it to your website.
+3. The plugin will be automatically activated and available for each user.
 
 == Frequently Asked Questions ==
 

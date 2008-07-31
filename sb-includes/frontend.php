@@ -487,10 +487,10 @@ function sb_print_header() {
 	$pageinfo = $pageinfo [0];
 	if (($pageinfo->ID == $post->ID) OR $pageinfo->post_type == "post") {
 ?>
-	<link rel="stylesheet" href="<?php echo sb_get_value('plugin_url') ?>/datepicker.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo sb_get_value('plugin_url') ?>/style.php" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo sb_get_value('plugin_url') ?>/sb-includes/datepicker.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo sb_get_value('plugin_url') ?>/sb-includes/style.php" type="text/css"/>
 	<script type="text/javascript" src="<?php echo sb_get_value('wordpress_url') ?>/wp-includes/js/jquery/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo sb_get_value('plugin_url') ?>/datePicker.js"></script>
+	<script type="text/javascript" src="<?php echo sb_get_value('plugin_url') ?>/sb-includes/datePicker.js"></script>
 <?php
 	}
 }
@@ -602,7 +602,7 @@ function sb_print_url($url) {
 	} else {
 		$url=sb_display_url().sb_query_char().'show&file_name='.URLencode($url);
 	}
-	$icon_url = sb_get_value('plugin_url').'/icons/';
+	$icon_url = sb_get_value('plugin_url').'/sb-includes/icons/';
 	$uicon = $default_site_icon;
 	foreach ($siteicons as $site => $icon) {
 		if (strpos($url, $site) !== false) {
