@@ -2,7 +2,18 @@
 
 // Outputs sermon-browser styles as a CSS file
 
-$wordpressRealPath = str_replace("\\", "/", dirname(dirname(dirname(dirname(__FILE__)))));
+$directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
+if ($directories[count($directories)-1] == 'mu-plugins') {
+	define('IS_MU', TRUE);
+} else {
+	define('IS_MU', FALSE);
+}
+
+if(IS_MU) {
+	$wordpressRealPath = str_replace("\\", "/", dirname(dirname(dirname(dirname(__FILE__)))));
+} else {
+	$wordpressRealPath = str_replace("\\", "/", dirname(dirname(dirname(dirname(dirname(__FILE__))))));
+}
 if (file_exists($wordpressRealPath.'/wp-load.php')) {
 	require_once($wordpressRealPath.'/wp-load.php');
 } else {
