@@ -223,18 +223,38 @@ function sb_edit_link ($id) {
 
 // Display podcast, or download linked files
 function sb_hijack() {
-	function sb_get_download_count ($stuff_name) {
-		global $wpdb;
-		$count = $wpdb->get_var("SELECT COUNT FROM ".$wpdb->prefix."sb_stuff WHERE name='".mysql_real_escape_string($stuff_name)."'");
-		return $count;
-	}
-	
+	//Increases the download count
 	function sb_increase_download_count ($stuff_name) {
 		global $wpdb;
 		$wpdb->query("UPDATE ".$wpdb->prefix."sb_stuff SET COUNT=COUNT+1 WHERE name='".mysql_real_escape_string($stuff_name)."'");
 	}
 	
-	global $filetypes;
+	// Safer readfile function for large files
+	function readfile_segments($filename,$retbytes=true) {
+		$segmentsize = 1048576;
+		$buffer = '';
+		$cnt =0;
+		$handle = fopen($filename, 'rb');
+		if ($handle === false) {
+			return false;
+		}
+		while (!feof($handle)) {
+			set_time_limit(ini_get('max_execution_time'));
+			$buffer = fread($handle, $segmentsize);
+			echo $buffer;
+			ob_flush();
+			flush();
+			if ($retbytes) {
+				$cnt += strlen($buffer);
+			}
+		}
+		$status = fclose($handle);
+		if ($retbytes && $status)
+			return $cnt;
+		return $status;
+	}
+	
+	global $filetypes, $wpdb;
 	
 	//Displays podcast
 	if (isset($_REQUEST['podcast'])) {
@@ -260,22 +280,25 @@ function sb_hijack() {
 		include(sb_get_value('plugin_path').'podcast.php');
 		die();
 	}
-	
+
 	//Forces sermon download of local file
 	if (isset($_REQUEST['download']) AND isset($_REQUEST['file_name'])) {
 		$file_name = urldecode($_GET['file_name']);
-		header("Pragma: public");
-		header("Expires: 0");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
-		header("Content-Type: application/force-download");
-		header("Content-Type: application/octet-stream");
-		header("Content-Type: application/download");
-		header("Content-Disposition: attachment; filename=".$file_name.";");
-		header("Content-Transfer-Encoding: binary");
-		sb_increase_download_count ($file_name);
-		$file_name = sb_get_value('wordpress_path').get_option("sb_sermon_upload_dir").$file_name;
-		header("Content-Length: ".filesize($file_name));
-		@readfile($file_name);
+		$file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
+		if (!is_null($file_name)) {
+			header("Pragma: public");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+			header("Content-Type: application/force-download");
+			header("Content-Type: application/octet-stream");
+			header("Content-Type: application/download");
+			header("Content-Disposition: attachment; filename=".$file_name.";");
+			header("Content-Transfer-Encoding: binary");
+			sb_increase_download_count ($file_name);
+			$file_name = sb_get_value('wordpress_path').get_option("sb_sermon_upload_dir").$file_name;
+			header("Content-Length: ".filesize($file_name));
+			readfile_segments($file_name);
+		}
 		exit();
 	}
 	
@@ -309,7 +332,7 @@ function sb_hijack() {
 			header("Content-Transfer-Encoding: binary");
 			if ($filesize) header("Content-Length: ".$filesize);
 			sb_increase_download_count ($url);
-			@readfile($url);
+			readfile_segments($url);
 			exit();
 		}
 		else {
@@ -322,16 +345,19 @@ function sb_hijack() {
 	if (isset($_REQUEST['show']) AND isset($_REQUEST['file_name'])) {
 		global $filetypes;
 		$file_name = urldecode($_GET['file_name']);
-		$ext = substr($file_name, strrpos($file_name, '.') + 1);
-		if (isset($filetypes[$ext]['content-type'])) {
-			header ("Content-Type: ".$filetypes[$ext]['content-type']); }
-		else {
-			header ("Content-Type: application/octet-stream"); }
-		sb_increase_download_count ($file_name);
-		$file_name = sb_get_value('wordpress_path').get_option("sb_sermon_upload_dir").$file_name;
-		header("Content-Length: ".filesize($file_name));
-		header("Content-Transfer-Encoding: binary");
-		@readfile($file_name);
+		$file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
+		if (!is_null($file_name)) {
+			$ext = substr($file_name, strrpos($file_name, '.') + 1);
+			if (isset($filetypes[$ext]['content-type'])) {
+				header ("Content-Type: ".$filetypes[$ext]['content-type']); }
+			else {
+				header ("Content-Type: application/octet-stream"); }
+			sb_increase_download_count ($file_name);
+			$file_name = sb_get_value('wordpress_path').get_option("sb_sermon_upload_dir").$file_name;
+			header("Content-Length: ".filesize($file_name));
+			header("Content-Transfer-Encoding: binary");
+			readfile_segments($file_name);
+		}
 		exit();
 	}
 	
@@ -360,7 +386,7 @@ function sb_hijack() {
 			header("Content-Transfer-Encoding: binary");
 			if ($filesize) header("Content-Length: ".$filesize);
 			sb_increase_download_count ($url);
-			@readfile($url);
+			readfile_segments($url);
 			exit();
 		}
 		else {

@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.34
+Version: 0.35
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -27,7 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /***************************************
  ** Set up                            **
  **************************************/
-define('SB_CURRENT_VERSION', '0.34');
+define('SB_CURRENT_VERSION', '0.35');
+define('SB_DATABASE_VERSION', '1.5');
 $directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
 if ($directories[count($directories)-1] == 'mu-plugins') {
 	define('IS_MU', TRUE);
@@ -49,6 +50,7 @@ if ($_POST['sermon'] == 1) sb_return_ajax_data(); // Return AJAX data if that is
 // Add admin menu items and check to see whether install/upgrade is necessary
 add_action('admin_menu', 'sb_add_pages');
 sb_sermon_install();
+add_action('rightnow_end', 'sb_rightnow');
 
 // Add Sermons menu and sub-menus in admin
 function sb_add_pages() {
@@ -82,213 +84,238 @@ function sb_sermon_install () {
 	if (intval(ini_get('max_execution_time'))<600) ini_set('max_execution_time', '600');
 	if (ini_get('file_uploads')<>'1') ini_set('file_uploads', '1');
 	// Only proceed with install if necessary
-	if(get_option('sb_sermon_db_version') =='1.4') return;
+	$db_version = get_option('sb_sermon_db_version');
+	if($db_version == SB_DATABASE_VERSION) return;
 	global $wpdb;
 	global $defaultMultiForm, $defaultSingleForm, $defaultStyle;
 	require_once(ABSPATH . 'wp-includes/pluggable.php');
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	// Create folders
 	$sermonUploadDir = sb_get_default('sermon_path');
-	if (!is_dir(sb_get_value('wordpress_path').$sermonUploadDir)) {
-		if (sb_mkdir(sb_get_value('wordpress_path').$sermonUploadDir)) {
-			@chmod(sb_get_value('wordpress_path').$sermonUploadDir, 0777);          
-		}
-	}
-	if(!is_dir(sb_get_value('wordpress_path').$sermonUploadDir.'images') && sb_mkdir(sb_get_value('wordpress_path').$sermonUploadDir.'images')){
-		@chmod(sb_get_value('wordpress_path').$sermonUploadDir.'images', 0777);
-	}
-	//Upgrade database from earlier versions
+	if (!is_dir(sb_get_value('wordpress_path').$sermonUploadDir))
+		sb_mkdir(sb_get_value('wordpress_path').$sermonUploadDir);
+	if(!is_dir(sb_get_value('wordpress_path').$sermonUploadDir.'images'))
+		sb_mkdir(sb_get_value('wordpress_path').$sermonUploadDir.'images');
 	$books = sb_get_default('bible_books');
-	switch (get_option('sb_sermon_db_version')) {
-		case '1.0': // Also moves files from old default folder to new default folder
-			$oldSermonPath = sb_get_value('plugin_path')."/files/";
-			$files = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' ORDER BY name asc");	
-			foreach ((array)$files as $file) {
-				@chmod(sb_get_value('wordpress_path').$oldSermonPath.$file->name, 0777);
-				@rename(sb_get_value('wordpress_path').$oldSermonPath.$file->name, sb_get_value('wordpress_path').$sermonUploadDir.$file->name);
-			}
-			$table_name = $wpdb->prefix . "sb_preachers";
-			if($wpdb->get_var("show tables like '$table_name'") == $table_name) {            
-				  $wpdb->query("ALTER TABLE " . $table_name . " ADD `description` TEXT NOT NULL, ADD `image` VARCHAR( 255 ) NOT NULL ;");
-			}
-			update_option('sb_sermon_db_version', '1.1');		
-		case '1.1':
-   	        add_option('sb_sermon_style', base64_encode($defaultStyle));
-			if(!is_dir(sb_get_value('wordpress_path').$sermonUploadDir.'images') && sb_mkdir(sb_get_value('wordpress_path').$sermonUploadDir.'images')){
-				@chmod(sb_get_value('wordpress_path').$sermonUploadDir.'images', 0777);
-			}
-   	        update_option('sb_sermon_db_version', '1.2');	
-		case '1.2':
-			$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_stuff ADD count INT(10) NOT NULL");
-			$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_books_sermons ADD INDEX (sermon_id)");
-			$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_sermons_tags ADD INDEX (sermon_id)");
-			update_option('sb_sermon_db_version', '1.3');
-		case '1.3':
-			$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_series ADD page_id INT(10) NOT NULL");
-			$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_sermons ADD page_id INT(10) NOT NULL");
-			add_option('sb_display_method', 'dynamic');
-			add_option('sb_sermons_per_page', '15');
-			add_option('sb_sermon_multi_output', base64_encode(strtr(sb_get_value('multi_form'), sb_search_results_dictionary())));
-			add_option('sb_sermon_single_output', base64_encode(strtr(sb_get_value('single_form'), sb_sermon_page_dictionary())));
-			add_option('sb_sermon_style_output', base64_encode(stripslashes(base64_decode(get_option('sb_sermon_style')))));
-			add_option('sb_sermon_style_date_modified', strtotime('now'));
-			update_option('sb_sermon_db_version', '1.4');
-		case '1.4' :
-			return;
-		default:
-			update_option('sb_sermon_db_version', '1.0');
-	}   	
-
-	//Create default tables
-   $table_name = $wpdb->prefix . "sb_preachers";
-   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {            
-	  $sql = "CREATE TABLE " . $table_name . " (
-		`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
-		`name` VARCHAR( 30 ) NOT NULL ,
-		`description` TEXT NOT NULL ,
-		`image` VARCHAR( 255 ) NOT NULL,
-		PRIMARY KEY ( `id` )
-		);";
-      dbDelta($sql);
-	  $sql = "INSERT INTO " . $table_name . "(name, description, image) VALUES ( 'C H Spurgeon', '', '' );";
-      dbDelta($sql);
-	  $sql = "INSERT INTO " . $table_name . "(name, description, image) VALUES ( 'Martyn Lloyd-Jones', '', '' );";
-      dbDelta($sql);
-   }
-   
-   $table_name = $wpdb->prefix . "sb_series";
-   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
-	  $sql = "CREATE TABLE " . $table_name . " (
-		`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
-		`name` VARCHAR( 255 ) NOT NULL ,
-		`page_id` INT(10) NOT NULL,
-		PRIMARY KEY ( `id` )
-		);";
-      dbDelta($sql);
-	  $sql = "INSERT INTO " . $table_name . "(name) VALUES ( 'Exposition of the Psalms' );";
-      dbDelta($sql);
-	  $sql = "INSERT INTO " . $table_name . "(name) VALUES ( 'Exposition of Romans' );";
-      dbDelta($sql);
-   }
-   
-   $table_name = $wpdb->prefix . "sb_services";
-   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
-	  $sql = "CREATE TABLE " . $table_name . " (
-		`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
-		`name` VARCHAR( 255 ) NOT NULL ,
-		`time` VARCHAR( 5 ) NOT NULL , 
-		PRIMARY KEY ( `id` )
-		);";
-      dbDelta($sql);
-	  $sql = "INSERT INTO " . $table_name . "(name, time) VALUES ( 'Sunday Morning', '10:30' );";
-      dbDelta($sql);
-      $sql = "INSERT INTO " . $table_name . "(name, time) VALUES ( 'Sunday Evening', '18:00' );";
-      dbDelta($sql);
-      $sql = "INSERT INTO " . $table_name . "(name, time) VALUES ( 'Midweek Meeting', '19:00' );";
-      dbDelta($sql);
-      $sql = "INSERT INTO " . $table_name . "(name, time) VALUES ( 'Special event', '20:00' );";
-      dbDelta($sql);
-   }
-   
-   $table_name = $wpdb->prefix . "sb_sermons";
-   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
-	  $sql = "CREATE TABLE " . $table_name . " (
-		`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
-		`title` VARCHAR( 255 ) NOT NULL ,
-		`preacher_id` INT( 10 ) NOT NULL ,
-		`date` DATE NOT NULL ,
-		`service_id` INT( 10 ) NOT NULL ,
-		`series_id` INT( 10 ) NOT NULL ,
-		`start` TEXT NOT NULL ,
-		`end` TEXT NOT NULL ,
-		`description` TEXT ,
-		`time` VARCHAR ( 5 ), 
-		`override` TINYINT ( 1 ) ,	
-		`page_id` INT(10) NOT NULL,
-		PRIMARY KEY ( `id` )
-		);";
-      dbDelta($sql);
-   }
-
-	$table_name = $wpdb->prefix . "sb_books_sermons";
-   	if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
-	  $sql = "CREATE TABLE " . $table_name . " (		
-		`id` INT(10) NOT NULL AUTO_INCREMENT,
-		`book_name` VARCHAR( 30 ) NOT NULL ,		
-		`chapter` INT(10) NOT NULL,
-		`verse` INT(10) NOT NULL,
-		`order` INT(10) NOT NULL,
-		`type` VARCHAR ( 30 ), 
-		`sermon_id` INT( 10 ) NOT NULL,
-		INDEX (`sermon_id`),
-		PRIMARY KEY ( `id` )
-		);";
-      dbDelta($sql);
-   }
-
-	$table_name = $wpdb->prefix . "sb_books";
-   	if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
-	  $sql = "CREATE TABLE " . $table_name . " (		
-		`id` INT(10) NOT NULL AUTO_INCREMENT,
-		`name` VARCHAR( 30 ) NOT NULL ,
-		PRIMARY KEY ( `id` )
-		);";
-      dbDelta($sql);
-   }
-   
-   $table_name = $wpdb->prefix . "sb_stuff";
-   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
-	  $sql = "CREATE TABLE " . $table_name . " (
-		`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
-		`type` VARCHAR( 30 ) NOT NULL ,
-		`name` TEXT NOT NULL ,
-		`sermon_id` INT( 10 ) NOT NULL ,
-		`count` INT( 10 ) NOT NULL ,
-		PRIMARY KEY ( `id` )
-		);";
-      dbDelta($sql);
-   }
-
-	$table_name = $wpdb->prefix . "sb_tags";
+	 //Upgrade database from earlier versions
+	if ($db_version) {
+		switch ($db_version) {
+			case '1.0': 
+				// Also moves files from old default folder to new default folder
+				$oldSermonPath = sb_get_value('plugin_path')."/files/";
+				$files = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' ORDER BY name asc");	
+				foreach ((array)$files as $file) {
+					@chmod(sb_get_value('wordpress_path').$oldSermonPath.$file->name, 0777);
+					@rename(sb_get_value('wordpress_path').$oldSermonPath.$file->name, sb_get_value('wordpress_path').$sermonUploadDir.$file->name);
+				}
+				$table_name = $wpdb->prefix . "sb_preachers";
+				if($wpdb->get_var("show tables like '$table_name'") == $table_name) {            
+					  $wpdb->query("ALTER TABLE " . $table_name . " ADD `description` TEXT NOT NULL, ADD `image` VARCHAR( 255 ) NOT NULL ;");
+				}
+				update_option('sb_sermon_db_version', '1.1');		
+			case '1.1':
+	   	        add_option('sb_sermon_style', base64_encode($defaultStyle));
+				if(!is_dir(sb_get_value('wordpress_path').$sermonUploadDir.'images') && sb_mkdir(sb_get_value('wordpress_path').$sermonUploadDir.'images')){
+					@chmod(sb_get_value('wordpress_path').$sermonUploadDir.'images', 0777);
+				}
+	   	        update_option('sb_sermon_db_version', '1.2');	
+			case '1.2':
+				$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_stuff ADD count INT(10) NOT NULL");
+				$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_books_sermons ADD INDEX (sermon_id)");
+				$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_sermons_tags ADD INDEX (sermon_id)");
+				update_option('sb_sermon_db_version', '1.3');
+			case '1.3':
+				$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_series ADD page_id INT(10) NOT NULL");
+				$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_sermons ADD page_id INT(10) NOT NULL");
+				add_option('sb_display_method', 'dynamic');
+				add_option('sb_sermons_per_page', '15');
+				add_option('sb_sermon_multi_output', base64_encode(strtr(sb_get_value('multi_form'), sb_search_results_dictionary())));
+				add_option('sb_sermon_single_output', base64_encode(strtr(sb_get_value('single_form'), sb_sermon_page_dictionary())));
+				add_option('sb_sermon_style_output', base64_encode(stripslashes(base64_decode(get_option('sb_sermon_style')))));
+				add_option('sb_sermon_style_date_modified', strtotime('now'));
+				update_option('sb_sermon_db_version', '1.4');
+			case '1.4' :
+				//Remove duplicate indexes added by a previous bug
+				$extra_indexes = $wpdb->get_results("SELECT index_name, table_name FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = '".DB_NAME."' AND index_name LIKE 'sermon_id_%'");
+				if (is_array($extra_indexes))
+					foreach ($extra_indexes as $extra_index)
+						$wpdb->query("ALTER TABLE ".$extra_index->table_name." DROP INDEX {$extra_index->index_name}");
+				//Remove duplicate tags added by a previous bug
+				$unique_tags = $wpdb->get_results("SELECT DISTINCT name FROM {$wpdb->prefix}sb_tags");
+				if (is_array($unique_tags)) {
+					foreach ($unique_tags as $tag) {
+						$tag_ids = $wpdb->get_results("SELECT id FROM {$wpdb->prefix}sb_tags WHERE name='{$tag->name}'");
+						if (is_array($tag_ids)) {
+							foreach ($tag_ids as $tag_id) {
+								$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons_tags SET tag_id='{$tag_ids[0]->id}' WHERE tag_id='{$tag_id->id}'");
+								if ($tag_ids[0]->id != $tag_id->id)
+									$wpdb->query("DELETE FROM {$wpdb->prefix}sb_tags WHERE id='{$tag_id->id}'");
+							}
+						}
+					}
+				}
+				sb_delete_unused_tags();
+				$wpdb->query("ALTER TABLE {$wpdb->prefix}sb_tags CHANGE name name VARCHAR(255)");
+				$wpdb->query("ALTER TABLE {$wpdb->prefix}sb_tags ADD UNIQUE (name)");
+				update_option('sb_sermon_db_version', '1.5');
+				return;
+			default:
+				update_option('sb_sermon_db_version', '1.0');
+		}   	
+	} else { //Create default tables
+	   $table_name = $wpdb->prefix . "sb_preachers";
+	   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {            
+		  $sql = "CREATE TABLE " . $table_name . " (
+			`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
+			`name` VARCHAR( 30 ) NOT NULL ,
+			`description` TEXT NOT NULL ,
+			`image` VARCHAR( 255 ) NOT NULL,
+			PRIMARY KEY ( `id` )
+			);";
+	      dbDelta($sql);
+		  $sql = "INSERT INTO " . $table_name . "(name, description, image) VALUES ( 'C H Spurgeon', '', '' );";
+	      dbDelta($sql);
+		  $sql = "INSERT INTO " . $table_name . "(name, description, image) VALUES ( 'Martyn Lloyd-Jones', '', '' );";
+	      dbDelta($sql);
+	   }
+	   
+	   $table_name = $wpdb->prefix . "sb_series";
 	   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
 		  $sql = "CREATE TABLE " . $table_name . " (
 			`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
-			`name` TEXT NOT NULL ,
+			`name` VARCHAR( 255 ) NOT NULL ,
+			`page_id` INT(10) NOT NULL,
+			PRIMARY KEY ( `id` )
+			);";
+	      dbDelta($sql);
+		  $sql = "INSERT INTO " . $table_name . "(name) VALUES ( 'Exposition of the Psalms' );";
+	      dbDelta($sql);
+		  $sql = "INSERT INTO " . $table_name . "(name) VALUES ( 'Exposition of Romans' );";
+	      dbDelta($sql);
+	   }
+	   
+	   $table_name = $wpdb->prefix . "sb_services";
+	   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
+		  $sql = "CREATE TABLE " . $table_name . " (
+			`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
+			`name` VARCHAR( 255 ) NOT NULL ,
+			`time` VARCHAR( 5 ) NOT NULL , 
+			PRIMARY KEY ( `id` )
+			);";
+	      dbDelta($sql);
+		  $sql = "INSERT INTO " . $table_name . "(name, time) VALUES ( 'Sunday Morning', '10:30' );";
+	      dbDelta($sql);
+	      $sql = "INSERT INTO " . $table_name . "(name, time) VALUES ( 'Sunday Evening', '18:00' );";
+	      dbDelta($sql);
+	      $sql = "INSERT INTO " . $table_name . "(name, time) VALUES ( 'Midweek Meeting', '19:00' );";
+	      dbDelta($sql);
+	      $sql = "INSERT INTO " . $table_name . "(name, time) VALUES ( 'Special event', '20:00' );";
+	      dbDelta($sql);
+	   }
+	   
+	   $table_name = $wpdb->prefix . "sb_sermons";
+	   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
+		  $sql = "CREATE TABLE " . $table_name . " (
+			`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
+			`title` VARCHAR( 255 ) NOT NULL ,
+			`preacher_id` INT( 10 ) NOT NULL ,
+			`date` DATE NOT NULL ,
+			`service_id` INT( 10 ) NOT NULL ,
+			`series_id` INT( 10 ) NOT NULL ,
+			`start` TEXT NOT NULL ,
+			`end` TEXT NOT NULL ,
+			`description` TEXT ,
+			`time` VARCHAR ( 5 ), 
+			`override` TINYINT ( 1 ) ,	
+			`page_id` INT(10) NOT NULL,
 			PRIMARY KEY ( `id` )
 			);";
 	      dbDelta($sql);
 	   }
-	
-	$table_name = $wpdb->prefix . "sb_sermons_tags";
-	   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
-		  $sql = "CREATE TABLE " . $table_name . " (
-			`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
-			`sermon_id` INT( 10 ) NOT NULL ,
-			`tag_id` INT( 10 ) NOT NULL ,
+
+		$table_name = $wpdb->prefix . "sb_books_sermons";
+	   	if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
+		  $sql = "CREATE TABLE " . $table_name . " (		
+			`id` INT(10) NOT NULL AUTO_INCREMENT,
+			`book_name` VARCHAR( 30 ) NOT NULL ,		
+			`chapter` INT(10) NOT NULL,
+			`verse` INT(10) NOT NULL,
+			`order` INT(10) NOT NULL,
+			`type` VARCHAR ( 30 ), 
+			`sermon_id` INT( 10 ) NOT NULL,
 			INDEX (`sermon_id`),
 			PRIMARY KEY ( `id` )
 			);";
 	      dbDelta($sql);
 	   }
-	$welcome_name = __('Delete', $sermon_domain);
-	$welcome_text = __('Congratulations, you just completed the installation!', $sermon_domain);	
-	add_option('sb_sermon_upload_dir', $sermonUploadDir);
-	add_option('sb_sermon_upload_url', sb_get_default('attachment_url'));
-	add_option('sb_podcast', sb_get_value('wordpress_url').'?podcast');
-	add_option('sb_display_method', 'dynamic');
-	add_option('sb_sermons_per_page', '15');
-	delete_option('sb_sermon_multi_form');
-   	add_option('sb_sermon_multi_form', base64_encode(sb_default_multi_template()));
-	delete_option('sb_sermon_single_form');
-   	add_option('sb_sermon_single_form', base64_encode(sb_default_single_template()));
-	delete_option('sb_sermon_style');
-   	add_option('sb_sermon_style', base64_encode(sb_default_css()));
-	add_option('sb_sermon_multi_output', base64_encode(strtr(sb_default_multi_template(), sb_search_results_dictionary())));
-	add_option('sb_sermon_single_output', base64_encode(strtr(sb_default_single_template(), sb_sermon_page_dictionary())));
-	add_option('sb_sermon_style_output', base64_encode(sb_default_css()));
-	for ($i=0; $i < count($books); $i++) { 
-		$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, '{$books[$i]}');");
+
+		$table_name = $wpdb->prefix . "sb_books";
+	   	if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
+		  $sql = "CREATE TABLE " . $table_name . " (		
+			`id` INT(10) NOT NULL AUTO_INCREMENT,
+			`name` VARCHAR( 30 ) NOT NULL ,
+			PRIMARY KEY ( `id` )
+			);";
+	      dbDelta($sql);
+	   }
+	   
+	   $table_name = $wpdb->prefix . "sb_stuff";
+	   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
+		  $sql = "CREATE TABLE " . $table_name . " (
+			`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
+			`type` VARCHAR( 30 ) NOT NULL ,
+			`name` TEXT NOT NULL ,
+			`sermon_id` INT( 10 ) NOT NULL ,
+			`count` INT( 10 ) NOT NULL ,
+			PRIMARY KEY ( `id` )
+			);";
+	      dbDelta($sql);
+	   }
+
+		$table_name = $wpdb->prefix . "sb_tags";
+		   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
+				$sql = "CREATE TABLE " . $table_name . " (
+					`id` int(10) NOT NULL auto_increment,
+					`name` varchar(255) default NULL,
+					PRIMARY KEY (`id`),
+					UNIQUE KEY `name` (`name`)
+					);";
+		      dbDelta($sql);
+		   }
+		
+		$table_name = $wpdb->prefix . "sb_sermons_tags";
+		   if($wpdb->get_var("show tables like '$table_name'") != $table_name) {      
+			  $sql = "CREATE TABLE " . $table_name . " (
+				`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
+				`sermon_id` INT( 10 ) NOT NULL ,
+				`tag_id` INT( 10 ) NOT NULL ,
+				INDEX (`sermon_id`),
+				PRIMARY KEY ( `id` )
+				);";
+		      dbDelta($sql);
+		   }
+		$welcome_name = __('Delete', $sermon_domain);
+		$welcome_text = __('Congratulations, you just completed the installation!', $sermon_domain);	
+		add_option('sb_sermon_upload_dir', $sermonUploadDir);
+		add_option('sb_sermon_upload_url', sb_get_default('attachment_url'));
+		add_option('sb_podcast', sb_get_value('wordpress_url').'?podcast');
+		add_option('sb_display_method', 'dynamic');
+		add_option('sb_sermons_per_page', '15');
+		delete_option('sb_sermon_multi_form');
+	   	add_option('sb_sermon_multi_form', base64_encode(sb_default_multi_template()));
+		delete_option('sb_sermon_single_form');
+	   	add_option('sb_sermon_single_form', base64_encode(sb_default_single_template()));
+		delete_option('sb_sermon_style');
+	   	add_option('sb_sermon_style', base64_encode(sb_default_css()));
+		add_option('sb_sermon_style_date_modified', strtotime('now'));
+		add_option('sb_sermon_multi_output', base64_encode(strtr(sb_default_multi_template(), sb_search_results_dictionary())));
+		add_option('sb_sermon_single_output', base64_encode(strtr(sb_default_single_template(), sb_sermon_page_dictionary())));
+		add_option('sb_sermon_style_output', base64_encode(sb_default_css()));
+		for ($i=0; $i < count($books); $i++) { 
+			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, '{$books[$i]}');");
+		}
+		add_option('sb_sermon_db_version', SB_DATABASE_VERSION);
 	}
-	add_option('sb_sermon_db_version', '1.4');
 }
 
 // Display the options page and handle changes
@@ -1288,6 +1315,7 @@ function sb_manage_sermons() {
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_books_sermons WHERE sermon_id = $mid;");
 		$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = 0 WHERE sermon_id = $mid AND type = 'file';");
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE sermon_id = $mid AND type <> 'file';");
+		sb_delete_unused_tags();
 		echo '<div id="message" class="updated fade"><p><b>'.__('Sermon removed from database.', $sermon_domain).'</b></div>';
 	}
 	
@@ -1458,10 +1486,10 @@ function sb_new_sermon() {
 		}	
 		// deal with books
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_books_sermons WHERE sermon_id = $id;");	
-		foreach ($startz as $i => $st) {
+		if (isset($startz)) foreach ($startz as $i => $st) {
 			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, '{$st['book']}', '{$st['chapter']}', '{$st['verse']}', $i, 'start', $id);");
 		}
-		foreach ($endz as $i => $ed) {
+		if (isset($$endz)) foreach ($endz as $i => $ed) {
 			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, '{$ed['book']}', '{$ed['chapter']}', '{$ed['verse']}', $i, 'end', $id);");
 		}
 		// now files
@@ -1519,10 +1547,14 @@ function sb_new_sermon() {
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_sermons_tags WHERE sermon_id = $id;");
 		foreach ($tags as $tag) {
 			$clean_tag = trim(mysql_real_escape_string($tag));
-			$wpdb->query("INSERT IGNORE INTO {$wpdb->prefix}sb_tags VALUES (null, '$clean_tag')");
-			$tag_id = $wpdb->insert_id;
-			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_sermons_tags VALUES (null, $id, $tag_id)");
+			$existing_id = $wpdb->get_var("SELECT id FROM {$wpdb->prefix}sb_tags WHERE name='$clean_tag'");
+			if (is_null($existing_id)) {
+				$wpdb->query("INSERT  INTO {$wpdb->prefix}sb_tags VALUES (null, '$clean_tag')");
+				$existing_id = $wpdb->insert_id;
+			}
+			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_sermons_tags VALUES (null, $id, $existing_id)");
 		}
+		sb_delete_unused_tags();
 		// everything is fine, get out of here!
 		if(!$error) {
 			echo "<script>document.location = '".sb_get_value('admin_url')."sermon.php&saved=true';</script>";
@@ -2309,6 +2341,50 @@ function sb_build_textarea($name, $html) {
 	echo $out;
 }
 
+// Displays stats in the dashboard
+function sb_rightnow () {
+	global $wpdb, $sermon_domain;
+	$file_count = $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."sb_stuff WHERE type='file'");
+	if ($file_count > 0) {
+		$sermon_count = $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."sb_sermons");
+		$preacher_count = $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."sb_preachers");
+		$series_count = $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."sb_series");
+		$tag_count = $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."sb_tags WHERE name<>''");
+		$download_count = $wpdb->get_var("SELECT SUM(count) FROM ".$wpdb->prefix."sb_stuff");
+		$download_average = round($download_count/$sermon_count, 1);
+		$most_popular = $wpdb->get_results("SELECT title, sermon_id, sum(count) AS c FROM ".$wpdb->prefix."sb_stuff LEFT JOIN ".$wpdb->prefix."sb_sermons ON ".$wpdb->prefix."sb_sermons.id = sermon_id GROUP BY sermon_id ORDER BY c DESC LIMIT 1");
+		$most_popular = $most_popular[0];
+		$output_string = '<p class="youhave">'.__("You have")." ";
+		$output_string = $output_string.'<a href="'.sb_get_value('wordpress_url').'/wp-admin/admin.php?page=sermon-browser/uploads.php">';
+		$output_string = $output_string.sprintf(__ngettext('%d file', '%d files', $file_count), $file_count)."</a> ";
+		if ($sermon_count > 0) {
+			$output_string = $output_string.__("in")." ".'<a href="'.sb_get_value('admin_url').'sermon.php">';
+			$output_string = $output_string.sprintf(__ngettext('%d sermon', '%d sermons', $sermon_count), $sermon_count)."</a> ";
+		}
+		if ($preacher_count > 0) {
+			$output_string = $output_string.__("from")." ".'<a href="'.sb_get_value('wordpress_url').'/wp-admin/admin.php?page=sermon-browser/preachers.php">';
+			$output_string = $output_string.sprintf(__ngettext('%d preacher', '%d preachers', $preacher_count), $preacher_count)."</a> ";
+		}
+		if ($series_count > 0) {
+			$output_string = $output_string.__("in")." ".'<a href="'.sb_get_value('wordpress_url').'/wp-admin/admin.php?page=sermon-browser/manage.php">';
+			$output_string = $output_string.sprintf(__('%d series'), $series_count)."</a> ";
+		}
+		if ($tag_count > 0) 
+			$output_string = $output_string.__("using")." ".sprintf(__ngettext('%d tag', '%d tags', $tag_count), $tag_count)." ";
+		if (substr($output_string, -1) == " ")
+			$output_string = substr($output_string, 0, -1);
+		if ($download_count > 0) 
+			$output_string = $output_string.". ".sprintf(__ngettext('Only one file has been downloaded', 'They have been downloaded a total of %d times', $download_count), $download_count);
+		if ($download_count > 1) {
+			$output_string = $output_string.", ".sprintf(__ngettext('an average of once per sermon', 'an average of %d times per sermon', $download_average), $download_average);
+			$most_popular_title = '<a href="'.sb_get_value('wordpress_url').'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$most_popular->sermon_id.'">'.$most_popular->title.'</a>';
+			$output_string = $output_string.". ".sprintf(__('The most popular sermon is %s, which has been downloaded %s times'), $most_popular_title, $most_popular->c);
+		}
+		$output_string = $output_string.'.</p>';
+	}
+	echo $output_string;
+}
+
 // Find new files uploaded by FTP
 function sb_scan_dir() {
 	global $wpdb;
@@ -2350,12 +2426,20 @@ function sb_checkSermonUploadable($foldername = "") {
 	return false;
 }
 
-// Recursive mkdir function for PHP < 5.0.0
-function sb_mkdir($pathname, $mode=0777)
-{
+// Recursive mkdir function
+function sb_mkdir($pathname, $mode=0777) {
 	is_dir(dirname($pathname)) || sb_mkdir(dirname($pathname), $mode);
 	@mkdir($pathname, $mode);
 	return @chmod($pathname, $mode);
+}
+
+// Delete any unused tags
+function sb_delete_unused_tags() {
+	global $wpdb;
+	$unused_tags = $wpdb->get_results("SELECT {$wpdb->prefix}sb_tags.id AS id, {$wpdb->prefix}sb_sermons_tags.id AS sid FROM {$wpdb->prefix}sb_tags LEFT JOIN {$wpdb->prefix}sb_sermons_tags ON {$wpdb->prefix}sb_tags.id = {$wpdb->prefix}sb_sermons_tags.tag_id WHERE {$wpdb->prefix}sb_sermons_tags.tag_id IS NULL");
+	if (is_array($unused_tags))
+		foreach ($unused_tags AS $unused_tag)
+			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_tags WHERE id='{$unused_tag->id}'");
 }
 
 // Processing for php.ini values
