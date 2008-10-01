@@ -195,4 +195,6 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 * **[kjvtext]** - Displays the full text of the KJV Bible for all passages linked to that sermon.
 * **[ylttext]** - Displays the full text of the YLT Bible for all passages linked to that sermon.
 * **[webtext]** - Displays the full text of the WEB Bible for all passages linked to that sermon.
+* **[akjvtext]** - Displays the full text of the AKJV Bible for all passages linked to that sermon.
+* **[hnvtext]** - Displays the full text of the HNV Bible for all passages linked to that sermon.
 * **[biblepassage]** - Displays the reference of the bible passages for that sermon. Useful for utilising other bible plugins (see FAQ).

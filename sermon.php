@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.35
+Version: 0.36
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /***************************************
  ** Set up                            **
  **************************************/
-define('SB_CURRENT_VERSION', '0.35');
+define('SB_CURRENT_VERSION', '0.36');
 define('SB_DATABASE_VERSION', '1.5');
 $directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
 if ($directories[count($directories)-1] == 'mu-plugins') {
@@ -2129,11 +2129,13 @@ sb_check_sermon_tag();
 			<li><b>[prev_sermon]</b> - Displays a link to the previous sermon preached</li>
 			<li><b>[sameday_sermon]</b> - Displays a link to other sermons preached on that day</li>
 			<li><b>[tags]</b> - Displays the tags for that sermons</li>
-			<li><b>[esvtext]</b> - Displays the full text of the ESV Bible for all passages linked to that sermon.</li>
-			<li><b>[asvtext]</b> - Displays the full text of the ASV Bible for all passages linked to that sermon.</li>
-			<li><b>[kjvtext]</b> - Displays the full text of the KJV Bible for all passages linked to that sermon.</li>
-			<li><b>[ylttext]</b> - Displays the full text of the YLT Bible for all passages linked to that sermon.</li>
-			<li><b>[webtext]</b> - Displays the full text of the WEB Bible for all passages linked to that sermon.</li>
+			<li><b>[esvtext]</b> - Displays the full text of the <a href="http://www.gnpcb.org/esv/">ESV Bible</a> for all passages linked to that sermon.</li>
+			<li><b>[asvtext]</b> - Displays the full text of the <a href="http://en.wikipedia.org/wiki/American_Standard_Version">ASV Bible</a> for all passages linked to that sermon.</li>
+			<li><b>[kjvtext]</b> - Displays the full text of the <a href="http://en.wikipedia.org/wiki/Authorized_King_James_Version">KJV</a> Bible for all passages linked to that sermon.</li>
+			<li><b>[ylttext]</b> - Displays the full text of the <a href="http://en.wikipedia.org/wiki/Young%27s_Literal_Translation">YLT</a> Bible for all passages linked to that sermon.</li>
+			<li><b>[webtext]</b> - Displays the full text of the <a href="http://ebible.org/bible/web/">WEB</a> Bible for all passages linked to that sermon.</li>
+			<li><b>[webtext]</b> - Displays the full text of the <a href="http://www.angelfire.com/al4/allenkc/akjv/">AKJV</a> Bible for all passages linked to that sermon.</li>
+			<li><b>[webtext]</b> - Displays the full text of the <a href="http://ebible.org/bible/hnv/">HNV</a> Bible for all passages linked to that sermon.</li>
 			<li><b>[biblepassage]</b> - Displays the reference of the bible passages for that sermon. Useful for utilising other bible plugins (see <a href="#otherversions">FAQ</a>).</li>
 	</div>
 	</form>
@@ -2425,7 +2427,6 @@ function sb_checkSermonUploadable($foldername = "") {
 	}
 	return false;
 }
-
 // Recursive mkdir function
 function sb_mkdir($pathname, $mode=0777) {
 	is_dir(dirname($pathname)) || sb_mkdir(dirname($pathname), $mode);
@@ -2546,7 +2547,6 @@ function sb_get_default ($default_type) {
 }
 			
 
-
 /***************************************
  ** Default templates and styles      **
  **************************************/
@@ -2640,7 +2640,7 @@ $single = <<<HERE
 		</tr>
 	</table>
 	[esvtext]
-   	<!--[creditlink]-->
+   	[creditlink]
 </div>
 HERE;
 	return $single;

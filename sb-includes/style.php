@@ -37,4 +37,3 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MOD
 print (base64_decode(get_option('sb_sermon_style_output')));
 
 ?>
-

@@ -22,6 +22,9 @@ function sb_display_url() {
 	if (!$display_url) {
 		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons]%' AND post_status = 'publish' AND post_date < NOW();");
 		$display_url = get_permalink($pageid);
+		if ($display_url == sb_get_value('wordpress_url')|$display_url =="") { // Hack to force true permalink even if page used for front page.
+			$display_url = sb_get_value('wordpress_url')."/?page_id=".$pageid;
+		}
 	}
 	return $display_url;
 }
@@ -147,7 +150,7 @@ function sb_add_bible_text ($start, $end, $version) {
 		return sb_add_esv_text ($start, $end);
 	}
 	else {
-		$books = sb_bible_books();
+		$books = sb_get_value('bible_books');
 		$r1 = array_search($start['book'], $books)+1;
 		$r2 = $start['chapter'];
 		$r3 = $start['verse'];
@@ -862,7 +865,7 @@ function sb_print_filters() {
 	$cd = $_REQUEST['dir'] ? $_REQUEST['dir'] : 'desc';	
 
 ?>	
-	<form method="post" id="sermon-filter">
+	<form method="post" id="sermon-filter" action="<?php echo sb_display_url(); ?>">
 		<div style="clear:both">
 			<table class="sermonbrowser">
 				<tr>
