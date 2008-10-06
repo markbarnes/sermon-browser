@@ -228,8 +228,10 @@ function sb_edit_link ($id) {
 function sb_hijack() {
 	//Increases the download count
 	function sb_increase_download_count ($stuff_name) {
-		global $wpdb;
-		$wpdb->query("UPDATE ".$wpdb->prefix."sb_stuff SET COUNT=COUNT+1 WHERE name='".mysql_real_escape_string($stuff_name)."'");
+		if (function_exists('current_user_can')&&!(current_user_can('edit_posts')|current_user_can('publish_posts'))) {
+			global $wpdb;
+			$wpdb->query("UPDATE ".$wpdb->prefix."sb_stuff SET COUNT=COUNT+1 WHERE name='".mysql_real_escape_string($stuff_name)."'");
+		}
 	}
 	
 	// Safer readfile function for large files
@@ -873,7 +875,7 @@ function sb_print_filters() {
 					<td class="field"><select name="preacher" id="preacher">
 							<option value="0" <?php echo $_REQUEST['preacher'] != 0 ? '' : 'selected="selected"' ?>><?php _e('[All]', $sermon_domain) ?></option>
 							<?php foreach ($preachers as $preacher): ?>
-							<option value="<?php echo $preacher->id ?>" <?php echo $_REQUEST['preacher'] == $preacher->id ? 'selected="selected"' : '' ?>><?php echo $preacher->name.' ('.$preacher->count.')' ?></option>
+							<option value="<?php echo $preacher->id ?>" <?php echo $_REQUEST['preacher'] == $preacher->id ? 'selected="selected"' : '' ?>><?php echo stripslashes($preacher->name).' ('.$preacher->count.')' ?></option>
 							<?php endforeach ?>
 						</select>
 					</td>
@@ -881,7 +883,7 @@ function sb_print_filters() {
 					<td class="field"><select name="service" id="service">
 							<option value="0" <?php echo $_REQUEST['service'] != 0 ? '' : 'selected="selected"' ?>><?php _e('[All]', $sermon_domain) ?></option>
 							<?php foreach ($services as $service): ?>
-							<option value="<?php echo $service->id ?>" <?php echo $_REQUEST['service'] == $service->id ? 'selected="selected"' : '' ?>><?php echo $service->name.' ('.$service->count.')' ?></option>
+							<option value="<?php echo $service->id ?>" <?php echo $_REQUEST['service'] == $service->id ? 'selected="selected"' : '' ?>><?php echo stripslashes($service->name).' ('.$service->count.')' ?></option>
 							<?php endforeach ?>
 						</select>
 					</td>
@@ -891,7 +893,7 @@ function sb_print_filters() {
 					<td class="field"><select name="book">
 							<option value=""><?php _e('[All]', $sermon_domain) ?></option>
 							<?php foreach ($book_count as $book): ?>
-							<option value="<?php echo $book->name ?>" <?php echo $_REQUEST['book'] == $book->name ? 'selected=selected' : '' ?>><?php echo $book->name. ' ('.$book->count.')' ?></option>
+							<option value="<?php echo $book->name ?>" <?php echo $_REQUEST['book'] == $book->name ? 'selected=selected' : '' ?>><?php echo stripslashes($book->name). ' ('.$book->count.')' ?></option>
 							<?php endforeach ?>
 						</select>
 					</td>
@@ -899,7 +901,7 @@ function sb_print_filters() {
 					<td class="field"><select name="series" id="series">
 							<option value="0" <?php echo $_REQUEST['series'] != 0 ? '' : 'selected="selected"' ?>><?php _e('[All]', $sermon_domain) ?></option>
 							<?php foreach ($series as $item): ?>
-							<option value="<?php echo $item->id ?>" <?php echo $_REQUEST['series'] == $item->id ? 'selected="selected"' : '' ?>><?php echo $item->name.' ('.$item->count.')' ?></option>
+							<option value="<?php echo $item->id ?>" <?php echo $_REQUEST['series'] == $item->id ? 'selected="selected"' : '' ?>><?php echo stripslashes($item->name).' ('.$item->count.')' ?></option>
 							<?php endforeach ?>
 						</select>
 					</td>

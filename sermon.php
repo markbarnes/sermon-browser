@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.36
+Version: 0.37
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /***************************************
  ** Set up                            **
  **************************************/
-define('SB_CURRENT_VERSION', '0.36');
+define('SB_CURRENT_VERSION', '0.37');
 define('SB_DATABASE_VERSION', '1.5');
 $directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
 if ($directories[count($directories)-1] == 'mu-plugins') {
@@ -51,6 +51,7 @@ if ($_POST['sermon'] == 1) sb_return_ajax_data(); // Return AJAX data if that is
 add_action('admin_menu', 'sb_add_pages');
 sb_sermon_install();
 add_action('rightnow_end', 'sb_rightnow');
+register_activation_hook( __FILE__, 'sb_activate' );
 
 // Add Sermons menu and sub-menus in admin
 function sb_add_pages() {
@@ -318,6 +319,15 @@ function sb_sermon_install () {
 	}
 }
 
+// Runs upon activation
+function sb_activate () {
+	// Re-saves the template in case of changes to dictionary.php
+   	$sbmf = get_option('sb_sermon_multi_form');
+	if ($sbmf) update_option('sb_sermon_multi_output', base64_encode(strtr(stripslashes(base64_decode($sbmf)), sb_search_results_dictionary())));
+	$sbsf = get_option('sb_sermon_single_form');
+	if ($sbsf) update_option('sb_sermon_single_output', base64_encode(strtr(stripslashes(base64_decode($sbsf)), sb_sermon_page_dictionary())));
+}
+
 // Display the options page and handle changes
 function sb_options() {
 	global $wpdb, $sermon_domain;
@@ -449,7 +459,6 @@ function sb_options() {
 		delete_option('sb_sermon_upload_url');
 		delete_option('sb_sermon_single_form');
 		delete_option('sb_sermon_multi_form');
-		delete_option('sb_sermon_db_version');
 		delete_option('sb_sermon_style');
 		delete_option('sb_sermon_multi_output');
 		delete_option('sb_sermon_single_output');
@@ -457,10 +466,15 @@ function sb_options() {
 		delete_option('sb_sermon_style_date_modified');
 		delete_option('sb_display_method');
 		delete_option('sb_sermons_per_page');
+		delete_option('sb_sermon_db_version');
 		if (IS_MU) {
 			echo '<div id="message" class="updated fade"><p><b>'.__('All sermon data has been removed.', $sermon_domain).'</b></div>';
 		} else {
-			echo '<div id="message" class="updated fade"><p><b>'.__('Uninstall completed. Please deactivate the plugin.', $sermon_domain).'</b></div>';
+			echo '<div id="message" class="updated fade"><p><b>'.__('Uninstall completed. The Sermon Browser plugin has been deactivated.', $sermon_domain).'</b></div>';
+			$activeplugins = get_option('active_plugins');
+			array_splice($activeplugins, array_search('sermon-browser/sermon.php', $activeplugins), 1 );
+			do_action('deactivate_sermon-browser/sermon.php');
+			update_option('active_plugins', $activeplugins);
 		}
 	}
 	//Display error messsages when problems in php.ini
@@ -2353,7 +2367,11 @@ function sb_rightnow () {
 		$series_count = $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."sb_series");
 		$tag_count = $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."sb_tags WHERE name<>''");
 		$download_count = $wpdb->get_var("SELECT SUM(count) FROM ".$wpdb->prefix."sb_stuff");
-		$download_average = round($download_count/$sermon_count, 1);
+		if ($sermon_count == 0) {
+			$download_average = 0;
+		} else {
+			$download_average = round($download_count/$sermon_count, 1);
+		}
 		$most_popular = $wpdb->get_results("SELECT title, sermon_id, sum(count) AS c FROM ".$wpdb->prefix."sb_stuff LEFT JOIN ".$wpdb->prefix."sb_sermons ON ".$wpdb->prefix."sb_sermons.id = sermon_id GROUP BY sermon_id ORDER BY c DESC LIMIT 1");
 		$most_popular = $most_popular[0];
 		$output_string = '<p class="youhave">'.__("You have")." ";
