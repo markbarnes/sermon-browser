@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.37.1
+Version: 0.37.2
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -27,16 +27,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /***************************************
  ** Initialisation                    **
  **************************************/
-// Add admin menu items and check to see whether install/upgrade is necessary
 add_action('init', 'sb_sermon_init');
 add_action('admin_menu', 'sb_add_pages');
 add_action('rightnow_end', 'sb_rightnow');
+add_action('template_redirect', 'sb_hijack');
+add_filter('wp_title', 'sb_page_title');
+add_action('wp_head', 'sb_print_header');
+add_filter('the_content', 'sb_sermons_filter');
+add_action('widgets_init', 'sb_widget_sermon_init');
+if (SAVEQUERIES) add_action('wp_footer', 'sb_footer_stats');
+if (SAVEQUERIES) add_action('admin_footer', 'sb_footer_stats');
 register_activation_hook( __FILE__, 'sb_activate' );
+
+// Include required files
+require('sb-includes/dictionary.php'); // Template functions
+require('sb-includes/filetypes.php'); // User-defined icons
+require('sb-includes/frontend.php'); // Everything related to displaying sermons
+require('sb-includes/widget.php'); // Displays widget if requested
 
 // Initialisation
 function sb_sermon_init () {
+	global $sermon_domain;
 	//Set global constants
-	define('SB_CURRENT_VERSION', '0.37.1');
+	define('SB_CURRENT_VERSION', '0.37.2');
 	define('SB_DATABASE_VERSION', '1.5');
 	$directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
 	if ($directories[count($directories)-1] == 'mu-plugins') {
@@ -51,11 +64,6 @@ function sb_sermon_init () {
 			load_plugin_textdomain($sermon_domain, '', 'sermon-browser/sb-includes');
 	}
 	
-	// Include required files
-	require_once('sb-includes/dictionary.php'); // Template functions
-	include_once('sb-includes/filetypes.php'); // User-defined icons
-	include('sb-includes/frontend.php'); // Everything related to displaying sermons
-
 	// Return AJAX data if that is all that is required
 	if ($_POST['sermon'] == 1) sb_return_ajax_data();
 

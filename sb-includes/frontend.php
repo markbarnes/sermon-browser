@@ -1,21 +1,4 @@
 <?php 
-
-// Required files
-require_once('dictionary.php'); //Imports template tags
-require_once('widget.php'); // Displays widget if requested
-
-// Word list for URL building purpose
-$wl = array('preacher', 'title', 'date', 'enddate', 'series', 'service', 'sortby', 'dir', 'page', 'sermon_id', 'book', 'stag', 'podcast');
-
-// Hooks & filters
-add_action('template_redirect', 'sb_hijack');
-add_filter('wp_title', 'sb_page_title');
-add_action('wp_head', 'sb_print_header');
-add_filter('the_content', 'sb_sermons_filter');
-add_action('widgets_init', 'sb_widget_sermon_init');
-if (SAVEQUERIES) add_action('wp_footer', 'sb_footer_stats');
-if (SAVEQUERIES) add_action('admin_footer', 'sb_footer_stats');
-
 // Get the URL of the sermons page
 function sb_display_url() {
 	global $display_url, $wpdb;
@@ -485,7 +468,9 @@ function sb_sermons_filter($content) {
 
 // Returns URL for search links
 function sb_build_url($arr, $clear = false) {
-	global $wl, $post, $wpdb;
+	global $post, $wpdb;
+	// Word list for URL building purpose
+	$wl = array('preacher', 'title', 'date', 'enddate', 'series', 'service', 'sortby', 'dir', 'page', 'sermon_id', 'book', 'stag', 'podcast');
 	$foo = array_merge((array) $_GET, (array) $_POST, $arr);
 	if ($foo['page'] && (strpos ($foo['page'], 'sermon-browser/options.php') != FALSE)) { //Remove unwanted parameters passed by the admin page when re-generating pages/posts
 		unset($foo['page']);
