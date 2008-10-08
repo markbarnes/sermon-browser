@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.37
+Version: 0.37.1
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -25,58 +25,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /***************************************
- ** Set up                            **
+ ** Initialisation                    **
  **************************************/
-define('SB_CURRENT_VERSION', '0.37');
-define('SB_DATABASE_VERSION', '1.5');
-$directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
-if ($directories[count($directories)-1] == 'mu-plugins') {
-	define('IS_MU', TRUE);
-} else {
-	define('IS_MU', FALSE);
-}
-$sermon_domain = 'sermon-browser';
-if (IS_MU) {
-	load_plugin_textdomain($sermon_domain, '', 'sb-includes');
-} else {
-	load_plugin_textdomain($sermon_domain, '', 'sermon-browser/sb-includes');
-}
-require_once('sb-includes/dictionary.php'); // Template functions
-include_once('sb-includes/filetypes.php'); // User-defined icons
-include('sb-includes/frontend.php'); // Everything related to displaying sermons
-
-if ($_POST['sermon'] == 1) sb_return_ajax_data(); // Return AJAX data if that is all that is required
-
 // Add admin menu items and check to see whether install/upgrade is necessary
+add_action('init', 'sb_sermon_init');
 add_action('admin_menu', 'sb_add_pages');
-sb_sermon_install();
 add_action('rightnow_end', 'sb_rightnow');
 register_activation_hook( __FILE__, 'sb_activate' );
 
-// Add Sermons menu and sub-menus in admin
-function sb_add_pages() {
-	global $sermon_domain;
-	add_menu_page(__('Sermons', $sermon_domain), __('Sermons', $sermon_domain), 'edit_posts', __FILE__, 'sb_manage_sermons');
-	add_submenu_page(__FILE__, __('Sermons', $sermon_domain), __('Sermons', $sermon_domain), 'edit_posts', __FILE__, 'sb_manage_sermons');
-	if ($_REQUEST['page'] == 'sermon-browser/new_sermon.php' && $_REQUEST['mid']) {
-		add_submenu_page(__FILE__, __('Edit Sermon', $sermon_domain), __('Edit Sermon', $sermon_domain), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
+// Initialisation
+function sb_sermon_init () {
+	//Set global constants
+	define('SB_CURRENT_VERSION', '0.37.1');
+	define('SB_DATABASE_VERSION', '1.5');
+	$directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
+	if ($directories[count($directories)-1] == 'mu-plugins') {
+		define('IS_MU', TRUE);
 	} else {
-		add_submenu_page(__FILE__, __('Add Sermon', $sermon_domain), __('Add Sermon', $sermon_domain), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
+		define('IS_MU', FALSE);
 	}
-	add_submenu_page(__FILE__, __('Preachers', $sermon_domain), __('Preachers', $sermon_domain), 'manage_categories', 'sermon-browser/preachers.php', 'sb_manage_preachers');
-	add_submenu_page(__FILE__, __('Series &amp; Services', $sermon_domain), __('Series &amp; Services', $sermon_domain), 'manage_categories', 'sermon-browser/manage.php', 'sb_manage_everything');
-	add_submenu_page(__FILE__, __('Uploads', $sermon_domain), __('Uploads', $sermon_domain), 'upload_files', 'sermon-browser/uploads.php', 'sb_uploads');
-	add_submenu_page(__FILE__, __('Options', $sermon_domain), __('Options', $sermon_domain), 'manage_options', 'sermon-browser/options.php', 'sb_options');
-	add_submenu_page(__FILE__, __('Templates', $sermon_domain), __('Templates', $sermon_domain), 'manage_options', 'sermon-browser/templates.php', 'sb_templates');
-	add_submenu_page(__FILE__, __('Help', $sermon_domain), __('Help', $sermon_domain), 'read', 'sermon-browser/help.php', 'sb_help');
-}
+	$sermon_domain = 'sermon-browser';
+	if (IS_MU) {
+			load_plugin_textdomain($sermon_domain, '', 'sb-includes');
+	} else {
+			load_plugin_textdomain($sermon_domain, '', 'sermon-browser/sb-includes');
+	}
+	
+	// Include required files
+	require_once('sb-includes/dictionary.php'); // Template functions
+	include_once('sb-includes/filetypes.php'); // User-defined icons
+	include('sb-includes/frontend.php'); // Everything related to displaying sermons
 
-/***************************************
- ** Main Functions in Admin           **
- **************************************/
+	// Return AJAX data if that is all that is required
+	if ($_POST['sermon'] == 1) sb_return_ajax_data();
 
-// Installer
-function sb_sermon_install () {
 	//Attempt to set php.ini directives
 	if (sb_return_kbytes(ini_get('upload_max_filesize'))<15360) ini_set('upload_max_filesize', '15M');
 	if (sb_return_kbytes(ini_get('post_max_size'))<15360) ini_set('post_max_size', '15M');
@@ -84,6 +66,7 @@ function sb_sermon_install () {
 	if (intval(ini_get('max_input_time'))<600) ini_set('max_input_time','600');
 	if (intval(ini_get('max_execution_time'))<600) ini_set('max_execution_time', '600');
 	if (ini_get('file_uploads')<>'1') ini_set('file_uploads', '1');
+
 	// Only proceed with install if necessary
 	$db_version = get_option('sb_sermon_db_version');
 	if($db_version == SB_DATABASE_VERSION) return;
@@ -91,6 +74,7 @@ function sb_sermon_install () {
 	global $defaultMultiForm, $defaultSingleForm, $defaultStyle;
 	require_once(ABSPATH . 'wp-includes/pluggable.php');
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
 	// Create folders
 	$sermonUploadDir = sb_get_default('sermon_path');
 	if (!is_dir(sb_get_value('wordpress_path').$sermonUploadDir))
@@ -98,7 +82,8 @@ function sb_sermon_install () {
 	if(!is_dir(sb_get_value('wordpress_path').$sermonUploadDir.'images'))
 		sb_mkdir(sb_get_value('wordpress_path').$sermonUploadDir.'images');
 	$books = sb_get_default('bible_books');
-	 //Upgrade database from earlier versions
+
+	//Upgrade database from earlier versions
 	if ($db_version) {
 		switch ($db_version) {
 			case '1.0': 
@@ -318,6 +303,28 @@ function sb_sermon_install () {
 		add_option('sb_sermon_db_version', SB_DATABASE_VERSION);
 	}
 }
+
+// Add Sermons menu and sub-menus in admin
+function sb_add_pages() {
+	global $sermon_domain;
+	add_menu_page(__('Sermons', $sermon_domain), __('Sermons', $sermon_domain), 'edit_posts', __FILE__, 'sb_manage_sermons');
+	add_submenu_page(__FILE__, __('Sermons', $sermon_domain), __('Sermons', $sermon_domain), 'edit_posts', __FILE__, 'sb_manage_sermons');
+	if ($_REQUEST['page'] == 'sermon-browser/new_sermon.php' && $_REQUEST['mid']) {
+		add_submenu_page(__FILE__, __('Edit Sermon', $sermon_domain), __('Edit Sermon', $sermon_domain), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
+	} else {
+		add_submenu_page(__FILE__, __('Add Sermon', $sermon_domain), __('Add Sermon', $sermon_domain), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
+	}
+	add_submenu_page(__FILE__, __('Preachers', $sermon_domain), __('Preachers', $sermon_domain), 'manage_categories', 'sermon-browser/preachers.php', 'sb_manage_preachers');
+	add_submenu_page(__FILE__, __('Series &amp; Services', $sermon_domain), __('Series &amp; Services', $sermon_domain), 'manage_categories', 'sermon-browser/manage.php', 'sb_manage_everything');
+	add_submenu_page(__FILE__, __('Uploads', $sermon_domain), __('Uploads', $sermon_domain), 'upload_files', 'sermon-browser/uploads.php', 'sb_uploads');
+	add_submenu_page(__FILE__, __('Options', $sermon_domain), __('Options', $sermon_domain), 'manage_options', 'sermon-browser/options.php', 'sb_options');
+	add_submenu_page(__FILE__, __('Templates', $sermon_domain), __('Templates', $sermon_domain), 'manage_options', 'sermon-browser/templates.php', 'sb_templates');
+	add_submenu_page(__FILE__, __('Help', $sermon_domain), __('Help', $sermon_domain), 'read', 'sermon-browser/help.php', 'sb_help');
+}
+
+/***************************************
+ ** Main Functions in Admin           **
+ **************************************/
 
 // Runs upon activation
 function sb_activate () {
