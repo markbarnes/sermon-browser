@@ -97,7 +97,8 @@ You can't - but you can upload videos to other sites, then embed them in your se
 #### Can I turn off the "Powered by Sermonbrowser" link?
 
 The link is there so that people from other churches who listen to your sermons can find out about SermonBrowser themselves. But if you'd like to remove the link, just remove [creditlink] from the templates in SermonBrowser Options.
-What is the difference between the public and private podcast feeds?
+
+#### What is the difference between the public and private podcast feeds?
 
 In SermonBrowser options, you are able to change the address of the public podcast feed. This is the feed that is shown on your sermons page, and is usually the same as your private feed. However, if you use a service such as FeedBurner, you can use your public feed to send data to feedburner, and change your private feed to your Feedburner address. If you do not use a service like Feedburner, just make sure your public and private feeds are the same.
 
