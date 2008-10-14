@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser 0.34\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-09 00:23-0000\n"
+"POT-Creation-Date: 2008-10-14 14:33-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mark Barnes <mark@4-14.org.uk>\n"
 "Language-Team: \n"
@@ -486,14 +486,14 @@ msgstr ""
 #: ../sermon.php:1388
 #: ../sermon.php:1415
 #: ../sermon.php:1767
-#: ../sb-includes/frontend.php:859
+#: ../sb-includes/frontend.php:865
 msgid "Preacher"
 msgstr ""
 
 #: ../sermon.php:1397
 #: ../sermon.php:1418
 #: ../sermon.php:1780
-#: ../sb-includes/frontend.php:885
+#: ../sb-includes/frontend.php:891
 msgid "Series"
 msgstr ""
 
@@ -903,53 +903,53 @@ msgstr ""
 msgid "Previous page"
 msgstr ""
 
-#: ../sb-includes/frontend.php:664
+#: ../sb-includes/frontend.php:670
 msgid "About"
 msgstr ""
 
-#: ../sb-includes/frontend.php:700
+#: ../sb-includes/frontend.php:706
 msgid "None"
 msgstr ""
 
-#: ../sb-includes/frontend.php:861
-#: ../sb-includes/frontend.php:869
-#: ../sb-includes/frontend.php:879
-#: ../sb-includes/frontend.php:887
+#: ../sb-includes/frontend.php:867
+#: ../sb-includes/frontend.php:875
+#: ../sb-includes/frontend.php:885
+#: ../sb-includes/frontend.php:893
 #: ../sb-includes/widget.php:209
 #: ../sb-includes/widget.php:217
 #: ../sb-includes/widget.php:225
 msgid "[All]"
 msgstr ""
 
-#: ../sb-includes/frontend.php:867
+#: ../sb-includes/frontend.php:873
 msgid "Services"
 msgstr ""
 
-#: ../sb-includes/frontend.php:877
+#: ../sb-includes/frontend.php:883
 msgid "Book"
 msgstr ""
 
-#: ../sb-includes/frontend.php:895
+#: ../sb-includes/frontend.php:901
 msgid "Start date"
 msgstr ""
 
-#: ../sb-includes/frontend.php:897
+#: ../sb-includes/frontend.php:903
 msgid "End date"
 msgstr ""
 
-#: ../sb-includes/frontend.php:901
+#: ../sb-includes/frontend.php:907
 msgid "Keywords"
 msgstr ""
 
-#: ../sb-includes/frontend.php:905
+#: ../sb-includes/frontend.php:911
 msgid "Sort by"
 msgstr ""
 
-#: ../sb-includes/frontend.php:912
+#: ../sb-includes/frontend.php:918
 msgid "Direction"
 msgstr ""
 
-#: ../sb-includes/frontend.php:922
+#: ../sb-includes/frontend.php:928
 msgid "Filter &raquo;"
 msgstr ""
 
