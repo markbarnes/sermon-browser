@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.37.2
+Version: 0.37.3
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -49,7 +49,7 @@ require('sb-includes/widget.php'); // Displays widget if requested
 function sb_sermon_init () {
 	global $sermon_domain;
 	//Set global constants
-	define('SB_CURRENT_VERSION', '0.37.2');
+	define('SB_CURRENT_VERSION', '0.37.3');
 	define('SB_DATABASE_VERSION', '1.5');
 	$directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
 	if ($directories[count($directories)-1] == 'mu-plugins') {
@@ -353,9 +353,9 @@ function sb_options() {
 	if ($_POST['resetdefault']) {
 		$dir = sb_get_default('sermon_path');
 		if (sb_display_url()=="") {
-			update_option('sb_podcast', sb_get_value('wordpress_url').'?podcast');
+			update_option('sb_podcast', sb_get_value('wordpress_url').sb_query_char().'podcast');
 		} else {
-			update_option('sb_podcast', sb_display_url().'?podcast');
+			update_option('sb_podcast', sb_display_url().sb_query_char ().'podcast');
 		}
 		update_option('sb_sermon_upload_dir', $dir);
 		update_option('sb_sermon_upload_url', sb_get_default('attachment_url'));
@@ -532,7 +532,7 @@ function sb_options() {
 			</tr>
 			<tr>
 				<td align="right"><?php _e('Private podcast feed', $sermon_domain) ?>: </td>
-				<td><?php if (sb_display_url()=="") { echo sb_get_value('wordpress_url'); } else { echo sb_display_url(); } ?>?podcast</td>
+				<td><?php if (sb_display_url()=="") { echo sb_get_value('wordpress_url'); } else { echo sb_display_url(); } echo sb_query_char(); ?>podcast</td>
 			</tr>
 			<tr>
 				<td align="right" style="vertical-align:middle"><?php _e('Sermons per page', $sermon_domain) ?>: </td>
