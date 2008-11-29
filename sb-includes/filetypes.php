@@ -24,7 +24,7 @@ $filetypes = array(
 	'docx' => array(
 		'name' => 'Microsoft Word',
 		'icon' => 'doc.png',
-		'content-type' => 'application/ms-word',
+		'content-type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 	),		
 	'rtf' => array(
 		'name' => 'Rich Text Format',
@@ -39,7 +39,7 @@ $filetypes = array(
 	'pptx' => array(
 		'name' => 'Powerpoint',
 		'icon' => 'ppt.png',
-		'content-type' => 'application/vnd.ms-powerpoint',
+		'content-type' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 	),		
 	'pdf' => array(
 		'name' => 'Adobe Acrobat',
@@ -89,7 +89,7 @@ $filetypes = array(
 	'xlsx' => array(
 		'name' => 'Microsoft Excel',
 		'icon' => 'xls.png',
-		'content-type' => 'application/vnd.ms-excel',
+		'content-type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 	),		
 	'zip' => array(
 		'name' => 'Zip file',

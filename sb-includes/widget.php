@@ -53,7 +53,7 @@ function sb_widget_sermon_init() {
 	$registered = false;
 	foreach ( array_keys($options) as $o ) {
 		// Old widgets can have null values for some reason
-		if ( !isset($options[$o]['limit']) ) // we used 'something' above in our exampple.  Replace with with whatever your real data are.
+		if ( !isset($options[$o]['limit']) ) // we used 'something' above in our example.  Replace with with whatever your real data are.
 			continue;
 
 		// $id should look like {$id_base}-{$o}

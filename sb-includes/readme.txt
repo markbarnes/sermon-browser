@@ -3,7 +3,7 @@ Contributors: mark8barnes
 Donate link: http://www.4-14.org.uk/sermon-browser#support
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu
 Requires at least: 2.2
-Tested up to: 2.6
+Tested up to: 2.7
 Stable tag: trunk
 
 Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
@@ -16,7 +16,7 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 2. Full **podcasting** capabilities, including custom podcasts for individual users.
 3. Sermons uploaded in mp3 format can be **played directly** on your website using the 1PixelOut Audio Player.
 4. An optional **sidebar widget** displays sermons on all of your posts or pages.
-5. **Embed videos** from sites such as YouTube or Google Video.
+5. **Embed videos** and other flash files from sites such as YouTube or Google Video.
 6. **Other file types** can also be uploaded, including PDF, Powerpoint, Word, text and RTF. Multiple files can be attached to single sermons.
 7. The **full Bible text** of the passage being preached on can be included on each sermon page (five different versions, including ESV).
 8. Files can be uploaded to your own site **through the browser or via FTP**. Alternatively you can use other free audio hosting sites such as Odeo.
@@ -65,7 +65,7 @@ You need to install and activate the 1pixelout audio player plugin. You can also
 
 #### How do I change the Bible version from the ESV?
 
-Five Bible versions are supported by Sermon Browser: the English Standard Version, American Standard Version, King James Version, Young's Literal Transaltion and the World English Bible. To change to one of these other versions, go to Options, and edit the single template. Replace [esvtext] with [asvtext], [kjvtext], [ylttext] or [webtext]. Thanks go to Crossway for providing access to the ESV, and Living Stones Ministries for the other versions.
+Six Bible versions are supported by Sermon Browser: the English Standard Version, American Standard Version, King James Version, Young's Literal Translation, the World English Bible and the Spanish-language Reina Valera. To change to one of these other versions, go to Options, and edit the single template. Replace [esvtext] with [asvtext], [kjvtext], [ylttext], [webtext] or [lbrvtext]. Thanks go to Crossway for providing access to the ESV, and Living Stones Ministries for the other versions.
 
 If you're desperate to use other versions not currently supported, you can manage it using other Wordpress plugins (albeit with reduced functionality). However, if you're desperate to use other versions, you can manage it using other Wordpress plugins (albeit with reduced functionality). The eBibleicious plugin allows for NASB, MSG, KJV, NKJV, ESV, HCSB, and NCV (use it in 'snippet' mode). However, there are three disadvantages. (1) To use it, you'll need to register for an API key (although it is free). (2) It uses Javascript so search engines won't see the Bible text, and nor will users with javascript turned off. (3) Most importantly, it only shows a maximum of four verses (the ESV shows up to 500 verses!).
 

@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.37.3
+Version: 0.38
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -27,29 +27,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /***************************************
  ** Initialisation                    **
  **************************************/
-add_action('init', 'sb_sermon_init');
-add_action('admin_menu', 'sb_add_pages');
-add_action('rightnow_end', 'sb_rightnow');
-add_action('template_redirect', 'sb_hijack');
-add_filter('wp_title', 'sb_page_title');
-add_action('wp_head', 'sb_print_header');
-add_filter('the_content', 'sb_sermons_filter');
-add_action('widgets_init', 'sb_widget_sermon_init');
-if (SAVEQUERIES) add_action('wp_footer', 'sb_footer_stats');
-if (SAVEQUERIES) add_action('admin_footer', 'sb_footer_stats');
-register_activation_hook( __FILE__, 'sb_activate' );
+//add_action('update_option_permalink_structure', 'update_podcast_url');
+register_activation_hook( __FILE__, 'sb_activate' );			// Re-saves template on activation
+add_action('init', 'sb_sermon_init'); 							// Initialise the plugin
+add_action('template_redirect', 'sb_hijack');					// Check for file download or feed output
+add_action('admin_menu', 'sb_add_pages');						// Add menus to admin
+add_action('rightnow_end', 'sb_rightnow');						// Display stats in the dashboard
+add_filter('the_content', 'sb_sermons_filter');					// Replace [sermons]
+add_action('widgets_init', 'sb_widget_sermon_init');			// Initialise the widget
+add_action('wp_head', 'sb_add_headers', 0);						// Add CSS and javascript to frontend
+add_action('admin_init', 'sb_add_admin_headers');				// Add CSS and javascript to admin
+add_action('wp_head', 'wp_print_styles', 9); 					// Force styles output in header
+add_action('wp_head', 'sb_add_feed_links');						// Add podcast feeds to HEAD
+add_filter('wp_title', 'sb_page_title');						// Amend page title on sermon pages
+add_action('save_post', 'update_podcast_url');					// Add check if [sermons] moves, and update podcast URL
+if (SAVEQUERIES) add_action('wp_footer', 'sb_footer_stats');	// Add stats to footer if required (frontend)
+if (SAVEQUERIES) add_action('admin_footer', 'sb_footer_stats');	// Add stats to footer if required (admin)
 
 // Include required files
-require('sb-includes/dictionary.php'); // Template functions
-require('sb-includes/filetypes.php'); // User-defined icons
-require('sb-includes/frontend.php'); // Everything related to displaying sermons
-require('sb-includes/widget.php'); // Displays widget if requested
+require('sb-includes/dictionary.php');	// Template functions
+require('sb-includes/filetypes.php'); 	// User-defined icons
+require('sb-includes/frontend.php');	// Everything related to displaying sermons
+require('sb-includes/widget.php');		// Widget functionality
 
 // Initialisation
 function sb_sermon_init () {
 	global $sermon_domain;
 	//Set global constants
-	define('SB_CURRENT_VERSION', '0.37.3');
+	define('SB_CURRENT_VERSION', '0.38');
 	define('SB_DATABASE_VERSION', '1.5');
 	$directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
 	if ($directories[count($directories)-1] == 'mu-plugins') {
@@ -66,6 +71,12 @@ function sb_sermon_init () {
 	
 	// Return AJAX data if that is all that is required
 	if ($_POST['sermon'] == 1) sb_return_ajax_data();
+
+	// Register custom CSS and javascript files
+	wp_register_script('sb_64', sb_get_value('plugin_url').'/sb-includes/64.js', false, SB_CURRENT_VERSION);
+	wp_register_script('sb_datepicker', sb_get_value('plugin_url').'/sb-includes/datePicker.js', array('jquery'), SB_CURRENT_VERSION);
+	wp_register_style('sb_datepicker', sb_get_value('plugin_url').'/sb-includes/datepicker.css', false, SB_CURRENT_VERSION);
+	wp_register_style('sb_style', sb_get_value('plugin_url').'/sb-includes/style.php', false, get_option('sb_sermon_style_date_modified'));
 
 	//Attempt to set php.ini directives
 	if (sb_return_kbytes(ini_get('upload_max_filesize'))<15360) ini_set('upload_max_filesize', '15M');
@@ -341,6 +352,17 @@ function sb_activate () {
 	if ($sbmf) update_option('sb_sermon_multi_output', base64_encode(strtr(stripslashes(base64_decode($sbmf)), sb_search_results_dictionary())));
 	$sbsf = get_option('sb_sermon_single_form');
 	if ($sbsf) update_option('sb_sermon_single_output', base64_encode(strtr(stripslashes(base64_decode($sbsf)), sb_sermon_page_dictionary())));
+}
+
+// Adds javascript and CSS where required in admin
+function sb_add_admin_headers() {
+	if (substr($_REQUEST['page'],14) == 'sermon-browser')
+		wp_enqueue_script('jquery');
+	if ($_REQUEST['page'] == 'sermon-browser/new_sermon.php') {
+		wp_enqueue_script('sb_datepicker');
+		wp_enqueue_script('sb_64');
+		wp_enqueue_style ('sb_datepicker');
+	}
 }
 
 // Display the options page and handle changes
@@ -717,7 +739,6 @@ function sb_manage_preachers() {
 	
 	if ($_GET['act'] == 'new' || $_GET['act'] == 'edit') {
 		if ($_GET['act'] == 'edit') $preacher = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}sb_preachers WHERE id = ".(int) $_GET['pid']);
-	sb_check_sermon_tag();
 	//Display HTML
 ?>
 	<div class="wrap">
@@ -779,6 +800,7 @@ function sb_manage_preachers() {
 	}
 	
 	$preachers = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_preachers ORDER BY name asc");
+	sb_check_sermon_tag();
 ?>
 	<div class="wrap">
 		<h2><?php _e('Preachers', $sermon_domain) ?> (<a href="<?php echo sb_get_value('wordpress_url') ?>/wp-admin/admin.php?page=sermon-browser/preachers.php&act=new"><?php _e('add new', $sermon_domain) ?></a>)</h2>
@@ -1064,13 +1086,11 @@ function sb_uploads() {
 	$cntl = $cntl['cntl'];		
 	sb_check_sermon_tag();
 ?>
-	<script type="text/javascript" src="<?php echo sb_get_value('wordpress_url') ?>/wp-includes/js/jquery/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo sb_get_value('wordpress_url') ?>/wp-includes/js/fat.js"></script>
 	<script>
 		function rename(id, old) {
 			var f = prompt("<?php _e('New file name?', $sermon_domain) ?>", old);
 			if (f != null) {
-				jQuery.post('<?php echo sb_get_value('wordpress_url') ?>'/wp-admin/admin.php?page=sermon-browser/uploads.php', {fid: id, oname: old, fname: f, sermon: 1}, function(r) {
+				jQuery.post('<?php echo sb_get_value('wordpress_url') ?>/wp-admin/admin.php?page=sermon-browser/uploads.php', {fid: id, oname: old, fname: f, sermon: 1}, function(r) {
 					if (r) {
 						if (r == 'renamed') {
 							jQuery('#' + id).text(f.substring(0,f.lastIndexOf(".")));
@@ -1091,7 +1111,7 @@ function sb_uploads() {
 			}
 		}
 		function kill(id, f) {
-			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>'/wp-admin/admin.php?page=sermon-browser/uploads.php', {fname: f, fid: id, del: 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>/wp-admin/admin.php?page=sermon-browser/uploads.php', {fname: f, fid: id, del: 1, sermon: 1}, function(r) {
 				if (r) {
 					if (r == 'deleted') {
 						jQuery('#file' + id).fadeOut(function() {
@@ -1117,7 +1137,7 @@ function sb_uploads() {
 			});	
 		}
 		function fetchU(st) {
-			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>'/wp-admin/admin.php?page=sermon-browser/uploads.php', {fetchU: st + 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>/wp-admin/admin.php?page=sermon-browser/uploads.php', {fetchU: st + 1, sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#the-list-u').html(r);					
 					if (st >= <?php echo sb_get_value('sermons_per_page') ?>) {
@@ -1136,7 +1156,7 @@ function sb_uploads() {
 			});	
 		}
 		function fetchL(st) {
-			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>'/wp-admin/admin.php?page=sermon-browser/uploads.php', {fetchL: st + 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>/wp-admin/admin.php?page=sermon-browser/uploads.php', {fetchL: st + 1, sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#the-list-l').html(r);					
 					if (st >= <?php echo sb_get_value('sermons_per_page') ?>) {
@@ -1155,7 +1175,7 @@ function sb_uploads() {
 			});	
 		}
 		function findNow() {
-			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>'/wp-admin/admin.php?page=sermon-browser/uploads.php', {search: jQuery('#search').val(), sermon: 1}, function(r) {
+			jQuery.post('<?php echo sb_get_value('wordpress_url') ?>/wp-admin/admin.php?page=sermon-browser/uploads.php', {search: jQuery('#search').val(), sermon: 1}, function(r) {
 				if (r) {
 					jQuery('#the-list-s').html(r);										
 				};
@@ -1355,7 +1375,6 @@ function sb_manage_sermons() {
 	$preachers = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_preachers ORDER BY name;");	
 	$series = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_series ORDER BY name;");
 ?>	
-	<script type="text/javascript" src="<?php echo sb_get_value('wordpress_url') ?>/wp-includes/js/jquery/jquery.js"></script>
 	<script>
 		function fetch(st) {
 			jQuery.post('<?php echo sb_get_value('admin_url') ?>sermon.php', {fetch: st + 1, sermon: 1, title: jQuery('#search').val(), preacher: jQuery('#preacher option[@selected]').val(), series: jQuery('#series option[@selected]').val() }, function(r) {
@@ -1457,8 +1476,7 @@ function sb_manage_sermons() {
 
 // Displays new/edit sermon page
 function sb_new_sermon() {
-	global $wpdb, $sermon_domain;
-	global $allowedposttags;
+	global $wpdb, $sermon_domain, $allowedposttags;
 	//Security check
 	if (function_exists('current_user_can')&&!(current_user_can('edit_posts')|current_user_can('publish_posts')))
 		wp_die(__("You do not have the correct permissions to edit or create sermons", $sermon_domain));
@@ -1490,7 +1508,11 @@ function sb_new_sermon() {
 		$start = mysql_real_escape_string(serialize($startz));
 		$end = mysql_real_escape_string(serialize($endz));
 		$date = date('Y-m-d', strtotime($_POST['date']));
-		$description = mysql_real_escape_string(wp_kses($_POST['description'], $allowedposttags));
+		if (function_exists('current_user_can') && !current_user_can('unfiltered_html')) {
+			$description = mysql_real_escape_string(wp_kses($_POST['description'], $allowedposttags));
+		} else {
+			$description = mysql_real_escape_string($_POST['description']);
+		}
 		$override = $_POST['override'] == 'on' ? 1 : 0;
 		// edit or not edit
 		if (!$_GET['mid']) { // new
@@ -1631,11 +1653,6 @@ function sb_new_sermon() {
 	}
 	$books = sb_get_value('bible_books');
 ?>
-	<link rel="stylesheet" href="<?php echo sb_get_value('plugin_url') ?>/sb-includes/style.php" type="text/css">
-	<link rel="stylesheet" href="<?php echo sb_get_value('plugin_url') ?>/sb-includes/datepicker.css" type="text/css">
-	<script type="text/javascript" src="<?php echo sb_get_value('wordpress_url') ?>/wp-includes/js/jquery/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo sb_get_value('plugin_url') ?>/sb-includes/datePicker.js"></script>
-	<script type="text/javascript" src="<?php echo sb_get_value('plugin_url') ?>/sb-includes/64.js"></script>
 	<script type="text/javascript">		
 		var timeArr = new Array();
 		<?php echo $timeArr ?>		
@@ -2035,7 +2052,7 @@ sb_check_sermon_tag();
 			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-4.html" target="_blank">Entering a new sermon</a></li>
 			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-5.html" target="_blank">Editing a sermon and adding embedded video</a></li>
 		</ul>
-		<h4>Template tags</h4>
+		<h3>Template tags</h3>
 		<p>If you want to change the way SermonBrowser displays on your website, you'll need to edit the templates and/or CSS file. Check out <a href="#templatetags">this guide to the template tags</a>.</p>
 		<h3>Frequently asked questions</h3>
 		<ul>
@@ -2361,7 +2378,23 @@ function sb_return_ajax_data () {
 
 // Warns if [sermons] tag not found
 function sb_check_sermon_tag() {
-	if (sb_display_url() == "") echo '<div id="message" class="updated"><p><b>'.__('You must create a post or preferably a page that includes the code [sermons] in order for your sermons to be displayed on your site.', $sermon_domain).'</b></div>';
+	if (sb_display_url() == "") {
+		echo '<div id="message" class="updated"><p><b>'.__('You must create a post or preferably a page that includes the code [sermons] in order for your sermons to be displayed on your site.', $sermon_domain).'</b></div>';
+	} else {
+		sb_check_audioplayer();
+	}
+}
+
+// Alerts if AudioPlayer not installed
+function sb_check_audioplayer() {
+	global $wpdb, $sermon_domain;
+	if (!function_exists('ap_insert_player_widgets')) {
+		if ($wpdb->get_var("SELECT COUNT(id) FROM wp_sb_stuff WHERE name LIKE '%.mp3'")>0)
+			echo '<div id="message" class="updated"><p><b>'.sprintf(__('Tip: Installing the %1$sWordpress Audio Player%2$s will allow users to listen to your sermons more easily.', $sermon_domain), '<a href="http://wpaudioplayer.com/" target="_blank">', '</a>').'</b></div>';
+	} else {
+		if (rand (1,5) == 1)
+			echo '<div id="message" class="updated"><p><b>'.sprintf(__('If you find SermonBrowser useful, please consider a %1$ssmall donation%2$s.', $sermon_domain), '<a href="http://www.4-14.org.uk/sermon-browser#support" target="_blank">', '</a>').'</b></div>';
+	}
 }
 
 // Show the textarea input
@@ -2425,11 +2458,14 @@ function sb_scan_dir() {
 	global $wpdb;
 	$files = $wpdb->get_results("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE type = 'file';");
 	$bnn = array();
+	$dir = sb_get_value('wordpress_path').get_option('sb_sermon_upload_dir');	
 	foreach ($files as $file) {
 		$bnn[] = $file->name;
+		if (!file_exists($dir.$file->name)) {
+			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE name='".$file->name."' AND sermon_id=0;");
+		}
 	}
 	
-	$dir = sb_get_value('wordpress_path').get_option('sb_sermon_upload_dir');	
 	if ($dh = @opendir($dir)) {
 		while (false !== ($file = readdir($dh))) {
 	    	if ($file != "." && $file != ".." && !is_dir($dir.$file) && !in_array($file, $bnn)) {	    		
@@ -2482,7 +2518,7 @@ function sb_return_kbytes($val) {
 	$last = strtolower($val[strlen($val)-1]);
 	switch($last) {
 		case 'g':
-			$val *= 1024;
+			$val *= 1024000;
 		case 'm':
 			$val *= 1024;
 	}
@@ -2494,6 +2530,19 @@ function sb_sermon_stats($sermonid) {
 	global $wpdb;
 	$stats = $wpdb->get_var("SELECT SUM(count) FROM ".$wpdb->prefix."sb_stuff WHERE sermon_id=".$sermonid);
 	if ($stats > 0) return $stats;
+}
+
+//Updates podcast URL in wp_options (required if permalinks changed or [sermons] added to a different page)
+function update_podcast_url () {
+	global $wp_rewrite;
+	$existing_url = get_option('sb_podcast');
+	if (substr($existing_url, 0, strlen(sb_get_value('wordpress_url'))) == sb_get_value('wordpress_url')) {
+		if (sb_display_url(TRUE)=="") {
+			update_option('sb_podcast', sb_get_value('wordpress_url').sb_query_char().'podcast');
+		} else {
+			update_option('sb_podcast', sb_display_url().sb_query_char ().'podcast');
+		}
+	}
 }
 
 // Returns and caches common values

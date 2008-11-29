@@ -1,9 +1,9 @@
 <?php 
 // Get the URL of the sermons page
-function sb_display_url() {
+function sb_display_url($recalc=FALSE) {
 	global $display_url, $wpdb;
-	if (!$display_url) {
-		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons]%' AND post_status = 'publish' AND post_date < NOW();");
+	if (!$display_url | $recalc) {
+		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons]%' AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
 		$display_url = get_permalink($pageid);
 		if ($display_url == sb_get_value('wordpress_url')|$display_url =="") { // Hack to force true permalink even if page used for front page.
 			$display_url = sb_get_value('wordpress_url')."/?page_id=".$pageid;
@@ -196,7 +196,9 @@ function sb_add_bible_text ($start, $end, $version) {
 
 //Returns ESV text
 function sb_add_esv_text ($start, $end) {
-	// If you are experiencing errors, you should sign up for an ESV API key, and insert the name of your key in place of the letters IP in the URL below (.e.g. ...passageQuery?key=YOURAPIKEY&passage=...)
+	// If you are experiencing errors, you should sign up for an ESV API key, 
+	// and insert the name of your key in place of the letters IP in the URL
+	// below (.e.g. ...passageQuery?key=YOURAPIKEY&passage=...)
 	$esv_url = 'http://www.esvapi.org/v2/rest/passageQuery?key=IP&passage='.urlencode(sb_tidy_reference ($start, $end)).'&include-headings=false&include-footnotes=false';
 	return sb_download_page ($esv_url);
 }
@@ -280,7 +282,7 @@ function sb_hijack() {
 			header("Content-Type: application/force-download");
 			header("Content-Type: application/octet-stream");
 			header("Content-Type: application/download");
-			header("Content-Disposition: attachment; filename=".$file_name.";");
+			header('Content-Disposition: attachment; filename="'.$file_name.'";');
 			header("Content-Transfer-Encoding: binary");
 			sb_increase_download_count ($file_name);
 			$file_name = sb_get_value('wordpress_path').get_option("sb_sermon_upload_dir").$file_name;
@@ -316,7 +318,7 @@ function sb_hijack() {
 			if ($cd) {
 				header ("Content-Disposition: ".$cd); }
 			else {
-				header("Content-Disposition: attachment; filename=".basename($url).";"); }
+				header('Content-Disposition: attachment; filename="'.basename($url).'";'); }
 			header("Content-Transfer-Encoding: binary");
 			if ($filesize) header("Content-Length: ".$filesize);
 			sb_increase_download_count ($url);
@@ -335,16 +337,9 @@ function sb_hijack() {
 		$file_name = urldecode($_GET['file_name']);
 		$file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
 		if (!is_null($file_name)) {
-			$ext = substr($file_name, strrpos($file_name, '.') + 1);
-			if (isset($filetypes[$ext]['content-type'])) {
-				header ("Content-Type: ".$filetypes[$ext]['content-type']); }
-			else {
-				header ("Content-Type: application/octet-stream"); }
+			$url = get_option('sb_sermon_upload_url').$file_name;
 			sb_increase_download_count ($file_name);
-			$file_name = sb_get_value('wordpress_path').get_option("sb_sermon_upload_dir").$file_name;
-			header("Content-Length: ".filesize($file_name));
-			header("Content-Transfer-Encoding: binary");
-			readfile_segments($file_name);
+			header("Location: ".$url);
 		}
 		exit();
 	}
@@ -352,35 +347,8 @@ function sb_hijack() {
 	//Returns contents of external URL(doesn't force download)
 	if (isset($_REQUEST['show']) AND isset($_REQUEST['url'])) {
 		$url = URLDecode($_GET['url']);
-		if(ini_get('allow_url_fopen')) {
-			$headers = array_change_key_case(get_headers($url, 1),CASE_LOWER);
-			$filesize = $headers['content-length'];
-			$cd =  $headers['content-disposition'];
-			$location =  $headers['location'];
-			$ext = substr($url, strrpos($url, '.') + 1); //Check this
-			if ($location) {
-				header('Location: '.get_bloginfo('wpurl').'?show&url='.$location);
-				die();
-			}
-			if (isset($filetypes[$ext]['content-type'])) {
-				header ("Content-Type: ".$filetypes[$ext]['content-type']);
-			} else {
-				header ("Content-Type: application/octet-stream"); 
-			}
-			if ($cd) {
-				header ("Content-Disposition: ".$cd); }
-			else {
-				header("Content-Disposition: attachment; filename=".basename($url).";"); }
-			header("Content-Transfer-Encoding: binary");
-			if ($filesize) header("Content-Length: ".$filesize);
-			sb_increase_download_count ($url);
-			readfile_segments($url);
-			exit();
-		}
-		else {
-			sb_increase_download_count ($url);
-			header('Location: '.$url);
-		}
+		sb_increase_download_count ($url);
+		header('Location: '.$url);
 	}
 }
 
@@ -487,27 +455,41 @@ function sb_build_url($arr, $clear = false) {
 	return sb_display_url().sb_query_char().implode('&amp;', $bar);
 }
 
-// Adds sermon-browser code to Wordpress header
-function sb_print_header() {
-?>
-	<!-- Added by SermonBrowser (version <?php echo SB_CURRENT_VERSION ?>) - http://www.4-14.org.uk/sermon-browser -->
-	<link rel="alternate" type="application/rss+xml" title="<?php _e('Sermon podcast', $sermon_domain) ?>" href="<?php echo get_option('sb_podcast') ?>" />
-<?php
-	global $sermon_domain, $post, $wpdb;
-	if ($_REQUEST['title'] OR $_REQUEST['preacher'] OR $_REQUEST['date'] OR $_REQUEST['enddate'] OR $_REQUEST['series'] OR $_REQUEST['service'] OR $_REQUEST['book'] OR $_REQUEST['stag']) {
-?>
-	<link rel="alternate" type="application/rss+xml" title="<?php _e('Custom sermon podcast', $sermon_domain) ?>" href="<?php echo sb_podcast_url() ?>" />
-<?php
+// Adds javascript and CSS where required
+function sb_add_headers() {
+	global $post, $wpdb;
+	$current_page = $post->ID;
+	$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons]%' AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
+	if ($current_page == $pageid) {
+		wp_enqueue_script('sb_datepicker');
+		wp_enqueue_script('sb_64');
+		wp_enqueue_style ('sb_datepicker');
+		wp_enqueue_style ('sb_style');
 	}
-	$pageinfo = $wpdb->get_results("SELECT ID, post_type FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons]%' AND post_status = 'publish' AND post_date < NOW();");
-	$pageinfo = $pageinfo [0];
-	if (($pageinfo->ID == $post->ID) OR $pageinfo->post_type == "post") {
-?>
-	<link rel="stylesheet" href="<?php echo sb_get_value('plugin_url') ?>/sb-includes/datepicker.css" type="text/css"/>
-	<link rel="stylesheet" href="<?php echo sb_get_value('plugin_url') ?>/sb-includes/style.php" type="text/css"/>
-	<script type="text/javascript" src="<?php echo sb_get_value('wordpress_url') ?>/wp-includes/js/jquery/jquery.js"></script>
-	<script type="text/javascript" src="<?php echo sb_get_value('plugin_url') ?>/sb-includes/datePicker.js"></script>
-<?php
+}
+
+// Adds podcast feeds to header
+function sb_add_feed_links() {
+	global $sermon_domain, $post, $wpdb;
+	echo "<!-- Added by SermonBrowser (version ".SB_CURRENT_VERSION.") - http://www.4-14.org.uk/sermon-browser -->\r";
+	echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Sermon podcast', $sermon_domain)."\" href=\"".get_option('sb_podcast')."\" />\r";
+	$current_page = $post->ID;
+	$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons]%' AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
+	if ($current_page == $pageid) {
+		if ($_REQUEST['title'] OR $_REQUEST['preacher'] OR $_REQUEST['date'] OR $_REQUEST['enddate'] OR $_REQUEST['series'] OR $_REQUEST['service'] OR $_REQUEST['book'] OR $_REQUEST['stag']) {
+			echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Custom sermon podcast', $sermon_domain)."\" href=\"".sb_podcast_url()."\" />\r";
+		}
+	}
+}
+
+//Returns the default time for a particular service
+function sb_default_time($service) {
+	global $wpdb;
+	$sermon_time = $wpdb->get_var("SELECT time FROM {$wpdb->prefix}sb_services WHERE id='{$service}'");
+	if (isset($sermon_time)) {
+		return $sermon_time;
+	} else {
+		return "00:00";
 	}
 }
 
@@ -723,7 +705,7 @@ function sb_get_single_sermon($id) {
 	foreach ($rawtags as $tag) {
 		$tags[] = $tag->name;
 	}
-foreach ($stuff as $cur) {
+	foreach ($stuff as $cur) {
 		switch ($cur->type) {
 			case "file":
 			case "url":
@@ -821,9 +803,13 @@ function sb_get_sermons($filter, $order, $page = 1, $limit = 0) {
 }
 
 //Gets attachments from database
-function sb_get_stuff($sermon) {
+function sb_get_stuff($sermon, $mp3_only = FALSE) {
 	global $wpdb;
-	$stuff = $wpdb->get_results("SELECT f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $sermon->id ORDER BY id desc");
+	if ($mp3_only) {
+		$stuff = $wpdb->get_results("SELECT f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $sermon->id AND name LIKE '%.mp3' ORDER BY id desc");
+	} else {
+		$stuff = $wpdb->get_results("SELECT f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $sermon->id ORDER BY id desc");
+	}
 	foreach ($stuff as $cur) {
 		${$cur->type}[] = $cur->name;
 	}
