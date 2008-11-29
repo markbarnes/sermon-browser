@@ -526,7 +526,7 @@ function sb_options() {
 		return	'<tr><td align="right" style="color:#FF8C00; font-weight:bold">'.__('Warning', $sermon_domain).':</td>'.
 				'<td style="color: #FF8C00">'.$message.'</td></tr>';
 	}
-	sb_check_sermon_tag();
+	sb_do_alerts();
 	// HTML for options page
 ?>
 	<form method="post">
@@ -631,7 +631,7 @@ function sb_templates () {
 		_e('Templates saved successfully.', $sermon_domain);
 		echo '</b></p></div>';		
 	}
-	sb_check_sermon_tag();
+	sb_do_alerts();
 	// HTML for templates page
 	?>
 	<form method="post">
@@ -800,7 +800,7 @@ function sb_manage_preachers() {
 	}
 	
 	$preachers = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_preachers ORDER BY name asc");
-	sb_check_sermon_tag();
+	sb_do_alerts();
 ?>
 	<div class="wrap">
 		<h2><?php _e('Preachers', $sermon_domain) ?> (<a href="<?php echo sb_get_value('wordpress_url') ?>/wp-admin/admin.php?page=sermon-browser/preachers.php&act=new"><?php _e('add new', $sermon_domain) ?></a>)</h2>
@@ -845,7 +845,7 @@ function sb_manage_everything() {
 		'Series' => array('data' => $series),
 		'Services' => array('data' => $services),
 	);
-	sb_check_sermon_tag();
+	sb_do_alerts();
 ?>
 	<script type="text/javascript">
 		//<![CDATA[
@@ -1084,7 +1084,7 @@ function sb_uploads() {
 	$cntu = $cntu['cntu'];		
 	$cntl = $wpdb->get_row("SELECT COUNT(*) as cntl FROM {$wpdb->prefix}sb_stuff WHERE sermon_id <> 0 AND type = 'file' ", ARRAY_A);
 	$cntl = $cntl['cntl'];		
-	sb_check_sermon_tag();
+	sb_do_alerts();
 ?>
 	<script>
 		function rename(id, old) {
@@ -1349,7 +1349,7 @@ function sb_manage_sermons() {
 	//Security check
 	if (function_exists('current_user_can')&&!(current_user_can('edit_posts')|current_user_can('publish_posts')))
 		wp_die(__("You do not have the correct permissions to edit sermons", $sermon_domain));
-	sb_check_sermon_tag();
+	sb_do_alerts();
 	if ($_GET['saved']) {
 		echo '<div id="message" class="updated fade"><p><b>'.__('Sermon saved to database.', $sermon_domain).'</b></div>';
 	}
@@ -1758,7 +1758,7 @@ function sb_new_sermon() {
 			jQuery("#"+id + " td select").val('0');
 		}
 	</script>
-	<?php sb_check_sermon_tag(); ?>
+	<?php sb_do_alerts(); ?>
 	<div class="wrap">
 		<h2><?php echo $_GET['mid'] ? 'Edit Sermon' : 'Add Sermon' ?></h2>
 		<br>
@@ -2038,7 +2038,7 @@ function sb_new_sermon() {
 // Displays the help page
 function sb_help() {
 global $sermon_domain;
-sb_check_sermon_tag();
+sb_do_alerts();
 ?>	
 	<style>div.wrap h3, div.wrap h4, div.wrap h5 {margin-bottom: 0; margin-top: 2em} div.wrap p {margin-left: 2em; margin-top: 0.5em} div.wrap h3 {border-top: 1px solid #555555; padding-top: 0.5em}</style>
 	<div class="wrap">
@@ -2376,24 +2376,19 @@ function sb_return_ajax_data () {
  ** Supplementary functions           **
  **************************************/
 
-// Warns if [sermons] tag not found
-function sb_check_sermon_tag() {
+// Displays various alerts in admin
+function sb_do_alerts() {
+	global $wpdb, $sermon_domain;
 	if (sb_display_url() == "") {
 		echo '<div id="message" class="updated"><p><b>'.__('You must create a post or preferably a page that includes the code [sermons] in order for your sermons to be displayed on your site.', $sermon_domain).'</b></div>';
 	} else {
-		sb_check_audioplayer();
-	}
-}
-
-// Alerts if AudioPlayer not installed
-function sb_check_audioplayer() {
-	global $wpdb, $sermon_domain;
-	if (!function_exists('ap_insert_player_widgets')) {
-		if ($wpdb->get_var("SELECT COUNT(id) FROM wp_sb_stuff WHERE name LIKE '%.mp3'")>0)
-			echo '<div id="message" class="updated"><p><b>'.sprintf(__('Tip: Installing the %1$sWordpress Audio Player%2$s will allow users to listen to your sermons more easily.', $sermon_domain), '<a href="http://wpaudioplayer.com/" target="_blank">', '</a>').'</b></div>';
-	} else {
-		if (rand (1,5) == 1)
-			echo '<div id="message" class="updated"><p><b>'.sprintf(__('If you find SermonBrowser useful, please consider a %1$ssmall donation%2$s.', $sermon_domain), '<a href="http://www.4-14.org.uk/sermon-browser#support" target="_blank">', '</a>').'</b></div>';
+		if (!function_exists('ap_insert_player_widgets')) {
+			if ($wpdb->get_var("SELECT COUNT(id) FROM wp_sb_stuff WHERE name LIKE '%.mp3'")>0)
+				echo '<div id="message" class="updated"><p><b>'.sprintf(__('Tip: Installing the %1$sWordpress Audio Player%2$s will allow users to listen to your sermons more easily.', $sermon_domain), '<a href="http://wpaudioplayer.com/" target="_blank">', '</a>').'</b></div>';
+		} else {
+			if (rand (1,5) == 1)
+				echo '<div id="message" class="updated"><p><b>'.sprintf(__('If you find SermonBrowser useful, please consider a %1$ssmall donation%2$s.', $sermon_domain), '<a href="http://www.4-14.org.uk/sermon-browser#support" target="_blank">', '</a>').'</b></div>';
+		}
 	}
 }
 

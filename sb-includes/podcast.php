@@ -2,9 +2,6 @@
 //Prints ISO date for podcast
 function sb_print_iso_date($sermon) {
 	$sermon_time = $sermon->time;
-	echo "<!-- ";
-	print_r($sermon);
-	echo " -->";
 	if ($sermon_time == "")
 		$sermon_time = sb_default_time ($sermon->sid);
 	echo date('d M Y H:i:s', strtotime($sermon->date.' '.$sermon_time))." +0000";
