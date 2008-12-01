@@ -358,7 +358,6 @@ function sb_activate () {
 		update_option('sb_sermon_single_output', base64_encode(strtr(stripslashes(base64_decode($sbsf)), sb_sermon_page_dictionary())));
 		sb_ping_gallery();
 	}
-	wp_die("Activated");
 }
 
 // Adds javascript and CSS where required in admin
