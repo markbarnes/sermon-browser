@@ -1,0 +1,1045 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: sermon-browser\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-12-01 18:31-0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Mark Barnes <mark@4-14.org.uk>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: frontend.php:475
+#: ../sb-includes/frontend.php:475
+msgid "Sermon podcast"
+msgstr "Podcast de sermones"
+
+#: frontend.php:480
+#: ../sb-includes/frontend.php:480
+msgid "Custom sermon podcast"
+msgstr "Podcast de sermones personalizado"
+
+#: frontend.php:588
+#: ../sb-includes/frontend.php:588
+msgid "Next page"
+msgstr "Siguiente"
+
+#: frontend.php:599
+#: ../sb-includes/frontend.php:599
+msgid "Previous page"
+msgstr "Anterior"
+
+#: frontend.php:664
+#: ../sb-includes/frontend.php:664
+msgid "About"
+msgstr "Sobre"
+
+#: frontend.php:700
+#: ../sb-includes/frontend.php:700
+msgid "None"
+msgstr "Ninguno"
+
+#: frontend.php:863
+#: ../sermon.php:1471
+#: ../sermon.php:1498
+#: ../sermon.php:1849
+#: ../sb-includes/frontend.php:863
+msgid "Preacher"
+msgstr "Maestro"
+
+#: frontend.php:865
+#: frontend.php:873
+#: frontend.php:883
+#: frontend.php:891
+#: widget.php:209
+#: widget.php:217
+#: widget.php:225
+#: ../sb-includes/frontend.php:865
+#: ../sb-includes/frontend.php:873
+#: ../sb-includes/frontend.php:883
+#: ../sb-includes/frontend.php:891
+#: ../sb-includes/widget.php:209
+#: ../sb-includes/widget.php:217
+#: ../sb-includes/widget.php:225
+msgid "[All]"
+msgstr "[Todo]"
+
+#: frontend.php:871
+#: ../sb-includes/frontend.php:871
+msgid "Services"
+msgstr "Servicios"
+
+#: frontend.php:881
+#: ../sb-includes/frontend.php:881
+msgid "Book"
+msgstr "Libros"
+
+#: frontend.php:889
+#: ../sermon.php:1480
+#: ../sermon.php:1501
+#: ../sermon.php:1862
+#: ../sb-includes/frontend.php:889
+msgid "Series"
+msgstr "Serie"
+
+#: frontend.php:899
+#: ../sb-includes/frontend.php:899
+msgid "Start date"
+msgstr "De fecha"
+
+#: frontend.php:901
+#: ../sb-includes/frontend.php:901
+msgid "End date"
+msgstr "A fecha"
+
+#: frontend.php:905
+#: ../sb-includes/frontend.php:905
+msgid "Keywords"
+msgstr "Palabras clave"
+
+#: frontend.php:909
+#: ../sb-includes/frontend.php:909
+msgid "Sort by"
+msgstr "Ordenar por"
+
+#: frontend.php:916
+#: ../sb-includes/frontend.php:916
+msgid "Direction"
+msgstr "Dirección"
+
+#: frontend.php:926
+#: ../sb-includes/frontend.php:926
+msgid "Filter &raquo;"
+msgstr "Filtrar &raquo;"
+
+#: widget.php:35
+#: widget.php:103
+#: ../sb-includes/widget.php:35
+#: ../sb-includes/widget.php:103
+msgid "by"
+msgstr "por"
+
+#: widget.php:36
+#: widget.php:104
+#: ../sb-includes/widget.php:36
+#: ../sb-includes/widget.php:104
+msgid " on "
+msgstr " en"
+
+#: widget.php:49
+#: ../sermon.php:1292
+#: ../sermon.php:1341
+#: ../sb-includes/widget.php:49
+msgid "Sermon"
+msgstr "Sermón"
+
+#: widget.php:51
+#: ../sermon.php:332
+#: ../sermon.php:333
+#: ../sermon.php:1491
+#: ../sb-includes/widget.php:51
+msgid "Sermons"
+msgstr "Sermones"
+
+#: widget.php:198
+#: ../sb-includes/widget.php:198
+msgid "Title:"
+msgstr "Titulo:"
+
+#: widget.php:200
+#: ../sb-includes/widget.php:200
+msgid "Number of sermons: "
+msgstr "Numero de sermones"
+
+#: widget.php:202
+#: ../sb-includes/widget.php:202
+msgid "Display preacher"
+msgstr "Mostrar maestro"
+
+#: widget.php:204
+#: ../sb-includes/widget.php:204
+msgid "Display bible passage"
+msgstr "Mostrar pasaje bíblico"
+
+#: widget.php:206
+#: ../sb-includes/widget.php:206
+msgid "Display the date"
+msgstr "Muestra la fecha"
+
+#: widget.php:207
+#: ../sb-includes/widget.php:207
+msgid "Preacher: "
+msgstr "Maestro:"
+
+#: widget.php:215
+#: ../sb-includes/widget.php:215
+msgid "Service: "
+msgstr "Servicio:"
+
+#: widget.php:223
+#: ../sb-includes/widget.php:223
+msgid "Series: "
+msgstr "Serie:"
+
+#: ../sermon.php:305
+#: ../sermon.php:853
+#: ../sermon.php:1019
+#: ../sermon.php:1029
+#: ../sermon.php:1269
+#: ../sermon.php:1313
+#: ../sermon.php:1520
+#: ../sermon.php:2383
+#: ../sermon.php:2426
+msgid "Delete"
+msgstr "Borrar"
+
+#: ../sermon.php:306
+msgid "Congratulations, you just completed the installation!"
+msgstr "Felicidades, usted acaba de terminar la instalación"
+
+#: ../sermon.php:335
+msgid "Edit Sermon"
+msgstr "Editar Sermón"
+
+#: ../sermon.php:337
+msgid "Add Sermon"
+msgstr "Agregar Sermón"
+
+#: ../sermon.php:339
+#: ../sermon.php:835
+msgid "Preachers"
+msgstr "Maestro"
+
+#: ../sermon.php:340
+msgid "Series &amp; Services"
+msgstr "Series &amp; Servicios"
+
+#: ../sermon.php:341
+msgid "Uploads"
+msgstr "Cargas"
+
+#: ../sermon.php:342
+#: ../sermon.php:563
+msgid "Options"
+msgstr "Opciones"
+
+#: ../sermon.php:343
+#: ../sermon.php:668
+msgid "Templates"
+msgstr "Plantillas"
+
+#: ../sermon.php:344
+msgid "Help"
+msgstr "Ayuda"
+
+#: ../sermon.php:381
+msgid "You do not have the correct permissions to edit the Sermon Browser options"
+msgstr "Usted no tiene los permisos correctos para modificar las opciones del Navegador de Sermones"
+
+#: ../sermon.php:433
+#: ../sermon.php:442
+msgid "Upload is disabled. Please contact your administrator."
+msgstr "Subir archivos está deshabilitado. Por favor, póngase en contacto con su administrador."
+
+#: ../sermon.php:435
+#: ../sermon.php:475
+msgid "Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
+msgstr "Error: No se puede cargar a la carpeta. Es necesario que el CHMOD de la carpeta sea 666 o 777."
+
+#: ../sermon.php:444
+#: ../sermon.php:480
+msgid "Error: The upload folder you have specified does not exist."
+msgstr "Error: La carpeta de carga que ha especificado no existe."
+
+#: ../sermon.php:450
+msgid "Default loaded successfully."
+msgstr "Restaurado con éxito."
+
+#: ../sermon.php:485
+msgid "Options saved successfully."
+msgstr "Opciones se han guardado con éxito."
+
+#: ../sermon.php:537
+msgid "All sermon data has been removed."
+msgstr "Todos los datos de los sermones se han eliminado."
+
+#: ../sermon.php:539
+msgid "Uninstall completed. The Sermon Browser plugin has been deactivated."
+msgstr "Desinstalado. El plugin Navegador de Sermones ha sido desactivado."
+
+#: ../sermon.php:549
+msgid "Error"
+msgstr "Error"
+
+#: ../sermon.php:555
+msgid "Warning"
+msgstr "Advertencia"
+
+#: ../sermon.php:570
+msgid "Upload folder"
+msgstr "Carpeta de carga"
+
+#: ../sermon.php:581
+msgid "Public podcast feed"
+msgstr "Podcast público"
+
+#: ../sermon.php:585
+msgid "Private podcast feed"
+msgstr "Podcast privado"
+
+#: ../sermon.php:589
+msgid "Sermons per page"
+msgstr "Sermones por página"
+
+#: ../sermon.php:596
+msgid "The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
+msgstr "No se puede cargar a la carpeta. Es necesario que el CHMOD de la carpeta sea 666 o 777."
+
+#: ../sermon.php:598
+msgid "The upload folder you have specified does not exist."
+msgstr "La carpeta de carga que ha especificado no existe."
+
+#: ../sermon.php:605
+msgid "Your php.ini file does not allow uploads. Please change file_uploads in php.ini."
+msgstr "Su archivo php.ini no permite cargar. Por favor, cambie file_uploads en php.ini."
+
+#: ../sermon.php:606
+msgid "The maximum file size you can upload is only "
+msgstr "El tamaño máximo de archivo que se puede cargar es "
+
+#: ../sermon.php:606
+msgid "k. Please change upload_max_filesize to at least 15M in php.ini."
+msgstr "k. Por favor, cambie upload_max_filesize a por lo menos 15M en php.ini."
+
+#: ../sermon.php:607
+msgid "The maximum file size you send through the browser is only "
+msgstr "El tamaño máximo de archivo que envíe a través del navegador es sólo de "
+
+#: ../sermon.php:607
+msgid "k. Please change post_max_size to at least 15M in php.ini."
+msgstr "k. Por favor, cambie post_max_size a por lo menos 15M en php.ini."
+
+#: ../sermon.php:608
+msgid "The maximum time allowed for any script to run is only "
+msgstr "El tiempo máximo permitido para cualquier secuencia de comandos para ejecutar es "
+
+#: ../sermon.php:608
+msgid " seconds. Please change max_execution_time to at least 600 in php.ini."
+msgstr "segundos. Por favor, cambie max_execution_time a por lo menos 600 en php.ini."
+
+#: ../sermon.php:609
+msgid "The maximum time allowed for an upload script to run is only "
+msgstr "El tiempo máximo permitido para ejecutar una secuencia de comandos para cargar es  "
+
+#: ../sermon.php:609
+msgid " seconds. Please change max_input_time to at least 600 in php.ini."
+msgstr "segundos. Por favor, cambie max_input_time a por lo menos 600 en php.ini."
+
+#: ../sermon.php:610
+msgid "The maximum amount of memory allowed is only "
+msgstr "La cantidad máxima de memoria permitida es "
+
+#: ../sermon.php:610
+msgid "k. Please change memory_limit to at least 16M in php.ini."
+msgstr "k. Por favor, cambie memory_limit a por lo menos 16M en php.ini."
+
+#: ../sermon.php:614
+#: ../sermon.php:690
+msgid "Reset to defaults"
+msgstr "Restablecer valores predeterminados"
+
+#: ../sermon.php:614
+#: ../sermon.php:690
+#: ../sermon.php:824
+#: ../sermon.php:1990
+msgid "Save"
+msgstr "Guardar"
+
+#: ../sermon.php:617
+msgid "Delete all data"
+msgstr "Borrar todos los datos"
+
+#: ../sermon.php:617
+#: ../sermon.php:624
+msgid "Uninstall"
+msgstr "Desinstalar"
+
+#: ../sermon.php:621
+msgid "Remove all files"
+msgstr "Eliminar todos los archivos"
+
+#: ../sermon.php:624
+msgid "Delete all"
+msgstr "Borrar todo"
+
+#: ../sermon.php:624
+msgid "Do you REALLY want to delete all data?"
+msgstr "¿Realmente quieres borrar todos los datos?"
+
+#: ../sermon.php:629
+msgid "Are you sure?"
+msgstr "¿Estás seguro?"
+
+#: ../sermon.php:641
+msgid "You do not have the correct permissions to edit the Sermon Browser templates"
+msgstr "Usted no tiene los permisos correctos para modificar  las plantillasel de Navegador de Sermones"
+
+#: ../sermon.php:660
+msgid "Templates saved successfully."
+msgstr "Las plantillas se han guardado correctamente."
+
+#: ../sermon.php:672
+msgid "Search results page"
+msgstr "Página de resultados de búsqueda"
+
+#: ../sermon.php:678
+msgid "Sermon page"
+msgstr "Página de sermones"
+
+#: ../sermon.php:684
+msgid "Style"
+msgstr "Estilo"
+
+#: ../sermon.php:707
+msgid "You do not have the correct permissions to manage the preachers' database"
+msgstr "Usted no tiene los permisos correctos para editar la base de datos de maestros"
+
+#: ../sermon.php:709
+msgid "Preacher saved to database."
+msgstr "Maestro guardado en la base de datos."
+
+#: ../sermon.php:733
+msgid "Could not save uploaded file. Please try again."
+msgstr "No se ha podido guardar el archivo cargado. Por favor, inténtalo de nuevo."
+
+#: ../sermon.php:738
+msgid "Could not upload file. Please check the Options page for any errors or warnings."
+msgstr "No se pudo cargar el archivo. Por favor, vuelva a la página Opciones y localice errores o advertencias."
+
+#: ../sermon.php:761
+msgid "You can't delete this preacher."
+msgstr "Usted no puede suprimir este maestro."
+
+#: ../sermon.php:774
+msgid "Add"
+msgstr "Agregar"
+
+#: ../sermon.php:774
+#: ../sermon.php:853
+#: ../sermon.php:1019
+#: ../sermon.php:1520
+#: ../sermon.php:2383
+msgid "Edit"
+msgstr "Editar"
+
+#: ../sermon.php:774
+msgid "preacher"
+msgstr "maestro"
+
+#: ../sermon.php:786
+msgid "The images folder is not writeable. You won't be able to upload images."
+msgstr "No se puede escribir a la carpeta de imágenes. Usted no podrá cargar imágenes."
+
+#: ../sermon.php:795
+#: ../sermon.php:841
+#: ../sermon.php:1003
+msgid "Name"
+msgstr "Nombre"
+
+#: ../sermon.php:803
+#: ../sermon.php:1883
+msgid "Description"
+msgstr "Descripción"
+
+#: ../sermon.php:815
+#: ../sermon.php:842
+msgid "Image"
+msgstr "Imágen"
+
+#: ../sermon.php:835
+#: ../sermon.php:997
+msgid "add new"
+msgstr "agregar nuevo"
+
+#: ../sermon.php:840
+#: ../sermon.php:1002
+#: ../sermon.php:1255
+#: ../sermon.php:1289
+#: ../sermon.php:1338
+#: ../sermon.php:1496
+msgid "ID"
+msgstr "ID"
+
+#: ../sermon.php:843
+#: ../sermon.php:1005
+#: ../sermon.php:1258
+#: ../sermon.php:1293
+#: ../sermon.php:1342
+#: ../sermon.php:1503
+msgid "Actions"
+msgstr "Acciones"
+
+#: ../sermon.php:868
+msgid "You do not have the correct permissions to manage the series and services database"
+msgstr "Usted no tiene los permisos correctos para editar la base de datos de serie y servicios "
+
+#: ../sermon.php:1004
+msgid "Default time"
+msgstr "Hora predeterminada"
+
+#: ../sermon.php:1019
+#: ../sermon.php:1269
+#: ../sermon.php:1313
+#: ../sermon.php:2426
+msgid "Rename"
+msgstr "Cambiar el nombre"
+
+#: ../sermon.php:1021
+msgid "Some sermons are currently assigned to that service. You can only delete services that are not used in the database."
+msgstr "Algunos sermones están actualmente asignados a ese servicio. Sólo puede eliminar servicios que no se utilizan en la base de datos."
+
+#: ../sermon.php:1024
+msgid "Some sermons are currently in that series. You can only delete series that are empty."
+msgstr "Algunos sermones se encuentran actualmente en esa serie. Sólo puede eliminar la series que están vacías."
+
+#: ../sermon.php:1027
+msgid "That preacher has sermons in the database. You can only delete preachers who have no sermons in the database."
+msgstr "El maestro tiene sermones asignados en la base de datos. Sólo puede eliminar los maestros que no tienen sermones en la base de datos."
+
+#: ../sermon.php:1049
+msgid "You do not have the correct permissions to upload sermons"
+msgstr "Usted no tiene los permisos correctos para cargar sermones"
+
+#: ../sermon.php:1077
+msgid "Files saved to database."
+msgstr "Archivos guardados a la base de datos."
+
+#: ../sermon.php:1080
+#: ../sermon.php:1635
+msgid " already exists."
+msgstr " ya existe."
+
+#: ../sermon.php:1084
+#: ../sermon.php:1640
+msgid "You are not permitted to upload files of that type."
+msgstr "No se le permite subir archivos de ese tipo."
+
+#: ../sermon.php:1120
+msgid "New file name?"
+msgstr "¿Nuevo nombre de archivo?"
+
+#: ../sermon.php:1133
+msgid "You are not permitted files with that extension."
+msgstr "No se permite archivos con esa extensión."
+
+#: ../sermon.php:1135
+msgid "The script is unable to rename your file."
+msgstr "El guión es incapaz de cambiar el nombre de su archivo."
+
+#: ../sermon.php:1163
+msgid "The script is unable to delete your file."
+msgstr "La secuencia de comandos es incapaz de eliminar el archivo."
+
+#: ../sermon.php:1174
+#: ../sermon.php:1193
+msgid "Previous"
+msgstr "Anterior"
+
+#: ../sermon.php:1180
+#: ../sermon.php:1199
+msgid "Next"
+msgstr "Siguiente"
+
+#: ../sermon.php:1216
+msgid "Upload Files"
+msgstr "Cargar archivos"
+
+#: ../sermon.php:1226
+msgid "File to upload"
+msgstr "Archivo para cargar"
+
+#: ../sermon.php:1231
+msgid "Upload"
+msgstr "Cargar"
+
+#: ../sermon.php:1240
+msgid "Upload is disabled. Please contact your systems administrator."
+msgstr "Cargar está deshabilitado. Por favor, póngase en contacto con su administrador de sistemas."
+
+#: ../sermon.php:1244
+msgid "Upload is disabled. Please check your folder setting in Options."
+msgstr "Cargar está deshabilitado. Por favor, compruebe su carpeta de configuración en Opciones."
+
+#: ../sermon.php:1250
+msgid "Unlinked files"
+msgstr "Archivos desenlazados"
+
+#: ../sermon.php:1256
+#: ../sermon.php:1290
+#: ../sermon.php:1339
+msgid "File name"
+msgstr "Nombre de archivo"
+
+#: ../sermon.php:1257
+#: ../sermon.php:1291
+#: ../sermon.php:1340
+msgid "File type"
+msgstr "Tipo de archivo"
+
+#: ../sermon.php:1284
+msgid "Linked files"
+msgstr "Archivos enlazados"
+
+#: ../sermon.php:1328
+msgid "Search for files"
+msgstr "Buscar archivos"
+
+#: ../sermon.php:1332
+msgid "Search"
+msgstr "Buscar"
+
+#: ../sermon.php:1347
+msgid "Search results will appear here."
+msgstr "Resultados de la búsqueda aparecerán aquí."
+
+#: ../sermon.php:1365
+msgid "Clean up"
+msgstr "Limpiar"
+
+#: ../sermon.php:1367
+msgid "Pressing the button below scans every sermon in the database, and removes missing attachments. Use with caution!"
+msgstr "Al pulsar el botón de abajo escanea cada sermón en la base de datos, y elimina los archivos adjuntos que faltan. ¡Usar con precaución!"
+
+#: ../sermon.php:1368
+msgid "Clean up missing files"
+msgstr "Limpiar los archivos que faltan"
+
+#: ../sermon.php:1413
+#: ../sermon.php:1592
+msgid "You do not have the correct permissions to edit sermons"
+msgstr "Usted no tiene los permisos correctos para editar los sermones"
+
+#: ../sermon.php:1416
+msgid "Sermon saved to database."
+msgstr "Sermón guardado en la base de datos."
+
+#: ../sermon.php:1418
+#, php-format
+msgid "If you find SermonBrowser useful, please consider a %1$ssmall donation%2$s."
+msgstr ""
+
+#: ../sermon.php:1424
+msgid "You do not have the correct permissions to delete sermons"
+msgstr "Usted no tiene los permisos correctos para eliminar los sermones"
+
+#: ../sermon.php:1432
+msgid "Sermon removed from database."
+msgstr "Sermón eliminado de la base de datos."
+
+#: ../sermon.php:1467
+#: ../sermon.php:1497
+#: ../sermon.php:1835
+msgid "Title"
+msgstr "Titulo"
+
+#: ../sermon.php:1488
+msgid "Filter"
+msgstr "Filtro"
+
+#: ../sermon.php:1499
+#: ../sermon.php:1877
+msgid "Date"
+msgstr "Fecha"
+
+#: ../sermon.php:1500
+#: ../sermon.php:1891
+msgid "Service"
+msgstr "Servicio"
+
+#: ../sermon.php:1502
+msgid "Stats"
+msgstr "Estad"
+
+#: ../sermon.php:1546
+msgid "You do not have the correct permissions to edit or create sermons"
+msgstr "Usted no tiene los permisos correctos para editar o crear sermones"
+
+#: ../sermon.php:1585
+msgid "You do not have the correct permissions to create sermons"
+msgstr "Usted no tiene los permisos correctos para crear los sermones"
+
+#: ../sermon.php:1841
+msgid "Tags (comma separated)"
+msgstr "Tags (separados por comas)"
+
+#: ../sermon.php:1858
+msgid "Create new preacher"
+msgstr "Crear un nuevo maestro"
+
+#: ../sermon.php:1871
+msgid "Create new series"
+msgstr "Crear una nueva serie"
+
+#: ../sermon.php:1900
+msgid "Create new service"
+msgstr "Crear un nuevo servicio"
+
+#: ../sermon.php:1906
+msgid "Time"
+msgstr "Hora"
+
+#: ../sermon.php:1909
+msgid "Override default time"
+msgstr "Anular la hora predeterminada"
+
+#: ../sermon.php:1915
+msgid "Bible passage"
+msgstr "Pasaje Bíblico"
+
+#: ../sermon.php:1915
+#: ../sermon.php:1958
+msgid "add more"
+msgstr "añadir más"
+
+#: ../sermon.php:1919
+msgid "From"
+msgstr "De"
+
+#: ../sermon.php:1920
+msgid "To"
+msgstr "A"
+
+#: ../sermon.php:1958
+msgid "Attachments"
+msgstr "Archivos adjuntos"
+
+#: ../sermon.php:1967
+msgid "Choose existing file:"
+msgstr "Elija el archivo:"
+
+#: ../sermon.php:1968
+msgid "Upload a new one:"
+msgstr "Cargar uno nuevo:"
+
+#: ../sermon.php:1969
+msgid "Enter an URL:"
+msgstr "Introduzca una URL:"
+
+#: ../sermon.php:1970
+msgid "Enter embed code:"
+msgstr "Introduzca código de inserción:"
+
+#: ../sermon.php:2110
+msgid "Help page"
+msgstr "Página de ayuda"
+
+#: ../sermon.php:2432
+msgid "No results"
+msgstr "No hay resultados"
+
+#: ../sermon.php:2448
+msgid "You must create a post or preferably a page that includes the code [sermons] in order for your sermons to be displayed on your site."
+msgstr "Usted debe crear un puesto o, preferiblemente, una página que incluye el código [sermones], con el fin de que su sermones se visualizen en su sitio."
+
+#: ../sermon.php:2452
+#, php-format
+msgid "Tip: Installing the %1$sWordpress Audio Player%2$s will allow users to listen to your sermons more easily."
+msgstr ""
+
+#: ../sermon.php:2482
+msgid "You have"
+msgstr "Usted tiene"
+
+#: ../sermon.php:2486
+#: ../sermon.php:2494
+msgid "in"
+msgstr "en"
+
+#: ../sermon.php:2490
+msgid "from"
+msgstr "de"
+
+#: ../sermon.php:2495
+#, php-format
+msgid "%d series"
+msgstr "%d serie"
+
+#: ../sermon.php:2498
+msgid "using"
+msgstr "usando"
+
+#: ../sermon.php:2506
+#, php-format
+msgid "The most popular sermon is %s, which has been downloaded %s times"
+msgstr "El sermón más popular es %s, que ha sido descargado %s veces"
+
+#: ../sermon.php:2684
+msgid "Genesis"
+msgstr "Génesis"
+
+#: ../sermon.php:2684
+msgid "Exodus"
+msgstr "Exodo"
+
+#: ../sermon.php:2684
+msgid "Leviticus"
+msgstr "Levítico"
+
+#: ../sermon.php:2684
+msgid "Numbers"
+msgstr "Números"
+
+#: ../sermon.php:2684
+msgid "Deuteronomy"
+msgstr "Deuteronomio"
+
+#: ../sermon.php:2684
+msgid "Joshua"
+msgstr "Josué"
+
+#: ../sermon.php:2684
+msgid "Judges"
+msgstr "Jueces"
+
+#: ../sermon.php:2684
+msgid "Ruth"
+msgstr "Rut"
+
+#: ../sermon.php:2684
+msgid "1 Samuel"
+msgstr "1 Samuel"
+
+#: ../sermon.php:2684
+msgid "2 Samuel"
+msgstr "2 Samuel"
+
+#: ../sermon.php:2684
+msgid "1 Kings"
+msgstr "1 Reyes"
+
+#: ../sermon.php:2684
+msgid "2 Kings"
+msgstr "2 Reyes"
+
+#: ../sermon.php:2684
+msgid "1 Chronicles"
+msgstr "1 Crónicas"
+
+#: ../sermon.php:2684
+msgid "2 Chronicles"
+msgstr "2 Crónicas"
+
+#: ../sermon.php:2684
+msgid "Ezra"
+msgstr "Esdras"
+
+#: ../sermon.php:2684
+msgid "Nehemiah"
+msgstr "Nehemías"
+
+#: ../sermon.php:2684
+msgid "Esther"
+msgstr "Ester"
+
+#: ../sermon.php:2684
+msgid "Job"
+msgstr "Job"
+
+#: ../sermon.php:2684
+msgid "Psalm"
+msgstr "Salmos"
+
+#: ../sermon.php:2684
+msgid "Proverbs"
+msgstr "Proverbios"
+
+#: ../sermon.php:2684
+msgid "Ecclesiastes"
+msgstr "Eclesiastés"
+
+#: ../sermon.php:2684
+msgid "Song of Solomon"
+msgstr "Cantares"
+
+#: ../sermon.php:2684
+msgid "Isaiah"
+msgstr "Isaías"
+
+#: ../sermon.php:2684
+msgid "Jeremiah"
+msgstr "Jeremías"
+
+#: ../sermon.php:2684
+msgid "Lamentations"
+msgstr "Lamentaciones"
+
+#: ../sermon.php:2684
+msgid "Ezekiel"
+msgstr "Ezequiel"
+
+#: ../sermon.php:2684
+msgid "Daniel"
+msgstr "Daniel"
+
+#: ../sermon.php:2684
+msgid "Hosea"
+msgstr "Oseas"
+
+#: ../sermon.php:2684
+msgid "Joel"
+msgstr "Joel"
+
+#: ../sermon.php:2684
+msgid "Amos"
+msgstr "Amós"
+
+#: ../sermon.php:2684
+msgid "Obadiah"
+msgstr "Abdías"
+
+#: ../sermon.php:2684
+msgid "Jonah"
+msgstr "Jonás"
+
+#: ../sermon.php:2684
+msgid "Micah"
+msgstr "Miqueas"
+
+#: ../sermon.php:2684
+msgid "Nahum"
+msgstr "Nahúm"
+
+#: ../sermon.php:2684
+msgid "Habakkuk"
+msgstr "Habacuc"
+
+#: ../sermon.php:2684
+msgid "Zephaniah"
+msgstr "Sofonías"
+
+#: ../sermon.php:2684
+msgid "Haggai"
+msgstr "Hageo"
+
+#: ../sermon.php:2684
+msgid "Zechariah"
+msgstr "Zacarías"
+
+#: ../sermon.php:2684
+msgid "Malachi"
+msgstr "Malaquías"
+
+#: ../sermon.php:2684
+msgid "Matthew"
+msgstr "Mateo"
+
+#: ../sermon.php:2684
+msgid "Mark"
+msgstr "Marcos"
+
+#: ../sermon.php:2684
+msgid "Luke"
+msgstr "Lucas"
+
+#: ../sermon.php:2684
+msgid "John"
+msgstr "Juan"
+
+#: ../sermon.php:2684
+msgid "Acts"
+msgstr "Hechos"
+
+#: ../sermon.php:2684
+msgid "Romans"
+msgstr "Romanos"
+
+#: ../sermon.php:2684
+msgid "1 Corinthians"
+msgstr "1 Corintios"
+
+#: ../sermon.php:2684
+msgid "2 Corinthians"
+msgstr "2 Corintios"
+
+#: ../sermon.php:2684
+msgid "Galatians"
+msgstr "Gálatas"
+
+#: ../sermon.php:2684
+msgid "Ephesians"
+msgstr "Efesios"
+
+#: ../sermon.php:2684
+msgid "Philippians"
+msgstr "Filipenses"
+
+#: ../sermon.php:2684
+msgid "Colossians"
+msgstr "Colosenses"
+
+#: ../sermon.php:2684
+msgid "1 Thessalonians"
+msgstr "1 Tesalonicenses"
+
+#: ../sermon.php:2684
+msgid "2 Thessalonians"
+msgstr "2 Tesalonicenses"
+
+#: ../sermon.php:2684
+msgid "1 Timothy"
+msgstr "1 Timoteo"
+
+#: ../sermon.php:2684
+msgid "2 Timothy"
+msgstr "2 Timoteo"
+
+#: ../sermon.php:2684
+msgid "Titus"
+msgstr "Tito"
+
+#: ../sermon.php:2684
+msgid "Philemon"
+msgstr "Filemón"
+
+#: ../sermon.php:2684
+msgid "Hebrews"
+msgstr "Hebreos"
+
+#: ../sermon.php:2684
+msgid "James"
+msgstr "Santiago"
+
+#: ../sermon.php:2684
+msgid "1 Peter"
+msgstr "1 Pedro"
+
+#: ../sermon.php:2684
+msgid "2 Peter"
+msgstr "2 Pedro"
+
+#: ../sermon.php:2684
+msgid "1 John"
+msgstr "1 Juan"
+
+#: ../sermon.php:2684
+msgid "2 John"
+msgstr "2 Juan"
+
+#: ../sermon.php:2684
+msgid "3 John"
+msgstr "3 Juan"
+
+#: ../sermon.php:2684
+msgid "Jude"
+msgstr "Judas"
+
+#: ../sermon.php:2684
+msgid "Revelation"
+msgstr "Apocalipsis"
+

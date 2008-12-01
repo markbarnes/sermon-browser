@@ -33,7 +33,7 @@ function sb_display_sermons($options = array()) {
 		<li><span class="sermon-title"><a href="<?php sb_print_sermon_link($sermon) ?>"><?php echo stripslashes($sermon->title) ?></a></span>
 			<?php 	if ($display_passage): ?><span class="sermon-passage">(<?php $foo = unserialize($sermon->start); $bar = unserialize($sermon->end); echo sb_get_books($foo[0], $bar[0]) ?>)</span><?php endif; 
 					if ($display_preacher): ?><span class="sermon-preacher"> <?php _e('by', $sermon_domain) ?> <a href="<?php sb_print_preacher_link($sermon) ?>"><?php echo stripslashes($sermon->preacher) ?></a></span><?php endif; 
-					if ($display_date): ?><span class="sermon-date"><?php _e(' on ', $sermon_domain); echo date("j F Y", strtotime($sermon->date)); ?></span><?php endif ?>.
+					if ($display_date): ?><span class="sermon-date"><?php _e(' on ', $sermon_domain); echo sb_format_date(strtotime($sermon->date)); ?></span><?php endif ?>.
 		</li>		
 	<?php endforeach ?>
 	</ul>
@@ -53,7 +53,7 @@ function sb_widget_sermon_init() {
 	$registered = false;
 	foreach ( array_keys($options) as $o ) {
 		// Old widgets can have null values for some reason
-		if ( !isset($options[$o]['limit']) ) // we used 'something' above in our example.  Replace with with whatever your real data are.
+		if ( !isset($options[$o]['limit']) )
 			continue;
 
 		// $id should look like {$id_base}-{$o}
@@ -101,7 +101,7 @@ function sb_widget_sermon( $args, $widget_args = 1 ) {
 		<li><span class="sermon-title"><a href="<?php sb_print_sermon_link($sermon) ?>"><?php echo stripslashes($sermon->title) ?></a></span>
 			<?php	if ($book): ?><span class="sermon-passage">(<?php $foo = unserialize($sermon->start); $bar = unserialize($sermon->end); echo sb_get_books($foo[0], $bar[0]) ?>)</span><?php endif;
 					if ($preacherz): ?><span class="sermon-preacher"> <?php _e('by', $sermon_domain) ?> <a href="<?php sb_print_preacher_link($sermon) ?>"><?php echo stripslashes($sermon->preacher) ?></a></span><?php endif;
-					if ($date): ?><span class="sermon-date"> <?php _e(' on ', $sermon_domain); echo date("j F Y", strtotime($sermon->date)); ?></span><?php endif ?>.
+					if ($date): ?><span class="sermon-date"> <?php _e(' on ', $sermon_domain); echo sb_format_date(strtotime($sermon->date)); ?></span><?php endif ?>.
 		</li>		
 	<?php endforeach ?>
 	</ul>

@@ -493,6 +493,14 @@ function sb_default_time($service) {
 	}
 }
 
+function sb_format_date ($the_date) {
+	if (WPLANG == '' | WPLANG == "en_EN" | WPLANG == "en") {
+		return date(get_option("date_format"), $the_date);
+	} else {
+		return strftime("%e %B %Y", $the_date);
+	}
+}
+
 // Returns podcast URL
 function sb_podcast_url() {
 	return str_replace(' ', '%20', sb_build_url(array('podcast' => 1, 'dir'=>'desc', 'sortby'=>'m.date')));
@@ -601,10 +609,16 @@ function sb_print_url($url) {
 	    }
 	}
 	global $siteicons, $default_site_icon ,$filetypes;
+	$pathinfo = pathinfo($url);
+	$ext = $pathinfo['extension'];
 	if (substr($url,0,7) == "http://") {
 		$url=sb_display_url().htmlspecialchars_decode(sb_query_char()).'show&url='.URLencode($url);
 	} else {
-		$url=sb_display_url().htmlspecialchars_decode(sb_query_char()).'show&file_name='.URLencode($url);
+		if (strtolower($ext) == 'mp3' && function_exists('ap_insert_player_widgets')) {
+			$url=sb_display_url().htmlspecialchars_decode(sb_query_char()).'show&file_name='.URLencode($url);
+		} else {
+			$url=sb_display_url().htmlspecialchars_decode(sb_query_char()).'download&file_name='.URLencode($url);
+		}
 	}
 	$icon_url = sb_get_value('plugin_url').'/sb-includes/icons/';
 	$uicon = $default_site_icon;
@@ -614,8 +628,6 @@ function sb_print_url($url) {
 			break;
 		}
 	}
-	$pathinfo = pathinfo($url);
-	$ext = $pathinfo['extension'];
 	$uicon = isset($filetypes[$ext]['icon']) ? $filetypes[$ext]['icon'] : $uicon;
 	if (strtolower($ext) == 'mp3' && function_exists('ap_insert_player_widgets')) {
 	    echo ap_insert_player_widgets('[audio:'.$url.']');
