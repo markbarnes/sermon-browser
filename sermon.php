@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.39
+Version: 0.40
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -27,8 +27,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /***************************************
  ** Initialisation                    **
  **************************************/
-//add_action('update_option_permalink_structure', 'update_podcast_url');
-register_activation_hook( __FILE__, 'sb_activate' );			// Re-saves template on activation
+
+//Set global constants
+define('SB_CURRENT_VERSION', '0.40');
+define('SB_DATABASE_VERSION', '1.5');
+
+ 
 add_action('init', 'sb_sermon_init'); 							// Initialise the plugin
 add_action('template_redirect', 'sb_hijack');					// Check for file download or feed output
 add_action('admin_menu', 'sb_add_pages');						// Add menus to admin
@@ -41,6 +45,7 @@ add_action('wp_head', 'wp_print_styles', 9); 					// Force styles output in head
 add_action('wp_head', 'sb_add_feed_links');						// Add podcast feeds to HEAD
 add_filter('wp_title', 'sb_page_title');						// Amend page title on sermon pages
 add_action('save_post', 'update_podcast_url');					// Add check if [sermons] moves, and update podcast URL
+add_action('update_option_permalink_structure', 'update_podcast_url');
 if (SAVEQUERIES) add_action('wp_footer', 'sb_footer_stats');	// Add stats to footer if required (frontend)
 if (SAVEQUERIES) add_action('admin_footer', 'sb_footer_stats');	// Add stats to footer if required (admin)
 
@@ -52,10 +57,21 @@ require('sb-includes/widget.php');		// Widget functionality
 
 // Initialisation
 function sb_sermon_init () {
-	global $sermon_domain;
-	//Set global constants
-	define('SB_CURRENT_VERSION', '0.39');
-	define('SB_DATABASE_VERSION', '1.5');
+	// Runs the upgrade procedures (re-save templates, and ping server)
+	function sb_upgrade ($old_version, $new_version) {
+		if ($old_version != "") {
+			sb_ping_gallery();
+			$sbmf = get_option('sb_sermon_multi_form');
+			if ($sbmf)
+				update_option('sb_sermon_multi_output', base64_encode(strtr(stripslashes(base64_decode($sbmf)), sb_search_results_dictionary())));
+			$sbsf = get_option('sb_sermon_single_form');
+			if ($sbsf) 
+				update_option('sb_sermon_single_output', base64_encode(strtr(stripslashes(base64_decode($sbsf)), sb_sermon_page_dictionary())));
+			update_option('sb_sermon_version', SB_CURRENT_VERSION);
+		}
+	}
+	
+	global $sermon_domain, $wpdb, $defaultMultiForm, $defaultSingleForm, $defaultStyle;
 	$directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
 	if ($directories[count($directories)-1] == 'mu-plugins') {
 		define('IS_MU', TRUE);
@@ -89,11 +105,14 @@ function sb_sermon_init () {
 	if (intval(ini_get('max_execution_time'))<600) ini_set('max_execution_time', '600');
 	if (ini_get('file_uploads')<>'1') ini_set('file_uploads', '1');
 
-	// Only proceed with install if necessary
+	// Check for Sermon Browser upgrade
+	$sb_version = get_option('sb_sermon_version');
+	if ($sb_version != SB_CURRENT_VERSION)
+		sb_upgrade ($sb_version, SB_CURRENT_VERSION);
+
+	// Only proceed with install/upgrade if necessary
 	$db_version = get_option('sb_sermon_db_version');
 	if($db_version == SB_DATABASE_VERSION) return;
-	global $wpdb;
-	global $defaultMultiForm, $defaultSingleForm, $defaultStyle;
 	require_once(ABSPATH . 'wp-includes/pluggable.php');
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
@@ -136,7 +155,7 @@ function sb_sermon_init () {
 				$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_series ADD page_id INT(10) NOT NULL");
 				$wpdb->query("ALTER TABLE ".$wpdb->prefix."sb_sermons ADD page_id INT(10) NOT NULL");
 				add_option('sb_display_method', 'dynamic');
-				add_option('sb_sermons_per_page', '15');
+				add_option('sb_sermons_per_page', '10');
 				add_option('sb_sermon_multi_output', base64_encode(strtr(sb_get_value('multi_form'), sb_search_results_dictionary())));
 				add_option('sb_sermon_single_output', base64_encode(strtr(sb_get_value('single_form'), sb_sermon_page_dictionary())));
 				add_option('sb_sermon_style_output', base64_encode(stripslashes(base64_decode(get_option('sb_sermon_style')))));
@@ -308,7 +327,7 @@ function sb_sermon_init () {
 		add_option('sb_sermon_upload_url', sb_get_default('attachment_url'));
 		add_option('sb_podcast', sb_get_value('wordpress_url').'?podcast');
 		add_option('sb_display_method', 'dynamic');
-		add_option('sb_sermons_per_page', '15');
+		add_option('sb_sermons_per_page', '10');
 		delete_option('sb_sermon_multi_form');
 	   	add_option('sb_sermon_multi_form', base64_encode(sb_default_multi_template()));
 		delete_option('sb_sermon_single_form');
@@ -348,18 +367,6 @@ function sb_add_pages() {
  ** Main Functions in Admin           **
  **************************************/
 
-// Runs upon activation
-function sb_activate () {
-	// Re-saves the template in case of changes to dictionary.php
-   	$sbmf = get_option('sb_sermon_multi_form');
-	if ($sbmf) update_option('sb_sermon_multi_output', base64_encode(strtr(stripslashes(base64_decode($sbmf)), sb_search_results_dictionary())));
-	$sbsf = get_option('sb_sermon_single_form');
-	if ($sbsf) {
-		update_option('sb_sermon_single_output', base64_encode(strtr(stripslashes(base64_decode($sbsf)), sb_sermon_page_dictionary())));
-		sb_ping_gallery();
-	}
-}
-
 // Adds javascript and CSS where required in admin
 function sb_add_admin_headers() {
 	if (substr($_REQUEST['page'],14) == 'sermon-browser')
@@ -382,14 +389,14 @@ function sb_options() {
 	if ($_POST['resetdefault']) {
 		$dir = sb_get_default('sermon_path');
 		if (sb_display_url()=="") {
-			update_option('sb_podcast', sb_get_value('wordpress_url').sb_query_char().'podcast');
+			update_option('sb_podcast', sb_get_value('wordpress_url').sb_query_char(false).'podcast');
 		} else {
-			update_option('sb_podcast', sb_display_url().sb_query_char ().'podcast');
+			update_option('sb_podcast', sb_display_url().sb_query_char(false).'podcast');
 		}
 		update_option('sb_sermon_upload_dir', $dir);
 		update_option('sb_sermon_upload_url', sb_get_default('attachment_url'));
 		update_option('sb_display_method', 'dynamic');
-		update_option('sb_sermons_per_page', '15');
+		update_option('sb_sermons_per_page', '10');
 	   	if (!is_dir(sb_get_value('wordpress_path').$dir)) {
 	      if (sb_mkdir(sb_get_value('wordpress_path').$dir)) {
 	         @chmod(sb_get_value('wordpress_path').$dir, 0777); 
@@ -1376,13 +1383,13 @@ function sb_ping_gallery() {
 	global $wpdb;
 	if((ini_get('allow_url_fopen') | function_exists(curl_init)) & get_option('blog_public') == 1 & get_option('ping_sites') != "") {
 		$url = "http://ping.preachingcentral.com/?sg_ping";
-		$url = $url."&name=".URLencode(get_option('blogname'));
-		$url = $url."&tagline=".URLencode(get_option('blogdescription'));
-		$url = $url."&site_url=".URLencode(get_option('siteurl'));
-		$url = $url."&sermon_url=".URLencode(sb_display_url());
-		$url = $url."&most_recent=".URLencode($wpdb->get_var("SELECT date FROM {$wpdb->prefix}sb_sermons ORDER BY date DESC LIMIT 1"));
-		$url = $url."&num_sermons=".URLencode($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_sermons"));
-		$url = $url."&ver=".SB_CURRENT_VERSION;
+		$url .= "&name=".URLencode(get_option('blogname'));
+		$url .= "&tagline=".URLencode(get_option('blogdescription'));
+		$url .= "&site_url=".URLencode(get_option('home'));
+		$url .= "&sermon_url=".URLencode(sb_display_url());
+		$url .= "&most_recent=".URLencode($wpdb->get_var("SELECT date FROM {$wpdb->prefix}sb_sermons ORDER BY date DESC LIMIT 1"));
+		$url .= "&num_sermons=".URLencode($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_sermons"));
+		$url .= "&ver=".constant("SB_CURRENT_VERSION");
  		if (ini_get('allow_url_fopen')) {
 			$headers = @get_headers($url, 1);
 			if ($headers !="") {
@@ -1462,11 +1469,11 @@ function sb_manage_sermons() {
 	<div class="wrap">
 		<h2>Filter</h2>
 			<form id="searchform" name="searchform">			
-			<fieldset>
+			<fieldset style="float:left; margin-right: 1em">
 				<legend><?php _e('Title', $sermon_domain) ?></legend>
 				<input type="text" size="17" value="" id="search" />
 			</fieldset>				
-			<fieldset>
+			<fieldset style="float:left; margin-right: 1em">
 				<legend><?php _e('Preacher', $sermon_domain) ?></legend>				
 				<select id="preacher">
 					<option value="0"></option>
@@ -1475,7 +1482,7 @@ function sb_manage_sermons() {
 					<?php endforeach ?>
 				</select>
 			</fieldset>	
-			<fieldset>
+			<fieldset style="float:left; margin-right: 1em">
 				<legend><?php _e('Series', $sermon_domain) ?></legend>
 				<select id="series">
 					<option value="0"></option>
@@ -1483,7 +1490,7 @@ function sb_manage_sermons() {
 						<option value="<?php echo $item->id ?>"><?php echo htmlspecialchars(stripslashes($item->name), ENT_QUOTES) ?></option>
 					<?php endforeach ?>
 				</select>
-			</fieldset>							
+			</fieldset style="float:left; margin-right: 1em">							
 			<input type="submit" class="button" value="<?php _e('Filter', $sermon_domain) ?> &raquo;" style="float:left;margin:14px 0pt 1em; position:relative;top:0.35em;" onclick="javascript:fetch(0);return false;" />
 			</form>
 		<br style="clear:both">
@@ -1872,7 +1879,7 @@ function sb_new_sermon() {
 					</td>					
 				</tr>
 				<tr>
-					<td>
+					<td style="overflow: visible">
 						<strong><?php _e('Date', $sermon_domain) ?></strong> (yyyy-mm-dd)
 						<div>
 							<input type="text" id="date" name="date" value="<?php echo $curSermon->date ?>" />
@@ -2165,8 +2172,8 @@ sb_do_alerts();
 		<p>This 'feature' is caused by a well-known bug in Adobe flash. In order for the files to play correctly, when they are saved, the sample rate needs to be set at a multiple of 11.025kHz (i.e. 11.025, 22.05 or 44.1).</p>
 		<h4 id="sidebar">How do I get recent sermons to display in my sidebar?</h4>
 		<p>If your WordPress theme supports widgets, just go to Design and choose <a href="widgets.php">Widgets</a>. There you easily can add the Sermons widget to your sidebar. If your theme doesn't support widgets, you'll need to edit your theme manually. Usually, you'll be editing a file called <b>sidebar.php</b>, but your theme may give it a different name. Add the following code:</p>
-		<p style="font-family:monospace">&lt;?php if (function_exists('display_sermons')) display_sermons(array('display_preacher' => 0, 'display_passage' => 1, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5)) ?></code>
-		<p>Each of the numbers in that line can be changed. <b>display_preacher</b> and <b>display_passage</b> affect what is displayed (0 is off, 1 is on). <b>preacher</b>, <b>service</b> and <b>series</b> allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series. <b>limit</b> is simply the maximum number of sermons you want displayed.</p>
+		<p style="font-family:monospace">&lt;?php if (function_exists('display_sermons')) display_sermons(array('display_preacher' => 0, 'display_passage' => 1, 'display_date' => 1, 'display_player' => 1, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5)) ?></code>
+		<p>Each of the numbers in that line can be changed. <b>display_preacher</b>, <b>display_passage</b>, <b>display_date</b>, and <b>display_player</b> affect what is displayed (0 is off, 1 is on). <b>preacher</b>, <b>service</b> and <b>series</b> allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series. <b>limit</b> is simply the maximum number of sermons you want displayed.</p>
 		<h4 id="diskspace">My host only allows me a certain amount of disk space, and I have so many sermons uploaded, I've run out of space! What can I do?</h4>
 		<p>You could, of course, change your host to someone a little more generous! I use <a href="http://www.vortechhosting.com/shared/windows.php">VortechHosting</a> for low traffic sites (5Gb of disk space for less than $10 a month), and <a href="https://www.liquidweb.com/cart/content/vps/">LiquidWeb VPS</a> for higher traffic sites (20Gb disk space for $60 a month). You should also make sure you encode your sermons at a medium to high compression. Usually, 22.05kHz, 48kbps mono is more than adequate (you could probably go down to 32kbps for even higher compression). 48kbps means every minute of recording takes up 360kb of disk space, so a thirty minute sermon will just over 10Mb. At this setting, 5Gb would be enough for over 450 sermons.</p>
 		<p>If you can't change your host, you can still use SermonBrowser. You'll just have to upload your sermon files to another site - preferably a free one! We recommend <a href="http://www.odeo.com/" target="blank">Odeo</a>. If you want to use Odeo's audio player on your website, copy the embed code they give you, and when you add your sermon to SermonBrowser, select "Enter embed code:" and paste it in. If you want to use the standard 1pixelout audio player, copy the "Download MP3" link Odeo give you, and when you add your sermon to SermonBrowser, select "Enter an URL" and paste it in.</p>
@@ -2244,8 +2251,9 @@ sb_do_alerts();
 			<li><b>[kjvtext]</b> - Displays the full text of the <a href="http://en.wikipedia.org/wiki/Authorized_King_James_Version">KJV</a> Bible for all passages linked to that sermon.</li>
 			<li><b>[ylttext]</b> - Displays the full text of the <a href="http://en.wikipedia.org/wiki/Young%27s_Literal_Translation">YLT</a> Bible for all passages linked to that sermon.</li>
 			<li><b>[webtext]</b> - Displays the full text of the <a href="http://ebible.org/bible/web/">WEB</a> Bible for all passages linked to that sermon.</li>
-			<li><b>[webtext]</b> - Displays the full text of the <a href="http://www.angelfire.com/al4/allenkc/akjv/">AKJV</a> Bible for all passages linked to that sermon.</li>
-			<li><b>[webtext]</b> - Displays the full text of the <a href="http://ebible.org/bible/hnv/">HNV</a> Bible for all passages linked to that sermon.</li>
+			<li><b>[akjvtext]</b> - Displays the full text of the <a href="http://www.angelfire.com/al4/allenkc/akjv/">AKJV</a> Bible for all passages linked to that sermon.</li>
+			<li><b>[hnvtext]</b> - Displays the full text of the <a href="http://ebible.org/bible/hnv/">HNV</a> Bible for all passages linked to that sermon.</li>
+			<li><b>[lbrvtext]</b> - Displays the full text of the <a href="http://en.wikipedia.org/wiki/Reina-Valera">Reina Valera</a> Bible (Spanish) for all passages linked to that sermon.</li>
 			<li><b>[biblepassage]</b> - Displays the reference of the bible passages for that sermon. Useful for utilising other bible plugins (see <a href="#otherversions">FAQ</a>).</li>
 	</div>
 	</form>
@@ -2594,9 +2602,9 @@ function update_podcast_url () {
 	$existing_url = get_option('sb_podcast');
 	if (substr($existing_url, 0, strlen(sb_get_value('wordpress_url'))) == sb_get_value('wordpress_url')) {
 		if (sb_display_url(TRUE)=="") {
-			update_option('sb_podcast', sb_get_value('wordpress_url').sb_query_char().'podcast');
+			update_option('sb_podcast', sb_get_value('wordpress_url').sb_query_char(false).'podcast');
 		} else {
-			update_option('sb_podcast', sb_display_url().sb_query_char ().'podcast');
+			update_option('sb_podcast', sb_display_url().sb_query_char(false).'podcast');
 		}
 	}
 }
