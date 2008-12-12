@@ -7,33 +7,11 @@ function sb_print_iso_date($sermon) {
 	echo date('d M Y H:i:s', strtotime($sermon->date.' '.$sermon_time))." +0000";
 }
 
-//Prints first .mp3 file
-function sb_first_mp3($sermon) {
-	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-	$nostats = TRUE;
-	if (stripos($user_agent, 'itunes')===FALSE AND stripos($user_agent, 'itunes')===FALSE)
-		$nostats = FALSE; // Stats have to be turned off for iTunes compatibility
-	$stuff = sb_get_stuff($sermon, true);
-	foreach ((array) $stuff['Files'] as $file) {
-		if (strtolower(substr($file, strrpos($file, '.') + 1)) == 'mp3') {
-			if (substr($file,0,7) == "http://") {
-				if (!$nostats) $file=sb_display_url().sb_query_char().'show&amp;url='.URLencode($file);
-			} else {
-				if ($nostats)
-					$file=sb_get_value('wordpress_url').get_option('sb_sermon_upload_dir').URLencode($file);
-				else
-					$file=sb_display_url().sb_query_char().'show&amp;file_name='.URLencode($file);
-			}
-			return $file;
-			break;
-		}
-	}
-}
-
 //Prints size of first .mp3 file
 function sb_first_mp3_size($sermon) {
 	$stuff = sb_get_stuff($sermon);
-	foreach ((array) $stuff['Files'] as $file) {
+	$stuff = array_merge((array)$stuff['Files'], (array)$stuff['URLs']);
+	foreach ((array) $stuff as $file) {
 		if (strtolower(substr($file, strrpos($file, '.') + 1)) == 'mp3') {
 			if (substr($file,0,7) == "http://") {
 				if(ini_get('allow_url_fopen')) {
@@ -50,11 +28,11 @@ function sb_first_mp3_size($sermon) {
 }
 ?><rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-	<atom:link href="<?php echo get_option('sb_podcast') ?>" rel="self" type="application/rss+xml" />
+	<atom:link href="<?php echo str_replace('&amp;&amp;', '&amp;', str_replace('&', '&amp;', get_option('sb_podcast'))) ?>" rel="self" type="application/rss+xml" />
     <title><?php echo get_bloginfo('name')?> Podcast</title>
     <itunes:author></itunes:author>
     <description><?php echo get_bloginfo('description') ?></description>
-    <link><?php echo get_bloginfo('url') ?></link>
+    <link><?php echo str_replace('&amp;&amp;', '&amp;', str_replace('&', '&amp;', get_bloginfo('home'))) ?></link>
     <language>en-us</language>
     <copyright></copyright>
 	<itunes:explicit>no</itunes:explicit>
