@@ -80,9 +80,9 @@ How do I get recent sermons to display in my sidebar?
 
 If your WordPress theme supports widgets, just go to Design and choose Widgets. There you easily can add the Sermons widget to your sidebar. If your theme doesn't support widgets, you'll need to edit your theme manually. Usually, you'll be editing a file called sidebar.php, but your theme may give it a different name. Add the following code:
 
-    <?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_preacher' => 0, 'display_passage' => 1, 'display_date' => 1, 'display_player' => 1, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5)) ?>
+    <?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_preacher' => 0, 'display_passage' => 1, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5)) ?>
 
-Each of the numbers in that line can be changed. display\_preacher, display\_passage, display\_date, and display\_player affect what is displayed (0 is off, 1 is on). preacher, service and series allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series. limit is simply the maximum number of sermons you want displayed.
+Each of the numbers in that line can be changed. display\_preacher and display\_passage affect what is displayed (0 is off, 1 is on). preacher, service and series allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series. limit is simply the maximum number of sermons you want displayed.
 
 #### My host only allows me a certain amount of disk space, and I have so many sermons uploaded, I've run out of space! What can I do?
 

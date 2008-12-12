@@ -13,14 +13,12 @@ function sb_display_url($recalc=FALSE) {
 }
 
 //Are we appending sermon-browser query to an existing query, or not?
-function sb_query_char ($return_entity = true) {
-	if (strpos(sb_display_url(), '?')===FALSE)
+function sb_query_char () {
+	if (strpos(sb_display_url(), '?')===FALSE) {
 		return '?';
-	else
-		if ($return_entity)
-			return '&amp;';
-		else
-			return '&';
+	} else {
+		return '&amp;';
+	}
 }
 
 //Modify page title
@@ -553,12 +551,14 @@ function sb_print_tags($tags) {
 }
 
 //Prints tag cloud
-function sb_print_tag_clouds($minfont=80, $maxfont=150) {
+function sb_print_tag_clouds() {
 	global $wpdb;
 	$rawtags = $wpdb->get_results("SELECT name FROM {$wpdb->prefix}sb_tags as t RIGHT JOIN {$wpdb->prefix}sb_sermons_tags as st ON t.id = st.tag_id");
 	foreach ($rawtags as $tag) {
 		$cnt[$tag->name]++;
 	}
+	$minfont = 80;
+	$maxfont = 200;
 	$fontrange = $maxfont - $minfont;
 	$maxcnt = 0;
 	$mincnt = 1000000;
@@ -647,7 +647,7 @@ function sb_print_url_link($url) {
 		else {
 			$param="file_name"; }
 		$url = URLencode($url);
-		echo ' <a href="'.sb_display_url().sb_query_char().'download&amp;'.$param.'='.$url.'">Download</a>';
+		echo ' <a href="'.sb_display_url().sb_query_char().'download&'.$param.'='.$url.'">Download</a>';
 	}
 	echo '</div>';
 }
