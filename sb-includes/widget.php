@@ -84,7 +84,7 @@ function sb_widget_tag_cloud ($args) {
 // Stats have to be turned off for iTunes compatibility
 function sb_first_mp3($sermon, $stats= TRUE) {
 	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-	if (stripos($user_agent, 'itunes')===TRUE | stripos($user_agent, 'FeedBurner')===TRUE)
+	if (stripos($user_agent, 'itunes')!==FALSE | stripos($user_agent, 'feedburner')!==FALSE)
 		$stats = FALSE;
 	$stuff = sb_get_stuff($sermon, true);
 	$stuff = array_merge((array)$stuff['Files'], (array)$stuff['URLs']);

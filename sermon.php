@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Main coding by <a href="http://codeandmore.com/">Tien Do Xuan</a>. Design and additional coding
 Author: Mark Barnes
-Version: 0.40
+Version: 0.40.1
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -29,10 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **************************************/
 
 //Set global constants
-define('SB_CURRENT_VERSION', '0.40');
+define('SB_CURRENT_VERSION', '0.40.1');
 define('SB_DATABASE_VERSION', '1.5');
 
- 
 add_action('init', 'sb_sermon_init'); 							// Initialise the plugin
 add_action('template_redirect', 'sb_hijack');					// Check for file download or feed output
 add_action('admin_menu', 'sb_add_pages');						// Add menus to admin
@@ -2692,7 +2691,13 @@ function sb_get_default ($default_type) {
 		case 'eng_bible_books': return array('Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalm', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation');
 	}
 }
-			
+
+// stripos function for PHP <5
+if (!function_exists("stripos")) {
+    function stripos($haystack, $needle, $offset=0) {
+        return strpos(strtolower($haystack), strtolower($needle), $offset);
+    }
+}
 
 /***************************************
  ** Default templates and styles      **
