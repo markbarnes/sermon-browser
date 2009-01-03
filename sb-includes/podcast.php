@@ -55,7 +55,7 @@ function sb_first_mp3_size($sermon) {
 		<guid><?php echo sb_first_mp3($sermon) ?></guid>
 		<title><?php echo stripslashes($sermon->title) ?></title>
 		<link><?php echo sb_display_url().sb_query_char().'sermon_id='.$sermon->id ?></link>
-		<description><?php echo stripslashes($sermon->description) ?></description>
+		<description><![CDATA[<?php echo stripslashes($sermon->description) ?>]]></description>
 		<enclosure url="<?php echo sb_first_mp3($sermon) ?>" length="<?php echo sb_first_mp3_size($sermon) ?>" type="audio/mpeg"/>
 		<category><?php echo stripslashes($sermon->service) ?></category>
 		<pubDate><?php sb_print_iso_date($sermon) ?></pubDate>
