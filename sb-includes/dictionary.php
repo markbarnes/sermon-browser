@@ -2,7 +2,7 @@
 
 function sb_search_results_dictionary() {
 	return array(
-		'[filters_form]' => '<?php sb_print_filters() ?>',
+		'[filters_form]' => '<?php sb_print_filters($atts) ?>',
 		'[tag_cloud]' => '<?php sb_print_tag_clouds() ?>',
 		'[sermons_count]' => '<?php echo $record_count ?>',
 		'[sermons_loop]' => '<?php foreach ($sermons as $sermon): ?><?php $stuff = sb_get_stuff($sermon) ?>',
@@ -60,6 +60,7 @@ function sb_sermon_page_dictionary() {
 		'[esvtext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "esv"); endfor ?>',
 		'[kjvtext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "kjv"); endfor ?>',
 		'[asvtext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "asv"); endfor ?>',
+		'[nettext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "net"); endfor ?>',
 		'[ylttext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "ylt"); endfor ?>',
 		'[webtext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "web"); endfor ?>',
 		'[akjvtext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "akjv"); endfor ?>',

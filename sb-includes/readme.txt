@@ -2,7 +2,7 @@
 Contributors: mark8barnes
 Donate link: http://www.4-14.org.uk/sermon-browser#support
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, church, iTunes, preacher
-Requires at least: 2.2
+Requires at least: 2.5
 Tested up to: 2.7.1
 Stable tag: trunk
 
@@ -18,12 +18,13 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 4. An optional **sidebar widget** displays sermons on all of your posts or pages.
 5. **Embed videos** and other flash files from sites such as YouTube or Google Video.
 6. **Other file types** can also be uploaded, including PDF, Powerpoint, Word, text and RTF. Multiple files can be attached to single sermons.
-7. The **full Bible text** of the passage being preached on can be included on each sermon page (five different versions, including ESV).
+7. The **full Bible text** of the passage being preached on can be included on each sermon page (nine different versions, including ESV).
 8. Files can be uploaded to your own site **through the browser or via FTP**. Alternatively you can use other free audio hosting sites such as Odeo.
 9. Powerful **templating function** allows complete customisation to complement the look of your site.
 10. Simple statistics show how often each sermon has been listened to.
 11. Support for Wordpress MU (WPMU)
 12. Extensive **help and tutorial** screencasts.
+13. English and Spanish translations included.
 
 == Installation ==
 
@@ -194,8 +195,10 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 * **[esvtext]** - Displays the full text of the ESV Bible for all passages linked to that sermon.
 * **[asvtext]** - Displays the full text of the ASV Bible for all passages linked to that sermon.
 * **[kjvtext]** - Displays the full text of the KJV Bible for all passages linked to that sermon.
+* **[nettext]** - Displays the full text of the NET Bible for all passages linked to that sermon.
 * **[ylttext]** - Displays the full text of the YLT Bible for all passages linked to that sermon.
 * **[webtext]** - Displays the full text of the WEB Bible for all passages linked to that sermon.
 * **[akjvtext]** - Displays the full text of the AKJV Bible for all passages linked to that sermon.
 * **[hnvtext]** - Displays the full text of the HNV Bible for all passages linked to that sermon.
+* **[lbrvtext]** - Displays the full text of the Reina Valera Bible (Spanish) for all passages linked to that sermon.
 * **[biblepassage]** - Displays the reference of the bible passages for that sermon. Useful for utilising other bible plugins (see FAQ).

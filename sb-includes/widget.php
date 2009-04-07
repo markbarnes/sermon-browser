@@ -1,5 +1,9 @@
 <?php
 
+// Error message for people using the old function
+function display_sermons($options = array()) {
+	echo "This function is now deprecated. Use sb_display_sermons or the sermon browser widget, instead.";
+}
 // Function to display sermons for users to add to their template
 function sb_display_sermons($options = array()) {
 	$default = array(
@@ -38,7 +42,7 @@ function sb_display_sermons($options = array()) {
 			echo "\">".stripslashes($sermon->preacher)."</a></span>";
 		}
 		if ($display_date)
-			echo "<span class=\"sermon-date\"> ".__('on', $sermon_domain)." ".sb_format_date(strtotime($sermon->date))."</span> ";
+			echo " <span class=\"sermon-date\">".__('on', $sermon_domain)." ".sb_format_date(strtotime($sermon->date))."</span>";
 		if ($display_player)
 			sb_display_mini_player($sermon);
 		echo ".</li>\r";
@@ -84,7 +88,7 @@ function sb_widget_tag_cloud ($args) {
 // Stats have to be turned off for iTunes compatibility
 function sb_first_mp3($sermon, $stats= TRUE) {
 	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-	if (stripos($user_agent, 'itunes')!==FALSE | stripos($user_agent, 'feedburner')!==FALSE)
+	if (stripos($user_agent, 'itunes') !== FALSE | stripos($user_agent, 'FeedBurner') !== FALSE)
 		$stats = FALSE;
 	$stuff = sb_get_stuff($sermon, true);
 	$stuff = array_merge((array)$stuff['Files'], (array)$stuff['URLs']);
@@ -109,11 +113,16 @@ function sb_first_mp3($sermon, $stats= TRUE) {
 function sb_display_mini_player ($sermon, $id=1, $flashvars="") {
 	$filename = sb_first_mp3($sermon, FALSE);
 	if ($filename !="") {
-		$flashvars .= "&foreColor=".str_replace("0x", "#", get_option("audio_player_rightbgcolor"));
+		$ap2_options = get_option('AudioPlayer_options');
+		if ($ap2_options != '') {
+			$color = '#'.$ap2_options['colorScheme']['rightbg'];
+		} else
+			$color = str_replace("0x", "#", get_option("audio_player_rightbgcolor"));
+		$flashvars .= "&foreColor=".$color;
 		$flashvars .= "&filename=".$filename;
 		if (substr($flashvars, 0, 1) == "&")
 			$flashvars = substr($flashvars, 1);
-		echo "<span class=\"sermon-player\"><embed id=\"oneBitInsert_{$id}\" width=\"10\" height=\"10\"";
+		echo " <span class=\"sermon-player\"><embed id=\"oneBitInsert_{$id}\" width=\"10\" height=\"10\"";
 		if (get_option('audio_player_transparentpagebgcolor')=="true")
 			echo " wmode=\"transparent\"";
 		else
@@ -164,10 +173,8 @@ function sb_widget_sermon( $args, $widget_args = 1 ) {
 		}
 		if ($date)
 			echo " <span class=\"sermon-date\">".__(' on ', $sermon_domain).sb_format_date(strtotime($sermon->date))."</span>";
-		if ($player) {
-			echo " ";
+		if ($player)
 			sb_display_mini_player($sermon, $i);
-		}
 		echo ".</li>";
 	}
 	echo "</ul>";
