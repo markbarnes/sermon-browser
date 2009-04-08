@@ -1658,11 +1658,10 @@ function sb_new_sermon() {
 			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, '{$ed['book']}', '{$ed['chapter']}', '{$ed['verse']}', $i, 'end', $id);");
 		}
 		// now previously uploaded files
-		foreach ($_POST['file'] as $uid => $file)
+		foreach ($_POST['file'] as $uid => $file) {
 			if ($file != 0) 
 				$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = $id WHERE id = $file;");
-
-			if ($_FILES['upload']['error'][$uid] == UPLOAD_ERR_OK) {
+			elseif ($_FILES['upload']['error'][$uid] == UPLOAD_ERR_OK) {
 				$filename = basename($_FILES['upload']['name'][$uid]);
 				if (IS_MU) {
 					$file_allowed = FALSE;
@@ -1693,6 +1692,7 @@ function sb_new_sermon() {
 					echo '<div id="message" class="updated fade"><p><b>'.__('You are not permitted to upload files of that type.', $sermon_domain).'</b></div>';
 					$error = true;
 				}
+			}
 		}
 		// then URLs
 		foreach ((array) $_POST['url'] as $urlz) {
