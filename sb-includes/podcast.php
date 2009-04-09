@@ -5,7 +5,6 @@ function sb_print_iso_date($sermon) {
 	$sermon_time = $sermon->time;
 	if ($sermon_time == '')
 		$sermon_time = sb_default_time ($sermon->sid);
-	$timezone = get_option('gmt_offset')*3600;
 	echo date('D, d M Y H:i:s O', strtotime($sermon->date.' '.$sermon_time));
 }
 

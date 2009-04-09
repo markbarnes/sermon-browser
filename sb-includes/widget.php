@@ -42,7 +42,7 @@ function sb_display_sermons($options = array()) {
 			echo "\">".stripslashes($sermon->preacher)."</a></span>";
 		}
 		if ($display_date)
-			echo " <span class=\"sermon-date\">".__('on', $sermon_domain)." ".sb_format_date(strtotime($sermon->date))."</span>";
+			echo " <span class=\"sermon-date\">".__('on', $sermon_domain)." ".sb_formatted_date ($sermon)."</span>";
 		if ($display_player)
 			sb_display_mini_player($sermon);
 		echo ".</li>\r";
@@ -172,7 +172,7 @@ function sb_widget_sermon( $args, $widget_args = 1 ) {
 			echo "\">".stripslashes($sermon->preacher)."</a></span>";
 		}
 		if ($date)
-			echo " <span class=\"sermon-date\">".__(' on ', $sermon_domain).sb_format_date(strtotime($sermon->date))."</span>";
+			echo " <span class=\"sermon-date\">".__(' on ', $sermon_domain).sb_formatted_date ($sermon)."</span>";
 		if ($player)
 			sb_display_mini_player($sermon, $i);
 		echo ".</li>";

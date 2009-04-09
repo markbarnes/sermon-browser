@@ -462,12 +462,11 @@ function sb_default_time($service) {
 }
 
 // Formats date into words
-function sb_format_date ($the_date) {
-	if (WPLANG == '' | WPLANG == "en_EN" | WPLANG == "en") {
-		return date(get_option("date_format"), $the_date);
-	} else {
-		return strftime("%e %B %Y", $the_date);
-	}
+function sb_formatted_date ($sermon) {
+	$sermon_time = $sermon->time;
+	if ($sermon_time == '')
+		$sermon_time = sb_default_time ($sermon->sid);
+	return date_i18n(get_option("date_format"), strtotime($sermon->date.' '.$sermon_time));
 }
 
 // Returns podcast URL
