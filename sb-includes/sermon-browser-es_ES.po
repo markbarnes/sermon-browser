@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sermon-browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-08 00:34-0000\n"
+"POT-Creation-Date: 2009-04-09 01:04-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mark Barnes <mark@4-14.org.uk>\n"
 "Language-Team: \n"
@@ -553,12 +553,12 @@ msgid "Files saved to database."
 msgstr "Archivos guardados a la base de datos."
 
 #: ../sermon.php:1122
-#: ../sermon.php:1688
+#: ../sermon.php:1687
 msgid " already exists."
 msgstr " ya existe."
 
 #: ../sermon.php:1126
-#: ../sermon.php:1693
+#: ../sermon.php:1692
 msgid "You are not permitted to upload files of that type."
 msgstr "No se le permite subir archivos de ese tipo."
 
