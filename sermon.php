@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Coding by <a href="http://codeandmore.com/">Tien Do Xuan</a> and 
 Author: Mark Barnes
-Version: 0.41
+Version: 0.41.1
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **************************************/
 
 //Set global constants
-define('SB_CURRENT_VERSION', '0.41');
+define('SB_CURRENT_VERSION', '0.41.1');
 define('SB_DATABASE_VERSION', '1.5');
 
 add_action('init', 'sb_sermon_init'); 							// Initialise the plugin
@@ -2510,7 +2510,7 @@ function sb_do_alerts() {
 		echo '<div id="message" class="updated"><p><b>'.__('You must create a post or preferably a page that includes the code [sermons] in order for your sermons to be displayed on your site.', $sermon_domain).'</b></div>';
 	} else {
 		if (!function_exists('ap_insert_player_widgets')) {
-			if ($wpdb->get_var("SELECT COUNT(id) FROM wp_sb_stuff WHERE name LIKE '%.mp3'")>0)
+			if ($wpdb->get_var("SELECT COUNT(id) FROM {$wpdb->prefix}sb_stuff WHERE name LIKE '%.mp3'")>0)
 				echo '<div id="message" class="updated"><p><b>'.sprintf(__('Tip: Installing the %1$sWordpress Audio Player%2$s will allow users to listen to your sermons more easily.', $sermon_domain), '<a href="http://wpaudioplayer.com/" target="_blank">', '</a>').'</b></div>';
 		}
 	}
