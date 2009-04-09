@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sermon-browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-09 01:04-0000\n"
+"POT-Creation-Date: 2009-04-09 10:50-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mark Barnes <mark@4-14.org.uk>\n"
 "Language-Team: \n"
@@ -25,114 +25,114 @@ msgstr "Podcast de sermones"
 msgid "Custom sermon podcast"
 msgstr "Podcast de sermones personalizado"
 
-#: frontend.php:555
-#: ../sb-includes/frontend.php:555
+#: frontend.php:554
+#: ../sb-includes/frontend.php:554
 msgid "Next page"
 msgstr "Siguiente"
 
-#: frontend.php:566
-#: ../sb-includes/frontend.php:566
+#: frontend.php:565
+#: ../sb-includes/frontend.php:565
 msgid "Previous page"
 msgstr "Anterior"
 
-#: frontend.php:631
-#: ../sb-includes/frontend.php:631
+#: frontend.php:630
+#: ../sb-includes/frontend.php:630
 msgid "About"
 msgstr "Sobre"
 
-#: frontend.php:667
+#: frontend.php:666
 #: ../sermon.php:615
-#: ../sb-includes/frontend.php:667
+#: ../sb-includes/frontend.php:666
 msgid "None"
 msgstr "Ninguno"
 
-#: frontend.php:820
-#: ../sb-includes/frontend.php:820
+#: frontend.php:819
+#: ../sb-includes/frontend.php:819
 msgid "more"
+msgstr ""
+
+#: frontend.php:901
+#: ../sb-includes/frontend.php:901
+msgid "Show filter"
 msgstr ""
 
 #: frontend.php:902
 #: ../sb-includes/frontend.php:902
-msgid "Show filter"
-msgstr ""
-
-#: frontend.php:903
-#: ../sb-includes/frontend.php:903
 msgid "Hide filter"
 msgstr ""
 
-#: frontend.php:948
-#: ../sb-includes/frontend.php:948
+#: frontend.php:947
+#: ../sb-includes/frontend.php:947
 msgid "Active filter"
 msgstr ""
 
-#: frontend.php:1007
+#: frontend.php:1006
 #: ../sermon.php:1520
 #: ../sermon.php:1547
 #: ../sermon.php:1901
-#: ../sb-includes/frontend.php:1007
+#: ../sb-includes/frontend.php:1006
 msgid "Preacher"
 msgstr "Maestro"
 
-#: frontend.php:1009
-#: frontend.php:1017
-#: frontend.php:1027
-#: frontend.php:1035
+#: frontend.php:1008
+#: frontend.php:1016
+#: frontend.php:1026
+#: frontend.php:1034
 #: widget.php:274
 #: widget.php:285
 #: widget.php:296
-#: ../sb-includes/frontend.php:1009
-#: ../sb-includes/frontend.php:1017
-#: ../sb-includes/frontend.php:1027
-#: ../sb-includes/frontend.php:1035
+#: ../sb-includes/frontend.php:1008
+#: ../sb-includes/frontend.php:1016
+#: ../sb-includes/frontend.php:1026
+#: ../sb-includes/frontend.php:1034
 msgid "[All]"
 msgstr "[Todo]"
 
-#: frontend.php:1015
-#: ../sb-includes/frontend.php:1015
+#: frontend.php:1014
+#: ../sb-includes/frontend.php:1014
 msgid "Services"
 msgstr "Servicios"
 
-#: frontend.php:1025
-#: ../sb-includes/frontend.php:1025
+#: frontend.php:1024
+#: ../sb-includes/frontend.php:1024
 msgid "Book"
 msgstr "Libros"
 
-#: frontend.php:1033
+#: frontend.php:1032
 #: ../sermon.php:1529
 #: ../sermon.php:1550
 #: ../sermon.php:1914
-#: ../sb-includes/frontend.php:1033
+#: ../sb-includes/frontend.php:1032
 msgid "Series"
 msgstr "Serie"
 
-#: frontend.php:1043
-#: ../sb-includes/frontend.php:1043
+#: frontend.php:1042
+#: ../sb-includes/frontend.php:1042
 msgid "Start date"
 msgstr "De fecha"
 
-#: frontend.php:1045
-#: ../sb-includes/frontend.php:1045
+#: frontend.php:1044
+#: ../sb-includes/frontend.php:1044
 msgid "End date"
 msgstr "A fecha"
 
-#: frontend.php:1049
-#: ../sb-includes/frontend.php:1049
+#: frontend.php:1048
+#: ../sb-includes/frontend.php:1048
 msgid "Keywords"
 msgstr "Palabras clave"
 
-#: frontend.php:1053
-#: ../sb-includes/frontend.php:1053
+#: frontend.php:1052
+#: ../sb-includes/frontend.php:1052
 msgid "Sort by"
 msgstr "Ordenar por"
 
-#: frontend.php:1060
-#: ../sb-includes/frontend.php:1060
+#: frontend.php:1059
+#: ../sb-includes/frontend.php:1059
 msgid "Direction"
 msgstr "Dirección"
 
-#: frontend.php:1070
-#: ../sb-includes/frontend.php:1070
+#: frontend.php:1069
+#: ../sb-includes/frontend.php:1069
 msgid "Filter &raquo;"
 msgstr "Filtrar &raquo;"
 
