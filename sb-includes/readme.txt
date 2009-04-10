@@ -26,6 +26,10 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 12. Extensive **help** and [tutorial screencasts](http://www.4-14.org.uk/wordpress-plugins/sermon-browser#tutorial).
 13. English and Spanish translations included.
 
+=== What's new in this version? ===
+
+[Click here](http://www.4-14.org.uk/wordpress-plugins/sermon-browser/development) for a list of recent changes.
+
 == Installation ==
 
 1. Download the plugin, and unzip it.
