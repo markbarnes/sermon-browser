@@ -1,10 +1,11 @@
 <?php 
 // Create the shortcode handler
 function sb_shortcode($atts, $content=null) {
-	global $wpdb, $clr, $record_count;
+	global $wpdb, $record_count;
 	ob_start();
 	$atts = shortcode_atts(array(
-		'filter' => 'one-click',
+		'filter' => get_option('sb_filtertype'),
+		'filterhide' => get_option('sb_filterhide'),
 		'id' => $_REQUEST['sermon_id'],
 		'preacher' => $_REQUEST['preacher'],
 		'series' => $_REQUEST['series'],
@@ -15,19 +16,25 @@ function sb_shortcode($atts, $content=null) {
 		'tag' => $_REQUEST['stag'],
 		'title' => $_REQUEST['title'],
 	), $atts);
-	if ($atts['id'] != 0) {
-		$clr = true;
+	if ($atts['id'] != '') {
+		if (strtolower($atts['id']) == 'latest') {
+			$atts['id'] = '';
+			$query = $wpdb->get_results(sb_create_multi_sermon_query($atts, array(), 1, 1));
+			$atts['id'] = $query[0]->id;
+		}
 		$sermon = sb_get_single_sermon((int) $atts['id']);
 		eval('?>'.base64_decode(get_option('sb_sermon_single_output')));
 	} else {
-		$clr = false;
-		$sermons = sb_get_sermons($atts,
-		array(
-			'by' => $_REQUEST['sortby'] ? $_REQUEST['sortby'] : 'm.date',
-			'dir' => $_REQUEST['dir'],
-		),
-		$_REQUEST['page'] ? $_REQUEST['page'] : 1			
-		);
+		if ($_REQUEST['sortby'])
+			$sort_criteria = $_REQUEST['sortby'];
+		else
+			$sort_criteria = 'm.date';
+		$sort_order = array('by' => $sort_criteria, 'dir' => $_REQUEST['dir']);
+		if ($_REQUEST['page'])
+			$page = $_REQUEST['page'];
+		else
+			$page = 1;
+		$sermons = sb_get_sermons($atts, $sort_order, $page);
 		$output = '?>'.base64_decode(get_option('sb_sermon_multi_output'));
 		eval($output);
 	}			
@@ -40,10 +47,10 @@ function sb_shortcode($atts, $content=null) {
 function sb_display_url() {
 	global $wpdb, $post, $sb_display_url;
 	if ($sb_display_url == '') {
-		$pageid = null;
+		/* $pageid = null;
 		if ($post->ID != '')
 			$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons%' AND (post_status = 'publish' OR post_status = 'private') AND ID={$post->ID} AND post_date < NOW();");
-		if ($pageid === null)
+		if ($pageid === null) */
 			$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons]%' AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
 		$sb_display_url = get_permalink($pageid);
 		if ($sb_display_url == sb_get_value('wordpress_url')|$sb_display_url =="") // Hack to force true permalink even if page used for front page.
@@ -438,15 +445,17 @@ function sb_build_url($arr, $clear = false) {
 // Adds javascript and CSS where required
 function sb_add_headers() {
 	global $sermon_domain, $post, $wpdb;
-	echo "<!-- Added by SermonBrowser (version ".SB_CURRENT_VERSION.") - http://www.4-14.org.uk/sermon-browser -->\r";
-	echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Sermon podcast', $sermon_domain)."\" href=\"".get_option('sb_podcast')."\" />\r";
-	$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons%' AND (post_status = 'publish' OR post_status = 'private') AND ID={$post->ID} AND post_date < NOW();");
-	if ($pageid !== NULL) {
-		wp_enqueue_script('sb_datepicker');
-		wp_enqueue_style ('sb_datepicker');
-		wp_enqueue_style ('sb_style');
-		if ($_REQUEST['title'] OR $_REQUEST['preacher'] OR $_REQUEST['date'] OR $_REQUEST['enddate'] OR $_REQUEST['series'] OR $_REQUEST['service'] OR $_REQUEST['book'] OR $_REQUEST['stag'])
-			echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Custom sermon podcast', $sermon_domain)."\" href=\"".sb_podcast_url()."\" />\r";
+	if ($post->ID != '') {
+		echo "<!-- Added by SermonBrowser (version ".SB_CURRENT_VERSION.") - http://www.4-14.org.uk/sermon-browser -->\r";
+		echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Sermon podcast', $sermon_domain)."\" href=\"".get_option('sb_podcast')."\" />\r";
+		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons%' AND (post_status = 'publish' OR post_status = 'private') AND ID={$post->ID} AND post_date < NOW();");
+		if ($pageid !== NULL) {
+			wp_enqueue_script('sb_datepicker');
+			wp_enqueue_style ('sb_datepicker');
+			wp_enqueue_style ('sb_style');
+			if ($_REQUEST['title'] OR $_REQUEST['preacher'] OR $_REQUEST['date'] OR $_REQUEST['enddate'] OR $_REQUEST['series'] OR $_REQUEST['service'] OR $_REQUEST['book'] OR $_REQUEST['stag'])
+				echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Custom sermon podcast', $sermon_domain)."\" href=\"".sb_podcast_url()."\" />\r";
+		}
 	}
 }
 
@@ -481,39 +490,33 @@ function sb_print_sermon_link($sermon) {
 
 // Prints preacher search URL
 function sb_print_preacher_link($sermon) {
-	global $clr;
-	echo sb_build_url(array('preacher' => $sermon->pid), $clr);
+	echo sb_build_url(array('preacher' => $sermon->pid));
 }
 
 // Prints series search URL
 function sb_print_series_link($sermon) {
-	global $clr;	
-	echo sb_build_url(array('series' => $sermon->ssid), $clr);
+	echo sb_build_url(array('series' => $sermon->ssid));
 }
 
 // Prints service search URL
 function sb_print_service_link($sermon) {
-	global $clr;
-	echo sb_build_url(array('service' => $sermon->sid), $clr);
+	echo sb_build_url(array('service' => $sermon->sid));
 }
 
 // Prints bible book search URL
 function sb_get_book_link($book_name) {
-	global $clr;
-	return sb_build_url(array('book' => $book_name), $clr);
+	return sb_build_url(array('book' => $book_name));
 }
 
 // Prints tag search URL
 function sb_get_tag_link($tag) {
-	global $clr;
-	return sb_build_url(array('stag' => $tag), $clr);
+	return sb_build_url(array('stag' => $tag));
 }
 
 // Prints tags
 function sb_print_tags($tags) {
-	foreach ((array) $tags as $tag) {
+	foreach ((array) $tags as $tag)
 		$out[] = '<a href="'.sb_get_tag_link($tag).'">'.$tag.'</a>';
-	}
 	$tags = implode(', ', (array) $out);
 	echo $tags;
 }
@@ -552,7 +555,7 @@ function sb_print_next_page_link($limit = 0) {
 	if ($current < ceil($record_count / $limit)) {
 		$url = sb_build_url(array('page' => ++$current));
 		echo '<a href="'.$url.'">'.__('Next page', $sermon_domain).' &raquo;</a>';
-	}	
+	}
 }
 
 //Prints link to previous page
@@ -563,7 +566,7 @@ function sb_print_prev_page_link($limit = 0) {
 	if ($current > 1) {
 		$url = sb_build_url(array('page' => --$current));
 		echo '<a href="'.$url.'">&laquo; '.__('Previous page', $sermon_domain).'</a>';
-	}	
+	}
 }
 
 // Print link to attached files
@@ -683,19 +686,10 @@ function sb_get_single_sermon($id) {
 	foreach ($rawtags as $tag) {
 		$tags[] = $tag->name;
 	}
-	foreach ($stuff as $cur) {
-		switch ($cur->type) {
-			case "file":
-			case "url":
-				$file[] = $cur->name;
-				break;
-			default:
-				${$cur->type}[] = $cur->name;
-		}
-	}
+	foreach ($stuff as $cur)
+		${$cur->type}[] = $cur->name;
 	$sermon->start = unserialize($sermon->start);
 	$sermon->end = unserialize($sermon->end);
-	print_r ($url);
 	return array(		
 		'Sermon' => $sermon,
 		'Files' => $file,
@@ -704,10 +698,9 @@ function sb_get_single_sermon($id) {
 	);
 }
 
-//Get multiple sermons from the database
-function sb_get_sermons($filter, $order, $page = 1, $limit = 0) {
-	global $wpdb, $record_count;
-	if ($limit == 0) $limit = sb_get_value('sermons_per_page');
+//Create query for returning multiple sermons
+function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0) {
+	global $wpdb;
 	$default_filter = array(
 		'title' => '',
 		'preacher' => 0,
@@ -724,8 +717,8 @@ function sb_get_sermons($filter, $order, $page = 1, $limit = 0) {
 		'dir' => 'desc',
 	);
 	$bs = '';
-	$filter = array_merge($default_filter, $filter);
-	$order = array_merge($default_order, $order);
+	$filter = array_merge($default_filter, (array)$filter);
+	$order = array_merge($default_order, (array)$order);
 	$page = (int) $page;
 	if ($filter['title'] != '') {
 		$cond = "AND (m.title LIKE '%" . mysql_real_escape_string($filter['title']) . "%' OR m.description LIKE '%" . mysql_real_escape_string($filter['title']). "%' OR t.name LIKE '%" . mysql_real_escape_string($filter['title']) . "%') ";
@@ -764,7 +757,7 @@ function sb_get_sermons($filter, $order, $page = 1, $limit = 0) {
 	if ($order['by'] == 'b.id' ) {
 	    $order['by'] = 'b.id '.$order['dir'].', bs.chapter '.$order['dir'].', bs.verse';
 	}
-	$query = "SELECT SQL_CALC_FOUND_ROWS DISTINCT m.id, m.title, m.description, m.date, m.time, m.start, m.end, p.id as pid, p.name as preacher, p.description as preacher_description, p.image, s.id as sid, s.name as service, ss.id as ssid, ss.name as series 
+	return "SELECT SQL_CALC_FOUND_ROWS DISTINCT m.id, m.title, m.description, m.date, m.time, m.start, m.end, p.id as pid, p.name as preacher, p.description as preacher_description, p.image, s.id as sid, s.name as service, ss.id as ssid, ss.name as series 
 		FROM {$wpdb->prefix}sb_sermons as m 
 		LEFT JOIN {$wpdb->prefix}sb_preachers as p ON m.preacher_id = p.id 
 		LEFT JOIN {$wpdb->prefix}sb_services as s ON m.service_id = s.id 
@@ -774,7 +767,14 @@ function sb_get_sermons($filter, $order, $page = 1, $limit = 0) {
 		LEFT JOIN {$wpdb->prefix}sb_sermons_tags as st ON st.sermon_id = m.id 
 		LEFT JOIN {$wpdb->prefix}sb_tags as t ON t.id = st.tag_id 
 		WHERE 1 = 1 $cond ORDER BY ". $order['by'] . " " . $order['dir'] . " LIMIT " . $offset . ", " . $limit;
-	$query = $wpdb->get_results($query);
+}
+
+//Get multiple sermons from the database
+function sb_get_sermons($filter, $order, $page = 1, $limit = 0) {
+	global $wpdb, $record_count;
+	if ($limit == 0)
+		$limit = sb_get_value('sermons_per_page');
+	$query = $wpdb->get_results(sb_create_multi_sermon_query($filter, $order, $page, $limit));
 	$record_count = $wpdb->get_var("SELECT FOUND_ROWS()");
 	return $query;
 }
@@ -787,9 +787,8 @@ function sb_get_stuff($sermon, $mp3_only = FALSE) {
 	} else {
 		$stuff = $wpdb->get_results("SELECT f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $sermon->id ORDER BY id desc");
 	}
-	foreach ($stuff as $cur) {
+	foreach ($stuff as $cur)
 		${$cur->type}[] = $cur->name;
-	}
 	return array(		
 		'Files' => $file,
 		'URLs' => $url,
@@ -878,7 +877,7 @@ function sb_url_minus_parameter ($param1, $param2='') {
 //Displays the filter on sermon search page
 function sb_print_filters($filter) {
 	global $wpdb, $sermon_domain, $more_applied, $filter_options;
-	if (get_option('sb_filterhide') == 'hide') {
+	if ($filter['filterhide'] == 'hide') {
 		$hide_filter = TRUE;
 	$js_hide = <<<HERE
 		var filter_visible = false;
@@ -900,63 +899,61 @@ HERE;
 	}
 	$js_hide = str_replace ('SHOW', __('Show filter', $sermon_domain), $js_hide);
 	$js_hide = str_replace ('HIDE', __('Hide filter', $sermon_domain), $js_hide);
-	if (get_option('sb_filtertype') == 'oneclick') {
+	if ($filter['filter'] == 'oneclick') {
 		// One click filter
 		$hide_custom_podcast = true;
-		if ($filter['filter'] !== 'none') {
-			$filter_options = array ('preacher', 'book', 'service', 'series', 'date', 'enddate', 'title');
-			$output = '';
-			foreach ($filter_options AS $filter_option)
-				if ($_REQUEST[$filter_option]) {
-					if ($filter_option != 'enddate') {
-						if ($output != '')
-							$output .= "\r, ";
-						if ($filter_option == 'date') {
-							$output .= '<strong>Date</strong>:&nbsp;';
-							if (substr($_REQUEST['date'],0,4) == substr($_REQUEST['enddate'],0,4))
-								$output .= substr($_REQUEST['date'],0,4).'&nbsp;(<a href="'.sb_url_minus_parameter('date', 'enddate').'">x</a>)';
-							if (substr($_REQUEST['date'],5,2) == substr($_REQUEST['enddate'],5,2))
-								$output .= ', '.strftime('%B', strtotime($_REQUEST['date'])).' (<a href="'.sb_build_url(Array ('date' => substr($_REQUEST['date'],0,4).'-01-01', 'enddate' => substr($_REQUEST['date'],0,4).'-12-31')).'">x</a>)';
-						} else {
-							$output .= '<strong>'.ucwords($filter_option).'</strong>:&nbsp;*'.$filter_option.'*';
-							$output .= '&nbsp;(<a href="'.sb_url_minus_parameter($filter_option).'">x</a>)';
-						}
+		$filter_options = array ('preacher', 'book', 'service', 'series', 'date', 'enddate', 'title');
+		$output = '';
+		foreach ($filter_options AS $filter_option)
+			if ($_REQUEST[$filter_option]) {
+				if ($filter_option != 'enddate') {
+					if ($output != '')
+						$output .= "\r, ";
+					if ($filter_option == 'date') {
+						$output .= '<strong>Date</strong>:&nbsp;';
+						if (substr($_REQUEST['date'],0,4) == substr($_REQUEST['enddate'],0,4))
+							$output .= substr($_REQUEST['date'],0,4).'&nbsp;(<a href="'.sb_url_minus_parameter('date', 'enddate').'">x</a>)';
+						if (substr($_REQUEST['date'],5,2) == substr($_REQUEST['enddate'],5,2))
+							$output .= ', '.strftime('%B', strtotime($_REQUEST['date'])).' (<a href="'.sb_build_url(Array ('date' => substr($_REQUEST['date'],0,4).'-01-01', 'enddate' => substr($_REQUEST['date'],0,4).'-12-31')).'">x</a>)';
+					} else {
+						$output .= '<strong>'.ucwords($filter_option).'</strong>:&nbsp;*'.$filter_option.'*';
+						$output .= '&nbsp;(<a href="'.sb_url_minus_parameter($filter_option).'">x</a>)';
 					}
-					$hide_custom_podcast = FALSE;
 				}
-			$sermons=sb_get_sermons($filter, array(), 1, 99999);
-			$ids = array();
-			foreach ($sermons as $sermon)
-				$ids[] = $sermon->id;
-			$ids = "('".implode ("', '", $ids)."')";
+				$hide_custom_podcast = FALSE;
+			}
+		$sermons=sb_get_sermons($filter, array(), 1, 99999);
+		$ids = array();
+		foreach ($sermons as $sermon)
+			$ids[] = $sermon->id;
+		$ids = "('".implode ("', '", $ids)."')";
 
-			$preachers = $wpdb->get_results("SELECT p.*, count(p.id) AS count FROM {$wpdb->prefix}sb_preachers AS p JOIN {$wpdb->prefix}sb_sermons AS sermons ON p.id = sermons.preacher_id WHERE sermons.id IN {$ids} GROUP BY p.id ORDER BY count DESC, sermons.date DESC");	
-			$series = $wpdb->get_results("SELECT ss.*, count(ss.id) AS count FROM {$wpdb->prefix}sb_series AS ss JOIN {$wpdb->prefix}sb_sermons AS sermons ON ss.id = sermons.series_id  WHERE sermons.id IN {$ids} GROUP BY ss.id ORDER BY sermons.date DESC");
-			$services = $wpdb->get_results("SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id  WHERE sermons.id IN {$ids} GROUP BY s.id ORDER BY count DESC");
-			$book_count = $wpdb->get_results("SELECT bs.book_name AS name, count(b.id) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs JOIN {$wpdb->prefix}sb_books as b ON bs.book_name=b.name WHERE bs.type = 'start' AND bs.sermon_id IN {$ids} GROUP BY b.id");	
-			$dates = $wpdb->get_results("SELECT substr(date,1,4) as year, substr(date,6,2) as month, substr(date,9,2) as day FROM {$wpdb->prefix}sb_sermons WHERE id IN {$ids} ORDER BY date ASC");
+		$preachers = $wpdb->get_results("SELECT p.*, count(p.id) AS count FROM {$wpdb->prefix}sb_preachers AS p JOIN {$wpdb->prefix}sb_sermons AS sermons ON p.id = sermons.preacher_id WHERE sermons.id IN {$ids} GROUP BY p.id ORDER BY count DESC, sermons.date DESC");	
+		$series = $wpdb->get_results("SELECT ss.*, count(ss.id) AS count FROM {$wpdb->prefix}sb_series AS ss JOIN {$wpdb->prefix}sb_sermons AS sermons ON ss.id = sermons.series_id  WHERE sermons.id IN {$ids} GROUP BY ss.id ORDER BY sermons.date DESC");
+		$services = $wpdb->get_results("SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id  WHERE sermons.id IN {$ids} GROUP BY s.id ORDER BY count DESC");
+		$book_count = $wpdb->get_results("SELECT bs.book_name AS name, count(b.id) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs JOIN {$wpdb->prefix}sb_books as b ON bs.book_name=b.name WHERE bs.type = 'start' AND bs.sermon_id IN {$ids} GROUP BY b.id");	
+		$dates = $wpdb->get_results("SELECT substr(date,1,4) as year, substr(date,6,2) as month, substr(date,9,2) as day FROM {$wpdb->prefix}sb_sermons WHERE id IN {$ids} ORDER BY date ASC");
 
-			$more_applied = array();
-			$output = str_replace ('*preacher*', $preachers[0]->name, $output);
-			$output = str_replace ('*book*', $book_count[0]->name, $output);
-			$output = str_replace ('*service*', $services[0]->name, $output);
-			$output = str_replace ('*series*', $series[0]->name, $output);
-		
-			echo "<span class=\"inline_controls\"><a href=\"#\" id=\"show_hide_filter\"></a></span>";
-			if ($output != '')
-				echo '<div class="filtered">'.__('Active filter', $sermon_domain).': '.$output."</div>\r";
-			echo '<div id="mainfilter">';
-			if (count($preachers) > 1)
-				sb_print_filter_line ('preacher', $preachers, 'id', 'name', 7);
-			if (count($book_count) > 1)
-				sb_print_filter_line ('book', $book_count, 'name', 'name', 10);
-			if (count($series) > 1)
-				sb_print_filter_line ('series', $series, 'id', 'name', 10);
-			if (count($services) > 1)
-				sb_print_filter_line ('service', $services, 'id', 'name', 10);
-			sb_print_date_filter_line ($dates);
-			echo "</div>\r";
-		}
+		$more_applied = array();
+		$output = str_replace ('*preacher*', $preachers[0]->name, $output);
+		$output = str_replace ('*book*', $book_count[0]->name, $output);
+		$output = str_replace ('*service*', $services[0]->name, $output);
+		$output = str_replace ('*series*', $series[0]->name, $output);
+	
+		echo "<span class=\"inline_controls\"><a href=\"#\" id=\"show_hide_filter\"></a></span>";
+		if ($output != '')
+			echo '<div class="filtered">'.__('Active filter', $sermon_domain).': '.$output."</div>\r";
+		echo '<div id="mainfilter">';
+		if (count($preachers) > 1)
+			sb_print_filter_line ('preacher', $preachers, 'id', 'name', 7);
+		if (count($book_count) > 1)
+			sb_print_filter_line ('book', $book_count, 'name', 'name', 10);
+		if (count($series) > 1)
+			sb_print_filter_line ('series', $series, 'id', 'name', 10);
+		if (count($services) > 1)
+			sb_print_filter_line ('service', $services, 'id', 'name', 10);
+		sb_print_date_filter_line ($dates);
+		echo "</div>\r";
 		if (count($more_applied) > 0 | $output != '' | $hide_custom_podcast === TRUE | $hide_filter === TRUE) {
 			echo "<script type=\"text/javascript\">\r";
 			echo "\tjQuery(document).ready(function() {\r";
@@ -978,7 +975,7 @@ HERE;
 			echo "\t});\r";
 			echo "</script>\r";
 		}
-	} elseif (get_option('sb_filtertype') == 'dropdown') {
+	} elseif ($filter['filter'] == 'dropdown') {
 		// Drop-down filter
 		$preachers = $wpdb->get_results("SELECT p.*, count(p.id) AS count FROM {$wpdb->prefix}sb_preachers AS p JOIN {$wpdb->prefix}sb_sermons AS s ON p.id = s.preacher_id GROUP BY p.id ORDER BY count DESC, s.date DESC");	
 		$series = $wpdb->get_results("SELECT ss.*, count(ss.id) AS count FROM {$wpdb->prefix}sb_series AS ss JOIN {$wpdb->prefix}sb_sermons AS sermons ON ss.id = sermons.series_id GROUP BY ss.id ORDER BY sermons.date DESC");

@@ -93,7 +93,7 @@ function sb_mime_type($media_name) {
 			if (is_array($media['Files']) | is_array($media['URLs'])) {
 				foreach ($media as $media_type => $media_names)
 					if (is_array($media_names) && $media_type != 'Code')
-						foreach ($media_names as $media_name)
+						foreach ((array)$media_names as $media_name)
 							if (in_array(strtolower(substr($media_name, -3)), $accepted_extensions)) {
 								$mp3count++;
 ?>

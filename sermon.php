@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Coding by <a href="http://codeandmore.com/">Tien Do Xuan</a> and 
 Author: Mark Barnes
-Version: 0.41.2
+Version: 0.42
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **************************************/
 
 //Set global constants
-define('SB_CURRENT_VERSION', '0.41.2');
+define('SB_CURRENT_VERSION', '0.42');
 define('SB_DATABASE_VERSION', '1.5');
 
 add_action('init', 'sb_sermon_init'); 							// Initialise the plugin
@@ -2157,12 +2157,11 @@ function sb_help() {
 global $sermon_domain;
 sb_do_alerts();
 ?>	
-	<style>div.wrap h3, div.wrap h4, div.wrap h5 {margin-bottom: 0; margin-top: 2em} div.wrap p {margin-left: 2em; margin-top: 0.5em} div.wrap h3 {border-top: 1px solid #555555; padding-top: 0.5em}</style>
 	<div class="wrap">
 		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo sb_get_value('plugin_url')?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 		<h2><?php _e('Help page', $sermon_domain) ?></h2>
 		<h3>Screencasts</h3>
-		<p>If you need help with using Sermon Browser for the first time, these five minute screencast tutorials should be your first port of call:</p>
+		<p>If you need help with using Sermon Browser for the first time, these five minute screencast tutorials should be your first port of call (the tutorials were created with an older version of SermonBrowser, and an older version of Wordpress, but things haven't changed a great deal):</p>
 		<ul>
 			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-1.html" target="_blank">Installation and Overview</a></li>
 			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-2.html" target="_blank">Basic Options</a></li>
@@ -2171,138 +2170,14 @@ sb_do_alerts();
 			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-5.html" target="_blank">Editing a sermon and adding embedded video</a></li>
 		</ul>
 		<h3>Template tags</h3>
-		<p>If you want to change the way SermonBrowser displays on your website, you'll need to edit the templates and/or CSS file. Check out <a href="#templatetags">this guide to the template tags</a>.</p>
+		<p>If you want to change the way SermonBrowser displays on your website, you'll need to edit the templates and/or CSS file. Check out this guide to <a href="http://www.4-14.org.uk/sermon-browser/template-tags" target="_blank">template tags</a>.</p>
+		<h3>Shortcode</h3>
+		<p>You can put individual sermons or lists of sermons on any page of your website. You do this by adding a <a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser/shortcodes" target="_blank">shortcode</a> into a Wordpress post or page.</p>
 		<h3>Frequently asked questions</h3>
-		<ul>
-			<li><a href="#nosermons">I've activated the plugin, and entered in a few sermons, but they are not showing up to my website users. Where are they?</a></li>
-			<li><a href="#chmod">What does the error message "Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777." mean?</a></li>
-			<li><a href="#uploaderrors">SermonBrowser spends a long time attempting to upload files, but the file is never uploaded. What's happening?</a></li>
-			<li><a href="#audioplayer">Why are my MP3 files are appearing as an icon, rather than as a player, as I've seen on other SermonBrowser sites?</a></li>
-			<li><a href="#differentversions">How do I change the Bible version from the ESV?</a></li>
-			<li><a href="#chipmunk">When using the 1pixelout audio player, my pastor sounds like a chipmunk! What's going on?</a>
-			<li><a href="#sidebar">How do I get recent sermons to display in my sidebar?</a></li>
-			<li><a href="#diskspace">My host only allows me a certain amount of disk space, and I have so many sermons uploaded, I've run out of space! What can I do?</a></li>
-			<li><a href="#videos">How do I upload videos to SermonBrowser?</a></li>
-			<li><a href="#poweredby">Can I turn off the "Powered by Sermonbrowser" link?</a></li>
-			<li><a href="#publicprivate">What is the difference between the public and private podcast feeds?</a></li>
-			<li><a href="#differentpodcasts">On the sermons page, what is the difference between subscribing to <b>full</b> podcast, and subscribing to a <b>custom</b> podcast?</a></li>
-			<li><a href="#itunes">Why doesn't iTunes recognise the podcast links?</a></li>
-			<li><a href="#sortorder">Can I change the default sort order of the sermons?</a></li>
-			<li><a href="#pagenotfound">Why do I get a page not found error when I click on my podcast feed?</a></li>
-			<li><a href="#changedisplay">Can I change the way sermons are displayed?</a></li>
-			<li><a href="#changesearchform">The search form is too big/too small for my layout. How do I make it narrower/wider?</a></li>
-			<li><a href="#bibletextmissing">Why is sometimes the Bible text missing?</a></li>
-			<li><a href="#exceededquota">Why does my sermon page say I have exceeded my quota for ESV lookups?</a></li>
-			<li><a href="#icons">How can I change the icons that Sermon Browser uses, or add new icons?</a></li>
-		</ul>
-		<hr style="width: 50%">
-		<h4 id="nosermons">I've activated the plugin, and entered in a few sermons, but they are not showing up to my website users. Where are they?</h4>
-		<p>SermonBrowser only displays your sermons where you choose. You need to create the page/post where you want the sermons to appear (or edit an existing one), and add <b>[sermons]</b> to the page/post. You can also add some explantory text if you wish. If you do so, the text will appear on <i>all</i> your sermons pages. If you want your text to only appear on the list of sermons, not on individual sermon pages, you need to edit the SermonBrowser templates (see below).</p>
-		<h4 id="chmod">What does the error message "Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777." mean?</h4>
-		<p>SermonBrowser tries to set the correct permissions on your folders for you, but sometimes restrictions mean that you have to do it yourself. You need to make sure that SermonBrowser is able to write to your sermons upload folder (usually /wp-content/uploads/sermons/). <a href="http://samdevol.com/wordpress-troubleshooting-permissions-chmod-and-paths-oh-my/" target="_blank">This tutorial</a> explains how to use the free FileZilla FTP software to do this.</p>
-		<h4 id="uploaderrors">SermonBrowser spends a long time attempting to upload files, but the file is never uploaded. What's happening?</h4>
-		<p>The most likely cause is that you're reaching either the maximum filesize that can be uploaded, or the maximum time a PHP script can run for. <a href="http://articles.techrepublic.com.com/5100-10878_11-5272345.html" target="_blank">Editing your php.ini</a> may help overcome these problems - but if you're on shared hosting, it's possible your host has set maximum limits you cannot change. If that's the case, you should upload your files via FTP. This is generally a better option than using your browser, particularly if you have several files to upload. If you do edit your php.ini file, these settings should be adequate:</p>
-		<p style="font-family:monospace">file_uploads = On<br />
-		upload_max_filesize = 15M<br />
-		post_max_size = 15M<br />
-		max_execution_time = 600<br/>
-		max_input_time = 600<br />
-		memory_limit = 16M<br /></p>
-		<h4 id="audioplayer">Why are my MP3 files are appearing as an icon, rather than as a player, as I've seen on other SermonBrowser sites?</h4>
-		<p>You need to install and activate the <a href="http://www.1pixelout.net/code/audio-player-wordpress-plugin/">1pixelout audio player</a> plugin. You can also customise the plugin so that its colours match your site.</p>
-		<h4 id="differentversions">How do I change the Bible version from the ESV?</h4>
-		<p>Nine Bible versions in two languages are supported by Sermon Browser: the English Standard Version, American Standard Version, King James Version (and the American King James Version), NET Bible, Young's Literal Transaltion, the World English Bible (including the Hebrew Names Version) and the Spanish Reina Valera. To change to one of these other versions, go to Options, and edit the single template. Replace [esvtext] with [asvtext], [kjvtext], [akjvtext], [nettext], [ylttext], [webtext], [hnvtext] or [lbrvtext]. Thanks go to <a href="http://www.crosswaybibles.org/" target="_blank">Crossway</a> for providing access to the ESV, <a href="http://www.bible.org/" target="_blank">bible.org</a> for the NET Bible and <a href="http://www.lstones.com/" target="_blank">Living Stones Ministries</a> for the other versions.</p>
-		<p>If you're desperate to use other versions not currently supported, you can manage it using other Wordpress plugins (albeit with reduced functionality).  However, if you're desperate to use other versions, you can manage it using other Wordpress plugins (albeit with reduced functionality). The <a href="http://wordpress.org/extend/plugins/ebibleicious/">eBibleicious</a> plugin allows for NASB, MSG, KJV, NKJV, ESV, HCSB, and NCV (use it in 'snippet' mode). However, there are three disadvantages. (1) To use it, you'll need to register for an API key (although it is free). (2) It uses Javascript so search engines won't see the Bible text, and nor will users with javascript turned off. (3) Most importantly, it only shows a maximum of four verses (the ESV shows up to 500 verses!).
-		<p>You can also use the <a href="http://www.logos.com/reftagger">RefTagger</a> plugin, though this shows even fewer verses. Even worse (for our purposes) the bible passage only shows when you hover over a special link with your mouse. It does, however, provide an even longer list of translations. Please be aware that both RefTagger and eBibleicious will add bible text to bible references across your whole website, not just your sermons pages.</p>
-		<p>To use either of these alternatives, just download, install and activate them as you would for any other plugin. Check their settings (make sure you enter get an API key if you're using eBiblicious). You then need to make one change to your SermonBrowser options. In the <i>Single Sermon form</i>, look for <b>[esvtext]</b> and replace it with <b>[biblepassage]</b>. (By default it's right at the end of the code.)</p>
-		<h4 id="chipmunk">When using the 1pixelout audio player, my pastor sounds like a chipmunk! What's going on?</h4>
-		<p>This 'feature' is caused by a well-known bug in Adobe flash. In order for the files to play correctly, when they are saved, the sample rate needs to be set at a multiple of 11.025kHz (i.e. 11.025, 22.05 or 44.1).</p>
-		<h4 id="sidebar">How do I get recent sermons to display in my sidebar?</h4>
-		<p>If your WordPress theme supports widgets, just go to Design and choose <a href="widgets.php">Widgets</a>. There you easily can add the Sermons widget to your sidebar. If your theme doesn't support widgets, you'll need to edit your theme manually. Usually, you'll be editing a file called <b>sidebar.php</b>, but your theme may give it a different name. Add the following code:</p>
-		<p style="font-family:monospace">&lt;?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_preacher' => 0, 'display_passage' => 1, 'display_date' => 1, 'display_player' => 1, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5)) ?&rt;</code>
-		<p>Each of the numbers in that line can be changed. <b>display_preacher</b>, <b>display_passage</b>, <b>display_date</b>, and <b>display_player</b> affect what is displayed (0 is off, 1 is on). <b>preacher</b>, <b>service</b> and <b>series</b> allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series. <b>limit</b> is simply the maximum number of sermons you want displayed.</p>
-		<h4 id="diskspace">My host only allows me a certain amount of disk space, and I have so many sermons uploaded, I've run out of space! What can I do?</h4>
-		<p>You could, of course, change your host to someone a little more generous! I use <a href="http://www.vortechhosting.com/shared/windows.php">VortechHosting</a> for low traffic sites (5Gb of disk space for less than $10 a month), and <a href="https://www.liquidweb.com/cart/content/vps/">LiquidWeb VPS</a> for higher traffic sites (20Gb disk space for $60 a month). You should also make sure you encode your sermons at a medium to high compression. Usually, 22.05kHz, 48kbps mono is more than adequate (you could probably go down to 32kbps for even higher compression). 48kbps means every minute of recording takes up 360kb of disk space, so a thirty minute sermon will just over 10Mb. At this setting, 5Gb would be enough for over 450 sermons.</p>
-		<p>If you can't change your host, you can still use SermonBrowser. You'll just have to upload your sermon files to another site - preferably a free one! We recommend <a href="http://www.odeo.com/" target="blank">Odeo</a>. If you want to use Odeo's audio player on your website, copy the embed code they give you, and when you add your sermon to SermonBrowser, select "Enter embed code:" and paste it in. If you want to use the standard 1pixelout audio player, copy the "Download MP3" link Odeo give you, and when you add your sermon to SermonBrowser, select "Enter an URL" and paste it in.</p>
-		<h4 id="videos">How do I upload videos to SermonBrowser?</h4>
-		<p>You can't - but you can upload videos to other sites, then embed them in your sermons. You can use any site that allows you to embed your video in other websites, including <a href="http://www.youtube.com/">YouTube</a>, but we recommend <a href="http://video.google.com/videouploadform">GoogleVideo</a> as the most suitable for sermons. That's because most video-sharing sites are designed for relatively short clips of 10 minutes or so, but GoogleVideo will accept videos of any length - and there are no quotas for the maximum size of a video, nor the number of videos you can store. Once your video is uploaded and available on Google Video, you can copy the embed code it gives you, edit your sermon, select "Enter embed code" and paste it in.</p>
-		<h4 id="poweredby">Can I turn off the "Powered by Sermonbrowser" link?</h4>
-		<p>The link is there so that people from other churches who listen to your sermons can find out about SermonBrowser themselves. But if you'd like to remove the link, just remove <b>[creditlink]</b> from the templates in SermonBrowser Options</a>.</p>
-		<h4 id="publicprivate">What is the difference between the public and private podcast feeds?</h4>
-		<p>In SermonBrowser options, you are able to change the address of the public podcast feed. This is the feed that is shown on your sermons page, and is usually the same as your private feed. However, if you use a service such as <a href="http://www.feedburner.com/" target="_blank">FeedBurner</a>, you can use your public feed to send data to feedburner, and change your private feed to your Feedburner address. If you do not use a service like Feedburner, just make sure your public and private feeds are the same.</p> 
-		<h4 id="differentpodcasts">On the sermons page, what is the difference between subscribing to our podcast, and subscribing to a podcast for this search?</h4>
-		<p>The link called <strong>subscribe to full podcast</strong> gives a podcast of <em>all</em> sermons that you add to your site through SermonBrowser. But it may be that some people may just want to subscribe to a feed for certain speakers, or for a certain service. If they wish to do this, they should set the search filters and perform their search, then click on the <strong>Subscribe to custom podcast </strong>link. This will give them a podcast according to the filter they selected. You could also copy this link, and display it elsewhere on the site - for example to provide separate feeds for morning and evening services.</p>
-		<h4 id="iTunes">Why doesn't iTunes recognise the podcast links?</h4>
-		<p>iTunes requires its own special links that are slightly different from other podcasting software. If you would like to display these links, you need to edit your template and add the tags [itunes_podcast] and [itunes_podcast_for_search].</p>
-		<h4 id="sortorder">Can I change the default sort order of the sermons?</h4>
-		<p>Unfortunately not. Unless the viewer specified otherwise, Sermonbrowser always displays the most recent sermons at the top.</p>
-		<h4 id="pagenotfound">Why do I get a page not found error when I click on my podcast feed?</h4>
-		<p>You've probably changed the address of your public feed. Try changing it back to the same value as your private feed in Sermon Options.</p>
-		<h4 id="changedisplay">Can I change the way sermons are displayed?</h4>
-		<p>Yes, definately, although you need to know a little HTML and/or CSS. SermonBrowser has a powerful templating function, so you can exclude certain parts of the output (e.g. if you don't want the links to other sermons preached on the same day to be displayed). To edit the templates, go to SermonBrowser Options. Below is a reference for all the <a href="templatetags">template tags</a> you need. If you just want to change the way the output looks, without changing what is displayed, you need to edit the CSS stylesheet, also in SermonBrowser Options. (See one example, below).</p>
-		<h4 id="changesearchform">The search form is too big/too small for my layout. How do I make it narrower/wider?</h4>
-		<p>The search form is set to roughly 500 pixels, which should be about right for most WordPress templates. To change it, look for a line in the CSS stylesheet that begins <b>table.sermonbrowser td.field input</b>, and change the width specified after it. To make the form narrower, reduce the width. To make it bigger, increase the width. You'll also need to change the width of the date fields on the line below, which should be 20 pixels smaller.</p>
-		<h4 id="bibletextmissing">Why is sometimes the Bible text missing?</h4>
-		<p>This usually happens for one of three reasons: (1) If the website providing the service is down. If you can't see Genesis 1 in the <a href="http://www.esvapi.org/v2/rest/passageQuery?key=IP&amp;passage=Gen+1&amp;include-headings=false">ESV</a> or <a href="http://api.seek-first.com/v1/BibleSearch.php?type=lookup&appid=seekfirst&startbooknum=1&startchapter=1&startverse=1&endbooknum=1&endchapter=1&endverse=30&version=KJV">the other versions</a>then the problem is with those websites. They're rarely down for long. (2) If you specify an invalid bible passage (e.g. Romans 22). If this is the case your sermon page will display <em>ERROR: No results were found for your search.</em> (3) If your webhost has disabled <strong>allow_url_fopen</strong> and cURL. Some cheaper webhosts have these essential features switched off. If they have, you won't be able to use this facility.</p>
-		<h4 id="exceededquota">Why does my sermon page say I have exceeded my quota for ESV lookups?</h4>
-		<p>The ESV website only allows 5,000 lookups per day from each IP address. That should be enough for most users of SermonBrowser. However, if you are using a shared host, there will be hundreds (perhaps thousands) of other websites on the same IP address as you. If any are also using the ESV API, they also get counted towards that total. If you are using less than 5,000 lookups per day (i.e. you are having less than 5,000 pageviews of your sermon pages), and you receive the error message you'll need to do two things in order to continue to display the text. (1) Sign up for an <a href="http://www.esvapi.org/signup">ESV API key</a>. (2) Edit frontend.php (one of the SermonBrowser files). Look for line 66, and replace <i>&hellip;passageQuery?key=<b>IP</b>&passage=&hellip;</i> with <i>&hellip;passageQuery?key=<b>YOURAPIKEY</b>&passage=&hellip;</i>.</p>
-		<p>If you <i>are</i> having more than 5,000 page views per day, then this won't help. Instead, leave a message in the <a href="http://www.4-14.org.uk/sermon-browser#comments">SermonBrowser comments</a> explaining your problem. SermonBrowser could probably be modified to provide a caching mechanism to reduce the likelihood of this error occurring, if there is demand.</p>
-		<h4 id="icons">How can I change the file icons that Sermon Browser uses, or add new icons?</h4>
-		<p>You'll need to edit the <b>filetypes.php</b> file that comes with Sermon Browser. The icon is chosen on the basis of the file extension (or in the case of URLs the file extension then the site address). If you do create new icons for other filetypes, consider sending them to the author so they can be included in future versions of the plugin.</p>
-		<h3 id="templatetags">Template tags</h3>
-		<p>If you want to change the output of Sermon Browser, you'll need to edit the templates. You'll need to understand the basics of HTML and CSS, and to know the special SermonBrowser template tags. There are two templates, one (called "results page") is used to produce the search results on the main sermons page. The other template (called sermon page) is used to produce the page for single sermon. Most tags can be used in both templates, but some are specific.</p>
-		<h4>Results page only</h4>
-		<ul>
-			<li><b>[filters_form]</b> - The search form which allows filtering by preacher, series, date, etc. <i>multi-sermons page only</i></li>
-			<li><b>[tag_cloud]</b> - A tag cloud of all sermon browser tags</i></li>
-			<li><b>[sermons_count]</b> - The number of sermons which match the current search critera. </li>
-			<li><b>[sermons_loop][/sermons_loop]</b> - These two tags should be placed around the output for one sermon. (That is all of the tags that return data about sermons should come between these two tags.)</li>
-			<li><b>[first_passage]</b> - The main bible passage for this sermon</li>
-			<li><b>[previous_page]</b> - Displays the link to the previous page of search results (if needed)</li>
-			<li><b>[next_page]</b> - Displays the link to the next page of search results (if needed)</li>
-			<li><b>[podcast]</b> - Link to the podcast of all sermons</li>
-			<li><b>[podcast_for_search]</b> - Link to the podcast of sermons that match the current search</li>
-			<li><b>[itunes_podcast]</b> - iTunes (itpc://) link to the podcast of all sermons</li>
-			<li><b>[itunes_podcast_for_search]</b> - iTunes (itpc://) link to the podcast of sermons that match the current search</li>
-			<li><b>[podcasticon]</b> - Displays the icon used for the main podcast</li>
-			<li><b>[podcasticon_for_search]</b> - Displays the icon used for the custom podcast</li>
-		</ul>
-		<h4>Both results page and sermon page</h4>
-		<ul>
-			<li><b>[sermon_title]</b> - The title of the sermon</li>
-			<li><b>[preacher_link]</b> - The name of the preacher (hyperlinked to his search results)</li>
-			<li><b>[series_link]</b> - The name of the series (hyperlinked to search results)</li>
-			<li><b>[service_link]</b> - The name of the service (hyperlinked to search results)</li>
-			<li><b>[date]</b> - The date of the sermon</li>
-			<li><b>[files_loop][/files_loop]</b> - These two tags should be placed around the [file] tag if you want to display all the files linked with to sermon. They are not needed if you only want to display the first file.</li>
-			<li><b>[file]</b> - Displays the files and external URLs</li>
-			<li><b>[file_with_download]</b> - As above, but also adds a download link if the AudioPlayer is displayed</li>
-			<li><b>[embed_loop][/embed_loop]</b> - These two tags should be placed around the [embed] tag if you want to display all the embedded objects linked to this sermon. They are not needed if you only want to display the first embedded object.</li>
-			<li><b>[embed]</b> - Displays an embedded object (e.g. video)</li>
-			<li><b>[editlink]</b> - displays an "Edit Sermon" link if currently logged-in user has edit rights.</li>
-			<li><b>[creditlink]</b> - displays a "Powered by Sermon Browser" link.</li>
-		</ul>
-		<h4>Sermon page only</h4>
-		<ul>
-			<li><b>[preacher_description]</b> - The description of the preacher.</li>
-			<li><b>[preacher_image]</b> - The photo of the preacher.</li>
-			<li><b>[sermon_description]</b> - The description of the sermon</li>
-			<li><b>[passages_loop][/passages_loop]</b> - These two tags should be placed around the [passage] tag if you want to display all the passages linked with to sermon.</li>
-			<li><b>[passage]</b> - Displays the reference of the bible passage with the book name hyperlinked to search results.</li>
-			<li><b>[next_sermon]</b> - Displays a link to the next sermon preached (excluding ones preached on the same day)</li>
-			<li><b>[prev_sermon]</b> - Displays a link to the previous sermon preached</li>
-			<li><b>[sameday_sermon]</b> - Displays a link to other sermons preached on that day</li>
-			<li><b>[tags]</b> - Displays the tags for that sermons</li>
-			<li><b>[esvtext]</b> - Displays the full text of the <a href="http://www.gnpcb.org/esv/">ESV Bible</a> for all passages linked to that sermon.</li>
-			<li><b>[asvtext]</b> - Displays the full text of the <a href="http://en.wikipedia.org/wiki/American_Standard_Version">ASV Bible</a> for all passages linked to that sermon.</li>
-			<li><b>[kjvtext]</b> - Displays the full text of the <a href="http://en.wikipedia.org/wiki/Authorized_King_James_Version">KJV</a> Bible for all passages linked to that sermon.</li>
-			<li><b>[nettext]</b> - Displays the full text of the <a href="http://net.bible.org/bible.php">NET Bible</a> Bible for all passages linked to that sermon.</li>
-			<li><b>[ylttext]</b> - Displays the full text of the <a href="http://en.wikipedia.org/wiki/Young%27s_Literal_Translation">YLT</a> Bible for all passages linked to that sermon.</li>
-			<li><b>[webtext]</b> - Displays the full text of the <a href="http://ebible.org/bible/web/">WEB</a> Bible for all passages linked to that sermon.</li>
-			<li><b>[akjvtext]</b> - Displays the full text of the <a href="http://www.angelfire.com/al4/allenkc/akjv/">AKJV</a> Bible for all passages linked to that sermon.</li>
-			<li><b>[hnvtext]</b> - Displays the full text of the <a href="http://ebible.org/bible/hnv/">HNV</a> Bible for all passages linked to that sermon.</li>
-			<li><b>[lbrvtext]</b> - Displays the full text of the <a href="http://en.wikipedia.org/wiki/Reina-Valera">Reina Valera</a> Bible (Spanish) for all passages linked to that sermon.</li>
-			<li><b>[biblepassage]</b> - Displays the reference of the bible passages for that sermon. Useful for utilising other bible plugins (see <a href="#otherversions">FAQ</a>).</li>
+		<p>A <a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser/faq" target="_blank">comprehensive FAQ</a> is available on the plugin's home page.</p>
+		<h3>Further help</h3>
+		<p>If you have a problem that the FAQ doesn't answer, or you have a feature suggestion, please use the <a href="http://www.4-14.org.uk/forum/sermon-browser-support" target="_blank">Sermon Browser forum</a>.</p>
+
 	</div>
 	</form>
 <?php 
