@@ -12,7 +12,7 @@ function sb_print_iso_date($sermon) {
 function sb_media_size($media_name, $media_type) {
 	if ($media_type == 'URLs') {
 		if(ini_get('allow_url_fopen')) {
-			$headers = array_change_key_case(get_headers($media_name, 1),CASE_LOWER);
+			$headers = array_change_key_case(@get_headers($media_name, 1),CASE_LOWER);
 			$filesize = $headers['content-length'];
 			if ($filesize) return "length=\"{$filesize}\"";
 		}

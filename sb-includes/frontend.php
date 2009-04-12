@@ -359,7 +359,9 @@ function sb_hijack() {
 			header("Content-Transfer-Encoding: binary");
 			sb_increase_download_count ($file_name);
 			$file_name = sb_get_value('wordpress_path').get_option("sb_sermon_upload_dir").$file_name;
-			header("Content-Length: ".filesize($file_name));
+			$filesize = filesize($file_name);
+			if ($filesize != 0)
+				header("Content-Length: ".filesize($file_name));
 			readfile_segments($file_name);
 		}
 		exit();

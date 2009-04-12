@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Coding by <a href="http://codeandmore.com/">Tien Do Xuan</a> and 
 Author: Mark Barnes
-Version: 0.42
+Version: 0.42.1
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **************************************/
 
 //Set global constants
-define('SB_CURRENT_VERSION', '0.42');
+define('SB_CURRENT_VERSION', '0.42.1');
 define('SB_DATABASE_VERSION', '1.5');
 
 add_action('init', 'sb_sermon_init'); 							// Initialise the plugin
@@ -217,9 +217,9 @@ function sb_sermon_init () {
 				PRIMARY KEY ( `id` )
 				);";
 		      dbDelta($sql);
-			  $sql = "INSERT INTO " . $table_name . "(name) VALUES ( 'Exposition of the Psalms' );";
+			  $sql = "INSERT INTO " . $table_name . "(name, page_id) VALUES ( 'Exposition of the Psalms', '' );";
 		      dbDelta($sql);
-			  $sql = "INSERT INTO " . $table_name . "(name) VALUES ( 'Exposition of Romans' );";
+			  $sql = "INSERT INTO " . $table_name . "(name, page_id) VALUES ( 'Exposition of Romans', '' );";
 		      dbDelta($sql);
 		   }
 		   

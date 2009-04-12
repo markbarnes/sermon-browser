@@ -50,7 +50,7 @@ function sb_sermon_page_dictionary() {
 		'[/files_loop]' => '<?php } } } ?>',
 		'[file]' => '<?php sb_print_url($media_name) ?>',
 		'[file_with_download]' => '<?php sb_print_url_link($media_name) ?>',
-		'[embed_loop]' => '<?php $media = sb_get_stuff($sermon); foreach ((array) $media as $media_type => $media_names) { if (is_array($media_names) && $media_type == "Code") { foreach ((array)$media_names as $media_name) { ?>',
+		'[embed_loop]' => '<?php $media = sb_get_stuff($sermon["Sermon"]); foreach ((array) $media as $media_type => $media_names) { if (is_array($media_names) && $media_type == "Code") { foreach ((array)$media_names as $media_name) { ?>',
 		'[/embed_loop]' => '<?php } } } ?>',
 		'[embed]' => '<?php sb_print_code($media_name) ?>',
 		'[next_sermon]' => '<?php sb_print_next_sermon_link($sermon["Sermon"]) ?>',
