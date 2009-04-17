@@ -22,7 +22,7 @@ function sb_media_size($media_name, $media_type) {
 
 //Prints size of .mp3 file
 function sb_mp3_length($media_name, $media_type) {
-	if (strtolower(substr($media_name, -3)) == 'mp3' && $media_type == 'Files') {
+	if (class_exists('mp3file') && strtolower(substr($media_name, -3)) == 'mp3' && $media_type == 'Files') {
 		$mp3file = new mp3file(sb_get_value('wordpress_path').get_option('sb_sermon_upload_dir').$media_name);
 		$meta = $mp3file->get_metadata();
 		return $meta['Length'];

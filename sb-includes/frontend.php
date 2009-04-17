@@ -477,7 +477,10 @@ function sb_formatted_date ($sermon) {
 	$sermon_time = $sermon->time;
 	if ($sermon_time == '')
 		$sermon_time = sb_default_time ($sermon->sid);
-	return date_i18n(get_option("date_format"), strtotime($sermon->date.' '.$sermon_time));
+	if ($sermon->date == '1970-01-01')
+		return __('Unknown Date', $sermon_domain);
+	else
+		return date_i18n(get_option("date_format"), strtotime($sermon->date.' '.$sermon_time));
 }
 
 // Returns podcast URL

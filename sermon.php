@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Coding by <a href="http://codeandmore.com/">Tien Do Xuan</a> and 
 Author: Mark Barnes
-Version: 0.42.2
+Version: 0.42.3
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -217,9 +217,9 @@ function sb_sermon_init () {
 				PRIMARY KEY ( `id` )
 				);";
 		      dbDelta($sql);
-			  $sql = "INSERT INTO " . $table_name . "(name, page_id) VALUES ( 'Exposition of the Psalms', '' );";
+			  $sql = "INSERT INTO " . $table_name . "(name, page_id) VALUES ( 'Exposition of the Psalms', 0 );";
 		      dbDelta($sql);
-			  $sql = "INSERT INTO " . $table_name . "(name, page_id) VALUES ( 'Exposition of Romans', '' );";
+			  $sql = "INSERT INTO " . $table_name . "(name, page_id) VALUES ( 'Exposition of Romans', 0 );";
 		      dbDelta($sql);
 		   }
 		   
@@ -1559,7 +1559,7 @@ function sb_manage_sermons() {
 						<th style="text-align:center" scope="row"><?php echo $sermon->id ?></th>
 						<td><?php echo stripslashes($sermon->title) ?></td>
 						<td><?php echo stripslashes($sermon->pname) ?></td>
-						<td><?php echo $sermon->date ?></td>
+						<td><?php echo (($sermon->date == '1970-01-01') ? __('Unknown', $sermon_domain) : $sermon->date); ?></td>
 						<td><?php echo stripslashes($sermon->sname) ?></td>
 						<td><?php echo stripslashes($sermon->ssname) ?></td>
 						<td><?php echo sb_sermon_stats($sermon->id) ?></td>
@@ -1928,7 +1928,7 @@ function sb_new_sermon() {
 					<td style="overflow: visible">
 						<strong><?php _e('Date', $sermon_domain) ?></strong> (yyyy-mm-dd)
 						<div>
-							<input type="text" id="date" name="date" value="<?php echo $curSermon->date ?>" />
+							<input type="text" id="date" name="date" value="<?php if ($curSermon->date != '1970-01-01') echo $curSermon->date; ?>" />
 						</div>
 					</td>
 					<td rowspan="3">
@@ -2189,7 +2189,7 @@ sb_do_alerts();
 
 function sb_return_ajax_data () {
 	// Throughout this plugin, p stands for preacher, s stands for service and ss stands for series
-	global $wpdb;
+	global $wpdb, $sermon_domain;
 	if ($_POST['pname']) { // preacher
 		$pname = mysql_real_escape_string($_POST['pname']);
 		if ($_POST['pid']) {
@@ -2312,7 +2312,7 @@ function sb_return_ajax_data () {
 				<th style="text-align:center" scope="row"><?php echo $sermon->id ?></th>
 				<td><?php echo stripslashes($sermon->title) ?></td>
 				<td><?php echo stripslashes($sermon->pname) ?></td>
-				<td><?php echo stripslashes($sermon->date) ?></td>
+				<td><?php echo (($sermon->date == '1970-01-01') ? __('Unknown', $sermon_domain) : $sermon->date); ?></td>
 				<td><?php echo stripslashes($sermon->sname) ?></td>
 				<td><?php echo stripslashes($sermon->ssname) ?></td>
 				<td><?php echo sb_sermon_stats($sermon->id) ?></td>
