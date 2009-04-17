@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **************************************/
 
 //Set global constants
-define('SB_CURRENT_VERSION', '0.42.2');
+define('SB_CURRENT_VERSION', '0.42.3');
 define('SB_DATABASE_VERSION', '1.5');
 
 add_action('init', 'sb_sermon_init'); 							// Initialise the plugin
