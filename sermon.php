@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Coding by <a href="http://codeandmore.com/">Tien Do Xuan</a> and 
 Author: Mark Barnes
-Version: 0.42.3
+Version: 0.42.4
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008 Mark Barnes
@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **************************************/
 
 //Set global constants
-define('SB_CURRENT_VERSION', '0.42.3');
+define('SB_CURRENT_VERSION', '0.42.4');
 define('SB_DATABASE_VERSION', '1.5');
 
 add_action('init', 'sb_sermon_init'); 							// Initialise the plugin
@@ -1489,7 +1489,7 @@ function sb_manage_sermons() {
 ?>	
 	<script>
 		function fetch(st) {
-			jQuery.post('<?php echo sb_get_value('admin_url') ?>sermon.php', {fetch: st + 1, sermon: 1, title: jQuery('#search').val(), preacher: jQuery('#preacher option[@selected]').val(), series: jQuery('#series option[@selected]').val() }, function(r) {
+			jQuery.post('<?php echo sb_get_value('admin_url') ?>sermon.php', {fetch: st + 1, sermon: 1, title: jQuery('#search').val(), preacher: jQuery('#preacher option[selected]').val(), series: jQuery('#series option[selected]').val() }, function(r) {
 				if (r) {
 					jQuery('#the-list').html(r);					
 					if (st >= <?php echo sb_get_value('sermons_per_page') ?>) {
@@ -1773,21 +1773,21 @@ function sb_new_sermon() {
 		var timeArr = new Array();
 		<?php echo $timeArr ?>		
 		function createNewPreacher(s) {
-			if (jQuery('*[@selected]', s).text() != 'Create new preacher') return;
+			if (jQuery('*[selected]', s).text() != 'Create new preacher') return;
 			var p = prompt("New preacher's name?", "Preacher's name");
 			if (p != null) {
 				jQuery.post('<?php echo sb_get_value('admin_url') ?>sermon.php', {pname: p, sermon: 1}, function(r) {
 					if (r) {
 						jQuery('#preacher option:first').before('<option value="' + r + '">' + p + '</option>');
-						jQuery("#preacher option[@value='" + r + "']").attr('selected', 'selected');				
+						jQuery("#preacher option[value='" + r + "']").attr('selected', 'selected');				
 					};
 				});	
 			}
 		}
 		function createNewService(s) {
-			if (jQuery('*[@selected]', s).text() != 'Create new service') {
+			if (jQuery('*[selected]', s).text() != 'Create new service') {
 				if (!jQuery('#override')[0].checked) {
-					jQuery('#time').val(timeArr[jQuery('*[@selected]', s).attr('value')]).attr('disabled', 'disabled');
+					jQuery('#time').val(timeArr[jQuery('*[selected]', s).attr('value')]).attr('disabled', 'disabled');
 				}
 				return;			
 			}
@@ -1800,20 +1800,20 @@ function sb_new_sermon() {
 				jQuery.post('<?php echo sb_get_value('admin_url') ?>sermon.php', {sname: s, sermon: 1}, function(r) {
 					if (r) {
 						jQuery('#service option:first').before('<option value="' + r + '">' + s.match(/(.*?)@/)[1] + '</option>');	
-						jQuery("#service option[@value='" + r + "']").attr('selected', 'selected');					
+						jQuery("#service option[value='" + r + "']").attr('selected', 'selected');					
 						jQuery('#time').val(s.match(/(.*?)@\s*(.*)/)[2]);
 					};
 				});	
 			}
 		}
 		function createNewSeries(s) {
-			if (jQuery('*[@selected]', s).text() != 'Create new series') return;
+			if (jQuery('*[selected]', s).text() != 'Create new series') return;
 			var ss = prompt("New series' name?", "Series' name");
 			if (ss != null) {
 				jQuery.post('<?php echo sb_get_value('admin_url') ?>sermon.php', {ssname: ss, sermon: 1}, function(r) {
 					if (r) {
 						jQuery('#series option:first').before('<option value="' + r + '">' + ss + '</option>');			
-						jQuery("#series option[@value='" + r + "']").attr('selected', 'selected');	
+						jQuery("#series option[value='" + r + "']").attr('selected', 'selected');	
 					};
 				});	
 			}
@@ -1829,12 +1829,12 @@ function sb_new_sermon() {
 			jQuery('#passage' + id).remove();
 		}
 		function syncBook(s) {
-			var slc = jQuery('*[@selected]', s).text();
+			var slc = jQuery('*[selected]', s).text();
 			jQuery('.passage').each(function(i) {
 				if (this == jQuery(s).parents('.passage')[0]) {
 					jQuery('.end').each(function(j) {
 						if (i == j) {
-							jQuery("option[@value='" + slc + "']", this).attr('selected', 'selected');
+							jQuery("option[value='" + slc + "']", this).attr('selected', 'selected');
 						}
 					});
 				}
@@ -1848,7 +1848,7 @@ function sb_new_sermon() {
 			jQuery("td", f).css('display', 'none');
 			jQuery("td:first", f).css('display', '');
 			jQuery('th', f).prepend('[<a href="javascript:removeFile(' + gfid++ + ')">x</a>] ');
-			jQuery("option[@value='0']", f).attr('selected', 'selected');
+			jQuery("option[value='0']", f).attr('selected', 'selected');
 			jQuery("input", f).val('');
 			jQuery('.choose:last').after(f);
 					
@@ -1861,7 +1861,7 @@ function sb_new_sermon() {
 			if (chk) {
 				jQuery('#time').removeClass('gray').attr('disabled', false);
 			} else {
-				jQuery('#time').addClass('gray').val(timeArr[jQuery('*[@selected]', jQuery("select[@name='service']")).attr('value')]).attr('disabled', 'disabled');
+				jQuery('#time').addClass('gray').val(timeArr[jQuery('*[selected]', jQuery("select[name='service']")).attr('value')]).attr('disabled', 'disabled');
 			}
 		}
 		var gfid = 0;
@@ -2046,7 +2046,7 @@ function sb_new_sermon() {
 		jQuery.datePicker.setDateFormat('ymd','-');
 		jQuery('#date').datePicker({startDate:'01/01/1970'});
 		<?php if (empty($curSermon->time)): ?>
-			jQuery('#time').val(timeArr[jQuery('*[@selected]', jQuery("select[@name='service']")).attr('value')]);
+			jQuery('#time').val(timeArr[jQuery('*[selected]', jQuery("select[name='service']")).attr('value')]);
 		<?php endif ?>
 		<?php if ($mid): ?>
 			stuff = new Array();
@@ -2105,19 +2105,19 @@ function sb_new_sermon() {
 			jQuery('.choose').each(function(i) {
 				switch (type[i]) {
 					case 'file':
-						jQuery("option[@value='filelist']", this).attr('selected', 'selected');
+						jQuery("option[value='filelist']", this).attr('selected', 'selected');
 						jQuery('.filelist', this).css('display','');
-						jQuery("option[@value='" + stuff[i] + "']", this).attr('selected', 'selected');
+						jQuery("option[value='" + stuff[i] + "']", this).attr('selected', 'selected');
 						break;
 					case 'url':
 						jQuery('td', this).css('display', 'none');
-						jQuery("option[@value='newurl']", this).attr('selected', 'selected');
+						jQuery("option[value='newurl']", this).attr('selected', 'selected');
 						jQuery('.newurl ', this).css('display','');			
 						jQuery(".newurl input", this).val(stuff[i]);
 						break;
 					case 'code':
 						jQuery('td', this).css('display', 'none');
-						jQuery("option[@value='newcode']", this).attr('selected', 'selected');
+						jQuery("option[value='newcode']", this).attr('selected', 'selected');
 						jQuery('.newcode', this).css('display','');
 						jQuery(".newcode input", this).val(Base64.decode(stuff[i]));
 						break;
@@ -2125,11 +2125,11 @@ function sb_new_sermon() {
 			});		
 			
 			jQuery('.start1').each(function(i) {
-				jQuery("option[@value='" + start1[i] + "']", this).attr('selected', 'selected');
+				jQuery("option[value='" + start1[i] + "']", this).attr('selected', 'selected');
 			});	
 			
 			jQuery('.end').each(function(i) {
-				jQuery("option[@value='" + end1[i] + "']", this).attr('selected', 'selected');
+				jQuery("option[value='" + end1[i] + "']", this).attr('selected', 'selected');
 			});		
 			
 			jQuery('.start2').each(function(i) {
