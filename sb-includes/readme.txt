@@ -82,7 +82,7 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 
 = 0.42 =
 * New feature: Sermon Browser shortcodes allow you to include single sermons or lists of sermons on any post or page on your website. For example, adding the shortcode [sermons preacher=1 id=latest] to your pastor’s page would display full details of his most recent sermon on that page.
-* Optimisation: Consolidated various help and tutorial pages to avoid having to keep three different =s up to date!
+* Optimisation: Consolidated various help and tutorial pages to avoid having to keep three different versions up to date!
 * Bug fix: External URLs now display on the search page alongside attached files (see forum post).
 * Bug fix: No more SQL errors on Wordpress custom pages (see forum post).
 
@@ -94,10 +94,10 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 * Bug fix: Minor bug affecting people who have renamed their Wordpress database (see forum post).
 
 = 0.41 =
-* New feature: Alternative ‘one-click’ filtering system. Go to SermonBrowser/Options to select it.
-* New feature: Filter can now be ‘minimised’ to make better use of space.
+* New feature: Alternative 'one-click' filtering system. Go to SermonBrowser/Options to select it.
+* New feature: Filter can now be 'minimised' to make better use of space.
 * New feature: NET Bible can now be used, bringing the total to nine translations.
-* New feature: Podcast feed now displays sermon length and preacher’s name in iTunes.
+* New feature: Podcast feed now displays sermon length and preacher's name in iTunes.
 * Optimisation: Less javascript loaded on front-end.
 * Optimisation: Icon added to admin pages in Wordpress 2.7.
 * Optimisation: Much more subtle podcast icons should display better in most themes (reset template to default to benefit).
@@ -122,7 +122,7 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 
 = 0.39 =
 * New feature: Sermon Browser in Spanish. Thanks to Juan for providing the translation.
-* New feature: If you have “Update services” enabled in Wordpress, a special web-service is now “pinged” when sermons are edited. This will help your sermons be found by search engines.
+* New feature: If you have 'Update services' enabled in Wordpress, a special web-service is now 'pinged' when sermons are edited. This will help your sermons be found by search engines.
 * Bug fix: Calendar now displays correctly in admin (removed CSS clash).
 * Bug fix: Bible books and dates now appear correctly in non-English languages. You may need to reset the options to default to make this work.
 
@@ -158,7 +158,7 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 * Bug fix: Sermon Browser now uses the date format from Wordpress settings.
 
 = 0.36 =
-* Added: Two new Bible =s (American King James [AKJV], and the Hebrew Names = [HNV])
+* Added: Two new Bible versions (American King James [AKJV], and the Hebrew Names = [HNV])
 * Fixed: Filter now works even when sermons page is the front page of site.
 * Fixed: Non-ESV bibles now display.
 
@@ -172,7 +172,7 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 
 = 0.34 =
 * Added: Support for WordPress MU!
-* Changed: Will now create ‘uploads’ folder if it doesn’t already exist.
+* Changed: Will now create 'uploads' folder if it doesn't already exist.
 * Fixed: YLT and WEB Bibles now display correctly.
 * Fixed: Minor bug affecting those who have renamed their Wordpress database.
 
@@ -180,7 +180,7 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 * Fixed: Two minor bugs affecting users with Wordpress installs away from their root directory.
 
 = 0.32 =
-* Fixed: Sermons now download correctly in iTunes (although iTunes downloads won’t count towards your stats due to an iTunes limitation).
+* Fixed: Sermons now download correctly in iTunes (although iTunes downloads won't count towards your stats due to an iTunes limitation).
 * Fixed: You can now add more than three bible passages to a sermon.
 * Fixed: ALT text now correct on file icons.
 * Fixed: Links now work correctly even when Wordpress is not in the root.
@@ -191,32 +191,32 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 
 = 0.31 =
 * Added: The sermon description now preserves lines breaks and allows most HTML code.
-* Added: More helpful warnings if permissions on image uploads folder are incorrect, or if [serm ons] tag not included in a page/post.
+* Added: More helpful warnings if permissions on image uploads folder are incorrect, or if [sermons] tag not included in a page/post.
 * Added: Option to change how many sermons are displayed per page.
 * Added: Better security to prevent unauthorised users from editing data.
-* Changed: Plug-in no longer uses single.php, multi.php and style.css. This should reduce the number of people having file permission problems. Users of older =s can now safely delete those files.
+* Changed: Plug-in no longer uses single.php, multi.php and style.css. This should reduce the number of people having file permission problems. Users of older versions can now safely delete those files.
 * Changed: Templates now have their own menu. Some of the other options screens have been tweaked slightly.
 * Changed: Podcast now attaches linked URLs as well as uploaded files.
 * Changed: Tag cloud now uses proportional, not fixed size fonts.
 * Changed: Default template should display podcast links better on most sites. (It now uses TABLEs rather than DIVs.) Reset the templates to default to benefit.
-* Fixed: Bible books are now displayed in the filter even for previous users of older =s.
+* Fixed: Bible books are now displayed in the filter even for previous users of older versions.
 * Fixed: Newly uploaded files now save correctly to sermon.
 * Fixed: Next/previous buttons now display correctly.
-* Fixed: Prevented “Maximum time for script is -1 seconds” message on older =s of PHP.
+* Fixed: Prevented 'Maximum time for script is -1 seconds' message on older versions of PHP.
 * Optimisation: Better commenting throughout PHP.
 
 = 0.30.1 =
-* Fixed: Three bugs – one that prevented uploading, one that made series/sermons/preachers appear in the filters even if they had not been assign to any sermons, and one that prevented downloads when pretty permalinks were not used.
+* Fixed: Three bugs - one that prevented uploading, one that made series/sermons/preachers appear in the filters even if they had not been assign to any sermons, and one that prevented downloads when pretty permalinks were not used.
 
 = 0.30 =
 * Added: Statistics! See how often a sermon has been listened to in the admin section. Works for sermons that are downloaded or played inline with the AudioPlayer. It doesn’t work (and never can) for embedded files (e.g. videos). At the moment the stats are only there in the admin section, but feel free to suggest ways they could be helpful to viewers of your website.
 * Added: The drop-down menus for the search options are now more intelligent. (1) They display the number of sermons recorded for each preacher/series/services/bible book. (2) They only display bible books that have sermons listed. (3) The more important preachers/series/services are displayed higher up in the drop-down list.
 * Changed: Some significant optimisations. The main database queries are now twenty times faster than before. On my server the database activity to display the sermon-browser page takes less than seven hundredths of a second (it was about half a second). This is with 180 sermons in the database.
-* Fixed: Preacher’s name now displays correctly in page title.
+* Fixed: Preacher's name now displays correctly in page title.
 * Fixed: All links now work correctly even when permalinks are turned off.
 
 = 0.25 =
-* Added: [editlink] tag adds an “Edit sermon” link if the currently logged-in user has edit privileges.
+* Added: [editlink] tag adds an 'Edit sermon' link if the currently logged-in user has edit privileges.
 * Added: [sermon_description] tag now displays description of sermon on sermon page
 * Added: [file_with_download] tag is similar to [file], but adds a download link if the AudioPlayer is displayed
 * Changed: External URLs and local files are now treated in the same way.
@@ -236,7 +236,7 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 * Optimisation: Several other minor bug fixes.
 
 = 0.22 =
-* Added: Four new Bible =s: ASV, KJV, YLT and WEB (in addition to ESV)
+* Added: Four new Bible versions: ASV, KJV, YLT and WEB (in addition to ESV)
 * Added: Support for = 2 of the 1PixelOut Audio Player
 * Optimisation: Two minor bug fixes.
 
@@ -246,7 +246,7 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 * Changed: Updated default template and CSS. Reset to defaults in Options to use it.
 * Changed: More options in sidebar widget.
 * Optimisation: Reduced number of database queries, reducing page-creation time by around 15%.
-* Fixed: Links in the widget give “Page not found errors”
+* Fixed: Links in the widget give 'Page not found errors'
 * Fixed: Filter by date gives incorrect results
 
 = 0.2 =
@@ -256,7 +256,7 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 * Added: Support for embedded video and linked files
 * Added: Option to display ESV text
 * Added: Option to allow filtering by Bible book
-* Fixed: “Page not found” errors when linking to individual sermons
+* Fixed: 'Page not found' errors when linking to individual sermons
 * Changed: Display of bible references is now more intelligent
 * Optimisation: Many other bug fixes and minor enhancements
 
