@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Sermon Browser 0.41\n"
+"Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-17 11:21-0000\n"
+"POT-Creation-Date: 2009-09-14 22:16-0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Mark Barnes <mark@4-14.org.uk>\n"
+"Last-Translator: Mark Barnes <see http://www.4-14.org.uk/contact>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,1048 +14,1282 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../sermon.php:326
-#: ../sermon.php:894
-#: ../sermon.php:1061
-#: ../sermon.php:1071
-#: ../sermon.php:1312
-#: ../sermon.php:1356
-#: ../sermon.php:1569
-#: ../sermon.php:2320
-#: ../sermon.php:2363
-msgid "Delete"
-msgstr ""
-
-#: ../sermon.php:327
-msgid "Congratulations, you just completed the installation!"
-msgstr ""
-
-#: ../sermon.php:356
-#: ../sermon.php:357
-#: ../sermon.php:1540
+#: ../sermon.php:255
+#: ../sermon.php:256
+#: ../sermon.php:492
+#: ../sb-includes/admin.php:1220
 #: ../sb-includes/widget.php:60
 msgid "Sermons"
 msgstr ""
 
-#: ../sermon.php:359
+#: ../sermon.php:258
 msgid "Edit Sermon"
 msgstr ""
 
-#: ../sermon.php:361
+#: ../sermon.php:260
 msgid "Add Sermon"
 msgstr ""
 
-#: ../sermon.php:363
-#: ../sermon.php:876
+#: ../sermon.php:262
+#: ../sb-includes/admin.php:243
+msgid "Files"
+msgstr ""
+
+#: ../sermon.php:263
+#: ../sb-includes/admin.php:537
 msgid "Preachers"
 msgstr ""
 
-#: ../sermon.php:364
+#: ../sermon.php:264
 msgid "Series &amp; Services"
 msgstr ""
 
-#: ../sermon.php:365
-msgid "Uploads"
-msgstr ""
-
-#: ../sermon.php:366
-#: ../sermon.php:581
+#: ../sermon.php:265
 msgid "Options"
 msgstr ""
 
-#: ../sermon.php:367
-#: ../sermon.php:707
+#: ../sermon.php:266
+#: ../sb-includes/admin.php:372
 msgid "Templates"
 msgstr ""
 
-#: ../sermon.php:368
-msgid "Help"
-msgstr ""
-
-#: ../sermon.php:392
-msgid "You do not have the correct permissions to edit the Sermon Browser options"
-msgstr ""
-
-#: ../sermon.php:446
-#: ../sermon.php:455
-msgid "Upload is disabled. Please contact your administrator."
-msgstr ""
-
-#: ../sermon.php:448
-#: ../sermon.php:490
-msgid "Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
-msgstr ""
-
-#: ../sermon.php:457
-#: ../sermon.php:495
-msgid "Error: The upload folder you have specified does not exist."
-msgstr ""
-
-#: ../sermon.php:463
-msgid "Default loaded successfully."
-msgstr ""
-
-#: ../sermon.php:500
-msgid "Options saved successfully."
-msgstr ""
-
-#: ../sermon.php:554
-msgid "All sermon data has been removed."
-msgstr ""
-
-#: ../sermon.php:556
-msgid "Uninstall completed. The Sermon Browser plugin has been deactivated."
-msgstr ""
-
-#: ../sermon.php:566
-msgid "Error"
-msgstr ""
-
-#: ../sermon.php:572
-msgid "Warning"
-msgstr ""
-
-#: ../sermon.php:588
-msgid "Upload folder"
-msgstr ""
-
-#: ../sermon.php:599
-msgid "Public podcast feed"
-msgstr ""
-
-#: ../sermon.php:603
-msgid "Private podcast feed"
-msgstr ""
-
-#: ../sermon.php:607
-msgid "Sermons per page"
-msgstr ""
-
-#: ../sermon.php:611
-msgid "Filter type"
-msgstr ""
-
-#: ../sermon.php:615
-msgid "Drop-down"
-msgstr ""
-
-#: ../sermon.php:615
-msgid "One-click"
-msgstr ""
-
-#: ../sermon.php:615
-#: ../sb-includes/frontend.php:667
-msgid "None"
-msgstr ""
-
-#: ../sermon.php:627
-msgid "Minimise filter"
-msgstr ""
-
-#: ../sermon.php:634
-msgid "The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
-msgstr ""
-
-#: ../sermon.php:636
-msgid "The upload folder you have specified does not exist."
-msgstr ""
-
-#: ../sermon.php:643
-msgid "Your php.ini file does not allow uploads. Please change file_uploads in php.ini."
-msgstr ""
-
-#: ../sermon.php:644
-msgid "The maximum file size you can upload is only "
-msgstr ""
-
-#: ../sermon.php:644
-msgid "k. Please change upload_max_filesize to at least 15M in php.ini."
-msgstr ""
-
-#: ../sermon.php:645
-msgid "The maximum file size you send through the browser is only "
-msgstr ""
-
-#: ../sermon.php:645
-msgid "k. Please change post_max_size to at least 15M in php.ini."
-msgstr ""
-
-#: ../sermon.php:646
-msgid "The maximum time allowed for any script to run is only "
-msgstr ""
-
-#: ../sermon.php:646
-msgid " seconds. Please change max_execution_time to at least 600 in php.ini."
-msgstr ""
-
-#: ../sermon.php:647
-msgid "The maximum time allowed for an upload script to run is only "
-msgstr ""
-
-#: ../sermon.php:647
-msgid " seconds. Please change max_input_time to at least 600 in php.ini."
-msgstr ""
-
-#: ../sermon.php:648
-msgid "The maximum amount of memory allowed is only "
-msgstr ""
-
-#: ../sermon.php:648
-msgid "k. Please change memory_limit to at least 16M in php.ini."
-msgstr ""
-
-#: ../sermon.php:652
-#: ../sermon.php:729
-msgid "Reset to defaults"
-msgstr ""
-
-#: ../sermon.php:652
-#: ../sermon.php:729
-#: ../sermon.php:864
-#: ../sermon.php:2042
-msgid "Save"
-msgstr ""
-
-#: ../sermon.php:655
-msgid "Delete all data"
-msgstr ""
-
-#: ../sermon.php:655
-#: ../sermon.php:662
+#: ../sermon.php:267
+#: ../sb-includes/admin.php:311
+#: ../sb-includes/admin.php:312
+#: ../sb-includes/admin.php:324
 msgid "Uninstall"
 msgstr ""
 
-#: ../sermon.php:659
-msgid "Remove all files"
+#: ../sermon.php:268
+msgid "Help"
 msgstr ""
 
-#: ../sermon.php:662
-msgid "Delete all"
+#: ../sermon.php:336
+msgid "Genesis"
 msgstr ""
 
-#: ../sermon.php:662
-msgid "Do you REALLY want to delete all data?"
+#: ../sermon.php:336
+msgid "Exodus"
 msgstr ""
 
-#: ../sermon.php:667
-msgid "Are you sure?"
+#: ../sermon.php:336
+msgid "Leviticus"
 msgstr ""
 
-#: ../sermon.php:679
-msgid "You do not have the correct permissions to edit the Sermon Browser templates"
+#: ../sermon.php:336
+msgid "Numbers"
 msgstr ""
 
-#: ../sermon.php:698
-msgid "Templates saved successfully."
+#: ../sermon.php:336
+msgid "Deuteronomy"
 msgstr ""
 
-#: ../sermon.php:711
-msgid "Search results page"
+#: ../sermon.php:336
+msgid "Joshua"
 msgstr ""
 
-#: ../sermon.php:717
-msgid "Sermon page"
+#: ../sermon.php:336
+msgid "Judges"
 msgstr ""
 
-#: ../sermon.php:723
-msgid "Style"
+#: ../sermon.php:336
+msgid "Ruth"
 msgstr ""
 
-#: ../sermon.php:746
-msgid "You do not have the correct permissions to manage the preachers' database"
+#: ../sermon.php:336
+msgid "1 Samuel"
 msgstr ""
 
-#: ../sermon.php:748
-msgid "Preacher saved to database."
+#: ../sermon.php:336
+msgid "2 Samuel"
 msgstr ""
 
-#: ../sermon.php:772
-msgid "Could not save uploaded file. Please try again."
+#: ../sermon.php:336
+msgid "1 Kings"
 msgstr ""
 
-#: ../sermon.php:777
-msgid "Could not upload file. Please check the Options page for any errors or warnings."
+#: ../sermon.php:336
+msgid "2 Kings"
 msgstr ""
 
-#: ../sermon.php:800
-msgid "You can't delete this preacher."
+#: ../sermon.php:336
+msgid "1 Chronicles"
 msgstr ""
 
-#: ../sermon.php:814
-msgid "Add"
+#: ../sermon.php:336
+msgid "2 Chronicles"
 msgstr ""
 
-#: ../sermon.php:814
-#: ../sermon.php:894
-#: ../sermon.php:1061
-#: ../sermon.php:1569
-#: ../sermon.php:2320
-msgid "Edit"
+#: ../sermon.php:336
+msgid "Ezra"
 msgstr ""
 
-#: ../sermon.php:814
-msgid "preacher"
+#: ../sermon.php:336
+msgid "Nehemiah"
 msgstr ""
 
-#: ../sermon.php:826
-msgid "The images folder is not writeable. You won't be able to upload images."
+#: ../sermon.php:336
+msgid "Esther"
 msgstr ""
 
-#: ../sermon.php:835
-#: ../sermon.php:882
-#: ../sermon.php:1045
-msgid "Name"
+#: ../sermon.php:336
+msgid "Job"
 msgstr ""
 
-#: ../sermon.php:843
-#: ../sermon.php:1935
-msgid "Description"
+#: ../sermon.php:336
+msgid "Psalm"
 msgstr ""
 
-#: ../sermon.php:855
-#: ../sermon.php:883
-msgid "Image"
+#: ../sermon.php:336
+msgid "Proverbs"
 msgstr ""
 
-#: ../sermon.php:876
-#: ../sermon.php:1039
-msgid "add new"
+#: ../sermon.php:336
+msgid "Ecclesiastes"
 msgstr ""
 
-#: ../sermon.php:881
-#: ../sermon.php:1044
-#: ../sermon.php:1298
-#: ../sermon.php:1332
-#: ../sermon.php:1381
-#: ../sermon.php:1545
-msgid "ID"
+#: ../sermon.php:336
+msgid "Song of Solomon"
 msgstr ""
 
-#: ../sermon.php:884
-#: ../sermon.php:1047
-#: ../sermon.php:1301
-#: ../sermon.php:1336
-#: ../sermon.php:1385
-#: ../sermon.php:1552
-msgid "Actions"
+#: ../sermon.php:336
+msgid "Isaiah"
 msgstr ""
 
-#: ../sermon.php:909
-msgid "You do not have the correct permissions to manage the series and services database"
+#: ../sermon.php:336
+msgid "Jeremiah"
 msgstr ""
 
-#: ../sermon.php:1046
-msgid "Default time"
+#: ../sermon.php:336
+msgid "Lamentations"
 msgstr ""
 
-#: ../sermon.php:1061
-#: ../sermon.php:1312
-#: ../sermon.php:1356
-#: ../sermon.php:2363
-msgid "Rename"
+#: ../sermon.php:336
+msgid "Ezekiel"
 msgstr ""
 
-#: ../sermon.php:1063
-msgid "Some sermons are currently assigned to that service. You can only delete services that are not used in the database."
+#: ../sermon.php:336
+msgid "Daniel"
 msgstr ""
 
-#: ../sermon.php:1066
-msgid "Some sermons are currently in that series. You can only delete series that are empty."
+#: ../sermon.php:336
+msgid "Hosea"
 msgstr ""
 
-#: ../sermon.php:1069
-msgid "That preacher has sermons in the database. You can only delete preachers who have no sermons in the database."
+#: ../sermon.php:336
+msgid "Joel"
 msgstr ""
 
-#: ../sermon.php:1091
-msgid "You do not have the correct permissions to upload sermons"
+#: ../sermon.php:336
+msgid "Amos"
 msgstr ""
 
-#: ../sermon.php:1119
-msgid "Files saved to database."
+#: ../sermon.php:336
+msgid "Obadiah"
 msgstr ""
 
-#: ../sermon.php:1122
-#: ../sermon.php:1687
-msgid " already exists."
+#: ../sermon.php:336
+msgid "Jonah"
 msgstr ""
 
-#: ../sermon.php:1126
-#: ../sermon.php:1692
-msgid "You are not permitted to upload files of that type."
+#: ../sermon.php:336
+msgid "Micah"
 msgstr ""
 
-#: ../sermon.php:1162
-msgid "New file name?"
+#: ../sermon.php:336
+msgid "Nahum"
 msgstr ""
 
-#: ../sermon.php:1175
-msgid "You are not permitted files with that extension."
+#: ../sermon.php:336
+msgid "Habakkuk"
 msgstr ""
 
-#: ../sermon.php:1177
-msgid "The script is unable to rename your file."
+#: ../sermon.php:336
+msgid "Zephaniah"
 msgstr ""
 
-#: ../sermon.php:1205
-msgid "The script is unable to delete your file."
+#: ../sermon.php:336
+msgid "Haggai"
 msgstr ""
 
-#: ../sermon.php:1216
-#: ../sermon.php:1235
-msgid "Previous"
+#: ../sermon.php:336
+msgid "Zechariah"
 msgstr ""
 
-#: ../sermon.php:1222
-#: ../sermon.php:1241
-msgid "Next"
+#: ../sermon.php:336
+msgid "Malachi"
 msgstr ""
 
-#: ../sermon.php:1259
-msgid "Upload Files"
+#: ../sermon.php:336
+msgid "Matthew"
 msgstr ""
 
-#: ../sermon.php:1269
-msgid "File to upload"
+#: ../sermon.php:336
+msgid "Mark"
 msgstr ""
 
-#: ../sermon.php:1274
-msgid "Upload"
+#: ../sermon.php:336
+msgid "Luke"
 msgstr ""
 
-#: ../sermon.php:1283
-msgid "Upload is disabled. Please contact your systems administrator."
+#: ../sermon.php:336
+msgid "John"
 msgstr ""
 
-#: ../sermon.php:1287
-msgid "Upload is disabled. Please check your folder setting in Options."
+#: ../sermon.php:336
+msgid "Acts"
 msgstr ""
 
-#: ../sermon.php:1293
-msgid "Unlinked files"
+#: ../sermon.php:336
+msgid "Romans"
 msgstr ""
 
-#: ../sermon.php:1299
-#: ../sermon.php:1333
-#: ../sermon.php:1382
-msgid "File name"
+#: ../sermon.php:336
+msgid "1 Corinthians"
 msgstr ""
 
-#: ../sermon.php:1300
-#: ../sermon.php:1334
-#: ../sermon.php:1383
-msgid "File type"
+#: ../sermon.php:336
+msgid "2 Corinthians"
 msgstr ""
 
-#: ../sermon.php:1327
-msgid "Linked files"
+#: ../sermon.php:336
+msgid "Galatians"
 msgstr ""
 
-#: ../sermon.php:1335
-#: ../sermon.php:1384
+#: ../sermon.php:336
+msgid "Ephesians"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "Philippians"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "Colossians"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "1 Thessalonians"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "2 Thessalonians"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "1 Timothy"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "2 Timothy"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "Titus"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "Philemon"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "Hebrews"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "James"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "1 Peter"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "2 Peter"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "1 John"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "2 John"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "3 John"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "Jude"
+msgstr ""
+
+#: ../sermon.php:336
+msgid "Revelation"
+msgstr ""
+
+#: ../sermon.php:453
+#: ../sb-includes/frontend.php:289
+msgid "No sermons found."
+msgstr ""
+
+#: ../sermon.php:490
+#: ../sb-includes/admin.php:1011
+#: ../sb-includes/admin.php:1060
 #: ../sb-includes/widget.php:58
 msgid "Sermon"
 msgstr ""
 
-#: ../sermon.php:1371
+#: ../sermon.php:507
+#: ../sb-includes/frontend.php:104
+#: ../sb-includes/widget.php:74
+#: ../sb-includes/widget.php:82
+msgid "Sermon Browser tags"
+msgstr ""
+
+#: ../sermon.php:509
+msgid "Most popular sermons"
+msgstr ""
+
+#: ../sermon.php:510
+msgid "Display a list of the most popular sermons, series or preachers."
+msgstr ""
+
+#: ../sb-includes/admin.php:31
+msgid "You do not have the correct permissions to edit the SermonBrowser options"
+msgstr ""
+
+#: ../sb-includes/admin.php:83
+#: ../sb-includes/admin.php:92
+msgid "Upload is disabled. Please contact your administrator."
+msgstr ""
+
+#: ../sb-includes/admin.php:85
+#: ../sb-includes/admin.php:133
+msgid "Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
+msgstr ""
+
+#: ../sb-includes/admin.php:94
+#: ../sb-includes/admin.php:138
+msgid "Error: The upload folder you have specified does not exist."
+msgstr ""
+
+#: ../sb-includes/admin.php:100
+msgid "Default loaded successfully."
+msgstr ""
+
+#: ../sb-includes/admin.php:143
+msgid "Options saved successfully."
+msgstr ""
+
+#: ../sb-includes/admin.php:152
+msgid "Error"
+msgstr ""
+
+#: ../sb-includes/admin.php:158
+msgid "Warning"
+msgstr ""
+
+#: ../sb-includes/admin.php:167
+msgid "Basic Options"
+msgstr ""
+
+#: ../sb-includes/admin.php:174
+msgid "Upload folder"
+msgstr ""
+
+#: ../sb-includes/admin.php:185
+msgid "Public podcast feed"
+msgstr ""
+
+#: ../sb-includes/admin.php:189
+msgid "Private podcast feed"
+msgstr ""
+
+#: ../sb-includes/admin.php:193
+msgid "Sermons per page"
+msgstr ""
+
+#: ../sb-includes/admin.php:197
+msgid "Filter type"
+msgstr ""
+
+#: ../sb-includes/admin.php:201
+msgid "Drop-down"
+msgstr ""
+
+#: ../sb-includes/admin.php:201
+msgid "One-click"
+msgstr ""
+
+#: ../sb-includes/admin.php:201
+#: ../sb-includes/frontend.php:719
+msgid "None"
+msgstr ""
+
+#: ../sb-includes/admin.php:213
+msgid "Minimise filter"
+msgstr ""
+
+#: ../sb-includes/admin.php:217
+msgid "Hide sermons without attachments?"
+msgstr ""
+
+#: ../sb-includes/admin.php:224
+msgid "The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
+msgstr ""
+
+#: ../sb-includes/admin.php:226
+msgid "The upload folder you have specified does not exist."
+msgstr ""
+
+#: ../sb-includes/admin.php:233
+msgid "Your php.ini file does not allow uploads. Please change file_uploads in php.ini."
+msgstr ""
+
+#: ../sb-includes/admin.php:234
+msgid "The maximum file size you can upload is only "
+msgstr ""
+
+#: ../sb-includes/admin.php:234
+msgid "k. Please change upload_max_filesize to at least 15M in php.ini."
+msgstr ""
+
+#: ../sb-includes/admin.php:235
+msgid "The maximum file size you send through the browser is only "
+msgstr ""
+
+#: ../sb-includes/admin.php:235
+msgid "k. Please change post_max_size to at least 15M in php.ini."
+msgstr ""
+
+#: ../sb-includes/admin.php:236
+msgid "The maximum time allowed for any script to run is only "
+msgstr ""
+
+#: ../sb-includes/admin.php:236
+msgid " seconds. Please change max_execution_time to at least 600 in php.ini."
+msgstr ""
+
+#: ../sb-includes/admin.php:237
+msgid "The maximum time allowed for an upload script to run is only "
+msgstr ""
+
+#: ../sb-includes/admin.php:237
+msgid " seconds. Please change max_input_time to at least 600 in php.ini."
+msgstr ""
+
+#: ../sb-includes/admin.php:238
+msgid "The maximum amount of memory allowed is only "
+msgstr ""
+
+#: ../sb-includes/admin.php:238
+msgid "k. Please change memory_limit to at least 16M in php.ini."
+msgstr ""
+
+#: ../sb-includes/admin.php:242
+msgid "Import Options"
+msgstr ""
+
+#: ../sb-includes/admin.php:243
+#, php-format
+msgid "SermonBrowser can speed up the process of importing existing MP3s by reading the information stored in each MP3 file and pre-filling the SermonBrowser fields. Use this section to specify what information you want imported into SermonBrowser. Once you have selected the options, go to %s to import your files."
+msgstr ""
+
+#: ../sb-includes/admin.php:246
+msgid "Add files prompt to top of Add Sermon page?"
+msgstr ""
+
+#: ../sb-includes/admin.php:250
+msgid "Use title tag for sermon title?"
+msgstr ""
+
+#: ../sb-includes/admin.php:254
+msgid "Use artist tag for preacher?"
+msgstr ""
+
+#: ../sb-includes/admin.php:258
+msgid "Use album tag for series?"
+msgstr ""
+
+#: ../sb-includes/admin.php:262
+msgid "Use comments tag for sermon description?"
+msgstr ""
+
+#: ../sb-includes/admin.php:266
+msgid "Attempt to extract date from filename"
+msgstr ""
+
+#: ../sb-includes/admin.php:269
+msgid "Disabled"
+msgstr ""
+
+#: ../sb-includes/admin.php:270
+msgid "UK-formatted date (dd-mm-yyyy)"
+msgstr ""
+
+#: ../sb-includes/admin.php:271
+msgid "US-formatted date (mm-dd-yyyy)"
+msgstr ""
+
+#: ../sb-includes/admin.php:272
+msgid "International formatted date (yyyy-mm-dd)"
+msgstr ""
+
+#: ../sb-includes/admin.php:280
+msgid "(Use if you name your files something like 2008-11-06-eveningsermon.mp3)"
+msgstr ""
+
+#: ../sb-includes/admin.php:285
+#: ../sb-includes/admin.php:394
+msgid "Reset to defaults"
+msgstr ""
+
+#: ../sb-includes/admin.php:285
+#: ../sb-includes/admin.php:394
+#: ../sb-includes/admin.php:525
+#: ../sb-includes/admin.php:1840
+msgid "Save"
+msgstr ""
+
+#: ../sb-includes/admin.php:298
+msgid "You do not have the correct permissions to Uninstall SermonBrowser"
+msgstr ""
+
+#: ../sb-includes/admin.php:305
+msgid "Reset SermonBrowser"
+msgstr ""
+
+#: ../sb-includes/admin.php:306
+#: ../sb-includes/admin.php:312
+#, php-format
+msgid "Clicking the %s button below will remove ALL data (sermons, preachers, series, etc.) from SermonBrowser"
+msgstr ""
+
+#: ../sb-includes/admin.php:306
+#: ../sb-includes/admin.php:324
+msgid "Delete all"
+msgstr ""
+
+#: ../sb-includes/admin.php:308
+#: ../sb-includes/admin.php:316
+msgid "You will NOT be able to undo this action."
+msgstr ""
+
+#: ../sb-includes/admin.php:314
+msgid "and will deactivate the SermonBrowser plugin"
+msgstr ""
+
+#: ../sb-includes/admin.php:321
+msgid "Also remove all uploaded files"
+msgstr ""
+
+#: ../sb-includes/admin.php:324
+msgid "Do you REALLY want to delete all data?"
+msgstr ""
+
+#: ../sb-includes/admin.php:329
+msgid "Are you REALLY REALLY sure you want to remove SermonBrowser?"
+msgstr ""
+
+#: ../sb-includes/admin.php:343
+msgid "You do not have the correct permissions to edit the SermonBrowser templates"
+msgstr ""
+
+#: ../sb-includes/admin.php:363
+msgid "Templates saved successfully."
+msgstr ""
+
+#: ../sb-includes/admin.php:376
+msgid "Search results page"
+msgstr ""
+
+#: ../sb-includes/admin.php:382
+msgid "Sermon page"
+msgstr ""
+
+#: ../sb-includes/admin.php:388
+msgid "Style"
+msgstr ""
+
+#: ../sb-includes/admin.php:413
+msgid "You do not have the correct permissions to manage the preachers' database"
+msgstr ""
+
+#: ../sb-includes/admin.php:415
+msgid "Preacher saved to database."
+msgstr ""
+
+#: ../sb-includes/admin.php:437
+msgid "Could not save uploaded file. Please try again."
+msgstr ""
+
+#: ../sb-includes/admin.php:442
+msgid "Could not upload file. Please check the Options page for any errors or warnings."
+msgstr ""
+
+#: ../sb-includes/admin.php:463
+msgid "You can't delete this preacher."
+msgstr ""
+
+#: ../sb-includes/admin.php:477
+msgid "Add"
+msgstr ""
+
+#: ../sb-includes/admin.php:477
+#: ../sb-includes/admin.php:555
+#: ../sb-includes/admin.php:724
+#: ../sb-includes/admin.php:1249
+#: ../sb-includes/ajax.php:139
+msgid "Edit"
+msgstr ""
+
+#: ../sb-includes/admin.php:477
+msgid "preacher"
+msgstr ""
+
+#: ../sb-includes/admin.php:488
+msgid "The images folder is not writeable. You won't be able to upload images."
+msgstr ""
+
+#: ../sb-includes/admin.php:496
+#: ../sb-includes/admin.php:543
+#: ../sb-includes/admin.php:708
+msgid "Name"
+msgstr ""
+
+#: ../sb-includes/admin.php:504
+#: ../sb-includes/admin.php:1727
+msgid "Description"
+msgstr ""
+
+#: ../sb-includes/admin.php:516
+#: ../sb-includes/admin.php:544
+msgid "Image"
+msgstr ""
+
+#: ../sb-includes/admin.php:537
+#: ../sb-includes/admin.php:702
+msgid "add new"
+msgstr ""
+
+#: ../sb-includes/admin.php:542
+#: ../sb-includes/admin.php:707
+#: ../sb-includes/admin.php:973
+#: ../sb-includes/admin.php:1008
+#: ../sb-includes/admin.php:1057
+#: ../sb-includes/admin.php:1225
+msgid "ID"
+msgstr ""
+
+#: ../sb-includes/admin.php:545
+#: ../sb-includes/admin.php:710
+#: ../sb-includes/admin.php:976
+#: ../sb-includes/admin.php:1012
+#: ../sb-includes/admin.php:1061
+#: ../sb-includes/admin.php:1232
+msgid "Actions"
+msgstr ""
+
+#: ../sb-includes/admin.php:555
+#: ../sb-includes/admin.php:724
+#: ../sb-includes/admin.php:734
+#: ../sb-includes/admin.php:988
+#: ../sb-includes/admin.php:1032
+#: ../sb-includes/admin.php:1249
+#: ../sb-includes/ajax.php:139
+#: ../sb-includes/ajax.php:183
+msgid "Delete"
+msgstr ""
+
+#: ../sb-includes/admin.php:572
+msgid "You do not have the correct permissions to manage the series and services database"
+msgstr ""
+
+#: ../sb-includes/admin.php:709
+msgid "Default time"
+msgstr ""
+
+#: ../sb-includes/admin.php:724
+#: ../sb-includes/admin.php:988
+#: ../sb-includes/admin.php:1032
+#: ../sb-includes/ajax.php:183
+msgid "Rename"
+msgstr ""
+
+#: ../sb-includes/admin.php:726
+msgid "Some sermons are currently assigned to that service. You can only delete services that are not used in the database."
+msgstr ""
+
+#: ../sb-includes/admin.php:729
+msgid "Some sermons are currently in that series. You can only delete series that are empty."
+msgstr ""
+
+#: ../sb-includes/admin.php:732
+msgid "That preacher has sermons in the database. You can only delete preachers who have no sermons in the database."
+msgstr ""
+
+#: ../sb-includes/admin.php:756
+msgid "You do not have the correct permissions to upload sermons"
+msgstr ""
+
+#: ../sb-includes/admin.php:770
+#, php-format
+msgid "File %s already exists"
+msgstr ""
+
+#: ../sb-includes/admin.php:789
+msgid "Invalid URL."
+msgstr ""
+
+#: ../sb-includes/admin.php:791
+msgid "Your host does not allow remote downloading of files."
+msgstr ""
+
+#: ../sb-includes/admin.php:819
+msgid "Files saved to database."
+msgstr ""
+
+#: ../sb-includes/admin.php:822
+#: ../sb-includes/admin.php:1372
+msgid " already exists."
+msgstr ""
+
+#: ../sb-includes/admin.php:826
+#: ../sb-includes/admin.php:1377
+msgid "You are not permitted to upload files of that type."
+msgstr ""
+
+#: ../sb-includes/admin.php:859
+msgid "New file name?"
+msgstr ""
+
+#: ../sb-includes/admin.php:872
+msgid "You are not permitted files with that extension."
+msgstr ""
+
+#: ../sb-includes/admin.php:874
+msgid "The script is unable to rename your file."
+msgstr ""
+
+#: ../sb-includes/admin.php:902
+msgid "The script is unable to delete your file."
+msgstr ""
+
+#: ../sb-includes/admin.php:913
+#: ../sb-includes/admin.php:932
+msgid "Previous"
+msgstr ""
+
+#: ../sb-includes/admin.php:919
+#: ../sb-includes/admin.php:938
+msgid "Next"
+msgstr ""
+
+#: ../sb-includes/admin.php:956
+msgid "Upload Files"
+msgstr ""
+
+#: ../sb-includes/admin.php:968
+msgid "Unlinked files"
+msgstr ""
+
+#: ../sb-includes/admin.php:974
+#: ../sb-includes/admin.php:1009
+#: ../sb-includes/admin.php:1058
+msgid "File name"
+msgstr ""
+
+#: ../sb-includes/admin.php:975
+#: ../sb-includes/admin.php:1010
+#: ../sb-includes/admin.php:1059
+msgid "File type"
+msgstr ""
+
+#: ../sb-includes/admin.php:987
+#: ../sb-includes/ajax.php:182
+msgid "Create sermon"
+msgstr ""
+
+#: ../sb-includes/admin.php:1003
+msgid "Linked files"
+msgstr ""
+
+#: ../sb-includes/admin.php:1047
 msgid "Search for files"
 msgstr ""
 
-#: ../sermon.php:1375
+#: ../sb-includes/admin.php:1051
 msgid "Search"
 msgstr ""
 
-#: ../sermon.php:1390
+#: ../sb-includes/admin.php:1066
 msgid "Search results will appear here."
 msgstr ""
 
-#: ../sermon.php:1408
+#: ../sb-includes/admin.php:1084
 msgid "Clean up"
 msgstr ""
 
-#: ../sermon.php:1410
+#: ../sb-includes/admin.php:1086
 msgid "Pressing the button below scans every sermon in the database, and removes missing attachments. Use with caution!"
 msgstr ""
 
-#: ../sermon.php:1411
+#: ../sb-includes/admin.php:1087
 msgid "Clean up missing files"
 msgstr ""
 
-#: ../sermon.php:1456
-#: ../sermon.php:1642
+#: ../sb-includes/admin.php:1136
+#: ../sb-includes/admin.php:1332
 msgid "You do not have the correct permissions to edit sermons"
 msgstr ""
 
-#: ../sermon.php:1459
+#: ../sb-includes/admin.php:1139
 msgid "Sermon saved to database."
 msgstr ""
 
-#: ../sermon.php:1461
+#: ../sb-includes/admin.php:1141
 #, php-format
 msgid "If you find SermonBrowser useful, please consider a %1$ssmall donation%2$s."
 msgstr ""
 
-#: ../sermon.php:1467
+#: ../sb-includes/admin.php:1147
 msgid "You do not have the correct permissions to delete sermons"
 msgstr ""
 
-#: ../sermon.php:1475
+#: ../sb-includes/admin.php:1155
 msgid "Sermon removed from database."
 msgstr ""
 
-#: ../sermon.php:1516
-#: ../sermon.php:1546
-#: ../sermon.php:1887
+#: ../sb-includes/admin.php:1196
+#: ../sb-includes/admin.php:1226
+#: ../sb-includes/admin.php:1667
 msgid "Title"
 msgstr ""
 
-#: ../sermon.php:1520
-#: ../sermon.php:1547
-#: ../sermon.php:1901
-#: ../sb-includes/frontend.php:1001
+#: ../sb-includes/admin.php:1200
+#: ../sb-includes/admin.php:1227
+#: ../sb-includes/admin.php:1681
+#: ../sb-includes/frontend.php:962
 msgid "Preacher"
 msgstr ""
 
-#: ../sermon.php:1529
-#: ../sermon.php:1550
-#: ../sermon.php:1914
-#: ../sb-includes/frontend.php:1027
+#: ../sb-includes/admin.php:1209
+#: ../sb-includes/admin.php:1230
+#: ../sb-includes/admin.php:1700
+#: ../sb-includes/frontend.php:988
 msgid "Series"
 msgstr ""
 
-#: ../sermon.php:1537
+#: ../sb-includes/admin.php:1217
 msgid "Filter"
 msgstr ""
 
-#: ../sermon.php:1548
-#: ../sermon.php:1929
+#: ../sb-includes/admin.php:1228
+#: ../sb-includes/admin.php:1721
 msgid "Date"
 msgstr ""
 
-#: ../sermon.php:1549
-#: ../sermon.php:1943
+#: ../sb-includes/admin.php:1229
+#: ../sb-includes/admin.php:1741
 msgid "Service"
 msgstr ""
 
-#: ../sermon.php:1551
+#: ../sb-includes/admin.php:1231
 msgid "Stats"
 msgstr ""
 
-#: ../sermon.php:1562
-#: ../sermon.php:2315
+#: ../sb-includes/admin.php:1242
+#: ../sb-includes/ajax.php:134
 msgid "Unknown"
 msgstr ""
 
-#: ../sermon.php:1595
+#: ../sb-includes/admin.php:1278
 msgid "You do not have the correct permissions to edit or create sermons"
 msgstr ""
 
-#: ../sermon.php:1635
+#: ../sb-includes/admin.php:1326
 msgid "You do not have the correct permissions to create sermons"
 msgstr ""
 
-#: ../sermon.php:1893
+#: ../sb-includes/admin.php:1446
+msgid "No ID3 tags found."
+msgstr ""
+
+#: ../sb-includes/admin.php:1662
+msgid "Enter sermon details"
+msgstr ""
+
+#: ../sb-includes/admin.php:1673
 msgid "Tags (comma separated)"
 msgstr ""
 
-#: ../sermon.php:1910
+#: ../sb-includes/admin.php:1696
 msgid "Create new preacher"
 msgstr ""
 
-#: ../sermon.php:1923
+#: ../sb-includes/admin.php:1715
 msgid "Create new series"
 msgstr ""
 
-#: ../sermon.php:1952
+#: ../sb-includes/admin.php:1750
 msgid "Create new service"
 msgstr ""
 
-#: ../sermon.php:1958
+#: ../sb-includes/admin.php:1756
 msgid "Time"
 msgstr ""
 
-#: ../sermon.php:1961
+#: ../sb-includes/admin.php:1759
 msgid "Override default time"
 msgstr ""
 
-#: ../sermon.php:1967
+#: ../sb-includes/admin.php:1765
 msgid "Bible passage"
 msgstr ""
 
-#: ../sermon.php:1967
-#: ../sermon.php:2010
+#: ../sb-includes/admin.php:1765
+#: ../sb-includes/admin.php:1808
 msgid "add more"
 msgstr ""
 
-#: ../sermon.php:1971
+#: ../sb-includes/admin.php:1769
 msgid "From"
 msgstr ""
 
-#: ../sermon.php:1972
+#: ../sb-includes/admin.php:1770
 msgid "To"
 msgstr ""
 
-#: ../sermon.php:2010
+#: ../sb-includes/admin.php:1808
 msgid "Attachments"
 msgstr ""
 
-#: ../sermon.php:2019
+#: ../sb-includes/admin.php:1817
 msgid "Choose existing file:"
 msgstr ""
 
-#: ../sermon.php:2020
+#: ../sb-includes/admin.php:1818
 msgid "Upload a new one:"
 msgstr ""
 
-#: ../sermon.php:2021
+#: ../sb-includes/admin.php:1819
 msgid "Enter an URL:"
 msgstr ""
 
-#: ../sermon.php:2022
+#: ../sb-includes/admin.php:1820
 msgid "Enter embed code:"
 msgstr ""
 
-#: ../sermon.php:2162
+#: ../sb-includes/admin.php:2006
 msgid "Help page"
 msgstr ""
 
-#: ../sermon.php:2369
-msgid "No results"
-msgstr ""
-
-#: ../sermon.php:2385
+#: ../sb-includes/admin.php:2039
 msgid "You must create a post or preferably a page that includes the code [sermons] in order for your sermons to be displayed on your site."
 msgstr ""
 
-#: ../sermon.php:2389
+#: ../sb-includes/admin.php:2043
 #, php-format
 msgid "Tip: Installing the %1$sWordpress Audio Player%2$s will allow users to listen to your sermons more easily."
 msgstr ""
 
-#: ../sermon.php:2419
+#: ../sb-includes/admin.php:2078
 msgid "You have"
 msgstr ""
 
-#: ../sermon.php:2423
-#: ../sermon.php:2431
+#: ../sb-includes/admin.php:2082
+#: ../sb-includes/admin.php:2090
 msgid "in"
 msgstr ""
 
-#: ../sermon.php:2427
+#: ../sb-includes/admin.php:2086
 msgid "from"
 msgstr ""
 
-#: ../sermon.php:2432
+#: ../sb-includes/admin.php:2091
 #, php-format
 msgid "%d series"
 msgstr ""
 
-#: ../sermon.php:2435
+#: ../sb-includes/admin.php:2094
 msgid "using"
 msgstr ""
 
-#: ../sermon.php:2443
+#: ../sb-includes/admin.php:2102
 #, php-format
 msgid "The most popular sermon is %s, which has been downloaded %s times"
 msgstr ""
 
-#: ../sermon.php:2621
-msgid "Genesis"
+#: ../sb-includes/admin.php:2249
+#: ../sb-includes/admin.php:2326
+#: ../sb-includes/widget.php:260
+msgid "Title:"
 msgstr ""
 
-#: ../sermon.php:2621
-msgid "Exodus"
+#: ../sb-includes/admin.php:2251
+#: ../sb-includes/admin.php:2328
+#: ../sb-includes/widget.php:262
+msgid "Number of sermons: "
 msgstr ""
 
-#: ../sermon.php:2621
-msgid "Leviticus"
+#: ../sb-includes/admin.php:2253
+#: ../sb-includes/widget.php:264
+msgid "Display preacher"
 msgstr ""
 
-#: ../sermon.php:2621
-msgid "Numbers"
+#: ../sb-includes/admin.php:2254
+#: ../sb-includes/widget.php:265
+msgid "Display bible passage"
 msgstr ""
 
-#: ../sermon.php:2621
-msgid "Deuteronomy"
+#: ../sb-includes/admin.php:2255
+#: ../sb-includes/widget.php:266
+msgid "Display date"
 msgstr ""
 
-#: ../sermon.php:2621
-msgid "Joshua"
+#: ../sb-includes/admin.php:2256
+#: ../sb-includes/widget.php:267
+msgid "Display mini-player"
 msgstr ""
 
-#: ../sermon.php:2621
-msgid "Judges"
+#: ../sb-includes/admin.php:2260
+#: ../sb-includes/widget.php:271
+msgid "Preacher: "
 msgstr ""
 
-#: ../sermon.php:2621
-msgid "Ruth"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "1 Samuel"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "2 Samuel"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "1 Kings"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "2 Kings"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "1 Chronicles"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "2 Chronicles"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Ezra"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Nehemiah"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Esther"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Job"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Psalm"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Proverbs"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Ecclesiastes"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Song of Solomon"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Isaiah"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Jeremiah"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Lamentations"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Ezekiel"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Daniel"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Hosea"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Joel"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Amos"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Obadiah"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Jonah"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Micah"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Nahum"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Habakkuk"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Zephaniah"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Haggai"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Zechariah"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Malachi"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Matthew"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Mark"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Luke"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "John"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Acts"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Romans"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "1 Corinthians"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "2 Corinthians"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Galatians"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Ephesians"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Philippians"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Colossians"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "1 Thessalonians"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "2 Thessalonians"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "1 Timothy"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "2 Timothy"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Titus"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Philemon"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Hebrews"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "James"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "1 Peter"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "2 Peter"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "1 John"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "2 John"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "3 John"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Jude"
-msgstr ""
-
-#: ../sermon.php:2621
-msgid "Revelation"
-msgstr ""
-
-#: ../sb-includes/frontend.php:452
-msgid "Sermon podcast"
-msgstr ""
-
-#: ../sb-includes/frontend.php:459
-msgid "Custom sermon podcast"
-msgstr ""
-
-#: ../sb-includes/frontend.php:481
-msgid "Unknown Date"
-msgstr ""
-
-#: ../sb-includes/frontend.php:562
-msgid "Next page"
-msgstr ""
-
-#: ../sb-includes/frontend.php:573
-msgid "Previous page"
-msgstr ""
-
-#: ../sb-includes/frontend.php:631
-msgid "About"
-msgstr ""
-
-#: ../sb-includes/frontend.php:816
-msgid "more"
-msgstr ""
-
-#: ../sb-includes/frontend.php:898
-msgid "Show filter"
-msgstr ""
-
-#: ../sb-includes/frontend.php:899
-msgid "Hide filter"
-msgstr ""
-
-#: ../sb-includes/frontend.php:943
-msgid "Active filter"
-msgstr ""
-
-#: ../sb-includes/frontend.php:1003
-#: ../sb-includes/frontend.php:1011
-#: ../sb-includes/frontend.php:1021
-#: ../sb-includes/frontend.php:1029
+#: ../sb-includes/admin.php:2263
+#: ../sb-includes/admin.php:2274
+#: ../sb-includes/admin.php:2285
+#: ../sb-includes/frontend.php:964
+#: ../sb-includes/frontend.php:972
+#: ../sb-includes/frontend.php:982
+#: ../sb-includes/frontend.php:990
 #: ../sb-includes/widget.php:274
 #: ../sb-includes/widget.php:285
 #: ../sb-includes/widget.php:296
 msgid "[All]"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1009
-msgid "Services"
+#: ../sb-includes/admin.php:2271
+#: ../sb-includes/widget.php:282
+msgid "Service: "
 msgstr ""
 
-#: ../sb-includes/frontend.php:1019
-msgid "Book"
+#: ../sb-includes/admin.php:2282
+#: ../sb-includes/widget.php:293
+msgid "Series: "
 msgstr ""
 
-#: ../sb-includes/frontend.php:1037
-msgid "Start date"
+#: ../sb-includes/admin.php:2330
+msgid "Display popular sermons"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1039
-msgid "End date"
+#: ../sb-includes/admin.php:2331
+msgid "Display popular series"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1043
-msgid "Keywords"
+#: ../sb-includes/admin.php:2332
+msgid "Display popular preachers"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1047
-msgid "Sort by"
+#: ../sb-includes/admin.php:2358
+msgid "SermonBrowser can automatically pre-fill this form by reading ID3 tags from MP3 files."
 msgstr ""
 
-#: ../sb-includes/frontend.php:1054
-msgid "Direction"
+#: ../sb-includes/admin.php:2361
+#, php-format
+msgid "You will need to set the %s before you can import MP3s and pre-fill the Add Sermons form."
 msgstr ""
 
-#: ../sb-includes/frontend.php:1064
-msgid "Filter &raquo;"
+#: ../sb-includes/admin.php:2361
+msgid "import options"
 msgstr ""
 
+#: ../sb-includes/admin.php:2375
+#, php-format
+msgid "Select an MP3 file here to have the %s form pre-filled using ID3 tags."
+msgstr ""
+
+#: ../sb-includes/admin.php:2375
+msgid "Add Sermons"
+msgstr ""
+
+#: ../sb-includes/admin.php:2375
+msgid "Upload file"
+msgstr ""
+
+#: ../sb-includes/admin.php:2380
+msgid "File to upload"
+msgstr ""
+
+#: ../sb-includes/admin.php:2386
+msgid "Upload"
+msgstr ""
+
+#: ../sb-includes/admin.php:2391
+msgid "Upload is disabled. Please contact your systems administrator."
+msgstr ""
+
+#: ../sb-includes/admin.php:2395
+msgid "Upload is disabled. Please check your folder setting in Options."
+msgstr ""
+
+#: ../sb-includes/admin.php:2402
+msgid "URL to import"
+msgstr ""
+
+#: ../sb-includes/admin.php:2405
+msgid "Link to remote file"
+msgstr ""
+
+#: ../sb-includes/admin.php:2405
+msgid "Copy remote file to server"
+msgstr ""
+
+#: ../sb-includes/admin.php:2407
+msgid "Import"
+msgstr ""
+
+#: ../sb-includes/admin.php:2415
+msgid "Choose existing file"
+msgstr ""
+
+#: ../sb-includes/admin.php:2426
+msgid "Select"
+msgstr ""
+
+#: ../sb-includes/admin.php:2439
+msgid "SermonBrowser Help"
+msgstr ""
+
+#: ../sb-includes/admin.php:2443
+msgid "From this page you can edit or delete any of your sermons. The most recent sermons are found at the top. Use the filter options to quickly find the one you want."
+msgstr ""
+
+#: ../sb-includes/admin.php:2451
+#, php-format
+msgid "Template editing is one of the most powerful features of SermonBrowser. Be sure to look at the complete list of %stemplate tags%s."
+msgstr ""
+
+#: ../sb-includes/admin.php:2457
+msgid "Tutorial Screencasts"
+msgstr ""
+
+#: ../sb-includes/admin.php:2458
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: ../sb-includes/admin.php:2459
+msgid "Support Forum"
+msgstr ""
+
+#: ../sb-includes/admin.php:2460
+msgid "Shortcode syntax"
+msgstr ""
+
+#: ../sb-includes/admin.php:2461
+msgid "Donate"
+msgstr ""
+
+#: ../sb-includes/ajax.php:189
+msgid "No results"
+msgstr ""
+
+#: ../sb-includes/frontend.php:39
+#: ../sb-includes/frontend.php:85
 #: ../sb-includes/widget.php:40
 #: ../sb-includes/widget.php:170
 msgid "by"
 msgstr ""
 
+#: ../sb-includes/frontend.php:44
 #: ../sb-includes/widget.php:45
 msgid "on"
 msgstr ""
 
-#: ../sb-includes/widget.php:74
-#: ../sb-includes/widget.php:82
-msgid "Sermon Browser tags"
-msgstr ""
-
+#: ../sb-includes/frontend.php:90
 #: ../sb-includes/widget.php:175
 msgid " on "
 msgstr ""
 
-#: ../sb-includes/widget.php:260
-msgid "Title:"
+#: ../sb-includes/frontend.php:496
+msgid "Sermon podcast"
 msgstr ""
 
-#: ../sb-includes/widget.php:262
-msgid "Number of sermons: "
+#: ../sb-includes/frontend.php:512
+msgid "Custom sermon podcast"
 msgstr ""
 
-#: ../sb-includes/widget.php:264
-msgid "Display preacher"
+#: ../sb-includes/frontend.php:525
+msgid "Unknown Date"
 msgstr ""
 
-#: ../sb-includes/widget.php:265
-msgid "Display bible passage"
+#: ../sb-includes/frontend.php:614
+msgid "Next page"
 msgstr ""
 
-#: ../sb-includes/widget.php:266
-msgid "Display date"
+#: ../sb-includes/frontend.php:625
+msgid "Previous page"
 msgstr ""
 
-#: ../sb-includes/widget.php:267
-msgid "Display mini-player"
+#: ../sb-includes/frontend.php:683
+msgid "About"
 msgstr ""
 
-#: ../sb-includes/widget.php:271
-msgid "Preacher: "
+#: ../sb-includes/frontend.php:773
+msgid "more"
 msgstr ""
 
-#: ../sb-includes/widget.php:282
-msgid "Service: "
+#: ../sb-includes/frontend.php:857
+msgid "Show filter"
 msgstr ""
 
-#: ../sb-includes/widget.php:293
-msgid "Series: "
+#: ../sb-includes/frontend.php:858
+msgid "Hide filter"
+msgstr ""
+
+#: ../sb-includes/frontend.php:904
+msgid "Active filter"
+msgstr ""
+
+#: ../sb-includes/frontend.php:970
+msgid "Services"
+msgstr ""
+
+#: ../sb-includes/frontend.php:980
+msgid "Book"
+msgstr ""
+
+#: ../sb-includes/frontend.php:998
+msgid "Start date"
+msgstr ""
+
+#: ../sb-includes/frontend.php:1000
+msgid "End date"
+msgstr ""
+
+#: ../sb-includes/frontend.php:1004
+msgid "Keywords"
+msgstr ""
+
+#: ../sb-includes/frontend.php:1008
+msgid "Sort by"
+msgstr ""
+
+#: ../sb-includes/frontend.php:1015
+msgid "Direction"
+msgstr ""
+
+#: ../sb-includes/frontend.php:1025
+msgid "Filter &raquo;"
+msgstr ""
+
+#: ../sb-includes/uninstall.php:25
+msgid "All sermon data has been removed."
+msgstr ""
+
+#: ../sb-includes/uninstall.php:27
+msgid "Uninstall completed. The SermonBrowser plugin has been deactivated."
 msgstr ""
 
