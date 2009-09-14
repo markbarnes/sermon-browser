@@ -2,8 +2,8 @@
 Contributors: mark8barnes
 Donate link: http://www.4-14.org.uk/sermon-browser#support
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
-Requires at least: 2.5
-Tested up to: 2.8.1
+Requires at least: 2.6
+Tested up to: 2.8.4
 Stable tag: trunk
 
 Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
@@ -22,7 +22,7 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 8. Files can be uploaded to your own site **through the browser or via FTP**. Alternatively you can use other free audio hosting sites.
 9. Powerful **templating function** allows complete customisation to complement the look of your site.
 10. Simple statistics show how often each sermon has been listened to.
-11. Support for [Wordpress MU](http://www.4-14.org.uk/wordpress-plugins/sermon-browser/template-tags) (WPMU).
+11. Support for [Wordpress MU](http://mu.wordpress.org/) (WPMU).
 12. Extensive **help** and [tutorial screencasts](http://www.4-14.org.uk/wordpress-plugins/sermon-browser#tutorial).
 13. English and Spanish translations included.
 
@@ -58,6 +58,23 @@ You can customise Sermon Browser to fit in with your own theme, and to display o
 If you want to customise how Sermon Browser appears throughout your site, use [Template tags](http://www.4-14.org.uk/wordpress-plugins/sermon-browser/template-tags).
 
 == Changelog ==
+
+= 0.43 =
+* New feature: Automatically populate entry fields using the ID3 tags in MP3 files (thanks to James Hudson who helped with this feature).
+* New feature: New widget that displays most popular sermons/series/preachers. Can also be added to your theme by calling sb_print_most_popular(), or to the SermonBrowser template by using [most_popular]
+* New feature: Optionally hide sermons that do not have files attached.
+* New feature: Copy MP3 files from other websites to your server.
+* New feature: Contextual help in admin (Wordpress 2.7+ only).
+* New feature: Thank you page for those who have donated.
+* Optimisation: Sermon length now stored in the database.
+* Optimisation: Major changes to coding structure for better performance and easier updates.
+* Optimisation: Tidied up code to enable WP_DEBUG to be set without throwing up dozens of notices.
+* Bug fix: Sort by date now takes proper account of service times.
+* Bug fix: Double-quotes in sermon titles don't disappear when editing.
+* Bug fix: Now displays friendly error with invalid sermon_id.
+* Bug fix: Links to series/service/preacher now work correctly on individual sermon page.
+* Bug fix: Multiple bible passages and same-day sermons now display more neatly on individual sermon page.
+* Bug fix: Widgets now link to shortcode pages if there is no [sermons] page.
 
 = 0.42.4 =
 * Bug fix: Fixed several problems in Admin caused by incompatibilities with Wordpress 2.8.
