@@ -61,7 +61,7 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 
 = 0.43 =
 * New feature: Automatically populate entry fields using the ID3 tags in MP3 files (thanks to James Hudson who helped with this feature).
-* New feature: New widget that displays most popular sermons/series/preachers. Can also be added to your theme by calling sb_print_most_popular(), or to the SermonBrowser template by using [most_popular]
+* New feature: New widget that displays most popular sermons/series/preachers. Can also be added to your theme by calling sb&#95;print&#95;most&#95;popular(), or to the SermonBrowser template by using [most_popular]
 * New feature: Optionally hide sermons that do not have files attached.
 * New feature: Copy MP3 files from other websites to your server.
 * New feature: Contextual help in admin (Wordpress 2.7+ only).
