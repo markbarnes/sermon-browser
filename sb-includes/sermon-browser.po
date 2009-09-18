@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-18 18:49-0000\n"
+"POT-Creation-Date: 2009-09-14 22:16-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mark Barnes <see http://www.4-14.org.uk/contact>\n"
 "Language-Team: \n"
@@ -14,344 +14,344 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../sermon.php:258
-#: ../sermon.php:259
-#: ../sermon.php:495
+#: ../sermon.php:255
+#: ../sermon.php:256
+#: ../sermon.php:492
 #: ../sb-includes/admin.php:1220
 #: ../sb-includes/widget.php:60
 msgid "Sermons"
 msgstr ""
 
-#: ../sermon.php:261
+#: ../sermon.php:258
 msgid "Edit Sermon"
 msgstr ""
 
-#: ../sermon.php:263
+#: ../sermon.php:260
 msgid "Add Sermon"
 msgstr ""
 
-#: ../sermon.php:265
+#: ../sermon.php:262
 #: ../sb-includes/admin.php:243
 msgid "Files"
 msgstr ""
 
-#: ../sermon.php:266
+#: ../sermon.php:263
 #: ../sb-includes/admin.php:537
 msgid "Preachers"
 msgstr ""
 
-#: ../sermon.php:267
+#: ../sermon.php:264
 msgid "Series &amp; Services"
 msgstr ""
 
-#: ../sermon.php:268
+#: ../sermon.php:265
 msgid "Options"
 msgstr ""
 
-#: ../sermon.php:269
+#: ../sermon.php:266
 #: ../sb-includes/admin.php:372
 msgid "Templates"
 msgstr ""
 
-#: ../sermon.php:270
+#: ../sermon.php:267
 #: ../sb-includes/admin.php:311
 #: ../sb-includes/admin.php:312
 #: ../sb-includes/admin.php:324
 msgid "Uninstall"
 msgstr ""
 
-#: ../sermon.php:271
+#: ../sermon.php:268
 msgid "Help"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Genesis"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Exodus"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Leviticus"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Numbers"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Deuteronomy"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Joshua"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Judges"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Ruth"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "1 Samuel"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "2 Samuel"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "1 Kings"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "2 Kings"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "1 Chronicles"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "2 Chronicles"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Ezra"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Nehemiah"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Esther"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Job"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Psalm"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Proverbs"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Ecclesiastes"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Song of Solomon"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Isaiah"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Jeremiah"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Lamentations"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Ezekiel"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Daniel"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Hosea"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Joel"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Amos"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Obadiah"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Jonah"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Micah"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Nahum"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Habakkuk"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Zephaniah"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Haggai"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Zechariah"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Malachi"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Matthew"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Mark"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Luke"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "John"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Acts"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Romans"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "1 Corinthians"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "2 Corinthians"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Galatians"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Ephesians"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Philippians"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Colossians"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "1 Thessalonians"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "2 Thessalonians"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "1 Timothy"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "2 Timothy"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Titus"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Philemon"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Hebrews"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "James"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "1 Peter"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "2 Peter"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "1 John"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "2 John"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "3 John"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Jude"
 msgstr ""
 
-#: ../sermon.php:339
+#: ../sermon.php:336
 msgid "Revelation"
 msgstr ""
 
-#: ../sermon.php:456
+#: ../sermon.php:453
 #: ../sb-includes/frontend.php:289
 msgid "No sermons found."
 msgstr ""
 
-#: ../sermon.php:493
+#: ../sermon.php:490
 #: ../sb-includes/admin.php:1011
 #: ../sb-includes/admin.php:1060
 #: ../sb-includes/widget.php:58
 msgid "Sermon"
 msgstr ""
 
-#: ../sermon.php:510
+#: ../sermon.php:507
 #: ../sb-includes/frontend.php:104
 #: ../sb-includes/widget.php:74
 #: ../sb-includes/widget.php:82
 msgid "Sermon Browser tags"
 msgstr ""
 
-#: ../sermon.php:512
+#: ../sermon.php:509
 msgid "Most popular sermons"
 msgstr ""
 
-#: ../sermon.php:513
+#: ../sermon.php:510
 msgid "Display a list of the most popular sermons, series or preachers."
 msgstr ""
 
@@ -423,7 +423,7 @@ msgid "One-click"
 msgstr ""
 
 #: ../sb-includes/admin.php:201
-#: ../sb-includes/frontend.php:703
+#: ../sb-includes/frontend.php:719
 msgid "None"
 msgstr ""
 
@@ -548,7 +548,7 @@ msgstr ""
 #: ../sb-includes/admin.php:285
 #: ../sb-includes/admin.php:394
 #: ../sb-includes/admin.php:525
-#: ../sb-includes/admin.php:1841
+#: ../sb-includes/admin.php:1840
 msgid "Save"
 msgstr ""
 
@@ -659,7 +659,7 @@ msgid "Name"
 msgstr ""
 
 #: ../sb-includes/admin.php:504
-#: ../sb-includes/admin.php:1728
+#: ../sb-includes/admin.php:1727
 msgid "Description"
 msgstr ""
 
@@ -751,12 +751,12 @@ msgid "Files saved to database."
 msgstr ""
 
 #: ../sb-includes/admin.php:822
-#: ../sb-includes/admin.php:1373
+#: ../sb-includes/admin.php:1372
 msgid " already exists."
 msgstr ""
 
 #: ../sb-includes/admin.php:826
-#: ../sb-includes/admin.php:1378
+#: ../sb-includes/admin.php:1377
 msgid "You are not permitted to upload files of that type."
 msgstr ""
 
@@ -840,7 +840,7 @@ msgid "Clean up missing files"
 msgstr ""
 
 #: ../sb-includes/admin.php:1136
-#: ../sb-includes/admin.php:1333
+#: ../sb-includes/admin.php:1332
 msgid "You do not have the correct permissions to edit sermons"
 msgstr ""
 
@@ -863,21 +863,21 @@ msgstr ""
 
 #: ../sb-includes/admin.php:1196
 #: ../sb-includes/admin.php:1226
-#: ../sb-includes/admin.php:1668
+#: ../sb-includes/admin.php:1667
 msgid "Title"
 msgstr ""
 
 #: ../sb-includes/admin.php:1200
 #: ../sb-includes/admin.php:1227
-#: ../sb-includes/admin.php:1682
-#: ../sb-includes/frontend.php:946
+#: ../sb-includes/admin.php:1681
+#: ../sb-includes/frontend.php:962
 msgid "Preacher"
 msgstr ""
 
 #: ../sb-includes/admin.php:1209
 #: ../sb-includes/admin.php:1230
-#: ../sb-includes/admin.php:1701
-#: ../sb-includes/frontend.php:972
+#: ../sb-includes/admin.php:1700
+#: ../sb-includes/frontend.php:988
 msgid "Series"
 msgstr ""
 
@@ -886,12 +886,12 @@ msgid "Filter"
 msgstr ""
 
 #: ../sb-includes/admin.php:1228
-#: ../sb-includes/admin.php:1722
+#: ../sb-includes/admin.php:1721
 msgid "Date"
 msgstr ""
 
 #: ../sb-includes/admin.php:1229
-#: ../sb-includes/admin.php:1742
+#: ../sb-includes/admin.php:1741
 msgid "Service"
 msgstr ""
 
@@ -904,80 +904,80 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: ../sb-includes/admin.php:1279
+#: ../sb-includes/admin.php:1278
 msgid "You do not have the correct permissions to edit or create sermons"
 msgstr ""
 
-#: ../sb-includes/admin.php:1327
+#: ../sb-includes/admin.php:1326
 msgid "You do not have the correct permissions to create sermons"
 msgstr ""
 
-#: ../sb-includes/admin.php:1447
+#: ../sb-includes/admin.php:1446
 msgid "No ID3 tags found."
 msgstr ""
 
-#: ../sb-includes/admin.php:1663
+#: ../sb-includes/admin.php:1662
 msgid "Enter sermon details"
 msgstr ""
 
-#: ../sb-includes/admin.php:1674
+#: ../sb-includes/admin.php:1673
 msgid "Tags (comma separated)"
 msgstr ""
 
-#: ../sb-includes/admin.php:1697
+#: ../sb-includes/admin.php:1696
 msgid "Create new preacher"
 msgstr ""
 
-#: ../sb-includes/admin.php:1716
+#: ../sb-includes/admin.php:1715
 msgid "Create new series"
 msgstr ""
 
-#: ../sb-includes/admin.php:1751
+#: ../sb-includes/admin.php:1750
 msgid "Create new service"
 msgstr ""
 
-#: ../sb-includes/admin.php:1757
+#: ../sb-includes/admin.php:1756
 msgid "Time"
 msgstr ""
 
-#: ../sb-includes/admin.php:1760
+#: ../sb-includes/admin.php:1759
 msgid "Override default time"
 msgstr ""
 
-#: ../sb-includes/admin.php:1766
+#: ../sb-includes/admin.php:1765
 msgid "Bible passage"
 msgstr ""
 
-#: ../sb-includes/admin.php:1766
-#: ../sb-includes/admin.php:1809
+#: ../sb-includes/admin.php:1765
+#: ../sb-includes/admin.php:1808
 msgid "add more"
 msgstr ""
 
-#: ../sb-includes/admin.php:1770
+#: ../sb-includes/admin.php:1769
 msgid "From"
 msgstr ""
 
-#: ../sb-includes/admin.php:1771
+#: ../sb-includes/admin.php:1770
 msgid "To"
 msgstr ""
 
-#: ../sb-includes/admin.php:1809
+#: ../sb-includes/admin.php:1808
 msgid "Attachments"
 msgstr ""
 
-#: ../sb-includes/admin.php:1818
+#: ../sb-includes/admin.php:1817
 msgid "Choose existing file:"
 msgstr ""
 
-#: ../sb-includes/admin.php:1819
+#: ../sb-includes/admin.php:1818
 msgid "Upload a new one:"
 msgstr ""
 
-#: ../sb-includes/admin.php:1820
+#: ../sb-includes/admin.php:1819
 msgid "Enter an URL:"
 msgstr ""
 
-#: ../sb-includes/admin.php:1821
+#: ../sb-includes/admin.php:1820
 msgid "Enter embed code:"
 msgstr ""
 
@@ -986,12 +986,7 @@ msgid "Help page"
 msgstr ""
 
 #: ../sb-includes/admin.php:2039
-msgid "Hint:"
-msgstr ""
-
-#: ../sb-includes/admin.php:2039
-#, php-format
-msgid "%sCreate a page%s that includes the shortcode [sermons], so that SermonBrowser knows where to display the sermons on your site."
+msgid "You must create a post or preferably a page that includes the code [sermons] in order for your sermons to be displayed on your site."
 msgstr ""
 
 #: ../sb-includes/admin.php:2043
@@ -1066,10 +1061,10 @@ msgstr ""
 #: ../sb-includes/admin.php:2263
 #: ../sb-includes/admin.php:2274
 #: ../sb-includes/admin.php:2285
-#: ../sb-includes/frontend.php:948
-#: ../sb-includes/frontend.php:956
-#: ../sb-includes/frontend.php:966
-#: ../sb-includes/frontend.php:974
+#: ../sb-includes/frontend.php:964
+#: ../sb-includes/frontend.php:972
+#: ../sb-includes/frontend.php:982
+#: ../sb-includes/frontend.php:990
 #: ../sb-includes/widget.php:274
 #: ../sb-includes/widget.php:285
 #: ../sb-includes/widget.php:296
@@ -1218,75 +1213,75 @@ msgstr ""
 msgid " on "
 msgstr ""
 
-#: ../sb-includes/frontend.php:480
+#: ../sb-includes/frontend.php:496
 msgid "Sermon podcast"
 msgstr ""
 
-#: ../sb-includes/frontend.php:496
+#: ../sb-includes/frontend.php:512
 msgid "Custom sermon podcast"
 msgstr ""
 
-#: ../sb-includes/frontend.php:509
+#: ../sb-includes/frontend.php:525
 msgid "Unknown Date"
 msgstr ""
 
-#: ../sb-includes/frontend.php:598
+#: ../sb-includes/frontend.php:614
 msgid "Next page"
 msgstr ""
 
-#: ../sb-includes/frontend.php:609
+#: ../sb-includes/frontend.php:625
 msgid "Previous page"
 msgstr ""
 
-#: ../sb-includes/frontend.php:667
+#: ../sb-includes/frontend.php:683
 msgid "About"
 msgstr ""
 
-#: ../sb-includes/frontend.php:757
+#: ../sb-includes/frontend.php:773
 msgid "more"
 msgstr ""
 
-#: ../sb-includes/frontend.php:841
+#: ../sb-includes/frontend.php:857
 msgid "Show filter"
 msgstr ""
 
-#: ../sb-includes/frontend.php:842
+#: ../sb-includes/frontend.php:858
 msgid "Hide filter"
 msgstr ""
 
-#: ../sb-includes/frontend.php:888
+#: ../sb-includes/frontend.php:904
 msgid "Active filter"
 msgstr ""
 
-#: ../sb-includes/frontend.php:954
+#: ../sb-includes/frontend.php:970
 msgid "Services"
 msgstr ""
 
-#: ../sb-includes/frontend.php:964
+#: ../sb-includes/frontend.php:980
 msgid "Book"
 msgstr ""
 
-#: ../sb-includes/frontend.php:982
+#: ../sb-includes/frontend.php:998
 msgid "Start date"
 msgstr ""
 
-#: ../sb-includes/frontend.php:984
+#: ../sb-includes/frontend.php:1000
 msgid "End date"
 msgstr ""
 
-#: ../sb-includes/frontend.php:988
+#: ../sb-includes/frontend.php:1004
 msgid "Keywords"
 msgstr ""
 
-#: ../sb-includes/frontend.php:992
+#: ../sb-includes/frontend.php:1008
 msgid "Sort by"
 msgstr ""
 
-#: ../sb-includes/frontend.php:999
+#: ../sb-includes/frontend.php:1015
 msgid "Direction"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1009
+#: ../sb-includes/frontend.php:1025
 msgid "Filter &raquo;"
 msgstr ""
 
