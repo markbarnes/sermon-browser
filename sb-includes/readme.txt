@@ -18,7 +18,7 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 4. An optional **sidebar widget** displays sermons on all of your posts or pages.
 5. **Embed videos** and other flash files from sites such as [YouTube](http://www.youtube.com/) or [Vimeo](http://www.vimeo.com/).
 6. **Other file types** can also be uploaded, including PDF, Powerpoint, Word, text and RTF. Multiple files can be attached to single sermons.
-7. The **full Bible text** of the passage being preached on can be included on each sermon page (nine different versions, including ESV).
+7. The **full Bible text** of the passage being preached on can be included on each sermon page (eight different versions, including ESV).
 8. Files can be uploaded to your own site **through the browser or via FTP**. Alternatively you can use other free audio hosting sites.
 9. Powerful **templating function** allows complete customisation to complement the look of your site.
 10. Simple statistics show how often each sermon has been listened to.
@@ -58,6 +58,15 @@ You can customise Sermon Browser to fit in with your own theme, and to display o
 If you want to customise how Sermon Browser appears throughout your site, use [Template tags](http://www.4-14.org.uk/wordpress-plugins/sermon-browser/template-tags).
 
 == Changelog ==
+
+= 0.43.1 =
+* New feature: The Romanian Cornilescu Bible version has been added. Use the template tag [cornliescutext]
+* Optimisation: Most bible texts now served from SermonBrowser's own API service, not Living Stones Ministries (ESV and NET continue to be supplied direct from the publisher). Unfortunately the Hebrew Names Version is no longer available, but *it makes possible the addition of bibles in dozens of other languages*. If you would like your language included, please ask.
+* Optimisation: Improved Spanish translation (thanks to Marvin Ortega).
+* Bug fix: Removed error with wp_timezone_supported() on Wordpress 2.6 and 2.7.
+* Bug fix: Warning message now correctly displays in admin when [sermons] shortcode is missing.
+* Bug fix: Stylesheet now loaded correctly even with default permalinks.
+* Bug fix: Fixed link to podcast background image.
 
 = 0.43 =
 * New feature: Automatically populate entry fields using the ID3 tags in MP3 files (thanks to James Hudson who helped with this feature).

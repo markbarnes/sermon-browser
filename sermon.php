@@ -53,7 +53,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.43');
+define('SB_CURRENT_VERSION', '0.43.1');
 define('SB_DATABASE_VERSION', '1.6');
 add_action ('plugins_loaded', 'sb_hijack');
 add_action ('init', 'sb_sermon_init');
@@ -70,12 +70,12 @@ function sb_hijack() {
     global $filetypes, $wpdb;
     sb_define_constants();
     
-    if (wp_timezone_supported())
+    if (function_exists('wp_timezone_supported') && wp_timezone_supported())
         wp_timezone_override_offset();
 
     if (isset($_POST['sermon']) && $_POST['sermon'] == 1)
         require('sb-includes/ajax.php');
-    if (stripos($_SERVER['REQUEST_URI'], 'sb-style.css') !== FALSE)
+    if (stripos($_SERVER['REQUEST_URI'], 'sb-style.css') !== FALSE || isset($_GET['sb-style']))
         require('sb-includes/style.php');
 
     //Forces sermon download of local file
@@ -185,7 +185,10 @@ function sb_sermon_init () {
 	wp_register_script('sb_64', SB_PLUGIN_URL.'/sb-includes/64.js', false, SB_CURRENT_VERSION);
 	wp_register_script('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datePicker.js', array('jquery'), SB_CURRENT_VERSION);
 	wp_register_style('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datepicker.css', false, SB_CURRENT_VERSION);
-	wp_register_style('sb_style', trailingslashit(get_option('siteurl')).'sb-style.css', false, sb_get_option('style_date_modified'));
+    if (get_option('permalink_structure') == '')
+	    wp_register_style('sb_style', get_option('siteurl').'?sb-style&', false, sb_get_option('style_date_modified'));
+    else
+        wp_register_style('sb_style', trailingslashit(get_option('siteurl')).'sb-style.css', false, sb_get_option('style_date_modified'));
 
 	// Register [sermon] shortcode handler
 	add_shortcode('sermons', 'sb_shortcode');

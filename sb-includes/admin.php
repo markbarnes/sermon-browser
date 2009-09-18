@@ -32,7 +32,7 @@ function sb_options() {
 	//Reset options to default
 	if (isset($_POST['resetdefault'])) {
 		$dir = sb_get_default('sermon_path');
-		if (sb_display_url()=="") {
+		if (sb_display_url()=="#") {
 			sb_update_option('podcast_url', get_bloginfo('wpurl').sb_query_char(false).'podcast');
 		} else {
 			sb_update_option('podcast_url', sb_display_url().sb_query_char(false).'podcast');
@@ -187,7 +187,7 @@ function sb_options() {
 			</tr>
 			<tr>
 				<td align="right"><?php _e('Private podcast feed', $sermon_domain) ?>: </td>
-				<td><?php if (sb_display_url()=="") { echo get_bloginfo('wpurl'); } else { echo sb_display_url(); } echo sb_query_char(); ?>podcast</td>
+				<td><?php if (sb_display_url()=="#") { echo get_bloginfo('wpurl'); } else { echo sb_display_url(); } echo sb_query_char(); ?>podcast</td>
 			</tr>
 			<tr>
 				<td align="right" style="vertical-align:middle"><?php _e('Sermons per page', $sermon_domain) ?>: </td>
@@ -1229,7 +1229,7 @@ function sb_manage_sermons() {
 				<th scope="col"><?php _e('Service', $sermon_domain) ?></th>
 				<th scope="col"><?php _e('Series', $sermon_domain) ?></th>
 				<th scope="col" style="text-align:center"><?php _e('Stats', $sermon_domain) ?></th>
-				<th scope="col"><?php _e('Actions', $sermon_domain) ?></th>
+				<th scope="col" style="text-align:center"><?php _e('Actions', $sermon_domain) ?></th>
 			</tr>
 			</thead>	
 			<tbody id="the-list">
@@ -1246,8 +1246,9 @@ function sb_manage_sermons() {
 						<td style="text-align:center">
 							<?php //Security check
 									if (function_exists('current_user_can')&&current_user_can('edit_posts')) { ?>
-									<a href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain); ?></a>
-							<?php } else { ?>&nbsp;<?php } ?>
+									<a href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain); ?></a> | 
+							<?php } ?>
+                            <a href="<?php echo sb_display_url().sb_query_char(true).'sermon_id='.$sermon->id;?>">View</a>
 						</td>
 					</tr>
 					<?php endforeach ?>
@@ -1997,8 +1998,7 @@ sb_do_alerts();
         <p>Additional help was also received from:</p>
         <ul style="list-style-type:circle; margin-left: 2em">
             <li>James Hudson, Matthew Hiatt, Mark Bouchard (code contributions)</li>
-            <li>Juan Carlos (Spanish translation)</li>
-            <li>Living Stones Ministries (access to several Bible versions)</li>
+            <li>Juan Carlos and Marvin Ortega (Spanish translation)</li>
             <li>Numerous <a href="http://www.4-14.org.uk/forum/sermon-browser-support/">forum contributors</a> for feature suggestions and bug reports</li>
         </ul>
     </div>
@@ -2035,8 +2035,8 @@ sb_do_alerts();
 */
 function sb_do_alerts() {
 	global $wpdb, $sermon_domain;
-	if (sb_display_url() == "") {
-		echo '<div id="message" class="updated"><p><b>'.__('You must create a post or preferably a page that includes the code [sermons] in order for your sermons to be displayed on your site.', $sermon_domain).'</b></div>';
+	if (sb_display_url() == "#") {
+		echo '<div id="message" class="updated"><p><b>'.__('Hint:', $sermon_domain).'</b> '.sprintf(__('%sCreate a page%s that includes the shortcode [sermons], so that SermonBrowser knows where to display the sermons on your site.', $sermon_domain), '<a href="'.get_bloginfo('wpurl').'/wp-admin/page-new.php">', '</a>').'</div>';
 	} else {
 		if (!function_exists('ap_insert_player_widgets')) {
 			if ($wpdb->get_var("SELECT COUNT(id) FROM {$wpdb->prefix}sb_stuff WHERE name LIKE '%.mp3'")>0)

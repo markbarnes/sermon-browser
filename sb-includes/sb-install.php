@@ -321,7 +321,7 @@ table.podcast {
 
 .podcastall {
 	float:left;
-	background: #fff0c8 url(icons/podcast_background.png) repeat-x;
+	background: #fff0c8 url(wp-content/plugins/sermon-browser/sb-includes/icons/podcast_background.png) repeat-x;
 	padding: 0.5em;
 	font-size: 1em;
 	-moz-border-radius: 7px;
@@ -330,7 +330,7 @@ table.podcast {
 
 .podcastcustom {
 	float:right;
-	background: #fce4ff url(icons/podcast_custom_background.png) repeat-x;
+	background: #fce4ff url(wp-content/plugins/sermon-browser/sb-includes/icons/podcast_custom_background.png) repeat-x;
 	padding: 0.5em;
 	font-size: 1em;
 	-moz-border-radius: 7px;

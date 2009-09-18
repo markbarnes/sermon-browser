@@ -369,7 +369,7 @@ function sb_add_bible_text ($start, $end, $version) {
 	elseif ($version == 'net')
 		return sb_add_net_text ($start, $end);
 	else
-		return sb_add_seek_first_text ($start, $end, $version);
+		return sb_add_other_bibles ($start, $end, $version);
 }
 	
 //Returns ESV text
@@ -423,46 +423,30 @@ function sb_add_net_text ($start, $end) {
 	return "<div class=\"net\">\r<h2>".sb_tidy_reference ($start, $end)."</h2><p>{$output} (<a href=\"http://net.bible.org/?{$reference}\">NET Bible</a>)</p></div>";
 }
 
-//Returns Bible text using the Living Stones API
-function sb_add_seek_first_text ($start, $end, $version) {
-	$books = sb_get_bible_books();
-	$r1 = array_search($start['book'], $books)+1;
-	$r2 = $start['chapter'];
-	$r3 = $start['verse'];
-	$r4 = array_search($end['book'], $books)+1;
-	$r5 = $end['chapter'];
-	$r6 = $end['verse'];
-	if (empty($start['book']))
-		return;
-	else {
-		$content = sb_download_page ('http://api.seek-first.com/v1/BibleSearch.php?type=lookup&appid=seekfirst&startbooknum='.$r1.'&startchapter='.$r2.'&startverse='.$r3.'&endbooknum='.$r4.'&endchapter='.$r5.'&endverse='.$r6.'&version='.$version);
-		if ($content != '') {
-			$patterns = array (
-				'/<!--(.)*?-->/',
-				'/<Copyright>(.*)<\/Copyright>/',
-				'/<VersionName>(.*)<\/VersionName>/',
-				'/<TotalResults>(.*)<\/TotalResults>/',
-			);
-			$replace = array ('', '', '', '');
-			$content = trim(preg_replace ($patterns, $replace, $content));
-			$old_chapter = $start['chapter'];
-			$content = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n".$content;
-			$xml = sb_get_xml($content);
-			$output='';
-			$items = array();
-			$items = $xml->Result;
-			foreach ($items as $item) {
-				if ($old_chapter == $item->Chapter) {
-					$output .= " <span class=\"verse-num\">{$item->Verse}</span>";
-				} else {
-					$output .= " <span class=\"chapter-num\">{$item->Chapter}:{$item->Verse}</span> ";
-					$old_chapter = strval($item->Chapter);
-				}
-				$output .= 	$item->Text;
-			}
-		}
-		return '<div class="'.$version.'"><h2>'.sb_tidy_reference ($start, $end). '</h2><p>'.$output.' (<a href="http://biblepro.bibleocean.com/dox/default.aspx">'. strtoupper($version). '</a>)</p></div>';
-	}
+//Returns Bible text using SermonBrowser's own API
+function sb_add_other_bibles ($start, $end, $version) {
+    if ($version == 'hnv')
+        return '<div class="'.$version.'"><p>Sorry, the Hebrew Names Version is no longer available.</p></div>';
+    $reference = str_replace(' ', '+', sb_tidy_reference ($start, $end));
+    $old_chapter = $start['chapter'];
+    $url = "http://api.preachingcentral.com/bible.php?passage={$reference}&version={$version}";
+    $xml = sb_get_xml(sb_download_page($url));
+    $output='';
+    $items = array();
+    $items = $xml->range->item;
+    if ($xml->range->item)
+        foreach ($xml->range->item as $item) {
+            if ($item->text != '[[EMPTY]]') {
+                if ($old_chapter == $item->chapter) {
+                    $output .= " <span class=\"verse-num\">{$item->verse}</span>";
+                } else {
+                    $output .= " <span class=\"chapter-num\">{$item->chapter}:{$item->verse}</span> ";
+                    $old_chapter = strval($item->chapter);
+                }
+                $output .=     $item->text;
+            }
+        }
+	return '<div class="'.$version.'"><h2>'.sb_tidy_reference ($start, $end). '</h2><p>'.$output.' (<a href="http://biblepro.bibleocean.com/dox/default.aspx">'. strtoupper($version). '</a>)</p></div>';
 }
 
 //Adds edit sermon link if current user has edit rights
