@@ -13,7 +13,8 @@ function sb_media_size($media_name, $media_type) {
 		if(ini_get('allow_url_fopen')) {
 			$headers = array_change_key_case(@get_headers($media_name, 1),CASE_LOWER);
 			$filesize = $headers['content-length'];
-			if ($filesize) return "length=\"{$filesize}\"";
+			if ($filesize)
+                return "length=\"{$filesize}\"";
 		}
 	} else
 		return 'length="'.@filesize(SB_ABSPATH.sb_get_option('upload_dir').$media_name).'"';

@@ -136,6 +136,11 @@ function sb_database_upgrade ($old_version) {
 				}
 			}
             sb_update_option('import_prompt', true);
+            sb_update_option('import_title', false);
+            sb_update_option('import_artist', false);
+            sb_update_option('import_album', false);
+            sb_update_option('import_comments', false);
+            sb_update_option('import_filename', 'none');
             sb_update_option('hide_no_attachments', false);
 			sb_update_option('db_version', '1.6');
 			return;

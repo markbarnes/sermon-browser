@@ -152,7 +152,11 @@ function sb_install() {
 	sb_update_option('filter_hide', 'hide');
 	sb_update_option('import_prompt',true);
     sb_update_option('hide_no_attachments',false);
-}
+    sb_update_option('import_title', false);
+    sb_update_option('import_artist', false);
+    sb_update_option('import_album', false);
+    sb_update_option('import_comments', false);
+    sb_update_option('import_filename', 'none');
 
 //Default template for search results
 function sb_default_multi_template () {

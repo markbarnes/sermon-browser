@@ -27,7 +27,7 @@ function sb_add_admin_headers() {
 function sb_options() {
 	global $wpdb, $sermon_domain;
 	//Security check
-	if (function_exists('current_user_can')&&!current_user_can('manage_options'))
+	if (!current_user_can('manage_options'))
 			wp_die(__("You do not have the correct permissions to edit the SermonBrowser options", $sermon_domain));
 	//Reset options to default
 	if (isset($_POST['resetdefault'])) {
@@ -2342,7 +2342,7 @@ function sb_widget_popular_control() {
 * @return boolean
 */
 function sb_import_options_set () {
-    if (!sb_get_option('import_title') && !sb_get_option('import_artist') && !sb_get_option('import_album') && !sb_get_option('import_comments') && sb_get_option('import_filename') == 'none')
+    if (!sb_get_option('import_title') && !sb_get_option('import_artist') && !sb_get_option('import_album') && !sb_get_option('import_comments') && (!sb_get_option('import_filename') || sb_get_option('import_filename') == 'none'))
         return false;
     else
         return true;

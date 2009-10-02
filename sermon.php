@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Thanks to <a href="http://codeandmore.com/">Tien Do Xuan</a> for initial coding.
 Author: Mark Barnes
-Version: 0.43.1
+Version: 0.43.2
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008-2009 Mark Barnes
@@ -53,7 +53,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.43.1');
+define('SB_CURRENT_VERSION', '0.43.2');
 define('SB_DATABASE_VERSION', '1.6');
 add_action ('plugins_loaded', 'sb_hijack');
 add_action ('init', 'sb_sermon_init');
@@ -66,10 +66,10 @@ add_action ('widgets_init', 'sb_widget_sermon_init');
 * Ajax data, stylesheet, file download
 */
 function sb_hijack() {
-    
+
     global $filetypes, $wpdb;
     sb_define_constants();
-    
+
     if (function_exists('wp_timezone_supported') && wp_timezone_supported())
         wp_timezone_override_offset();
 
@@ -100,7 +100,7 @@ function sb_hijack() {
         }
         exit();
     }
-    
+
     //Forces sermon download of external URL
     if (isset($_REQUEST['download']) AND isset($_REQUEST['url'])) {
         $url = urldecode($_GET['url']);
@@ -177,6 +177,9 @@ function sb_sermon_init () {
 	if (WPLANG != '')
 		setlocale(LC_ALL, WPLANG.'.UTF-8');
 
+    if (version_compare(PHP_VERSION, '5.0.0', '<'))
+        require('sb-includes/php4compat.php');
+
     //Display the podcast if that's what's requested
     if (isset($_GET['podcast']))
         require('sb-includes/podcast.php');
@@ -186,7 +189,7 @@ function sb_sermon_init () {
 	wp_register_script('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datePicker.js', array('jquery'), SB_CURRENT_VERSION);
 	wp_register_style('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datepicker.css', false, SB_CURRENT_VERSION);
     if (get_option('permalink_structure') == '')
-	    wp_register_style('sb_style', get_option('siteurl').'?sb-style&', false, sb_get_option('style_date_modified'));
+	    wp_register_style('sb_style', trailingslashit(get_option('siteurl')).'?sb-style&', false, sb_get_option('style_date_modified'));
     else
         wp_register_style('sb_style', trailingslashit(get_option('siteurl')).'sb-style.css', false, sb_get_option('style_date_modified'));
 
@@ -208,28 +211,28 @@ function sb_sermon_init () {
 		ini_set('file_uploads', '1');
 
 	// Check whether upgrade required
-    if (get_option('sb_sermon_db_version'))
-        $db_version = get_option('sb_sermon_db_version');
-	else
-        $db_version = sb_get_option('db_version');
-    if ($db_version && $db_version != SB_DATABASE_VERSION) {
-        require_once ('sb-includes/upgrade.php');
-        sb_database_upgrade ($db_version);
-    } elseif (!$db_version) {
-        require ('sb-includes/sb-install.php');
-        sb_install();
+    if (current_user_can('manage_options') && is_admin()) {
+        if (get_option('sb_sermon_db_version'))
+            $db_version = get_option('sb_sermon_db_version');
+	    else
+            $db_version = sb_get_option('db_version');
+        if ($db_version && $db_version != SB_DATABASE_VERSION) {
+            require_once ('sb-includes/upgrade.php');
+            sb_database_upgrade ($db_version);
+        } elseif (!$db_version) {
+            require ('sb-includes/sb-install.php');
+            sb_install();
+        }
+	    $sb_version = sb_get_option('code_version');
+	    if ($sb_version != SB_CURRENT_VERSION) {
+		    require_once ('sb-includes/upgrade.php');
+		    sb_version_upgrade ($sb_version, SB_CURRENT_VERSION);
+	    }
     }
-	$sb_version = sb_get_option('code_version');
-	if ($sb_version != SB_CURRENT_VERSION) {
-		require_once ('sb-includes/upgrade.php');
-		sb_version_upgrade ($sb_version, SB_CURRENT_VERSION);
-	}
+
 	
 	// Load shared (admin/frontend) features
-	if (version_compare(PHP_VERSION, '5.0.0', '<'))
-		require('sb-includes/php4compat.php');
 	add_action ('save_post', 'update_podcast_url');
-
 
 	// Check to see what functions are required, and only load what is needed
 	if (stripos($_SERVER['REQUEST_URI'], '/wp-admin/') === FALSE) {
@@ -268,7 +271,7 @@ function sb_add_pages() {
 	add_submenu_page(__FILE__, __('Options', $sermon_domain), __('Options', $sermon_domain), 'manage_options', 'sermon-browser/options.php', 'sb_options');
 	add_submenu_page(__FILE__, __('Templates', $sermon_domain), __('Templates', $sermon_domain), 'manage_options', 'sermon-browser/templates.php', 'sb_templates');
 	add_submenu_page(__FILE__, __('Uninstall', $sermon_domain), __('Uninstall', $sermon_domain), 'edit_plugins', 'sermon-browser/uninstall.php', 'sb_uninstall');
-	add_submenu_page(__FILE__, __('Help', $sermon_domain), __('Help', $sermon_domain), 'read', 'sermon-browser/help.php', 'sb_help');
+	add_submenu_page(__FILE__, __('Help', $sermon_domain), __('Help', $sermon_domain), 'edit_posts', 'sermon-browser/help.php', 'sb_help');
 }
 
 /**
@@ -332,9 +335,15 @@ function sb_get_default ($default_type) {
 	global $sermon_domain;
 	switch ($default_type) {
 		case 'sermon_path':
-			return trailingslashit(get_option('upload_path')).'sermons/';
+            $upload_path = wp_upload_dir();
+            $upload_path = $upload_path['basedir'];
+            if (substr($upload_path, 0, strlen(ABSPATH)) == ABSPATH)
+                $upload_path = substr($upload_path, strlen(ABSPATH));
+            return trailingslashit($upload_path).'sermons/';
 		case 'attachment_url':
-			return trailingslashit(get_bloginfo('wpurl')).trailingslashit(get_option('upload_path')).'sermons/';
+            $upload_dir = wp_upload_dir();
+            $upload_dir = $upload_dir['baseurl'];
+            return trailingslashit($upload_dir).'sermons/';
 		case 'bible_books':
 			return array(__('Genesis', $sermon_domain), __('Exodus', $sermon_domain), __('Leviticus', $sermon_domain), __('Numbers', $sermon_domain), __('Deuteronomy', $sermon_domain), __('Joshua', $sermon_domain), __('Judges', $sermon_domain), __('Ruth', $sermon_domain), __('1 Samuel', $sermon_domain), __('2 Samuel', $sermon_domain), __('1 Kings', $sermon_domain), __('2 Kings', $sermon_domain), __('1 Chronicles', $sermon_domain), __('2 Chronicles',$sermon_domain), __('Ezra', $sermon_domain), __('Nehemiah', $sermon_domain), __('Esther', $sermon_domain), __('Job', $sermon_domain), __('Psalm', $sermon_domain), __('Proverbs', $sermon_domain), __('Ecclesiastes', $sermon_domain), __('Song of Solomon', $sermon_domain), __('Isaiah', $sermon_domain), __('Jeremiah', $sermon_domain), __('Lamentations', $sermon_domain), __('Ezekiel', $sermon_domain), __('Daniel', $sermon_domain), __('Hosea', $sermon_domain), __('Joel', $sermon_domain), __('Amos', $sermon_domain), __('Obadiah', $sermon_domain), __('Jonah', $sermon_domain), __('Micah', $sermon_domain), __('Nahum', $sermon_domain), __('Habakkuk', $sermon_domain), __('Zephaniah', $sermon_domain), __('Haggai', $sermon_domain), __('Zechariah', $sermon_domain), __('Malachi', $sermon_domain), __('Matthew', $sermon_domain), __('Mark', $sermon_domain), __('Luke', $sermon_domain), __('John', $sermon_domain), __('Acts', $sermon_domain), __('Romans', $sermon_domain), __('1 Corinthians', $sermon_domain), __('2 Corinthians', $sermon_domain), __('Galatians', $sermon_domain), __('Ephesians', $sermon_domain), __('Philippians', $sermon_domain), __('Colossians', $sermon_domain), __('1 Thessalonians', $sermon_domain), __('2 Thessalonians', $sermon_domain), __('1 Timothy', $sermon_domain), __('2 Timothy', $sermon_domain), __('Titus', $sermon_domain), __('Philemon', $sermon_domain), __('Hebrews', $sermon_domain), __('James', $sermon_domain), __('1 Peter', $sermon_domain), __('2 Peter', $sermon_domain), __('1 John', $sermon_domain), __('2 John', $sermon_domain), __('3 John', $sermon_domain), __('Jude', $sermon_domain), __('Revelation', $sermon_domain));
 		case 'eng_bible_books':
@@ -490,21 +499,21 @@ function sb_widget_sermon_init() {
     //Sermons Widget
 	if (!$options = sb_get_option('sermons_widget_options'))
 		$options = array();
-	$widget_ops = array('classname' => 'sermon', 'description' => __('Sermon', $sermon_domain));
+	$widget_ops = array('classname' => 'sermon', 'description' => __('Display a list of recent sermons.', $sermon_domain));
 	$control_ops = array('width' => 400, 'height' => 350, 'id_base' => 'sermon');
 	$name = __('Sermons', $sermon_domain);
 	$registered = false;
-	foreach ( array_keys($options) as $o ) {
-		if ( !isset($options[$o]['limit']) )
+	foreach (array_keys($options) as $o) {
+		if (!isset($options[$o]['limit']))
 			continue;
 		$id = "sermon-$o";
 		$registered = true;
-		wp_register_sidebar_widget( $id, $name, 'sb_widget_sermon_wrapper', $widget_ops, array( 'number' => $o ) );
-		wp_register_widget_control( $id, $name, 'sb_widget_sermon_control', $control_ops, array( 'number' => $o ) );
+		wp_register_sidebar_widget($id, $name, 'sb_widget_sermon_wrapper', $widget_ops, array('number' => $o));
+		wp_register_widget_control($id, $name, 'sb_widget_sermon_control', $control_ops, array('number' => $o));
 	}
-	if ( !$registered ) {
-		wp_register_sidebar_widget( 'sermon-1', $name, 'sb_widget_sermon_wrapper', $widget_ops, array( 'number' => -1 ) );
-		wp_register_widget_control( 'sermon-1', $name, 'sb_widget_sermon_control', $control_ops, array( 'number' => -1 ));
+	if (!$registered) {
+		wp_register_sidebar_widget('sermon-1', $name, 'sb_widget_sermon_wrapper', $widget_ops, array('number' => -1));
+		wp_register_widget_control('sermon-1', $name, 'sb_widget_sermon_control', $control_ops, array('number' => -1));
 	}
     //Tags Widget
 	wp_register_sidebar_widget('sermon-browser-tags', __('Sermon Browser tags', $sermon_domain), 'sb_widget_tag_cloud_wrapper');
@@ -565,8 +574,14 @@ function sb_get_option($type) {
 	if (in_array($type, $special_options)) {
 		return stripslashes(base64_decode(get_option("sermonbrowser_{$type}")));
 	} else {
-		if (!$sermonbrowser_options)
-			$sermonbrowser_options = unserialize(base64_decode(get_option('sermonbrowser_options')));
+		if (!$sermonbrowser_options) {
+            $options = get_option('sermonbrowser_options');
+            if ($options === FALSE)
+                return FALSE;
+			$sermonbrowser_options = unserialize(base64_decode($options));
+            if ($sermonbrowser_options === FALSE)
+                wp_die ('Failed to get SermonBrowser options '.base64_decode(get_option('sermonbrowser_options')));
+        }
 		if (isset($sermonbrowser_options[$type]))
 			return $sermonbrowser_options[$type];
 		else
@@ -589,8 +604,14 @@ function sb_update_option($type, $val) {
 	if (in_array($type, $special_options))
 		return update_option ("sermonbrowser_{$type}", base64_encode($val));
 	else {
-		if (!$sermonbrowser_options)
-			$sermonbrowser_options = unserialize(base64_decode(get_option('sermonbrowser_options')));
+		if (!$sermonbrowser_options) {
+            $options = get_option('sermonbrowser_options');
+            if ($options !== FALSE) {
+			    $sermonbrowser_options = unserialize(base64_decode($options));
+                if ($sermonbrowser_options === FALSE)
+                    wp_die ('Failed to get SermonBrowser options '.base64_decode(get_option('sermonbrowser_options')));
+            }
+        }
 		if (!isset($sermonbrowser_options[$type]) || $sermonbrowser_options[$type] !== $val) {
 			$sermonbrowser_options[$type] = $val;
 			return update_option('sermonbrowser_options', base64_encode(serialize($sermonbrowser_options)));

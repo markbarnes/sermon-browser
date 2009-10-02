@@ -14,9 +14,12 @@ function sb_display_sermons($options = array()) {
 		'service' => 0,
 		'series' => 0,
 		'limit' => 5,
+        'url_only' => 0,
 	);
 	$options = array_merge($default, (array) $options);
 	extract($options);
+    if ($url_only == 1)
+        $limit = 1;
 	$sermons = sb_get_sermons(array(
 			'preacher' => $preacher,
 			'service' => $service,
@@ -24,29 +27,33 @@ function sb_display_sermons($options = array()) {
 		),
 		array(), 1, $limit		
 	);
-	echo "<ul class=\"sermon-widget\">\r";
-	foreach ((array) $sermons as $sermon) {
-		echo "\t<li>";
-		echo "<span class=\"sermon-title\"><a href=\"";
-		sb_print_sermon_link($sermon);
-		echo "\">".stripslashes($sermon->title)."</a></span>";
-		if ($display_passage) {
-			$foo = unserialize($sermon->start);
-			$bar = unserialize($sermon->end);
-			echo "<span class=\"sermon-passage\"> (".sb_get_books($foo[0], $bar[0]).")</span>";
-		}
-		if ($display_preacher) {
-			echo "<span class=\"sermon-preacher\">".__('by', $sermon_domain)." <a href=\"";
-			sb_print_preacher_link($sermon);
-			echo "\">".stripslashes($sermon->preacher)."</a></span>";
-		}
-		if ($display_date)
-			echo " <span class=\"sermon-date\">".__('on', $sermon_domain)." ".sb_formatted_date ($sermon)."</span>";
-		if ($display_player)
-			sb_display_mini_player($sermon);
-		echo ".</li>\r";
-	}
-	echo "</ul>\r";
+    if ($url_only == 1)
+        sb_print_sermon_link($sermons[0]);
+    else {
+	    echo "<ul class=\"sermon-widget\">\r";
+	    foreach ((array) $sermons as $sermon) {
+		    echo "\t<li>";
+		    echo "<span class=\"sermon-title\"><a href=\"";
+		    sb_print_sermon_link($sermon);
+		    echo "\">".stripslashes($sermon->title)."</a></span>";
+		    if ($display_passage) {
+			    $foo = unserialize($sermon->start);
+			    $bar = unserialize($sermon->end);
+			    echo "<span class=\"sermon-passage\"> (".sb_get_books($foo[0], $bar[0]).")</span>";
+		    }
+		    if ($display_preacher) {
+			    echo "<span class=\"sermon-preacher\">".__('by', $sermon_domain)." <a href=\"";
+			    sb_print_preacher_link($sermon);
+			    echo "\">".stripslashes($sermon->preacher)."</a></span>";
+		    }
+		    if ($display_date)
+			    echo " <span class=\"sermon-date\">".__('on', $sermon_domain)." ".sb_formatted_date ($sermon)."</span>";
+		    if ($display_player)
+			    sb_display_mini_player($sermon);
+		    echo ".</li>\r";
+	    }
+	    echo "</ul>\r";
+    }
 }
 
 // Displays the widget
@@ -129,7 +136,7 @@ function sb_widget_popular ($args) {
     $trigger = array();
     if ($options['display_sermons']) {
         $sermons = $wpdb->get_results("SELECT sermons.id, sermons.title, sum(stuff.count) AS total
-                                       FROM wp_sb_stuff AS stuff
+                                       FROM {$wpdb->prefix}sb_stuff AS stuff
                                        LEFT JOIN wp_sb_sermons AS sermons ON stuff.sermon_id = sermons.id
                                        GROUP BY sermons.id ORDER BY total DESC LIMIT 0, {$options['limit']}");
         if ($sermons) {
@@ -153,14 +160,14 @@ function sb_widget_popular ($args) {
     
     if ($options['display_series']) {
         $series1 = $wpdb->get_results("SELECT series.id, series.name, avg(stuff.count) AS average
-                                       FROM wp_sb_stuff AS stuff
-                                       LEFT JOIN wp_sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-                                       LEFT JOIN wp_sb_series AS series ON sermons.series_id = series.id
+                                       FROM {$wpdb->prefix}sb_stuff AS stuff
+                                       LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
+                                       LEFT JOIN {$wpdb->prefix}sb_series AS series ON sermons.series_id = series.id
                                        GROUP BY series.id ORDER BY average DESC");
         $series2 = $wpdb->get_results("SELECT series.id, sum(stuff.count) AS total
-                                       FROM wp_sb_stuff AS stuff
-                                       LEFT JOIN wp_sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-                                       LEFT JOIN wp_sb_series AS series ON sermons.series_id = series.id
+                                       FROM {$wpdb->prefix}sb_stuff AS stuff
+                                       LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
+                                       LEFT JOIN {$wpdb->prefix}sb_series AS series ON sermons.series_id = series.id
                                        GROUP BY series.id ORDER BY total DESC");
         if ($series1) {
             $i=1;
@@ -197,15 +204,15 @@ function sb_widget_popular ($args) {
     
     if ($options['display_preachers']) {
         $preachers1 = $wpdb->get_results("SELECT preachers.id, preachers.name, avg(stuff.count) AS average
-                                          FROM wp_sb_stuff AS stuff
-                                          LEFT JOIN wp_sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-                                          LEFT JOIN wp_sb_preachers AS preachers ON sermons.preacher_id = preachers.id
+                                          FROM {$wpdb->prefix}sb_stuff AS stuff
+                                          LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
+                                          LEFT JOIN {$wpdb->prefix}sb_preachers AS preachers ON sermons.preacher_id = preachers.id
                                           GROUP BY preachers.id
                                           ORDER BY average DESC");
         $preachers2 = $wpdb->get_results("SELECT preachers.id, sum(stuff.count) AS total
-                                          FROM wp_sb_stuff AS stuff
-                                          LEFT JOIN wp_sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-                                          LEFT JOIN wp_sb_preachers AS preachers ON sermons.preacher_id = preachers.id
+                                          FROM {$wpdb->prefix}sb_stuff AS stuff
+                                          LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
+                                          LEFT JOIN {$wpdb->prefix}sb_preachers AS preachers ON sermons.preacher_id = preachers.id
                                           GROUP BY preachers.id
                                           ORDER BY total DESC");
         if ($preachers1) {
@@ -474,27 +481,29 @@ function sb_build_url($arr, $clear = false) {
 
 // Adds javascript and CSS where required
 function sb_add_headers() {
-	global $sermon_domain, $post, $wpdb;
+	global $sermon_domain, $post, $wpdb, $wp_scripts;
 	if (isset($post->ID) && $post->ID != '') {
 		echo "<!-- Added by SermonBrowser (version ".SB_CURRENT_VERSION.") - http://www.4-14.org.uk/sermon-browser -->\r";
 		echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Sermon podcast', $sermon_domain)."\" href=\"".sb_get_option('podcast_url')."\" />\r";
-        wp_enqueue_script('jquery');                         
-        $sidebars_widgets = wp_get_sidebars_widgets();
-        if (isset($sidebars_widgets['wp_inactive_widgets']))
-            unset($sidebars_widgets['wp_inactive_widgets']);
-        foreach ($sidebars_widgets as $sb_w)
-            if (array_key_exists('sermon-browser-popular', $sb_w)) {
-                wp_enqueue_script('jquery');
-                break;
+        wp_enqueue_style('sb_style');
+        $pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons%' AND (post_status = 'publish' OR post_status = 'private') AND ID={$post->ID} AND post_date < NOW();");
+        if ($pageid !== NULL) {
+            if (sb_get_option('filter_type') == 'dropdown') {
+                wp_enqueue_script('sb_datepicker');
+                wp_enqueue_style ('sb_datepicker');
             }
-		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons%' AND (post_status = 'publish' OR post_status = 'private') AND ID={$post->ID} AND post_date < NOW();");
-		if ($pageid !== NULL) {
-			wp_enqueue_script('sb_datepicker');
-			wp_enqueue_style ('sb_datepicker');
-			wp_enqueue_style ('sb_style');
-			if (isset($_REQUEST['title']) || isset($_REQUEST['preacher']) || isset($_REQUEST['date']) || isset($_REQUEST['enddate']) || isset($_REQUEST['series']) || isset($_REQUEST['service']) || isset($_REQUEST['book']) || isset($_REQUEST['stag']))
-				echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Custom sermon podcast', $sermon_domain)."\" href=\"".sb_podcast_url()."\" />\r";
-		}
+            if (isset($_REQUEST['title']) || isset($_REQUEST['preacher']) || isset($_REQUEST['date']) || isset($_REQUEST['enddate']) || isset($_REQUEST['series']) || isset($_REQUEST['service']) || isset($_REQUEST['book']) || isset($_REQUEST['stag']))
+                echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Custom sermon podcast', $sermon_domain)."\" href=\"".sb_podcast_url()."\" />\r";
+            wp_enqueue_script('jquery');
+        } else {
+            $sidebars_widgets = wp_get_sidebars_widgets();
+            if (isset($sidebars_widgets['wp_inactive_widgets']))
+                unset($sidebars_widgets['wp_inactive_widgets']);
+            if (is_array($sidebars_widgets))
+                foreach ($sidebars_widgets as $sb_w)
+                    if (is_array($sb_w) && in_array('sermon-browser-popular', $sb_w))
+                        wp_enqueue_script('jquery');
+        }
 	}
 }
 
@@ -513,7 +522,7 @@ function sb_formatted_date ($sermon) {
 
 // Returns podcast URL
 function sb_podcast_url() {
-	return str_replace(' ', '%20', sb_build_url(array('podcast' => 1, 'dir'=>'desc', 'sortby'=>'m.datetime')));
+	return str_replace(' ', '%20', sb_build_url(array('podcast' => 1, 'dir'=>'desc', 'sortby'=>'m.datetime'), true));
 }
 
 // Prints sermon search URL
@@ -955,7 +964,7 @@ function sb_print_filters($filter) {
 							<td class="field"><select name="service" id="service">
 									<option value="0" <?php echo isset($_REQUEST['service']) && $_REQUEST['service'] != 0 ? '' : 'selected="selected"' ?>><?php _e('[All]', $sermon_domain) ?></option>
 									<?php foreach ($services as $service): ?>
-									<option value="<?php echo $service->id ?>" <?php echo isset($_REQUEST['service']) == $service->id ? 'selected="selected"' : '' ?>><?php echo stripslashes($service->name).' ('.$service->count.')' ?></option>
+									<option value="<?php echo $service->id ?>" <?php echo isset($_REQUEST['service']) && $_REQUEST['service'] == $service->id ? 'selected="selected"' : '' ?>><?php echo stripslashes($service->name).' ('.$service->count.')' ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
@@ -965,7 +974,7 @@ function sb_print_filters($filter) {
 							<td class="field"><select name="book">
 									<option value=""><?php _e('[All]', $sermon_domain) ?></option>
 									<?php foreach ($book_count as $book): ?>
-									<option value="<?php echo $book->name ?>" <?php echo $_REQUEST['book'] == $book->name ? 'selected=selected' : '' ?>><?php echo stripslashes($book->name). ' ('.$book->count.')' ?></option>
+									<option value="<?php echo $book->name ?>" <?php echo isset($_REQUEST['book']) && $_REQUEST['book'] == $book->name ? 'selected=selected' : '' ?>><?php echo stripslashes($book->name). ' ('.$book->count.')' ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
@@ -973,7 +982,7 @@ function sb_print_filters($filter) {
 							<td class="field"><select name="series" id="series">
 									<option value="0" <?php echo $_REQUEST['series'] != 0 ? '' : 'selected="selected"' ?>><?php _e('[All]', $sermon_domain) ?></option>
 									<?php foreach ($series as $item): ?>
-									<option value="<?php echo $item->id ?>" <?php echo $_REQUEST['series'] == $item->id ? 'selected="selected"' : '' ?>><?php echo stripslashes($item->name).' ('.$item->count.')' ?></option>
+									<option value="<?php echo $item->id ?>" <?php echo isset($_REQUEST['series']) && $_REQUEST['series'] == $item->id ? 'selected="selected"' : '' ?>><?php echo stripslashes($item->name).' ('.$item->count.')' ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
