@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Thanks to <a href="http://codeandmore.com/">Tien Do Xuan</a> for initial coding.
 Author: Mark Barnes
-Version: 0.43.2
+Version: 0.43.3
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008-2009 Mark Barnes
@@ -53,7 +53,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.43.2');
+define('SB_CURRENT_VERSION', '0.43.3');
 define('SB_DATABASE_VERSION', '1.6');
 add_action ('plugins_loaded', 'sb_hijack');
 add_action ('init', 'sb_sermon_init');
@@ -77,6 +77,9 @@ function sb_hijack() {
         require('sb-includes/ajax.php');
     if (stripos($_SERVER['REQUEST_URI'], 'sb-style.css') !== FALSE || isset($_GET['sb-style']))
         require('sb-includes/style.php');
+
+    if (version_compare(PHP_VERSION, '5.0.0', '<'))
+        require('sb-includes/php4compat.php');
 
     //Forces sermon download of local file
     if (isset($_REQUEST['download']) AND isset($_REQUEST['file_name'])) {
@@ -176,9 +179,6 @@ function sb_sermon_init () {
 	}
 	if (WPLANG != '')
 		setlocale(LC_ALL, WPLANG.'.UTF-8');
-
-    if (version_compare(PHP_VERSION, '5.0.0', '<'))
-        require('sb-includes/php4compat.php');
 
     //Display the podcast if that's what's requested
     if (isset($_GET['podcast']))

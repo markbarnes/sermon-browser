@@ -59,6 +59,9 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 
 == Changelog ==
 
+= 0.43.3 (2 October 2009) =
+* **Bug fix:** Fixed bug preventing downloads of external URLs on PHP4.
+
 = 0.43.2 (2 October 2009) =
 * **New feature:** Added `url_only` option to sb_display_sermons.
 * **New feature:** Added [most_popular] template tag. Displays the data from the 'most popular' widget, but on your sermon search page.
