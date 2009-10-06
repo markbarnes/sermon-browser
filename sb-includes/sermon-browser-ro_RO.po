@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-02 02:53-0000\n"
+"POT-Creation-Date: 2009-10-06 22:22-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mark Barnes <see http://www.4-14.org.uk/contact>\n"
 "Language-Team: InterCer.net <intercer@gmail.com>\n"
@@ -15,342 +15,358 @@ msgstr ""
 "X-Poedit-Country: ROMANIA\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../sermon.php:261
-#: ../sermon.php:262
-#: ../sermon.php:504
+#: ../sermon.php:105
+#: ../sermon.php:114
+#: ../sermon.php:168
+msgid "not found"
+msgstr ""
+
+#: ../sermon.php:105
+#: ../sermon.php:168
+#, fuzzy
+msgid "File not found"
+msgstr "Fișier de încărcat"
+
+#: ../sermon.php:114
+msgid "URL not found"
+msgstr ""
+
+#: ../sermon.php:274
+#: ../sermon.php:275
+#: ../sermon.php:517
 #: ../sb-includes/admin.php:1220
 #: ../sb-includes/widget.php:60
 msgid "Sermons"
 msgstr "Predici"
 
-#: ../sermon.php:264
+#: ../sermon.php:277
 msgid "Edit Sermon"
 msgstr "Editează predică"
 
-#: ../sermon.php:266
+#: ../sermon.php:279
 msgid "Add Sermon"
 msgstr "Adaugă predică"
 
-#: ../sermon.php:268
+#: ../sermon.php:281
 #: ../sb-includes/admin.php:243
 msgid "Files"
 msgstr "Fișiere"
 
-#: ../sermon.php:269
+#: ../sermon.php:282
 #: ../sb-includes/admin.php:537
 msgid "Preachers"
 msgstr "Predicatori"
 
-#: ../sermon.php:270
+#: ../sermon.php:283
 msgid "Series &amp; Services"
 msgstr "Serii si Servicii religioase"
 
-#: ../sermon.php:271
+#: ../sermon.php:284
 msgid "Options"
 msgstr "Opțiuni"
 
-#: ../sermon.php:272
+#: ../sermon.php:285
 #: ../sb-includes/admin.php:372
 msgid "Templates"
 msgstr "Template-uri"
 
-#: ../sermon.php:273
+#: ../sermon.php:286
 #: ../sb-includes/admin.php:311
 #: ../sb-includes/admin.php:312
 #: ../sb-includes/admin.php:324
 msgid "Uninstall"
 msgstr "Dezinstalează"
 
-#: ../sermon.php:274
+#: ../sermon.php:287
 msgid "Help"
 msgstr "Ajutor"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Genesis"
 msgstr "Geneza"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Exodus"
 msgstr "Exodul"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Leviticus"
 msgstr "Leviticul"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Numbers"
 msgstr "Numeri"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Deuteronomy"
 msgstr "Deuteronom"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Joshua"
 msgstr "Iosua"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Judges"
 msgstr "Judecători"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Ruth"
 msgstr "Rut"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "1 Samuel"
 msgstr "1 Samuel"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "2 Samuel"
 msgstr "2 Samuel"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "1 Kings"
 msgstr "1 Împărați"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "2 Kings"
 msgstr "2 Împărați"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "1 Chronicles"
 msgstr "1 Cronici"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "2 Chronicles"
 msgstr "2 Cronici"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Ezra"
 msgstr "Ezra"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Nehemiah"
 msgstr "Neemia"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Esther"
 msgstr "Estera"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Job"
 msgstr "Iov"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Psalm"
 msgstr "Psalmi"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Proverbs"
 msgstr "Proverbe"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Ecclesiastes"
 msgstr "Eclestiastul"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Song of Solomon"
 msgstr "Cantarea Cantarilor"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Isaiah"
 msgstr "Isaia"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Jeremiah"
 msgstr "Ieremia"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Lamentations"
 msgstr "Plângerile lui Ieremia"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Ezekiel"
 msgstr "Ezechiel"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Daniel"
 msgstr "Daniel"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Hosea"
 msgstr "Osea"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Joel"
 msgstr "Ioel"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Amos"
 msgstr "Amos"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Obadiah"
 msgstr "Obadia"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Jonah"
 msgstr "Iona"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Micah"
 msgstr "Mica"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Nahum"
 msgstr "Naum"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Habakkuk"
 msgstr "Habacuc"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Zephaniah"
 msgstr "Țefania"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Haggai"
 msgstr "Hagai"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Zechariah"
 msgstr "Zaharia"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Malachi"
 msgstr "Maleahi"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Matthew"
 msgstr "Matei"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Mark"
 msgstr "Marcu"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Luke"
 msgstr "Luca"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "John"
 msgstr "Ioan"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Acts"
 msgstr "Fapte"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Romans"
 msgstr "Romani"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "1 Corinthians"
 msgstr "1 Corinteni"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "2 Corinthians"
 msgstr "2 Corinteni"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Galatians"
 msgstr "Galateni"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Ephesians"
 msgstr "Efeseni"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Philippians"
 msgstr "Filipeni"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Colossians"
 msgstr "Coloseni"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "1 Thessalonians"
 msgstr "1 Tesaloniceni"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "2 Thessalonians"
 msgstr "2 Tesaloniceni"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "1 Timothy"
 msgstr "1 Timotei"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "2 Timothy"
 msgstr "2 Timotei"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Titus"
 msgstr "Tit"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Philemon"
 msgstr "Filimon"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Hebrews"
 msgstr "Evrei"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "James"
 msgstr "Iacov"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "1 Peter"
 msgstr "1 Petru"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "2 Peter"
 msgstr "2 Petru"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "1 John"
 msgstr "1 Ioan"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "2 John"
 msgstr "2 Ioan"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "3 John"
 msgstr "3 Ioan"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Jude"
 msgstr "Iuda"
 
-#: ../sermon.php:348
+#: ../sermon.php:361
 msgid "Revelation"
 msgstr "Apocalipsa"
 
-#: ../sermon.php:465
+#: ../sermon.php:478
 #: ../sb-includes/frontend.php:296
 msgid "No sermons found."
 msgstr "Nu s-a găsit nici o predică"
 
-#: ../sermon.php:502
+#: ../sermon.php:515
 #, fuzzy
 msgid "Display a list of recent sermons."
 msgstr "Arată predici populare"
 
-#: ../sermon.php:519
+#: ../sermon.php:532
 #: ../sb-includes/frontend.php:111
 #: ../sb-includes/widget.php:74
 #: ../sb-includes/widget.php:82
 msgid "Sermon Browser tags"
 msgstr "Taguri pentru SermonBrowse"
 
-#: ../sermon.php:521
+#: ../sermon.php:534
 msgid "Most popular sermons"
 msgstr "Cele mai populare predici"
 
-#: ../sermon.php:522
+#: ../sermon.php:535
 msgid "Display a list of the most popular sermons, series or preachers."
 msgstr "Arată o listă a celor mai populare predici, serii sau predicatori."
 
