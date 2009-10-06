@@ -59,6 +59,9 @@ If you want to customise how Sermon Browser appears throughout your site, use [T
 
 == Changelog ==
 
+= 0.43.5 (6 October 2009) =
+* **Bug fix:** Fixed bug preventing some external URLs playing in AudioPlayer.
+
 = 0.43.4 (2 October 2009) =
 * **Bug fix:** Fixed bug preventing install introduced in 0.43.2.
 

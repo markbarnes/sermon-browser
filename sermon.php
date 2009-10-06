@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Thanks to <a href="http://codeandmore.com/">Tien Do Xuan</a> for initial coding.
 Author: Mark Barnes
-Version: 0.43.4
+Version: 0.43.5
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008-2009 Mark Barnes
@@ -53,11 +53,14 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.43.4');
+define('SB_CURRENT_VERSION', '0.43.5');
 define('SB_DATABASE_VERSION', '1.6');
 add_action ('plugins_loaded', 'sb_hijack');
 add_action ('init', 'sb_sermon_init');
 add_action ('widgets_init', 'sb_widget_sermon_init');
+
+if (version_compare(PHP_VERSION, '5.0.0', '<'))
+    require('sb-includes/php4compat.php');
 
 /**
 * Display podcast, or download linked files
@@ -67,7 +70,7 @@ add_action ('widgets_init', 'sb_widget_sermon_init');
 */
 function sb_hijack() {
 
-    global $filetypes, $wpdb;
+    global $filetypes, $wpdb, $sermon_domain;
     sb_define_constants();
 
     if (function_exists('wp_timezone_supported') && wp_timezone_supported())
@@ -78,12 +81,9 @@ function sb_hijack() {
     if (stripos($_SERVER['REQUEST_URI'], 'sb-style.css') !== FALSE || isset($_GET['sb-style']))
         require('sb-includes/style.php');
 
-    if (version_compare(PHP_VERSION, '5.0.0', '<'))
-        require('sb-includes/php4compat.php');
-
     //Forces sermon download of local file
-    if (isset($_REQUEST['download']) AND isset($_REQUEST['file_name'])) {
-        $file_name = urldecode($_GET['file_name']);
+    if (isset($_GET['download']) AND isset($_GET['file_name'])) {
+        $file_name = $wpdb->escape(urldecode($_GET['file_name']));
         $file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
         if (!is_null($file_name)) {
             header("Pragma: public");
@@ -99,27 +99,32 @@ function sb_hijack() {
             $filesize = filesize($file_name);
             if ($filesize != 0)
                 header("Content-Length: ".filesize($file_name));
-            readfile_segments($file_name);
-        }
-        exit();
+            output_file($file_name);
+            die();
+        } else
+            wp_die(urldecode($_GET['file_name']).' '.__('not found', $sermon_domain), __('File not found', $sermon_domain), array('response' => 404));
     }
 
     //Forces sermon download of external URL
     if (isset($_REQUEST['download']) AND isset($_REQUEST['url'])) {
         $url = urldecode($_GET['url']);
         if(ini_get('allow_url_fopen')) {
-            $headers = array_change_key_case(get_headers($url, 1),CASE_LOWER);
-            $filesize = $headers['content-length'];
-            $cd =  $headers['content-disposition'];
-            $location =  $headers['location'];
-            if (is_array($location)) $location = $location[0];
-            if ($location && substr($location,0,7) != "http://") {
-                preg_match('@^(?:http://)?([^/]+)@i', $url, $matches);
-                $location = "http://".$matches[1].'/'.$location;
-            }
-            if ($location) {
-                header('Location: '.get_bloginfo('wpurl').'?download&url='.$location);
-                die();
+            $headers = @get_headers($url, 1);
+            if ($headers === FALSE || (isset($headers[0]) && strstr($headers[0], '404') !== FALSE))
+                wp_die(urldecode($_GET['url']).' '.__('not found', $sermon_domain), __('URL not found', $sermon_domain), array('response' => 404));
+            $headers = array_change_key_case($headers,CASE_LOWER);
+            if (isset($headers['location'])) {
+                $location =  $headers['location'];
+                if (is_array($location))
+                    $location = $location[0];
+                if ($location && substr($location,0,7) != "http://") {
+                    preg_match('@^(?:http://)?([^/]+)@i', $url, $matches);
+                    $location = "http://".$matches[1].'/'.$location;
+                }
+                if ($location) {
+                    header('Location: '.get_bloginfo('wpurl').'?download&url='.$location);
+                    die();
+                }
             }
             header("Pragma: public");
             header("Expires: 0");
@@ -127,33 +132,40 @@ function sb_hijack() {
             header("Content-Type: application/force-download");
             header("Content-Type: application/octet-stream");
             header("Content-Type: application/download");
-            if ($cd) {
-                header ("Content-Disposition: ".$cd); }
-            else {
-                header('Content-Disposition: attachment; filename="'.basename($url).'";'); }
+            if (isset($headers['last-modified']))
+                header('Last-Modified: '.$headers['last-modified']);
+            if (isset($headers['content-length']))
+                header("Content-Length: ".$headers['content-length']);
+            if (isset($headers['content-disposition']))
+                header ('Content-Disposition: '.$headers['content-disposition']);
+            else
+                header('Content-Disposition: attachment; filename="'.basename($url).'";');
             header("Content-Transfer-Encoding: binary");
-            if ($filesize) header("Content-Length: ".$filesize);
+            header($_SERVER['SERVER_PROTOCOL'].' 200 OK');
             sb_increase_download_count($url);
-            readfile_segments($url);
-            exit();
-        }
-        else {
+            session_write_close();
+            while (@ob_end_clean());
+            output_file($url);
+            die();
+        } else {
             sb_increase_download_count ($url);
             header('Location: '.$url);
+            die();
         }
     }
     
     //Returns local file (doesn't force download)
-    if (isset($_REQUEST['show']) AND isset($_REQUEST['file_name'])) {
+    if (isset($_GET['show']) AND isset($_GET['file_name'])) {
         global $filetypes;
-        $file_name = urldecode($_GET['file_name']);
+        $file_name = $wpdb->escape(urldecode($_GET['file_name']));
         $file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
         if (!is_null($file_name)) {
             $url = sb_get_option('upload_url').$file_name;
             sb_increase_download_count ($file_name);
             header("Location: ".$url);
-        }
-        exit();
+            die();
+        } else
+            wp_die(urldecode($_GET['file_name']).' '.__('not found', $sermon_domain), __('File not found', $sermon_domain), array('response' => 404));
     }
     
     //Returns contents of external URL(doesn't force download)
@@ -161,6 +173,7 @@ function sb_hijack() {
         $url = URLDecode($_GET['url']);
         sb_increase_download_count ($url);
         header('Location: '.$url);
+        die();
     }
 }
 
@@ -831,34 +844,25 @@ function sb_increase_download_count ($stuff_name) {
 }
 
 /**
-* Safer readfile function for large files
+* Outputs a remote or local file
 * 
 * @param string $filename
-* @param bool $retbytes
 * @return bool success or failure
 */
-function readfile_segments($filename,$retbytes=true) {
-    $segmentsize = 1048576;
-    $buffer = '';
-    $cnt =0;
+function output_file($filename) {
     $handle = fopen($filename, 'rb');
-    if ($handle === false) {
+    if ($handle === false)
         return false;
-    }
+    if (ob_get_level() == 0)
+        ob_start(); 
     while (!feof($handle)) {
         set_time_limit(ini_get('max_execution_time'));
-        $buffer = fread($handle, $segmentsize);
+        $buffer = fread($handle, 1048576);
         echo $buffer;
         ob_flush();
         flush();
-        if ($retbytes) {
-            $cnt += strlen($buffer);
-        }
     }
-    $status = fclose($handle);
-    if ($retbytes && $status)
-        return $cnt;
-    return $status;
+    return fclose($handle);
 }
 
 /**
