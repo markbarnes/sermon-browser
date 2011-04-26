@@ -54,6 +54,8 @@ function sb_version_upgrade ($old_version, $new_version) {
 	
 //Runs the database upgrade procedures (modifies database structure)
 function sb_database_upgrade ($old_version) {
+    require_once('dictionary.php');
+    require_once('admin.php');
 	global $wpdb;
 	$sermonUploadDir = sb_get_default('sermon_path');
 	switch ($old_version) {

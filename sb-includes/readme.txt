@@ -3,7 +3,7 @@ Contributors: mark8barnes
 Donate link: http://www.4-14.org.uk/sermon-browser#support
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 2.6
-Tested up to: 2.8.4
+Tested up to: 3.0.6
 Stable tag: trunk
 
 Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
@@ -58,6 +58,9 @@ You can customise Sermon Browser to fit in with your own theme, and to display o
 If you want to customise how Sermon Browser appears throughout your site, use [Template tags](http://www.4-14.org.uk/wordpress-plugins/sermon-browser/template-tags).
 
 == Changelog ==
+
+= 0.43.6 (26 April 2011) =
+* **Bug fix:** Important security fixes. All users should upgrade to this version.
 
 = 0.43.5 (6 October 2009) =
 * **Bug fix:** Fixed bug preventing some external URLs playing in AudioPlayer.

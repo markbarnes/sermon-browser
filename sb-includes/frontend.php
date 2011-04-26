@@ -288,7 +288,7 @@ function sb_print_most_popular() {
 function sb_page_title($title) {
 	global $wpdb, $sermon_domain;
 	if (isset($_GET['sermon_id'])) {
-		$id = $_GET['sermon_id'];
+		$id = (int)$_GET['sermon_id'];
 		$sermon = $wpdb->get_row("SELECT m.title, p.name FROM {$wpdb->prefix}sb_sermons as m LEFT JOIN {$wpdb->prefix}sb_preachers as p ON m.preacher_id = p.id where m.id = $id");
 		if ($sermon)
             return $title.' ('.stripslashes($sermon->title).' - '.stripslashes($sermon->name).')';
@@ -458,8 +458,10 @@ function sb_add_other_bibles ($start, $end, $version) {
 
 //Adds edit sermon link if current user has edit rights
 function sb_edit_link ($id) {
-	if (current_user_can('edit_posts')) 
+	if (current_user_can('edit_posts')) {
+        $id = (int)$id;
 		echo '<div class="sb_edit_link"><a href="'.get_bloginfo('wpurl').'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$id.'">Edit Sermon</a></div>';
+    }
 }
 
 // Returns URL for search links

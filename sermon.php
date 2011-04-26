@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.4-14.org.uk/sermon-browser
 Description: Add sermons to your Wordpress blog. Thanks to <a href="http://codeandmore.com/">Tien Do Xuan</a> for initial coding.
 Author: Mark Barnes
-Version: 0.43.5
+Version: 0.43.6
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008-2009 Mark Barnes
@@ -53,7 +53,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.43.5');
+define('SB_CURRENT_VERSION', '0.43.6');
 define('SB_DATABASE_VERSION', '1.6');
 add_action ('plugins_loaded', 'sb_hijack');
 add_action ('init', 'sb_sermon_init');
@@ -102,7 +102,7 @@ function sb_hijack() {
             output_file($file_name);
             die();
         } else
-            wp_die(urldecode($_GET['file_name']).' '.__('not found', $sermon_domain), __('File not found', $sermon_domain), array('response' => 404));
+            wp_die(htmlentities(urldecode($_GET['file_name'])).' '.__('not found', $sermon_domain), __('File not found', $sermon_domain), array('response' => 404));
     }
 
     //Forces sermon download of external URL
@@ -242,7 +242,6 @@ function sb_sermon_init () {
 		    sb_version_upgrade ($sb_version, SB_CURRENT_VERSION);
 	    }
     }
-
 	
 	// Load shared (admin/frontend) features
 	add_action ('save_post', 'update_podcast_url');
