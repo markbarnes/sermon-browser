@@ -3,9 +3,9 @@ if (isset($_POST['wipe'])) {
 	$dir = SB_ABSPATH.sb_get_option('upload_dir');
 	if ($dh = @opendir($dir)) {
 		while (false !== ($file = readdir($dh))) {
-			if ($file != "." && $file != "..") {	    		
+			if ($file != "." && $file != "..") {
 				@unlink($dir.($file));
-			}	
+			}
 		}
 		closedir($dh);
 	}

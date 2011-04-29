@@ -23,7 +23,7 @@ function sb_display_sermons($options = array()) {
 			'service' => $service,
 			'series' => $series
 		),
-		array(), 1, $limit		
+		array(), 1, $limit
 	);
 	echo "<ul class=\"sermon-widget\">\r";
 	foreach ((array) $sermons as $sermon) {
@@ -153,7 +153,7 @@ function sb_widget_sermon( $args, $widget_args = 1 ) {
 			'service' => $service,
 			'series' => $series
 		),
-		array(), 1, $limit		
+		array(), 1, $limit
 	);
 	$i=0;
 	echo "<ul class=\"sermon-widget\">";
@@ -186,8 +186,8 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 	global $wpdb, $sermon_domain;
 	global $wp_registered_widgets;
 	static $updated = false;
-	
-	$dpreachers = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_preachers ORDER BY id;");	
+
+	$dpreachers = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_preachers ORDER BY id;");
 	$dseries = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_series ORDER BY id;");
 	$dservices = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_services ORDER BY id;");
 

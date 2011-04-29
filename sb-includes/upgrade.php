@@ -40,44 +40,44 @@ function sb_upgrade_options () {
 
 // Runs the version upgrade procedures (re-save templates, add options added since last db update)
 function sb_version_upgrade ($old_version, $new_version) {
-    require_once('dictionary.php');
+	require_once('dictionary.php');
 	$sbmf = sb_get_option('search_template');
 	if ($sbmf)
 		sb_update_option('search_output', strtr($sbmf, sb_search_results_dictionary()));
 	$sbsf = sb_get_option('single_template');
-	if ($sbsf) 
+	if ($sbsf)
 		sb_update_option('single_output', strtr($sbsf, sb_sermon_page_dictionary()));
 	sb_update_option('code_version', $new_version);
 	if (sb_get_option('filter_type') == '')
 		sb_update_option('filter_type', 'dropdown');
 }
-	
+
 //Runs the database upgrade procedures (modifies database structure)
 function sb_database_upgrade ($old_version) {
-    require_once('dictionary.php');
-    require_once('admin.php');
+	require_once('dictionary.php');
+	require_once('admin.php');
 	global $wpdb;
 	$sermonUploadDir = sb_get_default('sermon_path');
 	switch ($old_version) {
-		case '1.0': 
+		case '1.0':
 			// Also moves files from old default folder to new default folder
 			$oldSermonPath = dirname(__FILE__)."/files/";
-			$files = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' ORDER BY name ASC");	
+			$files = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' ORDER BY name ASC");
 			foreach ((array)$files as $file) {
 				@chmod(SB_ABSPATH.$oldSermonPath.$file->name, 0777);
 				@rename(SB_ABSPATH.$oldSermonPath.$file->name, SB_ABSPATH.$sermonUploadDir.$file->name);
 			}
 			$table_name = $wpdb->prefix . "sb_preachers";
-			if($wpdb->get_var("show tables like '{$table_name}'") == $table_name) {            
+			if($wpdb->get_var("show tables like '{$table_name}'") == $table_name) {
 				  $wpdb->query("ALTER TABLE {$table_name} ADD description TEXT NOT NULL, ADD image VARCHAR(255) NOT NULL");
 			}
-			update_option('sb_sermon_db_version', '1.1');		
+			update_option('sb_sermon_db_version', '1.1');
 		case '1.1':
 			add_option('sb_sermon_style', base64_encode($defaultStyle));
 			if(!is_dir(SB_ABSPATH.$sermonUploadDir.'images') && sb_mkdir(SB_ABSPATH.$sermonUploadDir.'images')){
 				@chmod(SB_ABSPATH.$sermonUploadDir.'images', 0777);
 			}
-			update_option('sb_sermon_db_version', '1.2');	
+			update_option('sb_sermon_db_version', '1.2');
 		case '1.2':
 			$wpdb->query("ALTER TABLE {$wpdb->prefix}sb_stuff ADD count INT(10) NOT NULL");
 			$wpdb->query("ALTER TABLE {$wpdb->prefix}sb_books_sermons ADD INDEX (sermon_id)");
@@ -118,7 +118,7 @@ function sb_database_upgrade ($old_version) {
 			$wpdb->query("ALTER TABLE {$wpdb->prefix}sb_tags ADD UNIQUE (name)");
 			update_option('sb_sermon_db_version', '1.5');
 		case '1.5' :
-            sb_upgrade_options ();
+			sb_upgrade_options ();
 			$wpdb->query("ALTER TABLE {$wpdb->prefix}sb_stuff ADD duration VARCHAR (6) NOT NULL");
 			$wpdb->query("ALTER TABLE {$wpdb->prefix}sb_sermons CHANGE date `datetime` DATETIME NOT NULL");
 			//Populate time portion of date/time field
@@ -137,13 +137,13 @@ function sb_database_upgrade ($old_version) {
 					$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons SET datetime = '{$sermon_date->datetime}' WHERE id={$sermon_date->id}");
 				}
 			}
-            sb_update_option('import_prompt', true);
-            sb_update_option('import_title', false);
-            sb_update_option('import_artist', false);
-            sb_update_option('import_album', false);
-            sb_update_option('import_comments', false);
-            sb_update_option('import_filename', 'none');
-            sb_update_option('hide_no_attachments', false);
+			sb_update_option('import_prompt', true);
+			sb_update_option('import_title', false);
+			sb_update_option('import_artist', false);
+			sb_update_option('import_album', false);
+			sb_update_option('import_comments', false);
+			sb_update_option('import_filename', 'none');
+			sb_update_option('hide_no_attachments', false);
 			sb_update_option('db_version', '1.6');
 			return;
 		default :

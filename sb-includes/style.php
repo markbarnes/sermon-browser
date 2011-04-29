@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Outputs sermon-browser styles as a CSS file
 
 header('Content-Type: text/css');

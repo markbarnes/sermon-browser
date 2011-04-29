@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 function sb_search_results_dictionary() {
 	return array(
 		'[filters_form]' => '<?php sb_print_filters($atts) ?>',
-        '[most_popular]' => '<?php sb_print_most_popular() ?>',
+		'[most_popular]' => '<?php sb_print_most_popular() ?>',
 		'[tag_cloud]' => '<?php sb_print_tag_clouds() ?>',
 		'[sermons_count]' => '<?php echo $record_count ?>',
 		'[sermons_loop]' => '<?php foreach ($sermons as $sermon){ $media = sb_get_stuff($sermon); ?>',
@@ -11,7 +11,7 @@ function sb_search_results_dictionary() {
 		'[sermon_title]' => '<a href="<?php sb_print_sermon_link($sermon) ?>"><?php echo stripslashes($sermon->title) ?></a>',
 		'[preacher_link]' => '<a href="<?php sb_print_preacher_link($sermon) ?>"><?php echo stripslashes($sermon->preacher) ?></a>',
 		'[series_link]' => '<a href="<?php sb_print_series_link($sermon) ?>"><?php echo stripslashes($sermon->series) ?></a>',
-		'[service_link]' => '<a href="<?php sb_print_service_link($sermon) ?>"><?php echo stripslashes($sermon->service) ?></a>',	
+		'[service_link]' => '<a href="<?php sb_print_service_link($sermon) ?>"><?php echo stripslashes($sermon->service) ?></a>',
 		'[date]' => '<?php echo sb_formatted_date ($sermon) ?>',
 		'[first_passage]' => '<?php $foo = unserialize($sermon->start); $bar = unserialize($sermon->end); if (isset($foo[0]) && isset($bar[0])) echo sb_get_books($foo[0], $bar[0]) ?>',
 		'[files_loop]' => '<?php foreach ((array) $media as $media_type => $media_names) { if (is_array($media_names) && $media_type != "Code") { foreach ((array)$media_names as $media_name) { ?>',
@@ -22,7 +22,7 @@ function sb_search_results_dictionary() {
 		'[/embed_loop]' => '<?php } } } ?>',
 		'[embed]' => '<?php sb_print_code($media_name) ?>',
 		'[next_page]' => '<?php sb_print_next_page_link() ?>',
-		'[previous_page]' => '<?php sb_print_prev_page_link() ?>',	
+		'[previous_page]' => '<?php sb_print_prev_page_link() ?>',
 		'[podcast_for_search]' => '<?php echo sb_podcast_url() ?>',
 		'[podcast]' => '<?php echo sb_get_option("podcast_url") ?>',
 		'[itunes_podcast]' => '<?php echo str_replace("http://", "itpc://", sb_get_option("podcast_url")) ?>',
@@ -67,8 +67,8 @@ function sb_sermon_page_dictionary() {
 		'[akjvtext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "akjv"); endfor ?>',
 		'[hnvtext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "hnv"); endfor ?>',
 		'[lbrvtext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "rv1909"); endfor ?>',
-        '[cornilescutext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "cornilescu"); endfor ?>',
-        '[synodaltext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "synodal"); endfor ?>',
+		'[cornilescutext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "cornilescu"); endfor ?>',
+		'[synodaltext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "synodal"); endfor ?>',
 		'[biblepassage]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): sb_print_bible_passage ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i]); endfor ?>',
 		'[editlink]' => '<?php sb_edit_link($_GET["sermon_id"]) ?>',
 		'[creditlink]' => '<div id="poweredbysermonbrowser">Powered by <a href="http://www.4-14.org.uk/sermon-browser">Sermon Browser</a></div>',

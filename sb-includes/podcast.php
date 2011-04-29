@@ -1,10 +1,10 @@
 <?php
 //Prints ISO date for podcast
 function sb_print_iso_date($sermon) {
-    if (is_object($sermon)) {
-        echo date('D, d M Y H:i:s O', strtotime($sermon->datetime));
-    } else
-        echo date('D, d M Y H:i:s O', strtotime($sermon));
+	if (is_object($sermon)) {
+		echo date('D, d M Y H:i:s O', strtotime($sermon->datetime));
+	} else
+		echo date('D, d M Y H:i:s O', strtotime($sermon));
 }
 
 //Prints size of file
@@ -14,7 +14,7 @@ function sb_media_size($media_name, $media_type) {
 			$headers = array_change_key_case(@get_headers($media_name, 1),CASE_LOWER);
 			$filesize = $headers['content-length'];
 			if ($filesize)
-                return "length=\"{$filesize}\"";
+				return "length=\"{$filesize}\"";
 		}
 	} else
 		return 'length="'.@filesize(SB_ABSPATH.sb_get_option('upload_dir').$media_name).'"';
@@ -31,7 +31,7 @@ function sb_mp3_duration($media_name, $media_type) {
 			require_once('getid3/getid3.php');
 			$getID3 = new getID3;
 			$MediaFileInfo = $getID3->analyze(SB_ABSPATH.sb_get_option('upload_dir').$media_name);
-            $duration = isset($MediaFileInfo['playtime_string']) ? $MediaFileInfo['playtime_string'] : '';
+			$duration = isset($MediaFileInfo['playtime_string']) ? $MediaFileInfo['playtime_string'] : '';
 			$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET duration = '{$duration}' WHERE type = 'file' AND name = '{$media_name}'");
 			return $duration;
 		}
@@ -77,26 +77,26 @@ function sb_mime_type($media_name) {
 }
 
 $sermons = sb_get_sermons(
-    array(
-	    'title' => isset($_REQUEST['title']) ? $_REQUEST['title'] : '',
-	    'preacher' => isset($_REQUEST['preacher']) ? $_REQUEST['preacher'] : '',
-	    'date' => isset($_REQUEST['date']) ? $_REQUEST['date'] : '',
-	    'enddate' => isset($_REQUEST['enddate']) ? $_REQUEST['enddate'] : '',
-	    'series' => isset($_REQUEST['series']) ? $_REQUEST['series'] : '',
-	    'service' => isset($_REQUEST['service']) ? $_REQUEST['service'] : '',
-	    'book' => isset($_REQUEST['book']) ? $_REQUEST['book'] : '',
-	    'tag' => isset($_REQUEST['stag']) ? $_REQUEST['stag'] : '',
-    ),
-    array(
-	    'by' => 'm.datetime',
-	    'dir' => 'desc',
-    ),
-    1,
-    1000000			
+	array(
+		'title' => isset($_REQUEST['title']) ? $_REQUEST['title'] : '',
+		'preacher' => isset($_REQUEST['preacher']) ? $_REQUEST['preacher'] : '',
+		'date' => isset($_REQUEST['date']) ? $_REQUEST['date'] : '',
+		'enddate' => isset($_REQUEST['enddate']) ? $_REQUEST['enddate'] : '',
+		'series' => isset($_REQUEST['series']) ? $_REQUEST['series'] : '',
+		'service' => isset($_REQUEST['service']) ? $_REQUEST['service'] : '',
+		'book' => isset($_REQUEST['book']) ? $_REQUEST['book'] : '',
+		'tag' => isset($_REQUEST['stag']) ? $_REQUEST['stag'] : '',
+	),
+	array(
+		'by' => 'm.datetime',
+		'dir' => 'desc',
+	),
+	1,
+	1000000
 );
 
 if (function_exists('wp_timezone_override_offset'))
-    wp_timezone_override_offset();
+	wp_timezone_override_offset();
 
 header('Content-Type: application/rss+xml');
 echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
@@ -116,12 +116,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 		<itunes:email></itunes:email>
 	</itunes:owner>
 
-    <lastBuildDate><?php sb_print_iso_date(isset($sermons[0]) ? $sermons[0]: time()) ?></lastBuildDate>
-    <pubDate><?php sb_print_iso_date(isset($sermons[0]) ? $sermons[0]: time()) ?></pubDate>
-    <generator>Wordpress Sermon Browser plugin <?php echo SB_CURRENT_VERSION ?> (http://www.4-14.org.uk/sermon-browser)</generator>
-    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
-    <category>Religion &amp; Spirituality</category>
-    <itunes:category text="Religion &amp; Spirituality"></itunes:category>
+	<lastBuildDate><?php sb_print_iso_date(isset($sermons[0]) ? $sermons[0]: time()) ?></lastBuildDate>
+	<pubDate><?php sb_print_iso_date(isset($sermons[0]) ? $sermons[0]: time()) ?></pubDate>
+	<generator>Wordpress Sermon Browser plugin <?php echo SB_CURRENT_VERSION ?> (http://www.4-14.org.uk/sermon-browser)</generator>
+	<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+	<category>Religion &amp; Spirituality</category>
+	<itunes:category text="Religion &amp; Spirituality"></itunes:category>
 	<?php
 		$mp3count = 0;
 		$accepted_extensions = array ('mp3', 'm4a', 'mp4', 'm4v','mov', 'wma', 'wmv');
@@ -147,7 +147,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 <?php } ?>
 		<enclosure url="<?php echo sb_podcast_file_url($media_name, $media_type).'" '.sb_media_size($media_name, $media_type).sb_mime_type($media_name); ?> />
 <?php   $duration = sb_mp3_duration($media_name, $media_type);
-        if ($duration) { ?>
+		if ($duration) { ?>
 		<itunes:duration><?php echo $duration ?></itunes:duration>
 <?php } ?>
 		<category><?php echo sb_xml_entity_encode(stripslashes($sermon->service)) ?></category>
