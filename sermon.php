@@ -252,7 +252,7 @@ function sb_sermon_init () {
 		require ('sb-includes/frontend.php');
 		add_action('wp_head', 'sb_add_headers', 0);
 		add_action('wp_head', 'wp_print_styles', 9);
-		add_action('admin_bar_menu', 'sb_admin_bar_menu');
+		add_action('admin_bar_menu', 'sb_admin_bar_menu', 45);
 		add_filter('wp_title', 'sb_page_title');
 		if (defined('SAVEQUERIES') && SAVEQUERIES)
 			add_action ('wp_footer', 'sb_footer_stats');

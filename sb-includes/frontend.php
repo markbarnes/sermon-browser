@@ -120,10 +120,11 @@ function sb_admin_bar_menu () {
 	if (isset($_GET['sermon_id']) && (int)$_GET['sermon_id'] != 0 && current_user_can('publish_pages')) {
 		$wp_admin_bar->add_menu(array('id' => 'sermon-browser-menu', 'title' => __('Edit Sermon', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/new_sermon.php&mid='.(int)$_GET['sermon_id'])));
 		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-sermons', 'title' => __('List Sermons', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/sermon.php')));
-	} else
+	} else {
 		$wp_admin_bar->add_menu(array('id' => 'sermon-browser-menu', 'title' => __('Sermons', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/sermon.php')));
-	if (current_user_can('publish_pages'))
-		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-add', 'title' => __('Add Sermon', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/new_sermon.php')));
+		if (current_user_can('publish_pages'))
+			$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-add', 'title' => __('Add Sermon', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/new_sermon.php')));
+	}
 	if (current_user_can('upload_files'))
 		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-files', 'title' => __('Files', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/files.php')));
 	if (current_user_can('manage_categories')) {
@@ -138,6 +139,7 @@ function sb_admin_bar_menu () {
 		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-uninstall', 'title' => __('Uninstall', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/uninstall.php')));
 	$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-help', 'title' => __('Help', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/help.php')));
 	$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-japan', 'title' => __('Pray for Japan', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/japan.php')));
+	$wp_admin_bar->add_menu(array('parent' => 'new-content', 'id' => 'sermon-browser-add2', 'title' => __('Sermon', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/new_sermon.php')));
 }
 
 // Sorts an object by rank
