@@ -162,7 +162,7 @@ function sb_options() {
 	// HTML for options page
 ?>
 	<div class="wrap">
-		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 		<form method="post">
 		<h2><?php _e('Basic Options', $sermon_domain) ?></h2>
 		<br style="clear:both"/>
@@ -370,7 +370,7 @@ function sb_templates () {
 	?>
 	<form method="post">
 	<div class="wrap">
-		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 		<h2><?php _e('Templates', $sermon_domain) ?></h2>
 		<br/>
 		<table border="0" class="widefat">
@@ -475,7 +475,7 @@ function sb_manage_preachers() {
 	//Display HTML
 ?>
 	<div class="wrap">
-		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 		<h2><?php echo $_GET['act'] == 'new' ? __('Add', $sermon_domain) : __('Edit', $sermon_domain) ?> <?php _e('preacher', $sermon_domain) ?></h2>
 		<br style="clear:both">
 		<?php
@@ -535,7 +535,7 @@ function sb_manage_preachers() {
 	sb_do_alerts();
 ?>
 	<div class="wrap">
-		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 		<h2><?php _e('Preachers', $sermon_domain) ?> (<a href="<?php echo get_bloginfo('wpurl') ?>/wp-admin/admin.php?page=sermon-browser/preachers.php&act=new"><?php _e('add new', $sermon_domain) ?></a>)</h2>
 		<br/>
 		<table class="widefat">
@@ -700,7 +700,7 @@ function sb_manage_everything() {
 ?>
 	<a name="manage-<?php echo $k ?>"></a>
 	<div class="wrap">
-		<?php if ($k == 'Series') { ?><a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a><?php } ?>
+		<?php if ($k == 'Series') { ?><a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a><?php } ?>
 		<h2><?php echo $k ?> (<a href="javascript:createNew<?php echo $k ?>()"><?php _e('add new', $sermon_domain) ?></a>)</h2>
 		<br style="clear:both">
 		<table class="widefat">
@@ -954,7 +954,7 @@ function sb_files() {
 	</script>
 	<a name="top"></a>
 	<div class="wrap">
-		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 		<h2><?php _e('Upload Files', $sermon_domain) ?></h2>
 		<?php if (!sb_import_options_set()) {
 			echo '<p class="plugin-update">';
@@ -1191,7 +1191,7 @@ function sb_manage_sermons() {
 		}
 	</script>
 	<div class="wrap">
-			<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+			<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 			<h2>Filter</h2>
 			<form id="searchform" name="searchform">
 			<fieldset style="float:left; margin-right: 1em">
@@ -1647,7 +1647,7 @@ function sb_new_sermon() {
 	</script>
 	<?php sb_do_alerts(); ?>
 	<div class="wrap">
-		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 		<h2><?php echo isset($_GET['mid']) ? 'Edit Sermon' : 'Add Sermon' ?></h2>
 		<?php if (!isset($_GET['mid']) && !isset($_GET['getid3']) && sb_get_option('import_prompt')) {
 			if  (!sb_import_options_set()) {
@@ -1972,10 +1972,10 @@ global $sermon_domain;
 sb_do_alerts();
 ?>
 	<div class="wrap">
-		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 		<div style="width:45%;float:right;clear:right">
 		<h2>Thank you</h2>
-		<p>A number of individuals and churches have kindly <a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser#support">donated</a> to the development of Sermon Browser. Their support is very much appreciated. Since April 2011, all donations have been sent to <a href="<?php echo sb_get_admin_url(null, 'admin.php?page=sermon-browser/japan.php')?>">support the ministry of Nathanael and Anna Ayling</a> in Japan.</p>
+		<p>A number of individuals and churches have kindly <a href="http://www.sermonbrowser.com/donate/">donated</a> to the development of Sermon Browser. Their support is very much appreciated. Since April 2011, all donations have been sent to <a href="<?php echo sb_get_admin_url(null, 'admin.php?page=sermon-browser/japan.php')?>">support the ministry of Nathanael and Anna Ayling</a> in Japan.</p>
 		<ul style="list-style-type:circle; margin-left: 2em">
 			<li><a href="http://www.cambray.org/" target="_blank">Cambray Baptist Church</a>, UK</li>
 			<li><a href="http://www.bethel-clydach.co.uk/" target="_blank">Bethel Baptist Church</a>, Clydach, UK</li>
@@ -2022,13 +2022,14 @@ sb_do_alerts();
 		</ul>
 		<p>Additional help was also received from:</p>
 		<ul style="list-style-type:circle; margin-left: 2em">
+			<li><a href="http://codeandmore.com/">Tien Do Xuan</a> (help with initial coding).
 			<li>James Hudson, Matthew Hiatt, Mark Bouchard (code contributions)</li>
 			<li>Juan Carlos and Marvin Ortega (Spanish translation)</li>
 			<li><a href="http://www.fatcow.com/">FatCow</a> (Russian translation)</li>
 			<li><a href="http://intercer.net/">Lucian Mihailescu</a> (Romanian translation)</li>
 			<li>Monika Gause (German translation)</li>
 			<li><a href="http://www.djio.com.br/sermonbrowser-em-portugues-brasileiro-pt_br/">DJIO</a> (Brazilian Portugese translation)</li>
-			<li>Numerous <a href="http://www.4-14.org.uk/forum/sermon-browser-support/">forum contributors</a> for feature suggestions and bug reports</li>
+			<li>Numerous <a href="http://www.sermonbrowser.com/forum/">forum contributors</a> for feature suggestions and bug reports</li>
 		</ul>
 	</div>
 		<div style="width:45%;float:left">
@@ -2036,20 +2037,20 @@ sb_do_alerts();
 		<h3>Screencasts</h3>
 		<p>If you need help with using SermonBrowser for the first time, these five minute screencast tutorials should be your first port of call (the tutorials were created with an older version of SermonBrowser, and an older version of Wordpress, but things haven't changed a great deal):</p>
 		<ul>
-			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-1.html" target="_blank">Installation and Overview</a></li>
-			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-2.html" target="_blank">Basic Options</a></li>
-			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-3.html" target="_blank">Preachers, Series and Services</a></li>
-			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-4.html" target="_blank">Entering a new sermon</a></li>
-			<li><a href="http://www.4-14.org.uk/sermonbrowser-tutorial/tutorial-5.html" target="_blank">Editing a sermon and adding embedded video</a></li>
+			<li><a href="http://www.sermonbrowser.com/tutorials/#efe-swf-1" target="_blank">Installation and Overview</a></li>
+			<li><a href="http://www.sermonbrowser.com/tutorials/#efe-swf-2" target="_blank">Basic Options</a></li>
+			<li><a href="http://www.sermonbrowser.com/tutorials/#efe-swf-3" target="_blank">Preachers, Series and Services</a></li>
+			<li><a href="http://www.sermonbrowser.com/tutorials/#efe-swf-4" target="_blank">Entering a new sermon</a></li>
+			<li><a href="http://www.sermonbrowser.com/tutorials/#efe-swf-5" target="_blank">Editing a sermon and adding embedded video</a></li>
 		</ul>
 		<h3>Template tags</h3>
-		<p>If you want to change the way SermonBrowser displays on your website, you'll need to edit the templates and/or CSS file. Check out this guide to <a href="http://www.4-14.org.uk/sermon-browser/template-tags" target="_blank">template tags</a>.</p>
+		<p>If you want to change the way SermonBrowser displays on your website, you'll need to edit the templates and/or CSS file. Check out this guide to <a href="http://www.sermonbrowser.com/customisation/" target="_blank">template tags</a>.</p>
 		<h3>Shortcode</h3>
-		<p>You can put individual sermons or lists of sermons on any page of your website. You do this by adding a <a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser/shortcodes" target="_blank">shortcode</a> into a Wordpress post or page.</p>
+		<p>You can put individual sermons or lists of sermons on any page of your website. You do this by adding a <a href="http://www.sermonbrowser.com/customisation/" target="_blank">shortcode</a> into a WordPress post or page.</p>
 		<h3>Frequently asked questions</h3>
-		<p>A <a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser/faq" target="_blank">comprehensive FAQ</a> is available on the plugin's home page.</p>
+		<p>A <a href="http://www.sermonbrowser.com/faq/" target="_blank">comprehensive FAQ</a> is available on sermonbrowser.com.</p>
 		<h3>Further help</h3>
-		<p>If you have a problem that the FAQ doesn't answer, or you have a feature suggestion, please use the <a href="http://www.4-14.org.uk/forum/sermon-browser-support" target="_blank">SermonBrowser forum</a>.</p>
+		<p>If you have a problem that the FAQ doesn't answer, or you have a feature suggestion, please use the <a href="http://www.sermonbrowser.com/forum/" target="_blank">SermonBrowser forum</a>.</p>
 		</div>
 	</form>
 <?php
@@ -2059,7 +2060,7 @@ function sb_japan() {
 sb_do_alerts();
 ?>
 	<div class="wrap">
-		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="hthttp://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 		<h2 style=>Help support Christian ministry in Japan</h2>
 		<div style="float:right;clear:both; width:208px; padding-left:20px">
 			<img src="http://www.bethel-clydach.co.uk/wp-content/uploads/2010/01/Nathanael-and-Anna-188x300.jpg" width="188" height="300" />
@@ -2504,17 +2505,17 @@ function sb_add_contextual_help($help) {
 			case 'sermon-browser/manage.php':
 			case 'sermon-browser/options.php':
 			case 'sermon-browser/templates.php':
-				$out .= sprintf(__('Template editing is one of the most powerful features of SermonBrowser. Be sure to look at the complete list of %stemplate tags%s.', $sermon_domain), '<a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser/template-tags">', '</a>');
+				$out .= sprintf(__('Template editing is one of the most powerful features of SermonBrowser. Be sure to look at the complete list of %stemplate tags%s.', $sermon_domain), '<a href="http://www.sermonbrowser.com/customisation/">', '</a>');
 				break;
 			case 'sermon-browser/uninstall.php':
 			case 'sermon-browser/help.php':
 		}
 	}
-	$out.= '</p><p><a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser#tutorial">'.__('Tutorial Screencasts').'</a>';
-	$out.= ' | <a href="http://www.4-14.org.uk/sermon-browser/faq">'.__('Frequently Asked Questions').'</a>';
-	$out.= ' | <a href="http://www.4-14.org.uk/forum/sermon-browser-support">'.__('Support Forum').'</a>';
-	$out.= ' | <a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser/shortcodes">'.__('Shortcode syntax').'</a>';
-	$out.= ' | <a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser#support">'.__('Donate').'</a>';
+	$out.= '</p><p><a href="http://www.sermonbrowser.com/tutorials/">'.__('Tutorial Screencasts').'</a>';
+	$out.= ' | <a href="http://www.sermonbrowser.com/faq/">'.__('Frequently Asked Questions').'</a>';
+	$out.= ' | <a href="http://www.sermonbrowser.com/forum/">'.__('Support Forum').'</a>';
+	$out.= ' | <a href="http://www.sermonbrowser.com/customisation/">'.__('Shortcode syntax').'</a>';
+	$out.= ' | <a href="http://www.sermonbrowser.com/donate/">'.__('Donate').'</a>';
 	$out.= '</p></div>';
 	return $out;
 }

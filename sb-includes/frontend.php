@@ -514,7 +514,7 @@ function sb_build_url($arr, $clear = false) {
 function sb_add_headers() {
 	global $sermon_domain, $post, $wpdb, $wp_scripts;
 	if (isset($post->ID) && $post->ID != '') {
-		echo "<!-- Added by SermonBrowser (version ".SB_CURRENT_VERSION.") - http://www.4-14.org.uk/sermon-browser -->\r";
+		echo "<!-- Added by SermonBrowser (version ".SB_CURRENT_VERSION.") - http://www.sermonbrowser.com/ -->\r";
 		echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Sermon podcast', $sermon_domain)."\" href=\"".sb_get_option('podcast_url')."\" />\r";
 		wp_enqueue_style('sb_style');
 		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons%' AND (post_status = 'publish' OR post_status = 'private') AND ID={$post->ID} AND post_date < NOW();");

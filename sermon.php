@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Sermon Browser
-Plugin URI: http://www.4-14.org.uk/sermon-browser
-Description: Add sermons to your Wordpress blog. Thanks to <a href="http://codeandmore.com/">Tien Do Xuan</a> for initial coding.
+Plugin URI: http://www.sermonbrowser.com/
+Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
 Version: 0.44
 Author URI: http://www.4-14.org.uk/
