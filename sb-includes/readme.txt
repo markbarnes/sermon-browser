@@ -52,12 +52,14 @@ SermonBrowser tries to set the correct permissions on your folders for you, but 
 
 #### SermonBrowser spends a long time attempting to upload files, but the file is never uploaded. What's happening? ####
 The most likely cause is that you're reaching either the maximum filesize that can be uploaded, or the maximum time a PHP script can run for. [Editing your php.ini](http://articles.techrepublic.com.com/5100-10878_11-5272345.html) may help overcome these problems - but if you're on shared hosting, it's possible your host has set maximum limits you cannot change. If that's the case, you should upload your files via FTP. This is generally a better option than using your browser, particularly if you have several files to upload. If you do edit your php.ini file, these settings should be adequate:
+
 `file_uploads = On
 upload_max_filesize = 15M
 post_max_size = 15M
 max_execution_time = 600
 max_input_time = 600
 memory_limit = 16M`
+
 #### Why are my MP3 files are appearing as an icon, rather than as a player, as I've seen on other SermonBrowser sites? ####
 You need to install and activate the 1pixelout audio player plugin. You can also customise the plugin so that its colours match your site.
 
