@@ -53,7 +53,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.43.7');
+define('SB_CURRENT_VERSION', '0.44');
 define('SB_DATABASE_VERSION', '1.6');
 add_action ('plugins_loaded', 'sb_hijack');
 add_action ('init', 'sb_sermon_init');
