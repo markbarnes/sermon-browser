@@ -79,9 +79,12 @@ This 'feature' is caused by a well-known bug in Adobe Flash. In order for the fi
 SermonBrowser comes with several widgets you can add to your sidebars - just go to Appearance and choose Widgets.
 
 If you want to add sermons elsewhere on your site, and your comfortable in editing template files, add the following code:
-`<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_preacher' => 1, 'display_passage' => 1, 'display_date' => 1, 'display_player' => 0, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5, 'url_only' => 0)) ?>`.
 
-Each of the values in that line can be changed or omitted (if they are omitted, the default values are used). For example, you could just use `<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_player' => 1, 'preacher' => 12) ?>`.
+`<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_preacher' => 1, 'display_passage' => 1, 'display_date' => 1, 'display_player' => 0, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5, 'url_only' => 0)) ?>`
+
+Each of the values in that line can be changed or omitted (if they are omitted, the default values are used). For example, you could just use 
+
+`<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_player' => 1, 'preacher' => 12) ?>`
 
 * display_preacher, display_passage, display_date and display_player affect what is displayed (0 is off, 1 is on).
 * preacher, service and series allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series.
