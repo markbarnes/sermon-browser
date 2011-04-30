@@ -78,13 +78,7 @@ This 'feature' is caused by a well-known bug in Adobe Flash. In order for the fi
 #### How do I get recent sermons to display in my sidebar or elsewhere in my theme? ####
 SermonBrowser comes with several widgets you can add to your sidebars - just go to Appearance and choose Widgets.
 
-If you want to add sermons elsewhere on your site, and your comfortable in editing template files, add the following code:
-
-`<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_preacher' => 1, 'display_passage' => 1, 'display_date' => 1, 'display_player' => 0, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5, 'url_only' => 0)) ?>`
-
-Each of the values in that line can be changed or omitted (if they are omitted, the default values are used). For example, you could just use 
-
-`<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_player' => 1, 'preacher' => 12) ?>`
+If you want to add sermons elsewhere on your site, and your comfortable in editing template files, add the following code: `<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_preacher' => 1, 'display_passage' => 1, 'display_date' => 1, 'display_player' => 0, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5, 'url_only' => 0)) ?>`. Each of the values in that line can be changed or omitted (if they are omitted, the default values are used). For example, you could just use: `<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_player' => 1, 'preacher' => 12) ?>`. The various array keys are used to specify the following:
 
 * display_preacher, display_passage, display_date and display_player affect what is displayed (0 is off, 1 is on).
 * preacher, service and series allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series.
@@ -124,7 +118,7 @@ The search form is set to roughly 500 pixels, which should be about right for mo
 This usually happens for one of three reasons: (1) The Bible texts are provided by external websites, and sometimes they can go do. If you can't see Genesis 1 then the problem is with those websites. They're rarely down for long. (2) If you specify an invalid bible passage (e.g. Romans 22). If this is the case your sermon page will display ERROR: No results were found for your search. (3) If your webhost has disabled allow_url_fopen and cURL. Some cheaper webhosts have these essential features switched off. If they have, you won't be able to use this facility.
 
 #### Why does my sermon page say I have exceeded my quota for ESV lookups? ####
-The ESV website only allows 5,000 lookups per day from each IP address. That should be enough for most users of SermonBrowser. However, if you are using a shared host, there will be hundreds (perhaps thousands) of other websites on the same IP address as you. If any are also using the ESV API, they also get counted towards that total. If you are using less than 5,000 lookups per day (i.e. you are having less than 5,000 pageviews of your sermon pages), and you receive the error message you'll need to do two things in order to continue to display the text. (1) Sign up for an ESV API key. (2) Edit frontend.php (one of the SermonBrowser files). Look for the function `sb_add_esv_text` (at the time of writing it began on line 412), and replace …`passageQuery?key=IP&passage=`… with …`passageQuery?key=YOURAPIKEY&passage=`….
+The ESV website only allows 5,000 lookups per day from each IP address. That should be enough for most users of SermonBrowser. However, if you are using a shared host, there will be hundreds (perhaps thousands) of other websites on the same IP address as you. If any are also using the ESV API, they also get counted towards that total. If you are using less than 5,000 lookups per day (i.e. you are having less than 5,000 pageviews of your sermon pages), and you receive the error message you'll need to do two things in order to continue to display the text. (1) Sign up for an ESV API key. (2) Edit frontend.php (one of the SermonBrowser files). Look for the function `sb_add_esv_text` (at the time of writing it began on line 412), and replace ...`passageQuery?key=IP&passage=`... with ...`passageQuery?key=YOURAPIKEY&passage=`...
 
 If you are having more than 5,000 page views per day, then this won't help. Instead, leave a message on the forum explaining your problem. SermonBrowser could probably be modified to provide a caching mechanism to reduce the likelihood of this error occurring, if there is demand.
 
