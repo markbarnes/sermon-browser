@@ -1,5 +1,6 @@
 <?php
 global $sermon_domain;
+define ('SB_AJAX', true);
 
 // Throughout this plugin, p stands for preacher, s stands for service and ss stands for series
 if (isset($_POST['pname'])) { // preacher
@@ -136,7 +137,11 @@ if (isset($_POST['pname'])) { // preacher
 			<td><?php echo stripslashes($sermon->ssname) ?></td>
 			<td><?php echo sb_sermon_stats($sermon->id) ?></td>
 			<td style="text-align:center">
-				<a href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain) ?></a>
+				<?php //Security check
+						if (current_user_can('edit_posts')) { ?>
+						<a href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain); ?></a> |
+				<?php } ?>
+				<a href="<?php echo sb_display_url().sb_query_char(true).'sermon_id='.$sermon->id;?>">View</a>
 			</td>
 		</tr>
 	<?php endforeach ?>

@@ -44,7 +44,7 @@ function sb_options() {
 		sb_update_option('filter_type', 'oneclick');
 		sb_update_option('filter_hide', 'hide');
 		sb_update_option('hide_no_attachments', false);
-	   	if (!is_dir(SB_ABSPATH.$dir))
+		   if (!is_dir(SB_ABSPATH.$dir))
 			if (sb_mkdir(SB_ABSPATH.$dir))
 				@chmod(SB_ABSPATH.$dir, 0777);
 		if(!is_dir(SB_ABSPATH.$dir.'images') && sb_mkdir(SB_ABSPATH.$dir.'images'))
@@ -60,7 +60,7 @@ function sb_options() {
 		// Rewrite booknames for non-English locales
 		if ($books != $eng_books) {
 			$sermon_books = $wpdb->get_results("SELECT id, start, end FROM {$wpdb->prefix}sb_sermons");
-	 		foreach ($sermon_books as $sermon_book) {
+			 foreach ($sermon_books as $sermon_book) {
 				$start_verse = unserialize($sermon_book->start);
 				$end_verse = unserialize($sermon_book->end);
 				$start_index = array_search($start_verse[0]['book'], $eng_books, TRUE);
@@ -75,8 +75,8 @@ function sb_options() {
 			}
 		}
 
-	   	$checkSermonUpload = sb_checkSermonUploadable();
-	   	switch ($checkSermonUpload) {
+		   $checkSermonUpload = sb_checkSermonUploadable();
+		   switch ($checkSermonUpload) {
 			case "unwriteable":
 				echo '<div id="message" class="updated fade"><p><b>';
 				if (IS_MU AND !is_site_admin()) {
@@ -121,14 +121,14 @@ function sb_options() {
 		sb_update_option ('import_comments', isset($_POST['import_comments']));
 		sb_update_option ('import_filename', $_POST['import_filename']);
 		sb_update_option ('hide_no_attachments', isset($_POST['hide_no_attachments']));
-	   	if (!is_dir(SB_ABSPATH.$dir))
+		   if (!is_dir(SB_ABSPATH.$dir))
 			if (sb_mkdir(SB_ABSPATH.$dir))
 				@chmod(SB_ABSPATH.$dir, 0777);
 		if(!is_dir(SB_ABSPATH.$dir.'images') && sb_mkdir(SB_ABSPATH.$sermonUploadDir.'images'))
 			@chmod(SB_ABSPATH.$dir.'images', 0777);
-	   	$checkSermonUpload = sb_checkSermonUploadable();
-	   	switch ($checkSermonUpload) {
-	   	case "unwriteable":
+		   $checkSermonUpload = sb_checkSermonUploadable();
+		   switch ($checkSermonUpload) {
+		   case "unwriteable":
 			echo '<div id="message" class="updated fade"><p><b>';
 			_e('Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777.', $sermon_domain);
 			echo '</b></div>';
@@ -313,7 +313,9 @@ function sb_uninstall () {
 					 echo ', ';
 					 _e('and will deactivate the SermonBrowser plugin', $sermon_domain);
 					 echo '. ';
-					 _e('You will NOT be able to undo this action.', $sermon_domain) ?>
+					 _e('You will NOT be able to undo this action.', $sermon_domain);
+					 echo ' ';
+					 _e('If you only want to temporarily disable SermonBrowser, just deactivate it from the plugins page.', $sermon_domain); ?>
 			</p>
 		<?php } ?>
 		<table border="0" class="widefat">
@@ -593,7 +595,7 @@ function sb_manage_everything() {
 		function createNewServices(s) {
 			var s = 'lol';
 			while ((s.indexOf('@') == -1) || (s.match(/(.*?)@(.*)/)[2].match(/[0-9]{1,2}:[0-9]{1,2}/) == null)) {
-				s = prompt("New service's name - default time?", "Service's name @ 18:00");
+				s = prompt("<?php _e("New service's name @ default time?", $sermon_domain)?>", "<?php _e("Service's name @ 18:00", $sermon_domain)?>");
 				if (s == null) { break;	}
 			}
 			if (s != null) {
@@ -619,7 +621,7 @@ function sb_manage_everything() {
 			}
 		}
 		function createNewSeries(s) {
-			var ss = prompt("New series' name?", "Series' name");
+			var ss = prompt("<?php _e("New series' name?", $sermon_domain)?>", "<?php _e("Series' name", $sermon_domain)?>");
 			if (ss != null) {
 				jQuery.post('<?php $_SERVER['PHP_SELF'] ?>?page=sermon-browser/sermon.php', {ssname: ss, sermon: 1}, function(r) {
 					if (r) {
@@ -658,7 +660,7 @@ function sb_manage_everything() {
 			});
 		}
 		function renameSeries(id, old) {
-			var ss = prompt("New series' name?", old);
+			var ss = prompt("<?php _e("New series' name?", $sermon_domain)?>", old);
 			if (ss != null) {
 				jQuery.post('<?php echo $_SERVER['PHP_SELF'] ?>?page=sermon-browser/sermon.php', {ssid: id, ssname: ss, sermon: 1}, function(r) {
 					if (r) {
@@ -672,7 +674,7 @@ function sb_manage_everything() {
 		function renameServices(id, old) {
 			var s = 'lol';
 			while ((s.indexOf('@') == -1) || (s.match(/(.*?)@(.*)/)[2].match(/[0-9]{1,2}:[0-9]{1,2}/) == null)) {
-				s = prompt("New service's name - default time?", old);
+				s = prompt("<?php _e("New service's name @ default time?", $sermon_domain)?>", old);
 				if (s == null) { break;	}
 			}
 			if (s != null) {
@@ -1098,14 +1100,14 @@ function sb_ping_gallery() {
 	global $wpdb;
 	if((ini_get('allow_url_fopen') | function_exists('curl_init')) & get_option('blog_public') == 1 & get_option('ping_sites') != "") {
 		$url = "http://ping.preachingcentral.com/?sg_ping";
-		$url .= "&name=".URLencode(get_option('blogname'));
-		$url .= "&tagline=".URLencode(get_option('blogdescription'));
-		$url .= "&site_url=".URLencode(get_option('home'));
-		$url .= "&sermon_url=".URLencode(sb_display_url());
-		$url .= "&most_recent=".URLencode($wpdb->get_var("SELECT datetime FROM {$wpdb->prefix}sb_sermons ORDER BY datetime DESC LIMIT 1"));
-		$url .= "&num_sermons=".URLencode($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_sermons"));
+		$url .= "&name=".rawurlencode(get_option('blogname'));
+		$url .= "&tagline=".rawurlencode(get_option('blogdescription'));
+		$url .= "&site_url=".rawurlencode(get_option('home'));
+		$url .= "&sermon_url=".rawurlencode(sb_display_url());
+		$url .= "&most_recent=".rawurlencode($wpdb->get_var("SELECT datetime FROM {$wpdb->prefix}sb_sermons ORDER BY datetime DESC LIMIT 1"));
+		$url .= "&num_sermons=".rawurlencode($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_sermons"));
 		$url .= "&ver=".constant("SB_CURRENT_VERSION");
- 		if (ini_get('allow_url_fopen')) {
+		 if (ini_get('allow_url_fopen')) {
 			$headers = @get_headers($url, 1);
 			if ($headers !="") {
 				$headers = array_change_key_case($headers,CASE_LOWER);
@@ -1132,18 +1134,18 @@ function sb_ping_gallery() {
 function sb_manage_sermons() {
 	global $wpdb, $sermon_domain;
 	//Security check
-	if (function_exists('current_user_can')&&!(current_user_can('edit_posts')|current_user_can('publish_posts')))
+	if (function_exists('current_user_can') && !(current_user_can('publish_posts') || current_user_can('publish_pages')))
 		wp_die(__("You do not have the correct permissions to edit sermons", $sermon_domain));
 	sb_do_alerts();
 	if (isset($_GET['saved'])) {
 		echo '<div id="message" class="updated fade"><p><b>'.__('Sermon saved to database.', $sermon_domain).'</b></div>';
 		if (rand (1,5) == 1 && sb_get_option('show_donate_reminder') != 'off')
-			echo '<div id="message" class="updated"><p><b>'.sprintf(__('If you find SermonBrowser useful, please consider a %1$ssmall donation%2$s.', $sermon_domain), '<a href="http://www.4-14.org.uk/sermon-browser#support" target="_blank">', '</a>').'</b></div>';
+			echo '<div id="message" class="updated"><p><b>'.sprintf(__('If you find SermonBrowser useful, please consider %1$ssupporting%2$s the ministry of Nathanael and Anna Ayling in Japan.', $sermon_domain), '<a href="'.sb_get_admin_url(null, 'admin.php?page=sermon-browser/japan.php').'">', '</a>').'</b></div>';
 	}
 
 	if (isset($_GET['mid'])) {
 		//Security check
-		if (function_exists('current_user_can')&&!current_user_can('edit_posts'))
+		if (function_exists('current_user_can')&&!current_user_can('publish_posts'))
 			wp_die(__("You do not have the correct permissions to delete sermons", $sermon_domain));
 		$mid = (int) $_GET['mid'];
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_sermons WHERE id = $mid;");
@@ -1245,7 +1247,7 @@ function sb_manage_sermons() {
 						<td><?php echo sb_sermon_stats($sermon->id) ?></td>
 						<td style="text-align:center">
 							<?php //Security check
-									if (function_exists('current_user_can')&&current_user_can('edit_posts')) { ?>
+									if (function_exists('current_user_can') && current_user_can('publish_posts')) { ?>
 									<a href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain); ?></a> |
 							<?php } ?>
 							<a href="<?php echo sb_display_url().sb_query_char(true).'sermon_id='.$sermon->id;?>">View</a>
@@ -1275,7 +1277,7 @@ function sb_new_sermon() {
 	global $wpdb, $sermon_domain, $allowedposttags;
 	$getid3=false;
 	//Security check
-	if (!(current_user_can('edit_posts') | current_user_can('publish_posts')))
+	if (!(current_user_can('publish_posts') || current_user_can('publish_pages')))
 		wp_die(__("You do not have the correct permissions to edit or create sermons", $sermon_domain));
 	include_once (SB_ABSPATH.'/wp-includes/kses.php');
 	sb_scan_dir();
@@ -1287,6 +1289,7 @@ function sb_new_sermon() {
 		$service_id = (int) $_POST['service'];
 		$series_id = (int) $_POST['series'];
 		$time = isset($_POST['time']) ? $wpdb->escape($_POST['time']) : '';
+		$startz = $endz = array();
 		for ($foo = 0; $foo < count($_POST['start']['book']); $foo++) {
 			if (!empty($_POST['start']['chapter'][$foo]) && !empty($_POST['end']['chapter'][$foo]) && !empty($_POST['start']['verse'][$foo]) && !empty($_POST['end']['verse'][$foo])) {
 				$startz[] = array(
@@ -1323,13 +1326,13 @@ function sb_new_sermon() {
 		// edit or not edit
 		if (!$_GET['mid']) { // new
 			//Security check
-			if (!current_user_can('publish_posts'))
+			if (!current_user_can('publish_pages'))
 				wp_die(__("You do not have the correct permissions to create sermons", $sermon_domain));
 			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_sermons VALUES (null, '$title', '$preacher_id', '$date', '$service_id', '$series_id', '$start', '$end', '$description', '$time', '$override', 0)");
 			$id = $wpdb->insert_id;
 		} else { // edit
 			//Security check
-			if (!current_user_can('edit_posts'))
+			if (!current_user_can('publish_posts'))
 				wp_die(__("You do not have the correct permissions to edit sermons", $sermon_domain));
 			$id = (int) $_GET['mid'];
 			$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons SET title = '$title', preacher_id = '$preacher_id', datetime = '$date', series_id = '$series_id', start = '$start', end = '$end', description = '$description', time = '$time', service_id = '$service_id', override = '$override' WHERE id = $id");
@@ -1418,7 +1421,7 @@ function sb_new_sermon() {
 	$id3_tags = array();
 	if (isset($_GET['getid3'])) {
 		require_once('getid3/getid3.php');
-		$file_data = $wpdb->get_row("SELECT name, type FROM {$wpdb->prefix}sb_stuff WHERE id = ".$_GET['getid3']);
+		$file_data = $wpdb->get_row("SELECT name, type FROM {$wpdb->prefix}sb_stuff WHERE id = ".$wpdb->escape($_GET['getid3']));
 		if ($file_data !== NULL) {
 			$getID3 = new getID3;
 			if ($file_data->type == 'url') {
@@ -1540,8 +1543,8 @@ function sb_new_sermon() {
 		var timeArr = new Array();
 		<?php echo $timeArr ?>
 		function createNewPreacher(s) {
-			if (jQuery('*[selected]', s).text() != 'Create new preacher') return;
-			var p = prompt("New preacher's name?", "Preacher's name");
+			if (jQuery('#preacher')[0].value != 'newPreacher') return;
+			var p = prompt("<?php _e("New preacher's name?", $sermon_domain)?>", "<?php _e("Preacher's name", $sermon_domain)?>");
 			if (p != null) {
 				jQuery.post('<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/sermon.php', {pname: p, sermon: 1}, function(r) {
 					if (r) {
@@ -1552,15 +1555,15 @@ function sb_new_sermon() {
 			}
 		}
 		function createNewService(s) {
-			if (jQuery('*[selected]', s).text() != 'Create new service') {
+			if (jQuery('#service')[0].value != 'newService') {
 				if (!jQuery('#override')[0].checked) {
-					jQuery('#time').val(timeArr[jQuery('*[selected]', s).attr('value')]).attr('disabled', 'disabled');
+					jQuery('#time').val(timeArr[jQuery('#service')[0].value]).attr('disabled', 'disabled');
 				}
 				return;
 			}
 			var s = 'lol';
 			while ((s.indexOf('@') == -1) || (s.match(/(.*?)@(.*)/)[2].match(/[0-9]{1,2}:[0-9]{1,2}/) == null)) {
-				s = prompt("New service's name - default time?", "Service's name @ 18:00");
+				s = prompt("<?php _e("New service's name @ default time?", $sermon_domain)?>", "<?php _e("Service's name @ 18:00", $sermon_domain)?>");
 				if (s == null) { break;	}
 			}
 			if (s != null) {
@@ -1574,8 +1577,8 @@ function sb_new_sermon() {
 			}
 		}
 		function createNewSeries(s) {
-			if (jQuery('*[selected]', s).text() != 'Create new series') return;
-			var ss = prompt("New series' name?", "Series' name");
+			if (jQuery('#series')[0].value != 'newSeries') return;
+			var ss = prompt("<?php _e("New series' name?", $sermon_domain)?>", "<?php _e("Series' name", $sermon_domain)?>");
 			if (ss != null) {
 				jQuery.post('<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/sermon.php', {ssname: ss, sermon: 1}, function(r) {
 					if (r) {
@@ -1596,7 +1599,8 @@ function sb_new_sermon() {
 			jQuery('#passage' + id).remove();
 		}
 		function syncBook(s) {
-			var slc = jQuery('*[selected]', s).text();
+			if (jQuery('#endbook')[0].value != "") return;
+			var slc = jQuery('#startbook')[0].value;
 			jQuery('.passage').each(function(i) {
 				if (this == jQuery(s).parents('.passage')[0]) {
 					jQuery('.end').each(function(j) {
@@ -1628,7 +1632,7 @@ function sb_new_sermon() {
 			if (chk) {
 				jQuery('#time').removeClass('gray').attr('disabled', false);
 			} else {
-				jQuery('#time').addClass('gray').val(timeArr[jQuery('*[selected]', jQuery("select[name='service']")).attr('value')]).attr('disabled', 'disabled');
+				jQuery('#time').addClass('gray').val(timeArr[jQuery('#service')[0].value]).attr('disabled', 'disabled');
 			}
 		}
 		var gfid = 0;
@@ -1775,7 +1779,7 @@ function sb_new_sermon() {
 						<table>
 							<tr>
 								<td>
-									<select name="start[book][]" onchange="syncBook(this)" class="start1">
+									<select id="startbook" name="start[book][]" onchange="syncBook(this)" class="start1">
 										<option value=""></option>
 										<?php foreach ($books as $book): ?>
 											<option value="<?php echo $book ?>"><?php echo $book ?></option>
@@ -1791,7 +1795,7 @@ function sb_new_sermon() {
 						<table>
 							<tr>
 								<td>
-									<select name="end[book][]" class="end">
+									<select id="endbook" name="end[book][]" class="end">
 										<option value=""></option>
 										<?php foreach ($books as $book): ?>
 											<option value="<?php echo $book ?>"><?php echo $book ?></option>
@@ -1813,7 +1817,7 @@ function sb_new_sermon() {
 					<td colspan="2">
 						<table>
 							<tr id="choosefile" class="choose">
-								<th>
+								<th scope="row" style="padding:3px 7px">
 								<select class="choosefile" name="choosefile" onchange="chooseType(this.name, this.value);">
 								<option value="filelist"><?php _e('Choose existing file:', $sermon_domain) ?></option>
 								<option value="newupload"><?php _e('Upload a new one:', $sermon_domain) ?></option>
@@ -1971,34 +1975,59 @@ sb_do_alerts();
 		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
 		<div style="width:45%;float:right;clear:right">
 		<h2>Thank you</h2>
-		<p>A number of individuals and churches have kindly <a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser#support">donated</a> to the development of Sermon Browser. Their support is very much appreciated.</p>
+		<p>A number of individuals and churches have kindly <a href="http://www.4-14.org.uk/wordpress-plugins/sermon-browser#support">donated</a> to the development of Sermon Browser. Their support is very much appreciated. Since April 2011, all donations have been sent to <a href="<?php echo sb_get_admin_url(null, 'admin.php?page=sermon-browser/japan.php')?>">support the ministry of Nathanael and Anna Ayling</a> in Japan.</p>
 		<ul style="list-style-type:circle; margin-left: 2em">
 			<li><a href="http://www.cambray.org/" target="_blank">Cambray Baptist Church</a>, UK</li>
-			<li><a href="http://www.emw.org.uk/" target="_blank">Evangelical Movement of Wales</a>, UK</li>
 			<li><a href="http://www.bethel-clydach.co.uk/" target="_blank">Bethel Baptist Church</a>, Clydach, UK</li>
-			<li><a href="http://BetterCommunication.org" target="_blank">BetterCommunication.org</a></li>
-			<li>Edward P, Delaware</li>
+			<li><a href="http://www.bethel-laleston.co.uk/" target="_blank">Bethel Baptist Church</a>, Laleston, UK</li>
+			<li><a href="http://www.hessonchurch.com/" target="_blank">Hesson Christian Fellowship</a>, Ontario, Canada</li>
+			<li><a href="http://www.icvineyard.org/" target="_blank">Vineyard Community Church</a>, Iowa</li>
 			<li><a href="http://www.cbcsd.us/" target="_blank">Chinese Bible Church of San Diego</a>, California</li>
+			<li><a href="http://thecreekside.org/" target="_blank">Creekside Community Church</a>, Texas</li>
+			<li><a href="http://stluke.info/" target="_blank">St. Luke Lutheran Church, Gales Ferry</a>, Connecticut</li>
+			<li><a href="http://www.bunnbaptistchurch.org/" target="_blank">Bunn Baptist Church</a>, North Carolina</li>
+			<li><a href="http://www.ccpconline.org" target="_blank">Christ Community Presbyterian Church</a>, Florida</li>
+			<li><a href="http://www.harborhawaii.org" target="_blank">Harbor Church</a>, Hawaii</li>
+			<li>Vicky H, UK</li>
+			<li>Ben S, UK</li>
+			<li>Tom W, UK</li>
+			<li>Gavin D, UK</li>
+			<li>Douglas C, UK</li>
+			<li>David A, UK</li>
+			<li>Thomas C, Canada</li>
+			<li>Daniel J, Germany</li>
+			<li>Hiromi O, Japan</li>
+			<li>David C, Australia</li>
+			<li>Lou B, Australia</li>
+			<li>Edward P, Delaware</li>
 			<li>Steve J, Pensylvania</li>
 			<li>William H, Indiana</li>
-			<li><a href="http://www.icvineyard.org/" target="_blank">Vineyard Community Church</a>, Iowa</li>
 			<li>Brandon E, New Jersey</li>
 			<li>Jamon A, Missouri</li>
-			<li>Vicky H, UK</li>
 			<li>Chuck H, Tennessee</li>
-			<li><a href="http://www.bethel-laleston.co.uk/" target="_blank">Bethel Baptist Church</a>, Laleston, UK</li>
-			<li><a href="http://stluke.info/" target="_blank">St. Luke Lutheran Church, Gales Ferry</a>, Connecticut</li>
 			<li>David F, Maryland</li>
 			<li>Antony L, California</li>
 			<li>David W, Florida</li>
-			<li>Daniel J, Germany</li>
 			<li>Fabio P, Connecticut</li>
+			<li>Bill C, Georgia</li>
+			<li>Scott J, Florida</li>
+			<li><a href="http://www.emw.org.uk/" target="_blank">Evangelical Movement of Wales</a>, UK</li>
+			<li><a href="http://BetterCommunication.org" target="_blank">BetterCommunication.org</a></li>
+			<li>Home and Outdoor Living, Indiana</li>
 			<li><a href="http://design.ddandhservices.com/" target="_blank">DD&H Services</a>, British Columbia</li>
+			<li><a href="http://www.dirtroadphotography.com" target="_blank">Dirt Road Photography</a>, Nebraska</li>
+			<li><a href="http://www.hardeysolutions.com/" target="_blank">Hardey Solutions</a>, Houston</li>
+			<li><a href="http://www.olivetreehost.com/" target="_blank">Olivetreehost.com</a></li>
+			<li><a href="http://www.onQsites.com/" target="_blank">onQsites</a>, South Carolina</li>
 		</ul>
 		<p>Additional help was also received from:</p>
 		<ul style="list-style-type:circle; margin-left: 2em">
 			<li>James Hudson, Matthew Hiatt, Mark Bouchard (code contributions)</li>
 			<li>Juan Carlos and Marvin Ortega (Spanish translation)</li>
+			<li><a href="http://www.fatcow.com/">FatCow</a> (Russian translation)</li>
+			<li><a href="http://intercer.net/">Lucian Mihailescu</a> (Romanian translation)</li>
+			<li>Monika Gause (German translation)</li>
+			<li><a href="http://www.djio.com.br/sermonbrowser-em-portugues-brasileiro-pt_br/">DJIO</a> (Brazilian Portugese translation)</li>
 			<li>Numerous <a href="http://www.4-14.org.uk/forum/sermon-browser-support/">forum contributors</a> for feature suggestions and bug reports</li>
 		</ul>
 	</div>
@@ -2026,8 +2055,35 @@ sb_do_alerts();
 <?php
 }
 
+function sb_japan() {
+sb_do_alerts();
+?>
+	<div class="wrap">
+		<a href="http://www.4-14.org.uk/sermon-browser"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<h2 style=>Help support Christian ministry in Japan</h2>
+		<div style="float:right;clear:both; width:208px; padding-left:20px">
+			<img src="http://www.bethel-clydach.co.uk/wp-content/uploads/2010/01/Nathanael-and-Anna-188x300.jpg" width="188" height="300" />
+		</div>
+		<div style="width:533px; float:left">
+			<iframe src="http://player.vimeo.com/video/19995544?title=0&amp;byline=0&amp;portrait=0" width="533" height="300" frameborder="0"></iframe>
+		</div>
+		<div style="margin-left:553px;">
+			<p>Since April 2011, all gifts donated to Sermon Browser have been given to support the work of <a href="http://www.bethel-clydach.co.uk/about/mission-partners/nathanael-and-anna-ayling/">Nathanael and Anna Ayling</a> in Japan.
+		 	Nathanael and Anna are members of a small church in the UK where the the author of Sermon Browser is a minister. Together with little Ethan, they have been in Japan since April 2010, and are based in Sappororo in the north,
+		 	undergoing intensive language training so that by God's grace they can work alongside Japanese Christians to make disciples of Jesus among Japanese students. They are being cared for by <a href="http://www.omf.org/omf/japan/about_us">OMF International</a> (formerly known as the China Inland Mission, and founded by 
+		 	Hudson Taylor in 1865).</p>
+		 	<p>If you value Sermon Browser, please consider supporting Nathanael and Anna. You can do this by:</p>
+		 	<ul>
+		 		<li><a href="http://ateamjapan.wordpress.com/">Looking at their blog</a>, and praying about their latest news.</li>
+		 		<li><a href="http://www.omf.org/omf/uk/omf_at_work/pray_for_omf_workers">Signing up</a> to receiving their regular prayer news.</li>
+		 		<li><form style="float:left" action="https://www.paypal.com/cgi-bin/webscr" method="post"><input name="cmd" type="hidden" value="_s-xclick" /><input name="hosted_button_id" type="hidden" value="9YTQKPQLGZ9TJ" /><input alt="PayPal - The safer, easier way to pay online." name="submit" src="https://www.paypal.com/en_GB/i/btn/btn_donate_SM.gif" type="image" /> <img src="https://www.paypal.com/en_GB/i/scr/pixel.gif" border="0" alt="" width="1" height="1" /></form> towards their ongoing support.</li>
+		 	</ul>
+		</div>
+	</div>
+<?php	
+}
 /***************************************
- ** Supplementary functions		   **
+ ** Supplementary functions           **
  **************************************/
 
 /**
@@ -2077,29 +2133,29 @@ function sb_rightnow () {
 		$most_popular = $most_popular[0];
 		$output_string .= '<p class="youhave">'.__("You have")." ";
 		$output_string .= '<a href="'.get_bloginfo('wpurl').'/wp-admin/admin.php?page=sermon-browser/files.php">';
-		$output_string .= sprintf(_n('%d file', '%d files', $file_count), $file_count)."</a> ";
+		$output_string .= sprintf(_n('%s file', '%s files', $file_count), number_format($file_count))."</a> ";
 		if ($sermon_count > 0) {
 			$output_string .= __("in")." ".'<a href="'.$_SERVER['PHP_SELF'].'?page=sermon-browser/sermon.php">';
-			$output_string .= sprintf(_n('%d sermon', '%d sermons', $sermon_count), $sermon_count)."</a> ";
+			$output_string .= sprintf(_n('%s sermon', '%s sermons', $sermon_count), number_format($sermon_count))."</a> ";
 		}
 		if ($preacher_count > 0) {
 			$output_string .= __("from")." ".'<a href="'.get_bloginfo('wpurl').'/wp-admin/admin.php?page=sermon-browser/preachers.php">';
-			$output_string .= sprintf(_n('%d preacher', '%d preachers', $preacher_count), $preacher_count)."</a> ";
+			$output_string .= sprintf(_n('%s preacher', '%s preachers', $preacher_count), number_format($preacher_count))."</a> ";
 		}
 		if ($series_count > 0) {
 			$output_string .= __("in")." ".'<a href="'.get_bloginfo('wpurl').'/wp-admin/admin.php?page=sermon-browser/manage.php">';
-			$output_string .= sprintf(__('%d series'), $series_count)."</a> ";
+			$output_string .= sprintf(__('%s series'), number_format($series_count))."</a> ";
 		}
 		if ($tag_count > 0)
-			$output_string .= __("using")." ".sprintf(_n('%d tag', '%d tags', $tag_count), $tag_count)." ";
+			$output_string .= __("using")." ".sprintf(_n('%s tag', '%s tags', $tag_count), number_format($tag_count))." ";
 		if (substr($output_string, -1) == " ")
 			$output_string = substr($output_string, 0, -1);
 		if ($download_count > 0)
-			$output_string .= ". ".sprintf(_n('Only one file has been downloaded', 'They have been downloaded a total of %d times', $download_count), $download_count);
+			$output_string .= ". ".sprintf(_n('Only one file has been downloaded', 'They have been downloaded a total of %s times', $download_count), number_format($download_count));
 		if ($download_count > 1) {
 			$output_string .= ", ".sprintf(_n('an average of once per sermon', 'an average of %d times per sermon', $download_average), $download_average);
-			$most_popular_title = '<a href="'.get_bloginfo('wpurl').'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$most_popular->sermon_id.'">'.stripslashes($most_popular->title).'</a>';
-			$output_string .= ". ".sprintf(__('The most popular sermon is %s, which has been downloaded %s times'), $most_popular_title, $most_popular->c);
+			$most_popular_title = '<a href="'.sb_display_url().sb_query_char(true).'sermon_id='.$most_popular->sermon_id.'">'.stripslashes($most_popular->title).'</a>';
+			$output_string .= ". ".sprintf(__('The most popular sermon is %s, which has been downloaded %s times'), $most_popular_title, number_format($most_popular->c));
 		}
 		$output_string .= '.</p>';
 	}
@@ -2125,9 +2181,9 @@ function sb_scan_dir() {
 		while (false !== ($file = readdir($dh))) {
 			if ($file != "." && $file != ".." && !is_dir($dir.$file) && !in_array($file, $bnn)) {
 				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '$file', 0, 0, 0);");
-		   	}
+			   }
 		}
-	   	closedir($dh);
+		   closedir($dh);
 	}
 }
 

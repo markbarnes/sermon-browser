@@ -23,7 +23,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_series";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {	
+	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			name VARCHAR(255) NOT NULL,
@@ -36,7 +36,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_services";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {	
+	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			name VARCHAR(255) NOT NULL,
@@ -51,7 +51,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_sermons";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {	
+	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			title VARCHAR(255) NOT NULL,
@@ -71,7 +71,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_books_sermons";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {	
+	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			book_name VARCHAR(30) NOT NULL,
@@ -87,7 +87,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_books";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {	
+	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			name VARCHAR(30) NOT NULL,
@@ -97,7 +97,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_stuff";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {	
+	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT ,
 			type VARCHAR(30) NOT NULL,
@@ -111,7 +111,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_tags";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {	
+	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id int(10) NOT NULL auto_increment,
 			name varchar(255) default NULL,
@@ -122,7 +122,7 @@ function sb_install() {
    }
 
 	$table_name = "{$wpdb->prefix}sb_sermons_tags";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {	
+	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			sermon_id INT(10) NOT NULL,

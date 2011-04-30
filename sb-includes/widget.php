@@ -96,12 +96,12 @@ function sb_first_mp3($sermon, $stats= TRUE) {
 		if (strtolower(substr($file, strrpos($file, '.') + 1)) == 'mp3') {
 			if (substr($file,0,7) == "http://") {
 				if ($stats)
-					$file=sb_display_url().sb_query_char().'show&amp;url='.URLencode($file);
+					$file=sb_display_url().sb_query_char().'show&amp;url='.rawurlencode($file);
 			} else {
 				if (!$stats)
-					$file=sb_get_value('wordpress_url').get_option('sb_sermon_upload_dir').URLencode($file);
+					$file=sb_get_value('wordpress_url').get_option('sb_sermon_upload_dir').rawurlencode($file);
 				else
-					$file=sb_display_url().sb_query_char().'show&amp;file_name='.URLencode($file);
+					$file=sb_display_url().sb_query_char().'show&amp;file_name='.rawurlencode($file);
 			}
 			return $file;
 			break;

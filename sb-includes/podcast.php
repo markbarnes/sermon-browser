@@ -58,12 +58,12 @@ function sb_podcast_file_url($media_name, $media_type) {
 		$stats = TRUE;
 	if ($media_type == 'URLs') {
 		if ($stats)
-			$media_name=sb_display_url().sb_query_char().'show&amp;url='.URLencode($media_name);
+			$media_name=sb_display_url().sb_query_char().'show&amp;url='.rawurlencode($media_name);
 	} else {
 		if (!$stats)
-			$media_name=get_bloginfo('wpurl').sb_get_option('upload_dir').URLencode($media_name);
+			$media_name=get_bloginfo('wpurl').sb_get_option('upload_dir').rawurlencode($media_name);
 		else
-			$media_name=sb_display_url().sb_query_char().'show&amp;file_name='.URLencode($media_name);
+			$media_name=sb_display_url().sb_query_char().'show&amp;file_name='.rawurlencode($media_name);
 	}
 	return sb_xml_entity_encode($media_name);
 }
@@ -78,14 +78,14 @@ function sb_mime_type($media_name) {
 
 $sermons = sb_get_sermons(
 	array(
-		'title' => isset($_REQUEST['title']) ? $_REQUEST['title'] : '',
+		'title' => isset($_REQUEST['title']) ? stripslashes($_REQUEST['title']) : '',
 		'preacher' => isset($_REQUEST['preacher']) ? $_REQUEST['preacher'] : '',
 		'date' => isset($_REQUEST['date']) ? $_REQUEST['date'] : '',
 		'enddate' => isset($_REQUEST['enddate']) ? $_REQUEST['enddate'] : '',
 		'series' => isset($_REQUEST['series']) ? $_REQUEST['series'] : '',
 		'service' => isset($_REQUEST['service']) ? $_REQUEST['service'] : '',
-		'book' => isset($_REQUEST['book']) ? $_REQUEST['book'] : '',
-		'tag' => isset($_REQUEST['stag']) ? $_REQUEST['stag'] : '',
+		'book' => isset($_REQUEST['book']) ? stripslashes($_REQUEST['book']) : '',
+		'tag' => isset($_REQUEST['stag']) ? stripslashes($_REQUEST['stag']) : '',
 	),
 	array(
 		'by' => 'm.datetime',

@@ -3,7 +3,7 @@ Contributors: mark8barnes
 Donate link: http://www.4-14.org.uk/sermon-browser#support
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 2.6
-Tested up to: 3.0.6
+Tested up to: 3.1.2
 Stable tag: trunk
 
 Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
@@ -22,9 +22,9 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 8. Files can be uploaded to your own site **through the browser or via FTP**. Alternatively you can use other free audio hosting sites.
 9. Powerful **templating function** allows complete customisation to complement the look of your site.
 10. Simple statistics show how often each sermon has been listened to.
-11. Support for [Wordpress MU](http://mu.wordpress.org/) (WPMU).
+11. Support for [Wordpress MU](http://mu.wordpress.org/) (WPMU). Wordpress multi-user support is coming soon!
 12. Extensive **help** and [tutorial screencasts](http://www.4-14.org.uk/wordpress-plugins/sermon-browser#tutorial).
-13. English, Spanish, Romanian and Russian translations included.
+13. English, German, Portugese Brazilian, Romanian, Russian and Spanish translations included.
 
 == Installation ==
 
@@ -57,7 +57,35 @@ You can customise Sermon Browser to fit in with your own theme, and to display o
 
 If you want to customise how Sermon Browser appears throughout your site, use [Template tags](http://www.4-14.org.uk/wordpress-plugins/sermon-browser/template-tags).
 
+== Upgrade Notice ==
+
+= 0.44 =
+Fixes several bugs (including an important security fix), and adds support for the admin bar in WordPress 3.1
+
+= 0.43.5 =
+Important security fixes. All users should upgrade to this version.
+
 == Changelog ==
+
+= 0.44 (30 April 2011) =
+* **New feature:** Sermon Browser added to the new menu bar in Wordpress 3.1 and above.
+* **New feature:** Added support for Brazilian Portuguese and German (thanks to [DJIO](http://www.djio.com.br/sermonbrowser-em-portugues-brasileiro-pt_br/) and Monika Gause).
+* **Compatibility:** Now fully compatible with Wordpress 2.6 - 3.1. ([link](http://www.4-14.org.uk/forum/sermon-browser-support/cant-add-new-preacherseriesservice-in-add-sermon-page-w-wp-3-1/))
+* **Enhancement:** [sermons] shortcode now supports the 'limit' and 'dir' parameters (thanks to [liggit](http://www.4-14.org.uk/forum/sermon-browser-support/patches-to-add-support-for-limit-and-dir-shortcode-attrs))
+* **Bug fix:** More security fixes.
+* **Bug fix:** Custom podcasts are now working again ([link](http://www.4-14.org.uk/forum/sermon-browser-support/custom-podcast-link-no-longer-working))
+* **Bug fix:** Fixed SQL_BIG_SELECTS issue on some hosts which could result in blank podcasts and sermons pages ([link](http://www.4-14.org.uk/forum/sermon-browser-support/can-only-ad-finite-sermons-till-plugin-breaks))
+* **Bug fix:** Tags are now displaying correctly on sermons page
+* **Bug fix:** Slashes no longer appear in some saved text.
+* **Bug fix:** Sermon widget now works for users who have changed their database prefix ([link](http://www.4-14.org.uk/forum/sermon-browser-support/finish-previous-bug-fix))
+* **Bug fix:** Text on javascript pop-ups is now ready for translation
+* **Bug fix:** Edit links on the main sermons page are no longer missing after the first page
+* **Bug fix:** Missing slash meant preacher image was not displaying for some people
+* **Bug fix:** Book counts now accurate even when more than one passage is applied to a sermon
+* **Bug fix:** Mini-flash player now inherits the colour of both Audio Player v1, and v2
+* **Bug fix:** Filenames with spaces are now encoded in an iTunes compatible way ([link](http://www.4-14.org.uk/forum/sermon-browser-support/patches-to-add-support-for-limit-and-dir-shortcode-attrs/#p1231))
+* **Bug fix:** Sermon filter now always correctly displays which Bible book is being filtered on ([link](http://www.4-14.org.uk/forum/sermon-browser-support/important-info-about-the-future-of-sermon-browser/#p2849))
+
 
 = 0.43.6 (26 April 2011) =
 * **Bug fix:** Important security fixes. All users should upgrade to this version.
