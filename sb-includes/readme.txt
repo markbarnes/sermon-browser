@@ -58,7 +58,7 @@ upload_max_filesize = 15M
 post_max_size = 15M
 max_execution_time = 600
 max_input_time = 600
-memory_limit = 16M`
+memory_limit = 48M`
 
 #### Why are my MP3 files are appearing as an icon, rather than as a player, as I've seen on other SermonBrowser sites? ####
 You need to install and activate the 1pixelout audio player plugin. You can also customise the plugin so that its colours match your site.
