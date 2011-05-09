@@ -221,6 +221,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.44.1 =
+Fixes bug which breaks sites that have a page with [sermons xxxxx], but no page with just [sermons].
+
 = 0.44 =
 Fixes several bugs (including an important security fix), and adds support for the admin bar in WordPress 3.1
 
@@ -228,6 +231,10 @@ Fixes several bugs (including an important security fix), and adds support for t
 Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
+
+= 0.44.1 (5 May 2011) =
+* **Bug fix:** Fixes bug which breaks sites that have a page with [sermons xxxxx], but no page with just [sermons].
+* **Enhancement:** Default CSS works much better with Wordpress 3.0+ default Twenty Ten theme (see [demo](http://www.sermonbrowser.com/demo/)). Existing users should reset the template to default to get it.
 
 = 0.44 (30 April 2011) =
 * **New feature:** Sermon Browser added to the new menu bar in Wordpress 3.1 and above.

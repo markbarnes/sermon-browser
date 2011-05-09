@@ -259,12 +259,31 @@ $css = <<<HERE
 	clear: both;
 }
 
+#content div.sermon-browser table, #content div.sermon-browser td {
+	border-top: none;
+	border-bottom: none;
+	border-left: none;
+	border-right: none;
+}
+
+#content div.sermon-browser tr td {
+	padding: 4px 0;
+}
+
+#content div.sermon-browser table.podcast table {
+	margin: 0 1em;
+}
+
+#content div.sermon-browser td.sermon-title, #content div.sermon-browser td.sermon-passage {
+	font-family: "Helvetica Neue",Arial,Helvetica,"Nimbus Sans L",sans-serif;
+}
+
 div.sermon-browser table.sermons {
 	width: 100%;
 	clear:both;
 }
 
-div.sermon-browser table.sermons td.sermon-title {
+#content div.sermon-browser table.sermons td.sermon-title {
 	font-weight:bold;
 	font-size: 140%;
 	padding-top: 2em;
@@ -275,8 +294,9 @@ div.sermon-browser table.sermons td.sermon-passage {
 	font-size: 110%;
 }
 
-div.sermon-browser table.sermons td.preacher {
+#content div.sermon-browser table.sermons td.preacher {
 	border-bottom: 1px solid #444444;
+	padding-bottom: 1em;
 }
 
 div.sermon-browser table.sermons td.files img {

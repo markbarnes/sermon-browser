@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.sermonbrowser.com/
 Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
-Version: 0.44
+Version: 0.44.1
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008-2011 Mark Barnes
@@ -53,7 +53,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.44');
+define('SB_CURRENT_VERSION', '0.44.1');
 define('SB_DATABASE_VERSION', '1.6');
 add_action ('plugins_loaded', 'sb_hijack');
 add_action ('init', 'sb_sermon_init');
@@ -387,9 +387,9 @@ function sb_display_front_end() {
 */
 function sb_get_page_id() {
 	global $wpdb, $post;
-	$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons]%' AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
+	$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE (post_content LIKE '%[sermons]%' OR post_content LIKE '%[sermon]%') AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
 	if (!$pageid)
-		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermon %' AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
+		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE (post_content LIKE '%[sermon %' OR post_content LIKE '%[sermons %') AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
 	if (!$pageid)
 		return 0;
 	else
@@ -406,7 +406,7 @@ function sb_display_url() {
 	if ($sb_display_url == '') {
 		$pageid = sb_get_page_id();
 		if ($pageid == 0)
-			return '#';
+			return '';
 		if (defined('SB_AJAX') && SB_AJAX)
 			return get_bloginfo('wpurl').'/?page_id='.$pageid; // Don't use permalinks in Ajax calls
 		else {
