@@ -245,6 +245,7 @@ Important security fixes. All users should upgrade to this version.
 * **Enhancement:** You can now use WordPress shortcode in the 'embed' field on each sermon. For example, if you have a Vimeo plugin installed, you could attached a Vimeo video using the shortcode [vimeo clip_id="XXXXXXX" width="400" height="225"].
 * **Enhancement:** You can now see how many sermons are assigned to each preacher, series and service in the admin pages.
 * **Bug fix:** Apostrophes and double quotes are now supported in filenames ([link](http://www.4-14.org.uk/forum/sermon-browser-support/word-to-the-wise-no-apostrophes-in-filename)).
+* See [changeset](http://plugins.trac.wordpress.org/changeset?reponame=&new=384459%40sermon-browser%2Ftrunk&old=382873%40sermon-browser%2Ftrunk).
 
 = 0.44.1 (5 May 2011) =
 * **Bug fix:** Fixes bug which breaks sites that have a page with [sermons xxxxx], but no page with just [sermons]. ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/updated-site-and-now-sermons-page-gives-file-not-found/))
