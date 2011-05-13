@@ -86,7 +86,8 @@ function sb_widget_sermon($args, $widget_args=1) {
 		if ($book) {
 			$foo = unserialize($sermon->start);
 			$bar = unserialize($sermon->end);
-			echo " <span class=\"sermon-passage\">(".sb_get_books($foo[0], $bar[0]).")</span>";
+			if (isset ($foo[0]) && isset($bar[0]))
+				echo " <span class=\"sermon-passage\">(".sb_get_books($foo[0], $bar[0]).")</span>";
 		}
 		if ($preacherz) {
 			echo " <span class=\"sermon-preacher\">".__('by', $sermon_domain)." <a href=\"";
@@ -118,28 +119,28 @@ function sb_admin_bar_menu () {
 	if (!current_user_can('edit_posts') || !class_exists('WP_Admin_Bar'))
 		return;
 	if (isset($_GET['sermon_id']) && (int)$_GET['sermon_id'] != 0 && current_user_can('publish_pages')) {
-		$wp_admin_bar->add_menu(array('id' => 'sermon-browser-menu', 'title' => __('Edit Sermon', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/new_sermon.php&mid='.(int)$_GET['sermon_id'])));
-		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-sermons', 'title' => __('List Sermons', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/sermon.php')));
+		$wp_admin_bar->add_menu(array('id' => 'sermon-browser-menu', 'title' => __('Edit Sermon', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/new_sermon.php&mid='.(int)$_GET['sermon_id'])));
+		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-sermons', 'title' => __('List Sermons', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/sermon.php')));
 	} else {
-		$wp_admin_bar->add_menu(array('id' => 'sermon-browser-menu', 'title' => __('Sermons', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/sermon.php')));
+		$wp_admin_bar->add_menu(array('id' => 'sermon-browser-menu', 'title' => __('Sermons', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/sermon.php')));
 		if (current_user_can('publish_pages'))
-			$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-add', 'title' => __('Add Sermon', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/new_sermon.php')));
+			$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-add', 'title' => __('Add Sermon', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/new_sermon.php')));
 	}
 	if (current_user_can('upload_files'))
-		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-files', 'title' => __('Files', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/files.php')));
+		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-files', 'title' => __('Files', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/files.php')));
 	if (current_user_can('manage_categories')) {
-		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-preachers', 'title' => __('Preachers', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/preachers.php')));
-		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-series', 'title' => __('Series &amp; Services', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/manage.php')));
+		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-preachers', 'title' => __('Preachers', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/preachers.php')));
+		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-series', 'title' => __('Series &amp; Services', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/manage.php')));
 	}
 	if (current_user_can('manage_options')) {
-		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-options', 'title' => __('Options', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/options.php')));
-		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-series', 'title' => __('Templates', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/templates.php')));
+		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-options', 'title' => __('Options', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/options.php')));
+		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-series', 'title' => __('Templates', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/templates.php')));
 	}
 	if (current_user_can('edit_plugins'))
-		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-uninstall', 'title' => __('Uninstall', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/uninstall.php')));
-	$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-help', 'title' => __('Help', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/help.php')));
-	$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-japan', 'title' => __('Pray for Japan', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/japan.php')));
-	$wp_admin_bar->add_menu(array('parent' => 'new-content', 'id' => 'sermon-browser-add2', 'title' => __('Sermon', $sermon_domain), 'href' => sb_get_admin_url(null, 'admin.php?page=sermon-browser/new_sermon.php')));
+		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-uninstall', 'title' => __('Uninstall', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/uninstall.php')));
+	$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-help', 'title' => __('Help', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/help.php')));
+	$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-japan', 'title' => __('Pray for Japan', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/japan.php')));
+	$wp_admin_bar->add_menu(array('parent' => 'new-content', 'id' => 'sermon-browser-add2', 'title' => __('Sermon', $sermon_domain), 'href' => admin_url('admin.php?page=sermon-browser/new_sermon.php')));
 }
 
 // Sorts an object by rank
@@ -489,7 +490,7 @@ function sb_add_other_bibles ($start, $end, $version) {
 function sb_edit_link ($id) {
 	if (current_user_can('publish_posts')) {
 		$id = (int)$id;
-		echo '<div class="sb_edit_link"><a href="'.get_bloginfo('wpurl').'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$id.'">Edit Sermon</a></div>';
+		echo '<div class="sb_edit_link"><a href="'.site_url().'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$id.'">Edit Sermon</a></div>';
 	}
 }
 
@@ -654,18 +655,17 @@ function sb_print_prev_page_link($limit = 0) {
 
 // Print link to attached files
 function sb_print_url($url) {
+	global $sermon_domain;
 	require ('filetypes.php');
 	$pathinfo = pathinfo($url);
 	$ext = $pathinfo['extension'];
-	if (substr($url,0,7) == "http://") {
+	if (substr($url,0,7) == "http://")
 		$url=sb_display_url().sb_query_char(FALSE).'show&url='.rawurlencode($url);
-	} else {
-		if (strtolower($ext) == 'mp3' && function_exists('ap_insert_player_widgets')) {
+	else
+		if (strtolower($ext) == 'mp3')
 			$url=sb_display_url().sb_query_char(FALSE).'show&file_name='.rawurlencode($url);
-		} else {
+		else
 			$url=sb_display_url().sb_query_char(FALSE).'download&file_name='.rawurlencode($url);
-		}
-	}	$icon_url = SB_PLUGIN_URL.'/sb-includes/icons/';
 	$uicon = $default_site_icon;
 	foreach ($siteicons as $site => $icon) {
 		if (strpos($url, $site) !== false) {
@@ -674,12 +674,21 @@ function sb_print_url($url) {
 		}
 	}
 	$uicon = isset($filetypes[$ext]['icon']) ? $filetypes[$ext]['icon'] : $uicon;
-	if (strtolower($ext) == 'mp3' && function_exists('ap_insert_player_widgets')) {
-		echo ap_insert_player_widgets('[audio:'.$url.']');
-	} else {
-		echo '<a href="'.$url.'"><img class="site-icon" alt="'.$filetypes[$ext]['name'].'" title="'.$filetypes[$ext]['name'].'" src="'.$icon_url.$uicon.'"></a>';
+	if (strtolower($ext) == 'mp3') {
+		if ((substr(sb_get_option('mp3_shortcode'), 0, 18) == '[audio:%SERMONURL%') && function_exists('ap_insert_player_widgets')) {
+			echo ap_insert_player_widgets(str_ireplace('%SERMONURL%', $url, sb_get_option('mp3_shortcode')));
+			return;
+		} elseif (do_shortcode(sb_get_option('mp3_shortcode')) != sb_get_option('mp3_shortcode')) {
+			echo do_shortcode(str_ireplace('%SERMONURL%', $url, sb_get_option('mp3_shortcode')));
+			return;
+		}
 	}
-
+	$uicon = SB_PLUGIN_URL.'/sb-includes/icons/'.$uicon;
+	if (!isset($filetypes[$ext]['name']))
+		$filetypes[$ext]['name'] = sprintf(__('%s file', $sermon_domain), addslashes($ext));
+	else
+		$filetypes[$ext]['name'] = addslashes($filetypes[$ext]['name']);
+	echo "<a href=\"{$url}\"><img class=\"site-icon\" alt=\"{$filetypes[$ext]['name']}\" title=\"{$filetypes[$ext]['name']}\" src=\"{$uicon}\"></a>";
 }
 
 // Print link to attached external URLs
@@ -699,7 +708,7 @@ function sb_print_url_link($url) {
 
 //Decode base64 encoded data
 function sb_print_code($code) {
-	echo base64_decode($code);
+	echo do_shortcode(base64_decode($code));
 }
 
 //Prints preacher description
@@ -714,7 +723,7 @@ function sb_print_preacher_description($sermon) {
 //Prints preacher image
 function sb_print_preacher_image($sermon) {
 	if ($sermon->image)
-		echo "<img alt='".stripslashes($sermon->preacher)."' class='preacher' src='".trailingslashit(get_bloginfo('wpurl')).sb_get_option('upload_dir').'images/'.$sermon->image."'>";
+		echo "<img alt='".stripslashes($sermon->preacher)."' class='preacher' src='".trailingslashit(site_url()).sb_get_option('upload_dir').'images/'.$sermon->image."'>";
 }
 
 //Prints link to sermon preached next (but not today)
@@ -1083,7 +1092,7 @@ function sb_first_mp3($sermon, $stats= TRUE) {
 					$file=sb_display_url().sb_query_char().'show&amp;url='.rawurlencode($file);
 			} else {
 				if (!$stats)
-					$file=get_bloginfo('wpurl').sb_get_option('upload_dir').rawurlencode($file);
+					$file=trailingslashit(site_url()).sb_get_option('upload_dir').rawurlencode($file);
 				else
 					$file=sb_display_url().sb_query_char().'show&amp;file_name='.rawurlencode($file);
 			}

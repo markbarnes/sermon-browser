@@ -70,7 +70,7 @@ function sb_sermon_page_dictionary() {
 		'[cornilescutext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "cornilescu"); endfor ?>',
 		'[synodaltext]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): echo sb_add_bible_text ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i], "synodal"); endfor ?>',
 		'[biblepassage]' => '<?php for ($i = 0; $i < count($sermon["Sermon"]->start); $i++): sb_print_bible_passage ($sermon["Sermon"]->start[$i], $sermon["Sermon"]->end[$i]); endfor ?>',
-		'[editlink]' => '<?php sb_edit_link((int)$_GET["sermon_id"]) ?>',
+		'[editlink]' => '<?php sb_edit_link($sermon["Sermon"]->id) ?>',
 		'[creditlink]' => '<div id="poweredbysermonbrowser">Powered by <a href="http://www.sermonbrowser.com/">Sermon Browser</a></div>',
 	);
 }

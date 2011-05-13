@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.sermonbrowser.com/
 Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
-Version: 0.44.1
+Version: 0.45
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008-2011 Mark Barnes
@@ -53,8 +53,8 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.44.1');
-define('SB_DATABASE_VERSION', '1.6');
+define('SB_CURRENT_VERSION', '0.45');
+define('SB_DATABASE_VERSION', '1.7');
 add_action ('plugins_loaded', 'sb_hijack');
 add_action ('init', 'sb_sermon_init');
 add_action ('widgets_init', 'sb_widget_sermon_init');
@@ -122,7 +122,7 @@ function sb_hijack() {
 					$location = "http://".$matches[1].'/'.$location;
 				}
 				if ($location) {
-					header('Location: '.get_bloginfo('wpurl').'?download&url='.$location);
+					header('Location: '.site_url().'?download&url='.$location);
 					die();
 				}
 			}
@@ -202,9 +202,9 @@ function sb_sermon_init () {
 	wp_register_script('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datePicker.js', array('jquery'), SB_CURRENT_VERSION);
 	wp_register_style('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datepicker.css', false, SB_CURRENT_VERSION);
 	if (get_option('permalink_structure') == '')
-		wp_register_style('sb_style', trailingslashit(get_option('siteurl')).'?sb-style&', false, sb_get_option('style_date_modified'));
+		wp_register_style('sb_style', trailingslashit(site_url()).'?sb-style&', false, sb_get_option('style_date_modified'));
 	else
-		wp_register_style('sb_style', trailingslashit(get_option('siteurl')).'sb-style.css', false, sb_get_option('style_date_modified'));
+		wp_register_style('sb_style', trailingslashit(site_url()).'sb-style.css', false, sb_get_option('style_date_modified'));
 
 	// Register [sermon] shortcode handler
 	add_shortcode('sermons', 'sb_shortcode');
@@ -246,7 +246,7 @@ function sb_sermon_init () {
 
 	// Load shared (admin/frontend) features
 	add_action ('save_post', 'update_podcast_url');
-
+	
 	// Check to see what functions are required, and only load what is needed
 	if (stripos($_SERVER['REQUEST_URI'], '/wp-admin/') === FALSE) {
 		require ('sb-includes/frontend.php');
@@ -330,9 +330,9 @@ function sb_sermon_stats($sermonid) {
  function update_podcast_url () {
 	global $wp_rewrite;
 	$existing_url = sb_get_option('podcast_url');
-	if (substr($existing_url, 0, strlen(get_bloginfo('wpurl'))) == get_bloginfo('wpurl')) {
+	if (substr($existing_url, 0, strlen(site_url())) == site_url()) {
 		if (sb_display_url(TRUE)=="") {
-			sb_update_option('podcast_url', get_bloginfo('wpurl').sb_query_char(false).'podcast');
+			sb_update_option('podcast_url', site_url().sb_query_char(false).'podcast');
 		} else {
 			sb_update_option('podcast_url', sb_display_url().sb_query_char(false).'podcast');
 		}
@@ -408,11 +408,11 @@ function sb_display_url() {
 		if ($pageid == 0)
 			return '';
 		if (defined('SB_AJAX') && SB_AJAX)
-			return get_bloginfo('wpurl').'/?page_id='.$pageid; // Don't use permalinks in Ajax calls
+			return site_url().'/?page_id='.$pageid; // Don't use permalinks in Ajax calls
 		else {
 			$sb_display_url = get_permalink($pageid);
-			if ($sb_display_url == get_bloginfo('wpurl') || $sb_display_url == '') // Hack to force true permalink even if page used for front page.
-				$sb_display_url = get_bloginfo('wpurl').'/?page_id='.$pageid;
+			if ($sb_display_url == site_url() || $sb_display_url == '') // Hack to force true permalink even if page used for front page.
+				$sb_display_url = site_url().'/?page_id='.$pageid;
 			}
 	}
 	return $sb_display_url;
@@ -683,22 +683,19 @@ function sb_mkdir($pathname, $mode=0777) {
 */
 function sb_define_constants() {
 	$directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
-	if ($directories[count($directories)-1] == 'mu-plugins') {
+	if ($plugin_dir = $directories[count($directories)-1] == 'mu-plugins' || (function_exists('is_multisite') && is_multisite())) {
 		define('IS_MU', TRUE);
 	} else {
 		define('IS_MU', FALSE);
 	}
-	if ( !defined('WP_CONTENT_URL') )
-		define( 'WP_CONTENT_URL', trailingslashit(get_option('siteurl')) . 'wp-content');
-	$plugin_dir = $directories[count($directories)-1];
-	if (IS_MU)
-		define ('SB_PLUGIN_URL', WP_CONTENT_URL.'/'.$plugin_dir);
+	if ($directories[count($directories)-1] == 'mu-plugins' )
+		define ('SB_PLUGIN_URL', content_url().'/'.$plugin_dir);
 	else
-		define ('SB_PLUGIN_URL', rtrim(WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__)), '/'));
-	define ('SB_WP_PLUGIN_DIR', sb_sanitise_path(WP_PLUGIN_DIR));
+		define ('SB_PLUGIN_URL', rtrim(content_url().'/plugins/'.plugin_basename(dirname(__FILE__)), '/'));
+	define ('SB_PLUGIN_DIR', sb_sanitise_path(defined('WP_CONTENT_DIR') ? WP_CONTENT_DIR : ABSPATH.'wp-content').'/plugins');
 	define ('SB_WP_CONTENT_DIR', sb_sanitise_path(WP_CONTENT_DIR));
 	define ('SB_ABSPATH', sb_sanitise_path(ABSPATH));
-	define ('GETID3_INCLUDEPATH', SB_WP_PLUGIN_DIR.'/'.$plugin_dir.'/sb-includes/getid3/');
+	define ('GETID3_INCLUDEPATH', SB_PLUGIN_DIR.'/'.plugin_basename(dirname(__FILE__)).'/sb-includes/getid3/');
 	define ('GETID3_HELPERAPPSDIR', GETID3_INCLUDEPATH);
 }
 
@@ -896,17 +893,5 @@ function sb_sanitise_path ($path) {
 	$path = str_replace('\\','/',$path);
 	$path = preg_replace('|/+|','/', $path);
 	return $path;
-}
-
-// Replacement for get_admin_url for pre WP 3.0 compatability
-function sb_get_admin_url($blog_id = null, $path = '', $scheme = 'admin') {
-	if (function_exists('get_admin_url'))
-		return get_admin_url($blog_id, $path, $scheme);
-	else {
-		$url = trailingslashit(get_option('siteurl')).'wp-admin/';
-		if (!empty($path) && is_string($path) && strpos($path, '..') === false)
-			$url .= ltrim($path, '/');
-		return $url;
-	}
 }
 ?>

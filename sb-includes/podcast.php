@@ -24,7 +24,7 @@ function sb_media_size($media_name, $media_type) {
 function sb_mp3_duration($media_name, $media_type) {
 	global $wpdb;
 	if (strtolower(substr($media_name, -3)) == 'mp3' && $media_type == 'Files') {
-		$duration = $wpdb->get_var("SELECT duration FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' AND name = '{$media_name}'");
+		$duration = $wpdb->get_var("SELECT duration FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' AND name = '{$wpdb->escape($media_name)}'");
 		if ($duration)
 			return $duration;
 		else {
@@ -32,7 +32,7 @@ function sb_mp3_duration($media_name, $media_type) {
 			$getID3 = new getID3;
 			$MediaFileInfo = $getID3->analyze(SB_ABSPATH.sb_get_option('upload_dir').$media_name);
 			$duration = isset($MediaFileInfo['playtime_string']) ? $MediaFileInfo['playtime_string'] : '';
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET duration = '{$duration}' WHERE type = 'file' AND name = '{$media_name}'");
+			$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET duration = '{$wpdb->escape($duration)}' WHERE type = 'file' AND name = '{$wpdb->escape($media_name)}'");
 			return $duration;
 		}
 	}
@@ -61,7 +61,7 @@ function sb_podcast_file_url($media_name, $media_type) {
 			$media_name=sb_display_url().sb_query_char().'show&amp;url='.rawurlencode($media_name);
 	} else {
 		if (!$stats)
-			$media_name=get_bloginfo('wpurl').sb_get_option('upload_dir').rawurlencode($media_name);
+			$media_name=site_url().sb_get_option('upload_dir').rawurlencode($media_name);
 		else
 			$media_name=sb_display_url().sb_query_char().'show&amp;file_name='.rawurlencode($media_name);
 	}
@@ -107,7 +107,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 	<title><?php echo sb_xml_entity_encode(get_bloginfo('name')) ?> Podcast</title>
 	<itunes:author></itunes:author>
 	<description><?php echo sb_xml_entity_encode(get_bloginfo('description')) ?></description>
-	<link><?php echo sb_xml_entity_encode(get_bloginfo('home')) ?></link>
+	<link><?php echo sb_xml_entity_encode(site_url()) ?></link>
 	<language>en-us</language>
 	<copyright></copyright>
 	<itunes:explicit>no</itunes:explicit>

@@ -66,7 +66,7 @@ if (isset($_POST['pname'])) { // preacher
 		$oname = isset($_POST['oname']) ? mysql_real_escape_string($_POST['oname']) : '';
 		if (isset($_POST['del'])) {
 			if (!file_exists(SB_ABSPATH.sb_get_option('upload_dir').$fname) || unlink(SB_ABSPATH.sb_get_option('upload_dir').$fname)) {
-				$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE id = $fid;");
+				$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE id = {$fid};");
 				echo 'deleted';
 				die();
 			} else {
@@ -77,7 +77,9 @@ if (isset($_POST['pname'])) { // preacher
 			$oname = mysql_real_escape_string($_POST['oname']);
 			if (IS_MU) {
 				$file_allowed = FALSE;
-				require_once(SB_ABSPATH . 'wp-includes/wpmu-functions.php');
+				global $wp_version;
+				if (version_compare ($wp_version, '3.0', '<'))
+					require_once(SB_ABSPATH . 'wp-includes/wpmu-functions.php');
 				if (function_exists('get_site_option')) {
 					$allowed_extensions = explode(" ", get_site_option("upload_filetypes"));
 					foreach ($allowed_extensions as $ext) {
@@ -139,7 +141,7 @@ if (isset($_POST['pname'])) { // preacher
 			<td style="text-align:center">
 				<?php //Security check
 						if (current_user_can('edit_posts')) { ?>
-						<a href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/new_sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo $_SERVER['PHP_SELF']?>?page=sermon-browser/sermon.php&mid=<?php echo $sermon->id ?>"><?php _e('Delete', $sermon_domain); ?></a> |
+						<a href="<?php echo admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}"); ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"); ?>"><?php _e('Delete', $sermon_domain); ?></a> |
 				<?php } ?>
 				<a href="<?php echo sb_display_url().sb_query_char(true).'sermon_id='.$sermon->id;?>">View</a>
 			</td>
@@ -184,7 +186,7 @@ if (isset($_POST['pname'])) { // preacher
 					return false;
 				}
 				</script>
-				<?php if (isset($_POST['fetchU'])) { ?><a id="" href="<?php echo $_SERVER['PHP_SELF']."?page=sermon-browser/new_sermon.php&amp;getid3={$file->id}"; ?>"><?php _e('Create sermon', $sermon_domain) ?></a> | <?php } ?>
+				<?php if (isset($_POST['fetchU'])) { ?><a id="" href="<?php echo admin_url("admin.php?page=sermon-browser/new_sermon.php&amp;getid3={$file->id}"); ?>"><?php _e('Create sermon', $sermon_domain) ?></a> | <?php } ?>
 				<a id="link<?php echo $file->id ?>" href="javascript:rename(<?php echo $file->id ?>, '<?php echo $file->name ?>')"><?php _e('Rename', $sermon_domain) ?></a> | <a onclick="return deletelinked_<?php echo $file->id;?>('<?php echo str_replace("'", '', $file->name) ?>', '<?php echo str_replace("'", '', $file->title) ?>');" href="javascript:kill(<?php echo $file->id ?>, '<?php echo $file->name ?>');"><?php _e('Delete', $sermon_domain) ?></a>
 			</td>
 		</tr>

@@ -135,7 +135,7 @@ function sb_install() {
 
 	sb_update_option('upload_dir', $sermonUploadDir);
 	sb_update_option('upload_url', sb_get_default('attachment_url'));
-	sb_update_option('podcast_url', get_bloginfo('wpurl').'?podcast');
+	sb_update_option('podcast_url', site_url().'?podcast');
 	sb_update_option('display_method', 'dynamic');
 	sb_update_option('sermons_per_page', '10');
 	sb_update_option('search_template', sb_default_multi_template());
@@ -157,6 +157,7 @@ function sb_install() {
 	sb_update_option('import_album', false);
 	sb_update_option('import_comments', false);
 	sb_update_option('import_filename', 'none');
+	sb_update_option('mp3_shortcode', '[audio:%SERMONURL%]');
 }
 
 //Default template for search results
