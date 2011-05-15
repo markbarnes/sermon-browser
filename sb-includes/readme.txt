@@ -221,6 +221,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.1 =
+Fixes PHP4 incompatibility, and bug when attaching URLs.
+
 = 0.45 =
 Adds compatibility with WordPress Multisite, and with many more MP3 players. Also fixes several minor bugs.
 
@@ -228,15 +231,15 @@ Adds compatibility with WordPress Multisite, and with many more MP3 players. Als
 Fixes bug which breaks sites that have a page with [sermons xxxxx], but no page with just [sermons].
 
 = 0.44 =
-Fixes several bugs (including an important security fix), and adds support for the admin bar in WordPress 3.1
+Adds WordPress 3.1 compatibility, fixes several bugs (including an important security fix), and adds support for the admin bar in WordPress 3.1
 
-= 0.44 =
-Fixes several bugs (including an important security fix), and adds support for the admin bar in WordPress 3.1
-
-= 0.43.5 =
+= 0.43.6 =
 Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
+
+= 0.45.1 (15 May 2011) =
+* **Bug fix:** Syntax errors on PHP4, and URLs not attaching correctly ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/upgrade-error-line-816/)).
 
 = 0.45 (13 May 2011) =
 * **New feature:** You can now use many more MP3 players, not just WPAudio. Any MP3 WordPress plugin that supports shortcodes can be used. Go to Options and insert the shortcode for your preferred player.

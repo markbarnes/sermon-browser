@@ -813,7 +813,7 @@ function sb_files() {
 						echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";
 					}
 				} else {
-					$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'url', '{$wpdb->escape(url)}', 0, 0, 0)");
+					$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'url', '".$wpdb->escape($url)."', 0, 0, 0)");
 					echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";
 					die();
 				}
@@ -1406,9 +1406,9 @@ function sb_new_sermon() {
 				if ($file_allowed) {
 					$prefix = '';
 					$dest = SB_ABSPATH.sb_get_option('upload_dir').$prefix.$filename;
-					if ($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = '{$wpdb->escape($filename)}'") == 0 && move_uploaded_file($_FILES['upload']['tmp_name'][$uid], $dest)) {
+					if ($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = '".$wpdb->escape($filename)."'") == 0 && move_uploaded_file($_FILES['upload']['tmp_name'][$uid], $dest)) {
 						$filename = $prefix.mysql_real_escape_string($filename);
-						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '{$wpdb->escape($filename)}', $id, 0, 0)");
+						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '".$wpdb->escape($filename)."', $id, 0, 0)");
 					} else {
 						echo '<div id="message" class="updated fade"><p><b>'.$filename.__(' already exists.', $sermon_domain).'</b></div>';
 						$error = true;
