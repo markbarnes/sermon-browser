@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.sermonbrowser.com/
 Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
-Version: 0.45.1
+Version: 0.45.2
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008-2011 Mark Barnes
@@ -53,14 +53,15 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.45.1');
+define('SB_CURRENT_VERSION', '0.45.2');
 define('SB_DATABASE_VERSION', '1.7');
+sb_define_constants();
 add_action ('plugins_loaded', 'sb_hijack');
 add_action ('init', 'sb_sermon_init');
 add_action ('widgets_init', 'sb_widget_sermon_init');
 
 if (version_compare(PHP_VERSION, '5.0.0', '<'))
-	require('sb-includes/php4compat.php');
+	require(SB_INCLUDES_DIR.'/php4compat.php');
 
 /**
 * Display podcast, or download linked files
@@ -71,15 +72,14 @@ if (version_compare(PHP_VERSION, '5.0.0', '<'))
 function sb_hijack() {
 
 	global $filetypes, $wpdb, $sermon_domain;
-	sb_define_constants();
 
 	if (function_exists('wp_timezone_supported') && wp_timezone_supported())
 		wp_timezone_override_offset();
 
 	if (isset($_POST['sermon']) && $_POST['sermon'] == 1)
-		require('sb-includes/ajax.php');
+		require(SB_INCLUDES_DIR.'/ajax.php');
 	if (stripos($_SERVER['REQUEST_URI'], 'sb-style.css') !== FALSE || isset($_GET['sb-style']))
-		require('sb-includes/style.php');
+		require(SB_INCLUDES_DIR.'/style.php');
 
 	//Forces sermon download of local file
 	if (isset($_GET['download']) AND isset($_GET['file_name'])) {
@@ -195,7 +195,7 @@ function sb_sermon_init () {
 
 	//Display the podcast if that's what's requested
 	if (isset($_GET['podcast']))
-		require('sb-includes/podcast.php');
+		require(SB_INCLUDES_DIR.'/podcast.php');
 
 	// Register custom CSS and javascript files
 	wp_register_script('sb_64', SB_PLUGIN_URL.'/sb-includes/64.js', false, SB_CURRENT_VERSION);
@@ -231,15 +231,15 @@ function sb_sermon_init () {
 		else
 			$db_version = sb_get_option('db_version');
 		if ($db_version && $db_version != SB_DATABASE_VERSION) {
-			require_once ('sb-includes/upgrade.php');
+			require_once (SB_INCLUDES_DIR.'/upgrade.php');
 			sb_database_upgrade ($db_version);
 		} elseif (!$db_version) {
-			require ('sb-includes/sb-install.php');
+			require (SB_INCLUDES_DIR.'/sb-install.php');
 			sb_install();
 		}
 		$sb_version = sb_get_option('code_version');
 		if ($sb_version != SB_CURRENT_VERSION) {
-			require_once ('sb-includes/upgrade.php');
+			require_once (SB_INCLUDES_DIR.'/upgrade.php');
 			sb_version_upgrade ($sb_version, SB_CURRENT_VERSION);
 		}
 	}
@@ -249,7 +249,7 @@ function sb_sermon_init () {
 	
 	// Check to see what functions are required, and only load what is needed
 	if (stripos($_SERVER['REQUEST_URI'], '/wp-admin/') === FALSE) {
-		require ('sb-includes/frontend.php');
+		require (SB_INCLUDES_DIR.'/frontend.php');
 		add_action('wp_head', 'sb_add_headers', 0);
 		add_action('wp_head', 'wp_print_styles', 9);
 		add_action('admin_bar_menu', 'sb_admin_bar_menu', 45);
@@ -257,7 +257,7 @@ function sb_sermon_init () {
 		if (defined('SAVEQUERIES') && SAVEQUERIES)
 			add_action ('wp_footer', 'sb_footer_stats');
 	} else {
-		require ('sb-includes/admin.php');
+		require (SB_INCLUDES_DIR.'/admin.php');
 		add_action ('admin_menu', 'sb_add_pages');
 		add_action ('rightnow_end', 'sb_rightnow');
 		add_action('admin_init', 'sb_add_admin_headers');
@@ -570,7 +570,7 @@ function sb_widget_sermon_init() {
 * @param integer $widget_args
 */
 function sb_widget_sermon_wrapper ($args, $widget_args = 1) {
-	require_once ('sb-includes/frontend.php');
+	require_once (SB_INCLUDES_DIR.'/frontend.php');
 	sb_widget_sermon($args, $widget_args);
 }
 
@@ -581,7 +581,7 @@ function sb_widget_sermon_wrapper ($args, $widget_args = 1) {
 * @param array $args
 */
 function sb_widget_tag_cloud_wrapper ($args) {
-	require_once ('sb-includes/frontend.php');
+	require_once (SB_INCLUDES_DIR.'/frontend.php');
 	sb_widget_tag_cloud ($args);
 }
 
@@ -592,7 +592,7 @@ function sb_widget_tag_cloud_wrapper ($args) {
 * @param array $args
 */
 function sb_widget_popular_wrapper ($args) {
-	require_once ('sb-includes/frontend.php');
+	require_once (SB_INCLUDES_DIR.'/frontend.php');
 	sb_widget_popular ($args);
 }
 
@@ -694,6 +694,7 @@ function sb_define_constants() {
 		define ('SB_PLUGIN_URL', rtrim(content_url().'/plugins/'.plugin_basename(dirname(__FILE__)), '/'));
 	define ('SB_PLUGIN_DIR', sb_sanitise_path(defined('WP_CONTENT_DIR') ? WP_CONTENT_DIR : ABSPATH.'wp-content').'/plugins');
 	define ('SB_WP_CONTENT_DIR', sb_sanitise_path(WP_CONTENT_DIR));
+	define ('SB_INCLUDES_DIR', SB_PLUGIN_DIR.'/sermon-browser/sb-includes');
 	define ('SB_ABSPATH', sb_sanitise_path(ABSPATH));
 	define ('GETID3_INCLUDEPATH', SB_PLUGIN_DIR.'/'.plugin_basename(dirname(__FILE__)).'/sb-includes/getid3/');
 	define ('GETID3_HELPERAPPSDIR', GETID3_INCLUDEPATH);

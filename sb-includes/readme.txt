@@ -4,7 +4,7 @@ Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 2.6
 Tested up to: 3.1.2
-Stable tag: 0.44.1
+Stable tag: trunk
 
 Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 
@@ -221,6 +221,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.2 =
+Fixes bug when upgrading from very early versions of Sermon Browser.
+
 = 0.45.1 =
 Fixes PHP4 incompatibility, and bug when attaching URLs.
 
@@ -238,8 +241,12 @@ Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
 
+= 0.45.2 (15 May 2011) =
+* **Bug fix:** Fixes bug when upgrading from very early versions of Sermon Browser ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/fatal-error-call-to-undefined-function-sb_delete_unused_tags-in-homepages35d195956195htdocslivingword-netdwp-contentpluginssermon-browsersb-includesupgrade-plivingwor/)).
+
 = 0.45.1 (15 May 2011) =
 * **Bug fix:** Syntax errors on PHP4, and URLs not attaching correctly ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/upgrade-error-line-816/)).
+* See [changeset](http://plugins.trac.wordpress.org/changeset/385190/sermon-browser/trunk).
 
 = 0.45 (13 May 2011) =
 * **New feature:** You can now use many more MP3 players, not just WPAudio. Any MP3 WordPress plugin that supports shortcodes can be used. Go to Options and insert the shortcode for your preferred player.

@@ -2,7 +2,7 @@
 function sb_install() {
 	global $wpdb;
 	$sermonUploadDir = sb_get_default('sermon_path');
-	require ('dictionary.php');
+	require (SB_INCLUDES_DIR.'/dictionary.php');
 	if (!is_dir(SB_ABSPATH.$sermonUploadDir))
 		sb_mkdir(SB_ABSPATH.$sermonUploadDir);
 	if (!is_dir(SB_ABSPATH.$sermonUploadDir.'images'))

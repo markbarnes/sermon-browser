@@ -28,7 +28,7 @@ function sb_mp3_duration($media_name, $media_type) {
 		if ($duration)
 			return $duration;
 		else {
-			require_once('getid3/getid3.php');
+			require_once(SB_INCLUDES_DIR.'/getid3/getid3.php');
 			$getID3 = new getID3;
 			$MediaFileInfo = $getID3->analyze(SB_ABSPATH.sb_get_option('upload_dir').$media_name);
 			$duration = isset($MediaFileInfo['playtime_string']) ? $MediaFileInfo['playtime_string'] : '';
@@ -70,7 +70,7 @@ function sb_podcast_file_url($media_name, $media_type) {
 
 // Returns correct MIME type
 function sb_mime_type($media_name) {
-	require ('filetypes.php');
+	require (SB_INCLUDES_DIR.'/filetypes.php');
 	$extension = strtolower(substr($media_name, strrpos($media_name, '.') + 1));
 	if (array_key_exists ($extension, $filetypes))
 		return ' type="'.$filetypes[$extension]['content-type'].'"';

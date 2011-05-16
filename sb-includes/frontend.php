@@ -656,7 +656,7 @@ function sb_print_prev_page_link($limit = 0) {
 // Print link to attached files
 function sb_print_url($url) {
 	global $sermon_domain;
-	require ('filetypes.php');
+	require (SB_INCLUDES_DIR.'/filetypes.php');
 	$pathinfo = pathinfo($url);
 	$ext = $pathinfo['extension'];
 	if (substr($url,0,7) == "http://")

@@ -313,7 +313,7 @@ function sb_uninstall () {
 	if (!(current_user_can('edit_plugins') | (IS_MU && current_user_can('manage_options'))))
 			wp_die(__("You do not have the correct permissions to Uninstall SermonBrowser", $sermon_domain));
 	if (isset($_POST['uninstall']))
-		require('uninstall.php');
+		require(SB_INCLUDES_DIR.'/uninstall.php');
 ?>
 	<form method="post">
 	<div class="wrap">
@@ -361,12 +361,12 @@ function sb_templates () {
 			wp_die(__("You do not have the correct permissions to edit the SermonBrowser templates", $sermon_domain));
 	//Save templates or reset to default
 	if (isset($_POST['save']) || isset($_POST['resetdefault'])) {
-		require('dictionary.php');
+		require(SB_INCLUDES_DIR.'/dictionary.php');
 		$multi = $_POST['multi'];
 		$single = $_POST['single'];
 		$style = $_POST['style'];
 		if(isset($_POST['resetdefault'])){
-			require('sb-install.php');
+			require(SB_INCLUDES_DIR.'/sb-install.php');
 			$multi = sb_default_multi_template();
 			$single = sb_default_single_template();
 			$style = sb_default_css();
@@ -1457,7 +1457,7 @@ function sb_new_sermon() {
 
 	$id3_tags = array();
 	if (isset($_GET['getid3'])) {
-		require_once('getid3/getid3.php');
+		require_once(SB_INCLUDES_DIR.'/getid3/getid3.php');
 		$file_data = $wpdb->get_row("SELECT name, type FROM {$wpdb->prefix}sb_stuff WHERE id = ".$wpdb->escape($_GET['getid3']));
 		if ($file_data !== NULL) {
 			$getID3 = new getID3;

@@ -40,7 +40,7 @@ function sb_upgrade_options () {
 
 // Runs the version upgrade procedures (re-save templates, add options added since last db update)
 function sb_version_upgrade ($old_version, $new_version) {
-	require_once('dictionary.php');
+	require_once(SB_INCLUDES_DIR.'/dictionary.php');
 	$sbmf = sb_get_option('search_template');
 	if ($sbmf)
 		sb_update_option('search_output', strtr($sbmf, sb_search_results_dictionary()));
@@ -54,8 +54,8 @@ function sb_version_upgrade ($old_version, $new_version) {
 
 //Runs the database upgrade procedures (modifies database structure)
 function sb_database_upgrade ($old_version) {
-	require_once('dictionary.php');
-	require_once('admin.php');
+	require_once(SB_INCLUDES_DIR.'/dictionary.php');
+	require_once(SB_INCLUDES_DIR.'/admin.php');
 	global $wpdb;
 	$sermonUploadDir = sb_get_default('sermon_path');
 	switch ($old_version) {
