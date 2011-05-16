@@ -243,6 +243,7 @@ Important security fixes. All users should upgrade to this version.
 
 = 0.45.2 (15 May 2011) =
 * **Bug fix:** Fixes bug when upgrading from very early versions of Sermon Browser ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/fatal-error-call-to-undefined-function-sb_delete_unused_tags-in-homepages35d195956195htdocslivingword-netdwp-contentpluginssermon-browsersb-includesupgrade-plivingwor/)).
+* See [changeset](http://plugins.trac.wordpress.org/changeset/385616/sermon-browser/trunk).
 
 = 0.45.1 (15 May 2011) =
 * **Bug fix:** Syntax errors on PHP4, and URLs not attaching correctly ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/upgrade-error-line-816/)).
