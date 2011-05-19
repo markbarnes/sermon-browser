@@ -7,6 +7,18 @@ if (!function_exists('stripos')) {
 	}
 }
 
+// Emulates str_ireplace
+if (!function_exists('str_ireplace')) {
+	function str_ireplace($search, $replace, $subject) {
+		if (is_array($search))
+			foreach ($search as $word)
+			$words[] = "/".$word."/i";
+		else
+			$words = "/".$search."/i";
+		return preg_replace($words, $replace, $subject);
+	}
+}
+
 //Emulates get_headers
 if (!function_exists('get_headers')) {
 	function get_headers($Url, $Format= 0, $Depth= 0) {

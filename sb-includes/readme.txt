@@ -221,6 +221,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.3 =
+Fixes further PHP4 incompatibility with default audio player.
+
 = 0.45.2 =
 Fixes bug when upgrading from very early versions of Sermon Browser.
 
@@ -240,6 +243,9 @@ Adds WordPress 3.1 compatibility, fixes several bugs (including an important sec
 Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
+
+= 0.45.3 (19 May 2011) =
+* **Bug fix:** Fixes further PHP4 incompatibility with default audio player - Fatal error: Call to undefined function: str_ireplace(). ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/fatal-error-when-viewing-a-sermon/)).
 
 = 0.45.2 (15 May 2011) =
 * **Bug fix:** Fixes bug when upgrading from very early versions of Sermon Browser ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/fatal-error-call-to-undefined-function-sb_delete_unused_tags-in-homepages35d195956195htdocslivingword-netdwp-contentpluginssermon-browsersb-includesupgrade-plivingwor/)).
