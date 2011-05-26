@@ -3,7 +3,7 @@ Contributors: mark8barnes
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 2.6
-Tested up to: 3.1.2
+Tested up to: 3.2
 Stable tag: trunk
 
 Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
@@ -221,6 +221,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.4 =
+Fixes broken iTunes feed on some installations.
+
 = 0.45.3 =
 Fixes further PHP4 incompatibility with default audio player.
 
@@ -243,6 +246,9 @@ Adds WordPress 3.1 compatibility, fixes several bugs (including an important sec
 Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
+
+= 0.45.4 (26 May 2011) =
+* **Bug fix:** Fixes broken iTunes feed on some installations.
 
 = 0.45.3 (19 May 2011) =
 * **Bug fix:** Fixes further PHP4 incompatibility with default audio player - Fatal error: Call to undefined function: str_ireplace(). ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/fatal-error-when-viewing-a-sermon/)).

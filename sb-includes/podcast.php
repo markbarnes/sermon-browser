@@ -61,7 +61,7 @@ function sb_podcast_file_url($media_name, $media_type) {
 			$media_name=sb_display_url().sb_query_char().'show&amp;url='.rawurlencode($media_name);
 	} else {
 		if (!$stats)
-			$media_name=site_url().sb_get_option('upload_dir').rawurlencode($media_name);
+			$media_name=trailingslashit(site_url()).ltrim(sb_get_option('upload_dir'), '/').rawurlencode($media_name);
 		else
 			$media_name=sb_display_url().sb_query_char().'show&amp;file_name='.rawurlencode($media_name);
 	}
