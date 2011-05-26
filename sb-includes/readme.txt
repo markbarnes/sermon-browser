@@ -249,6 +249,7 @@ Important security fixes. All users should upgrade to this version.
 
 = 0.45.4 (26 May 2011) =
 * **Bug fix:** Fixes broken iTunes feed on some installations.
+* See [changeset](http://plugins.trac.wordpress.org/changeset?reponame=&new=389533%40sermon-browser%2Ftrunk&old=386544%40sermon-browser%2Ftrunk).
 
 = 0.45.3 (19 May 2011) =
 * **Bug fix:** Fixes further PHP4 incompatibility with default audio player - Fatal error: Call to undefined function: str_ireplace(). ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/fatal-error-when-viewing-a-sermon/)).
