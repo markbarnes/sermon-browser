@@ -4,10 +4,10 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.sermonbrowser.com/
 Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
-Version: 0.45.4
+Version: 0.45.5
 Author URI: http://www.4-14.org.uk/
 
-Copyright (c) 2008-2011 Mark Barnes
+Copyright (c) 2008-2013 Mark Barnes
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.45.4');
+define('SB_CURRENT_VERSION', '0.45.5');
 define('SB_DATABASE_VERSION', '1.7');
 sb_define_constants();
 add_action ('plugins_loaded', 'sb_hijack');
@@ -202,27 +202,29 @@ function sb_sermon_init () {
 	wp_register_script('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datePicker.js', array('jquery'), SB_CURRENT_VERSION);
 	wp_register_style('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datepicker.css', false, SB_CURRENT_VERSION);
 	if (get_option('permalink_structure') == '')
-		wp_register_style('sb_style', trailingslashit(site_url()).'?sb-style&', false, sb_get_option('style_date_modified'));
+		wp_register_style('sb_style', trailingslashit(home_url()).'?sb-style&', false, sb_get_option('style_date_modified'));
 	else
-		wp_register_style('sb_style', trailingslashit(site_url()).'sb-style.css', false, sb_get_option('style_date_modified'));
+		wp_register_style('sb_style', trailingslashit(home_url()).'sb-style.css', false, sb_get_option('style_date_modified'));
 
 	// Register [sermon] shortcode handler
 	add_shortcode('sermons', 'sb_shortcode');
 	add_shortcode('sermon', 'sb_shortcode');
 
 	// Attempt to set php.ini directives
-	if (sb_return_kbytes(ini_get('upload_max_filesize'))<15360)
-		ini_set('upload_max_filesize', '15M');
-	if (sb_return_kbytes(ini_get('post_max_size'))<15360)
-		ini_set('post_max_size', '15M');
-	if (sb_return_kbytes(ini_get('memory_limit'))<49152)
-		ini_set('memory_limit', '48M');
-	if (intval(ini_get('max_input_time'))<600)
-		ini_set('max_input_time','600');
-	if (intval(ini_get('max_execution_time'))<600)
-		ini_set('max_execution_time', '600');
-	if (ini_get('file_uploads')<>'1')
-		ini_set('file_uploads', '1');
+	if (strpos(ini_get('disable_functions'), 'ini_set') === FALSE) {
+		if (sb_return_kbytes(ini_get('upload_max_filesize'))<15360)
+			ini_set('upload_max_filesize', '15M');
+		if (sb_return_kbytes(ini_get('post_max_size'))<15360)
+			ini_set('post_max_size', '15M');
+		if (sb_return_kbytes(ini_get('memory_limit'))<49152)
+			ini_set('memory_limit', '48M');
+		if (intval(ini_get('max_input_time'))<600)
+			ini_set('max_input_time','600');
+		if (intval(ini_get('max_execution_time'))<600)
+			ini_set('max_execution_time', '600');
+		if (ini_get('file_uploads')<>'1')
+			ini_set('file_uploads', '1');
+	}
 
 	// Check whether upgrade required
 	if (current_user_can('manage_options') && is_admin()) {
@@ -387,7 +389,9 @@ function sb_display_front_end() {
 */
 function sb_get_page_id() {
 	global $wpdb, $post;
-	$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE (post_content LIKE '%[sermons]%' OR post_content LIKE '%[sermon]%') AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
+	$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE (post_content LIKE '%[sermons]%' OR post_content LIKE '%[sermon]%') AND (post_type = 'page') AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
+	if (!$pageid)
+		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE (post_content LIKE '%[sermons]%' OR post_content LIKE '%[sermon]%') AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
 	if (!$pageid)
 		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE (post_content LIKE '%[sermon %' OR post_content LIKE '%[sermons %') AND (post_status = 'publish' OR post_status = 'private') AND post_date < NOW();");
 	if (!$pageid)
@@ -513,8 +517,8 @@ function sb_shortcode($atts, $content=null) {
 		else
 			$dir = 'asc';
 		$sort_order = array('by' => $sort_criteria, 'dir' =>  $dir);
-		if (isset($_REQUEST['page']))
-			$page = $_REQUEST['page'];
+		if (isset($_REQUEST['pagenum']))
+			$page = $_REQUEST['pagenum'];
 		else
 			$page = 1;
 		$hide_empty = sb_get_option('hide_no_attachments');

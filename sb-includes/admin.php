@@ -547,7 +547,7 @@ function sb_manage_preachers() {
 		return;
 	}
 
-	$preachers = $wpdb->get_results("SELECT {$wpdb->prefix}sb_preachers.*, COUNT({$wpdb->prefix}sb_sermons.id) AS sermon_count FROM {$wpdb->prefix}sb_preachers LEFT JOIN {$wpdb->prefix}sb_sermons ON {$wpdb->prefix}sb_preachers.id=preacher_id GROUP BY preacher_id ORDER BY name ASC");
+	$preachers = $wpdb->get_results("SELECT {$wpdb->prefix}sb_preachers.*, COUNT({$wpdb->prefix}sb_sermons.id) AS sermon_count FROM {$wpdb->prefix}sb_preachers LEFT JOIN {$wpdb->prefix}sb_sermons ON {$wpdb->prefix}sb_preachers.id=preacher_id GROUP BY id ORDER BY name ASC");
 	sb_do_alerts();
 ?>
 	<div class="wrap">
@@ -598,8 +598,8 @@ function sb_manage_everything() {
 	if (function_exists('current_user_can')&&!current_user_can('manage_categories'))
 			wp_die(__("You do not have the correct permissions to manage the series and services database", $sermon_domain));
 
-	$series = $wpdb->get_results("SELECT {$wpdb->prefix}sb_series.*, COUNT({$wpdb->prefix}sb_sermons.id) AS sermon_count FROM {$wpdb->prefix}sb_series LEFT JOIN {$wpdb->prefix}sb_sermons ON series_id = {$wpdb->prefix}sb_series.id GROUP BY series_id ORDER BY name ASC");
-	$services = $wpdb->get_results("SELECT {$wpdb->prefix}sb_services.*, COUNT({$wpdb->prefix}sb_sermons.id) AS sermon_count FROM {$wpdb->prefix}sb_services LEFT JOIN {$wpdb->prefix}sb_sermons ON service_id = {$wpdb->prefix}sb_services.id GROUP BY service_id ORDER BY name ASC");
+	$series = $wpdb->get_results("SELECT {$wpdb->prefix}sb_series.*, COUNT({$wpdb->prefix}sb_sermons.id) AS sermon_count FROM {$wpdb->prefix}sb_series LEFT JOIN {$wpdb->prefix}sb_sermons ON series_id = {$wpdb->prefix}sb_series.id GROUP BY id ORDER BY name ASC");
+	$services = $wpdb->get_results("SELECT {$wpdb->prefix}sb_services.*, COUNT({$wpdb->prefix}sb_sermons.id) AS sermon_count FROM {$wpdb->prefix}sb_services LEFT JOIN {$wpdb->prefix}sb_sermons ON service_id = {$wpdb->prefix}sb_services.id GROUP BY id ORDER BY name ASC");
 
 	$toManage = array(
 		'Series' => array('data' => $series),
@@ -1174,8 +1174,11 @@ function sb_manage_sermons() {
 	sb_do_alerts();
 	if (isset($_GET['saved'])) {
 		echo '<div id="message" class="updated fade"><p><b>'.__('Sermon saved to database.', $sermon_domain).'</b></div>';
-		if (rand (1,5) == 1 && sb_get_option('show_donate_reminder') != 'off')
+        $show_msg = rand (1,5);
+		if ($show_msg == 1 && sb_get_option('show_donate_reminder') != 'off')
 			echo '<div id="message" class="updated"><p><b>'.sprintf(__('If you find SermonBrowser useful, please consider %1$ssupporting%2$s the ministry of Nathanael and Anna Ayling in Japan.', $sermon_domain), '<a href="'.admin_url('admin.php?page=sermon-browser/japan.php').'">', '</a>').'</b></div>';
+        elseif ($show_msg == 2)
+            echo '<div id="message" class="updated"><p><b>'.__('Sermon Browser 2.0 is under development. If you\'re a coder, and would like to help, please check the <a href="https://www.assembla.com/spaces/sermon-browser-2/documents">SB2 development website</a>.', $sermon_domain).'</b></div>';
 	}
 
 	if (isset($_GET['mid'])) {
@@ -1316,6 +1319,7 @@ function sb_new_sermon() {
 		wp_die(__("You do not have the correct permissions to edit or create sermons", $sermon_domain));
 	include_once (SB_ABSPATH.'/wp-includes/kses.php');
 	sb_scan_dir();
+	$translated_books = array_combine(sb_get_default('eng_bible_books'), sb_get_default('bible_books'));
 
 	if (isset($_POST['save']) && isset($_POST['title'])) {
 	// prepare
@@ -1819,7 +1823,7 @@ function sb_new_sermon() {
 									<select id="startbook" name="start[book][]" onchange="syncBook(this)" class="start1">
 										<option value=""></option>
 										<?php foreach ($books as $book): ?>
-											<option value="<?php echo $book ?>"><?php echo $book ?></option>
+											<option value="<?php echo $book ?>"><?php echo $translated_books[$book] ?></option>
 										<?php endforeach ?>
 									</select>
 								</td>
@@ -1835,7 +1839,7 @@ function sb_new_sermon() {
 									<select id="endbook" name="end[book][]" class="end">
 										<option value=""></option>
 										<?php foreach ($books as $book): ?>
-											<option value="<?php echo $book ?>"><?php echo $book ?></option>
+											<option value="<?php echo $book ?>"><?php echo $translated_books[$book] ?></option>
 										<?php endforeach ?>
 									</select>
 								</td>

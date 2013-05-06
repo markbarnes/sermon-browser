@@ -3,7 +3,7 @@ Contributors: mark8barnes
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 2.6
-Tested up to: 3.2
+Tested up to: 3.5.1
 Stable tag: trunk
 
 Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
@@ -125,6 +125,9 @@ If you are having more than 5,000 page views per day, then this won't help. Inst
 #### How can I change the file icons that Sermon Browser uses, or add new icons? ####
 You'll need to edit the `filetypes.php` file that comes with Sermon Browser. The icon is chosen on the basis of the file extension (or in the case of URLs the file extension then the site address). If you do create new icons for other filetypes, consider sending them to the author so they can be included in future versions of the plugin.
 
+#### Are there any more Frequently Asked Questions? ####
+Yes.  There are additonal [FAQs on the Sermon Browser support forum](http://www.sermonbrowser.com/forum/sermon-browser-support/troubleshooting-faq/).
+
 == Screenshots ==
 
 1. **Displaying sermons on your website:** This first screen shot shows how Sermon Browser looks on your site. You can see one of the widgets in the left-hand sidebar, together with the main sermons page showing the one-click filter/search. Each of the sermons has an MP3 files attached, this can be played without leaving the site.
@@ -221,6 +224,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.5 =
+Many bug fixes, collated and patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/) - thanks, Ben! See the support forum for details and recommendations: http://www.sermonbrowser.com/forum/sermon-browser-support/announcing-version-0-45-5/
+
 = 0.45.4 =
 Fixes broken iTunes feed on some installations.
 
@@ -246,6 +252,21 @@ Adds WordPress 3.1 compatibility, fixes several bugs (including an important sec
 Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
+
+= 0.45.5 (3 May 2013) =
+* **Thanks:** Updated version patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/).
+* **Bug fix:** Fix style sheet call when WordPress is installed in a subdirectory (home_url is different than site_url) ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/sermon-browser-screen-layout-issues)).
+* **Bug fix:** Help Sermon Browser choose the correct page for the links ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/all-links-broken/)).
+* **Bug fix:** Next page link shows same sermons ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/next-page-shows-same-sermons/)).
+* **Bug fix:** Preachers, series, services admin bug ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/adding-preachers-not-working-correctly/)).
+* **Bug fix:** Changes to default templates ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/itunes-button-hidden-behind-text-on-the-sermons-page/)).
+* **Bug fix:** Display text from Psalms in non-ESV translations ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/will-not-display-any-scripture-from-book-of-psalms/)).
+* **Bug fix:** Use relative links instead of absolute links in some places, which allows a website to have more than one sermon page ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/next-page-links-to-different-service/)).
+* **Bug fix:** Download link when using [file_with_download] template tag, not using old WP Audio Player plugin ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/file_with_download-not-showing-the-download-link/)).
+* **Bug fix:** Fix for Popular Sermon widget in PHP 5.4 ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/warning-creating-default-object-from-empty-value-after-upgrade-to-php-5-4/)).
+* **Bug fix:** Translation fixes ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/problem-with-romanian-bible-books-showing-in-english/), [link](http://www.sermonbrowser.com/forum/sermon-browser-support/translating-things-which-arent-on-the-pot-file/)).
+* **Bug fix:** Prevent PHP warnings when ini_set function is disabled ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/warning-ini_set-has-been-disabled/)).
+* **Enhancement:** New Hindi translation, and updated Romanian and Russian translations (thanks to [Chandel](http://outshinesolutions.com/), [Lucian Mihailescu](http://lucianwebservice.com/) and [Vadym Gulyi](http://www.vady.kiev.ua/)).
 
 = 0.45.4 (26 May 2011) =
 * **Bug fix:** Fixes broken iTunes feed on some installations.

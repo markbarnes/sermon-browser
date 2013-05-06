@@ -2,410 +2,387 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AMA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-13 16:07-0000\n"
+"POT-Creation-Date: 2013-05-06 15:37-0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Mark Barnes\n"
+"Last-Translator: Vadym Gulyi <me@vady.kiev.ua>\n"
 "Language-Team: Fat Cow <zhr@tut.by>\n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Language: Russian\n"
-"X-Poedit-Country: RUSSIAN FEDERATION\n"
 "X-Poedit-KeywordsList: _e;__\n"
 "X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../sermon.php:105
-#: ../sermon.php:114
-#: ../sermon.php:168
+#: ../sermon.php:105 ../sermon.php:114 ../sermon.php:168
 msgid "not found"
-msgstr ""
+msgstr "не найдено"
 
-#: ../sermon.php:105
-#: ../sermon.php:168
-#, fuzzy
+#: ../sermon.php:105 ../sermon.php:168
 msgid "File not found"
-msgstr "Файл для загрузки"
+msgstr "Файл не найден"
 
 #: ../sermon.php:114
 msgid "URL not found"
-msgstr ""
+msgstr "URL не найден"
 
-#: ../sermon.php:275
-#: ../sermon.php:276
-#: ../sermon.php:540
-#: ../sb-includes/admin.php:563
-#: ../sb-includes/admin.php:737
-#: ../sb-includes/admin.php:1257
-#: ../sb-includes/frontend.php:125
+#: ../sermon.php:277 ../sermon.php:278 ../sermon.php:544
+#: ../sb-includes/admin.php:563 ../sb-includes/admin.php:737
+#: ../sb-includes/admin.php:1260 ../sb-includes/frontend.php:125
 #: ../sb-includes/widget.php:78
 msgid "Sermons"
-msgstr "Проповедь"
+msgstr "Проповеди"
 
-#: ../sermon.php:278
-#: ../sb-includes/frontend.php:122
+#: ../sermon.php:280 ../sb-includes/frontend.php:122
 msgid "Edit Sermon"
 msgstr "Редактировать проповедь"
 
-#: ../sermon.php:280
-#: ../sb-includes/frontend.php:127
+#: ../sermon.php:282 ../sb-includes/frontend.php:127
 msgid "Add Sermon"
 msgstr "Добавить проповедь"
 
-#: ../sermon.php:282
-#: ../sb-includes/admin.php:259
+#: ../sermon.php:284 ../sb-includes/admin.php:259
 #: ../sb-includes/frontend.php:130
-#, fuzzy
 msgid "Files"
-msgstr "Фильтр"
+msgstr "Файлы"
 
-#: ../sermon.php:283
-#: ../sb-includes/admin.php:555
+#: ../sermon.php:285 ../sb-includes/admin.php:555
 #: ../sb-includes/frontend.php:132
 msgid "Preachers"
-msgstr "Проповедник"
+msgstr "Проповедники"
 
-#: ../sermon.php:284
-#: ../sb-includes/frontend.php:133
+#: ../sermon.php:286 ../sb-includes/frontend.php:133
 msgid "Series &amp; Services"
-msgstr "Серии &amp; Сервисы"
+msgstr "Темы и служения"
 
-#: ../sermon.php:285
-#: ../sb-includes/frontend.php:136
+#: ../sermon.php:287 ../sb-includes/frontend.php:136
 msgid "Options"
 msgstr "Настройки"
 
-#: ../sermon.php:286
-#: ../sb-includes/admin.php:390
+#: ../sermon.php:288 ../sb-includes/admin.php:390
 #: ../sb-includes/frontend.php:137
 msgid "Templates"
 msgstr "Шаблоны"
 
-#: ../sermon.php:287
-#: ../sb-includes/admin.php:327
-#: ../sb-includes/admin.php:328
-#: ../sb-includes/admin.php:342
-#: ../sb-includes/frontend.php:140
+#: ../sermon.php:289 ../sb-includes/admin.php:327 ../sb-includes/admin.php:328
+#: ../sb-includes/admin.php:342 ../sb-includes/frontend.php:140
 msgid "Uninstall"
 msgstr "Удаление"
 
-#: ../sermon.php:288
-#: ../sb-includes/frontend.php:141
+#: ../sermon.php:290 ../sb-includes/frontend.php:141
 msgid "Help"
 msgstr "Помощь"
 
-#: ../sermon.php:289
-#: ../sb-includes/frontend.php:142
+#: ../sermon.php:291 ../sb-includes/frontend.php:142
 msgid "Pray for Japan"
-msgstr ""
+msgstr "Молитесь за Японию"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Genesis"
-msgstr "Генезис"
+msgstr "Бытие"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Exodus"
-msgstr "Exodus"
+msgstr "Исход"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Leviticus"
-msgstr "Leviticus"
+msgstr "Левит"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Numbers"
-msgstr "Номер"
+msgstr "Числа"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Deuteronomy"
-msgstr "Deuteronomy"
+msgstr "Второзаконие"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Joshua"
-msgstr "Joshua"
+msgstr "Книга Иисуса  Навина"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Judges"
-msgstr "Judges"
+msgstr "Книга Судей Израилевых"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Ruth"
-msgstr "Ruth"
+msgstr "Книга Руфи"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "1 Samuel"
-msgstr "1 Samuel"
+msgstr "Первая книга Царств"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "2 Samuel"
-msgstr "2 Samuel"
+msgstr "Вторая книга Царств"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "1 Kings"
-msgstr "1 Kings"
+msgstr "Третья книга Царств"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "2 Kings"
-msgstr "2 Kings"
+msgstr "Четвертая книга Царств"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "1 Chronicles"
-msgstr "1 Chronicles"
+msgstr "Первая книга Паралипоменон"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "2 Chronicles"
-msgstr "2 Chronicles"
+msgstr "Вторая книга Паралипоменон"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Ezra"
-msgstr "Ezra"
+msgstr "Первая книга Ездры"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Nehemiah"
-msgstr "Nehemiah"
+msgstr "Книга Неемии"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Esther"
-msgstr "Esther"
+msgstr "Книга Есфири"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Job"
-msgstr "Job"
+msgstr "Книга Иова"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Psalm"
-msgstr "Psalm"
+msgstr "псалом"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Proverbs"
-msgstr "Proverbs"
+msgstr "Книга Притчей Соломоновых"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Ecclesiastes"
-msgstr "Ecclesiastes"
+msgstr "Книга Екклесиаста, или Проповедника"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Song of Solomon"
-msgstr "Song of Solomon"
+msgstr "Песня из Соломона"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Isaiah"
-msgstr "Isaiah"
+msgstr "Книга пророка Исаии"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Jeremiah"
-msgstr "Jeremiah"
+msgstr "Книга пророка Иеремии"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Lamentations"
-msgstr "Lamentations"
+msgstr "Книга Плач Иеремии"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Ezekiel"
-msgstr "Ezekiel"
+msgstr "Книга пророка Иезекииля"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Daniel"
-msgstr "Daniel"
+msgstr "Книга пророка Даниила"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Hosea"
-msgstr "Hosea"
+msgstr "Книга пророка Осии"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Joel"
-msgstr "Joel"
+msgstr "Книга пророка Иоиля"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Amos"
-msgstr "Amos"
+msgstr "Книга пророка Амоса"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Obadiah"
-msgstr "Obadiah"
+msgstr "Книга пророка Авдия"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Jonah"
-msgstr "Jonah"
+msgstr "Книга пророка Ионы"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Micah"
-msgstr "Micah"
+msgstr "Книга пророка Михея"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Nahum"
-msgstr "Nahum"
+msgstr "Книга пророка Наума"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Habakkuk"
-msgstr "Habakkuk"
+msgstr "Книга пророка Аввакума"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Zephaniah"
-msgstr "Zephaniah"
+msgstr "Книга пророка Софонии"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Haggai"
-msgstr "Haggai"
+msgstr "Книга пророка Аггея"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Zechariah"
-msgstr "Zechariah"
+msgstr "Книга пророка Захарии"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Malachi"
-msgstr "Malachi"
+msgstr "Книга пророка Малахии"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Matthew"
-msgstr "Matthew"
+msgstr "Евангелие от Матфея"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Mark"
-msgstr "Mark"
+msgstr "Евангелие от Марка"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Luke"
-msgstr "Luke"
+msgstr "Евангелие от Луки"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "John"
-msgstr "John"
+msgstr "Евангелие от Иоанна"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Acts"
-msgstr "Акты"
+msgstr "Деяния"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Romans"
-msgstr "Романсы"
+msgstr "Послание к Римлянам"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "1 Corinthians"
-msgstr "1 Corinthians"
+msgstr "Первое Послание к Коринфянам"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "2 Corinthians"
-msgstr "2 Corinthians"
+msgstr "Второе Послание к Коринфянам"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Galatians"
-msgstr "Galatians"
+msgstr "Послание к Галатам"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Ephesians"
-msgstr "Ephesians"
+msgstr "Послание к Ефесянам"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Philippians"
-msgstr "Philippians"
+msgstr "Послание к Филиппийцам"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Colossians"
-msgstr "Colossians"
+msgstr "Послание к Колоссянам"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "1 Thessalonians"
-msgstr "1 Thessalonians"
+msgstr "Первое Послание к Фессалоникийцам"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "2 Thessalonians"
-msgstr "2 Thessalonians"
+msgstr "Второе Послание к Фессалоникийцам"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "1 Timothy"
-msgstr "1 Timothy"
+msgstr "Первое Послание к Тимофею"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "2 Timothy"
-msgstr "2 Timothy"
+msgstr "Второе Послание к Тимофею"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Titus"
-msgstr "Titus"
+msgstr "Послание к Титу"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Philemon"
-msgstr "Philemon"
+msgstr "Послание к Филимону"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Hebrews"
-msgstr "Hebrews"
+msgstr "Послание к Евреям"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "James"
-msgstr "James"
+msgstr "Послание Иакова"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "1 Peter"
-msgstr "1 Peter"
+msgstr "Первое Послание Петра"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "2 Peter"
-msgstr "2 Peter"
+msgstr "Второе Послание Петра"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "1 John"
-msgstr "1 John"
+msgstr "Первое Послание Иоанна"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "2 John"
-msgstr "2 John"
+msgstr "Второе Послание Иоанна"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "3 John"
-msgstr "3 John"
+msgstr "Третье Послание Иоанна"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Jude"
-msgstr "Jude"
+msgstr "Послание Иуды"
 
-#: ../sermon.php:363
+#: ../sermon.php:365
 msgid "Revelation"
-msgstr "Апокалипсис"
+msgstr "Откровение"
 
-#: ../sermon.php:501
-#: ../sb-includes/frontend.php:326
-#, fuzzy
+#: ../sermon.php:505 ../sb-includes/frontend.php:329
 msgid "No sermons found."
-msgstr "Количестов проповедей:"
+msgstr "Не найдено проповедей."
 
-#: ../sermon.php:538
+#: ../sermon.php:542
 msgid "Display a list of recent sermons."
-msgstr ""
+msgstr "Отображать список последних проповедей."
 
-#: ../sermon.php:555
-#: ../sb-includes/frontend.php:112
-#: ../sb-includes/widget.php:92
-#: ../sb-includes/widget.php:104
+#: ../sermon.php:559 ../sb-includes/frontend.php:112
+#: ../sb-includes/widget.php:92 ../sb-includes/widget.php:104
 msgid "Sermon Browser tags"
 msgstr "Теги Sermon Browser "
 
-#: ../sermon.php:557
+#: ../sermon.php:561
 msgid "Most popular sermons"
-msgstr ""
+msgstr "Самое популярное проповеди"
 
-#: ../sermon.php:558
+#: ../sermon.php:562
 msgid "Display a list of the most popular sermons, series or preachers."
-msgstr ""
+msgstr "Отображать список самых популярных проповедей, тем или проповедников."
 
 #: ../sb-includes/admin.php:31
 #, fuzzy
-msgid "You do not have the correct permissions to edit the SermonBrowser options"
+msgid ""
+"You do not have the correct permissions to edit the SermonBrowser options"
 msgstr "У вас недостаточно прав для редактирования настроек Sermon Browser "
 
-#: ../sb-includes/admin.php:84
-#: ../sb-includes/admin.php:93
+#: ../sb-includes/admin.php:84 ../sb-includes/admin.php:93
 msgid "Upload is disabled. Please contact your administrator."
 msgstr "Загрузка запрещена. Пожалуйста, напишите администратору."
 
-#: ../sb-includes/admin.php:86
-#: ../sb-includes/admin.php:135
-msgid "Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777."
-msgstr "Ошибка: папка для загрузки недоступна для записи. Вы должны установить CHMOD как 666 или 777."
+#: ../sb-includes/admin.php:86 ../sb-includes/admin.php:135
+msgid ""
+"Error: The upload folder is not writeable. You need to CHMOD the folder to "
+"666 or 777."
+msgstr ""
+"Ошибка: папка для загрузки недоступна для записи. Вы должны установить CHMOD "
+"в 666 или 777."
 
-#: ../sb-includes/admin.php:95
-#: ../sb-includes/admin.php:140
+#: ../sb-includes/admin.php:95 ../sb-includes/admin.php:140
 msgid "Error: The upload folder you have specified does not exist."
 msgstr "Ошибка: папка для загрузки не существует. "
 
@@ -426,13 +403,12 @@ msgid "Warning"
 msgstr "Предупреждение"
 
 #: ../sb-includes/admin.php:169
-#, fuzzy
 msgid "Basic Options"
-msgstr "Настройки"
+msgstr "Основные параметры"
 
 #: ../sb-includes/admin.php:176
 msgid "Upload folder"
-msgstr "Папка для закачки"
+msgstr "Папка для загрузки"
 
 #: ../sb-includes/admin.php:187
 msgid "Public podcast feed"
@@ -444,7 +420,7 @@ msgstr "Лента приватных подкастов"
 
 #: ../sb-includes/admin.php:195
 msgid "MP3 shortcode"
-msgstr ""
+msgstr "MP3 короткая ссылка"
 
 #: ../sb-includes/admin.php:199
 msgid "Sermons per page"
@@ -462,8 +438,7 @@ msgstr "Выпадающий список"
 msgid "One-click"
 msgstr "В один клик"
 
-#: ../sb-includes/admin.php:207
-#: ../sb-includes/frontend.php:754
+#: ../sb-includes/admin.php:207 ../sb-includes/frontend.php:765
 msgid "None"
 msgstr "Нет"
 
@@ -473,198 +448,225 @@ msgstr "Минимизир. фильтр"
 
 #: ../sb-includes/admin.php:223
 msgid "Hide sermons without attachments?"
-msgstr ""
+msgstr "Скрыть проповеди без вложений?"
 
 #: ../sb-includes/admin.php:236
-#, fuzzy
-msgid "The upload folder is not writeable. You need to specify a folder that you have permissions to write to."
-msgstr "Ошибк: папка для загрузки недоступна для записи. Вы должны установить CHMOD как 666 или 777."
+msgid ""
+"The upload folder is not writeable. You need to specify a folder that you "
+"have permissions to write to."
+msgstr ""
+"Каталог для загрузки файлов не доступен для записи. Вы должны указать "
+"директорию на сервере доступную для записи."
 
-#: ../sb-includes/admin.php:238
-#: ../sb-includes/admin.php:248
+#: ../sb-includes/admin.php:238 ../sb-includes/admin.php:248
 msgid "The upload folder you have specified does not exist."
 msgstr "Ошибка: папка для загрузки не существует. "
 
 #: ../sb-includes/admin.php:239
-#, fuzzy
-msgid "Your administrator does not allow file uploads. You will need to upload via FTP."
-msgstr "Ваша конфинурация php.ini не разрешает загрузки. Измените file_uploads в php.ini."
+msgid ""
+"Your administrator does not allow file uploads. You will need to upload via "
+"FTP."
+msgstr ""
+"Ваш администратор это не позволяют файл загрузки. You нужна воля до загрузки "
+"через FTP ."
 
-#: ../sb-includes/admin.php:241
-#: ../sb-includes/admin.php:250
+#: ../sb-includes/admin.php:241 ../sb-includes/admin.php:250
 msgid "The maximum file size you can upload is only "
-msgstr "Максимальный размер файла, который можно загрузить"
+msgstr "Максимальный размер файла, который можно загрузить "
 
 #: ../sb-includes/admin.php:241
 msgid "k. You may need to upload via FTP."
-msgstr ""
+msgstr "Кб. Возможно вам потребуется загрузка через FTP."
 
-#: ../sb-includes/admin.php:243
-#: ../sb-includes/admin.php:252
+#: ../sb-includes/admin.php:243 ../sb-includes/admin.php:252
 msgid "The maximum time allowed for any script to run is only "
-msgstr "Максимальное время, разрешенное для выполнения любого скрипта"
+msgstr "Максимальное время, разрешенное для выполнения любого скрипта "
 
 #: ../sb-includes/admin.php:243
-msgid " seconds. If your files take longer than this to upload, you will need to upload via FTP."
+msgid ""
+" seconds. If your files take longer than this to upload, you will need to "
+"upload via FTP."
 msgstr ""
+" секунд. Если ваши файлы загружаются слишком долго вам лучше воспользоваться "
+"загрузкой через FTP."
 
 #: ../sb-includes/admin.php:246
-#, fuzzy
-msgid "The upload folder is not writeable. You need to specify a folder that you have permissions to write to, or CHMOD this folder to 666 or 777."
-msgstr "Ошибк: папка для загрузки недоступна для записи. Вы должны установить CHMOD как 666 или 777."
+msgid ""
+"The upload folder is not writeable. You need to specify a folder that you "
+"have permissions to write to, or CHMOD this folder to 666 or 777."
+msgstr ""
+"Папка для загрузки недоступна для записи. Вам нужно выставить CHMOD для "
+"директории в 666 или 777."
 
 #: ../sb-includes/admin.php:249
-msgid "Your php.ini file does not allow uploads. Please change file_uploads in php.ini."
-msgstr "Ваша конфинурация php.ini не разрешает загрузки. Измените file_uploads в php.ini."
+msgid ""
+"Your php.ini file does not allow uploads. Please change file_uploads in php."
+"ini."
+msgstr ""
+"Ваша конфигурация php.ini запрещает загрузки. Измените опцию file_uploads в "
+"php.ini."
 
 #: ../sb-includes/admin.php:250
 msgid "k. Please change upload_max_filesize to at least 15M in php.ini."
-msgstr "k. Выставьте upload_max_filesize хотя бы как 15M в php.ini."
+msgstr "Кб. Выставьте в php.ini опцию upload_max_filesize хотя бы 15M."
 
 #: ../sb-includes/admin.php:251
 msgid "The maximum file size you send through the browser is only "
-msgstr "Максимальный размер файла, отправляемый через браузер"
+msgstr "Максимальный размер файла, отправляемый через браузер "
 
 #: ../sb-includes/admin.php:251
 msgid "k. Please change post_max_size to at least 15M in php.ini."
-msgstr "k. Выставьте upload_max_size хотя бы как 15M в php.ini."
+msgstr "Кб. Выставьте в php.ini опцию upload_max_size хотя бы равную 15M."
 
 #: ../sb-includes/admin.php:252
 msgid " seconds. Please change max_execution_time to at least 600 in php.ini."
-msgstr "секунд. Установите max_execution_time как 600 в php.ini."
+msgstr ""
+"секунд. Установите в php.ini опцию max_execution_time значением не менее 600."
 
 #: ../sb-includes/admin.php:253
 msgid "The maximum time allowed for an upload script to run is only "
-msgstr "Максимальное время, разрешенное для выполнения скрипта загрузки"
+msgstr "Максимальное время, разрешенное для выполнения скрипта "
 
 #: ../sb-includes/admin.php:253
 msgid " seconds. Please change max_input_time to at least 600 in php.ini."
-msgstr "секунд. Установите max_input_time как 600 в php.ini."
+msgstr ""
+"секунд. Установите в php.ini опцию max_input_time в значение 600 либо выше."
 
 #: ../sb-includes/admin.php:254
 msgid "The maximum amount of memory allowed is only "
-msgstr "Максимальный объем памяти, разрешенный для выделения"
+msgstr "Максимально доступный объем памяти "
 
 #: ../sb-includes/admin.php:254
 msgid "k. Please change memory_limit to at least 16M in php.ini."
-msgstr "k. Выставьте лимит памяти как 16M в php.ini."
+msgstr "Кб. Выставьте в php.ini опцию memory_limit значением 16M либо выше."
 
 #: ../sb-includes/admin.php:258
-#, fuzzy
 msgid "Import Options"
-msgstr "Настройки"
+msgstr "Импорт параметров"
 
 #: ../sb-includes/admin.php:259
 #, php-format
-msgid "SermonBrowser can speed up the process of importing existing MP3s by reading the information stored in each MP3 file and pre-filling the SermonBrowser fields. Use this section to specify what information you want imported into SermonBrowser. Once you have selected the options, go to %s to import your files."
+msgid ""
+"SermonBrowser can speed up the process of importing existing MP3s by reading "
+"the information stored in each MP3 file and pre-filling the SermonBrowser "
+"fields. Use this section to specify what information you want imported into "
+"SermonBrowser. Once you have selected the options, go to %s to import your "
+"files."
 msgstr ""
+"SermonBrowser может ускорить процесс импорта существующих MP3 файлов, читая "
+"информацию, хранящуюся в тегах MP3-файлов, затем эта информация будет "
+"использоваться при заполнении полей SermonBrowser. В этом разделе можно "
+"указать, какую информацию вы хотите импортировать в SermonBrowser. После "
+"того как вы выбрали параметры, перейдите в подраздел %s, чтобы импортировать "
+"ваши файлы."
 
 #: ../sb-includes/admin.php:262
 msgid "Add files prompt to top of Add Sermon page?"
-msgstr ""
+msgstr "Добавить уведомление в верху страницы Добавление проповеди?"
 
 #: ../sb-includes/admin.php:266
 msgid "Use title tag for sermon title?"
-msgstr ""
+msgstr "Использовать название из тега для заголовка проповеди?"
 
 #: ../sb-includes/admin.php:270
 msgid "Use artist tag for preacher?"
-msgstr ""
+msgstr "Использовать тег исполнитель для опции проповедник?"
 
 #: ../sb-includes/admin.php:274
 msgid "Use album tag for series?"
-msgstr ""
+msgstr "Использовать тег альбом для опции тема?"
 
 #: ../sb-includes/admin.php:278
 msgid "Use comments tag for sermon description?"
-msgstr ""
+msgstr "Использовать комментарии из тега для описания проповеди?"
 
 #: ../sb-includes/admin.php:282
 msgid "Attempt to extract date from filename"
-msgstr ""
+msgstr "Попытка распознать дату из имени файла"
 
 #: ../sb-includes/admin.php:285
 msgid "Disabled"
-msgstr ""
+msgstr "Отключено"
 
 #: ../sb-includes/admin.php:286
 msgid "UK-formatted date (dd-mm-yyyy)"
-msgstr ""
+msgstr "Формат даты Великобритания (дд-мм-гггг)"
 
 #: ../sb-includes/admin.php:287
 msgid "US-formatted date (mm-dd-yyyy)"
-msgstr ""
+msgstr "Американский стандарт даты (мм-дд-гггг)"
 
 #: ../sb-includes/admin.php:288
 msgid "International formatted date (yyyy-mm-dd)"
-msgstr ""
+msgstr "Дата в международном формате (гггг-мм-дд)"
 
 #: ../sb-includes/admin.php:296
-msgid "(Use if you name your files something like 2008-11-06-eveningsermon.mp3)"
-msgstr ""
+msgid ""
+"(Use if you name your files something like 2008-11-06-eveningsermon.mp3)"
+msgstr "(используйте если имена ваших файлов вроде «2008-11-06-проповедь.mp3»)"
 
-#: ../sb-includes/admin.php:301
-#: ../sb-includes/admin.php:412
+#: ../sb-includes/admin.php:301 ../sb-includes/admin.php:412
 msgid "Reset to defaults"
-msgstr "Сбросить настройки"
+msgstr "Сбросить в начальные"
 
-#: ../sb-includes/admin.php:301
-#: ../sb-includes/admin.php:412
-#: ../sb-includes/admin.php:543
-#: ../sb-includes/admin.php:1882
+#: ../sb-includes/admin.php:301 ../sb-includes/admin.php:412
+#: ../sb-includes/admin.php:543 ../sb-includes/admin.php:1886
 msgid "Save"
 msgstr "Сохранить"
 
 #: ../sb-includes/admin.php:314
-#, fuzzy
 msgid "You do not have the correct permissions to Uninstall SermonBrowser"
-msgstr "У вас недостаточно прав для редактирования проповедей"
+msgstr "У вас нет необходимых разрешений на удаление SermonBrowser"
 
 #: ../sb-includes/admin.php:321
-#, fuzzy
 msgid "Reset SermonBrowser"
-msgstr "Теги Sermon Browser "
+msgstr "Reset SermonBrowser"
 
-#: ../sb-includes/admin.php:322
-#: ../sb-includes/admin.php:328
+#: ../sb-includes/admin.php:322 ../sb-includes/admin.php:328
 #, php-format
-msgid "Clicking the %s button below will remove ALL data (sermons, preachers, series, etc.) from SermonBrowser"
+msgid ""
+"Clicking the %s button below will remove ALL data (sermons, preachers, "
+"series, etc.) from SermonBrowser"
 msgstr ""
+"Нажатие кнопки %s ниже удалит ВСЕ данные (проповеди, проповедников, темы и т."
+"д.) из SermonBrowser"
 
-#: ../sb-includes/admin.php:322
-#: ../sb-includes/admin.php:342
+#: ../sb-includes/admin.php:322 ../sb-includes/admin.php:342
 msgid "Delete all"
 msgstr "Удалить все"
 
-#: ../sb-includes/admin.php:324
-#: ../sb-includes/admin.php:332
+#: ../sb-includes/admin.php:324 ../sb-includes/admin.php:332
 msgid "You will NOT be able to undo this action."
-msgstr ""
+msgstr "Вы НЕ СМОЖЕТЕ отменить это действие."
 
 #: ../sb-includes/admin.php:330
 msgid "and will deactivate the SermonBrowser plugin"
-msgstr ""
+msgstr "затем будет отключен плагин SermonBrowser"
 
 #: ../sb-includes/admin.php:334
-msgid "If you only want to temporarily disable SermonBrowser, just deactivate it from the plugins page."
+msgid ""
+"If you only want to temporarily disable SermonBrowser, just deactivate it "
+"from the plugins page."
 msgstr ""
+"Если вы хотите временно отключить SermonBrowser, воспользуйтесь страницей "
+"плагинов Wordpress."
 
 #: ../sb-includes/admin.php:339
-#, fuzzy
 msgid "Also remove all uploaded files"
-msgstr "Удалить все файлы"
+msgstr "Также удалить все загруженные файлы"
 
 #: ../sb-includes/admin.php:342
 msgid "Do you REALLY want to delete all data?"
-msgstr "Вы действительно хотите удалить все данные?"
+msgstr "Вы ДЕЙСТВИТЕЛЬНО хотите удалить все данные?"
 
 #: ../sb-includes/admin.php:347
 msgid "Are you REALLY REALLY sure you want to remove SermonBrowser?"
-msgstr ""
+msgstr "Вы ДЕЙСТВИТЕЛЬНО уверены что хотите удалить SermonBrowser?"
 
 #: ../sb-includes/admin.php:361
 #, fuzzy
-msgid "You do not have the correct permissions to edit the SermonBrowser templates"
+msgid ""
+"You do not have the correct permissions to edit the SermonBrowser templates"
 msgstr "У вас нет достаточных прав для редактирования шаблонов Sermon Browser"
 
 #: ../sb-includes/admin.php:381
@@ -684,7 +686,8 @@ msgid "Style"
 msgstr "Стиль"
 
 #: ../sb-includes/admin.php:431
-msgid "You do not have the correct permissions to manage the preachers' database"
+msgid ""
+"You do not have the correct permissions to manage the preachers' database"
 msgstr "У вас недостаточно прав для управления базой данных"
 
 #: ../sb-includes/admin.php:433
@@ -696,22 +699,26 @@ msgid "Could not save uploaded file. Please try again."
 msgstr "Загруженный файл не сохранен. Повторите снова."
 
 #: ../sb-includes/admin.php:460
-msgid "Could not upload file. Please check the Options page for any errors or warnings."
-msgstr "Файл не загружен. Проверьте страницу настроек на предупреждения. "
-
-#: ../sb-includes/admin.php:481
-#: ../sb-includes/admin.php:579
-msgid "You cannot delete this preacher until you first delete any sermons they have preached."
+msgid ""
+"Could not upload file. Please check the Options page for any errors or "
+"warnings."
 msgstr ""
+"Файл не загружен. Проверьте диагностические сообщения на странице настроек."
+
+#: ../sb-includes/admin.php:481 ../sb-includes/admin.php:579
+msgid ""
+"You cannot delete this preacher until you first delete any sermons they have "
+"preached."
+msgstr ""
+"Вы не можете удалить этого проповедника до тех пор пока вы не удалите "
+"связанные с ним проповеди."
 
 #: ../sb-includes/admin.php:495
 msgid "Add"
 msgstr "Добавить"
 
-#: ../sb-includes/admin.php:495
-#: ../sb-includes/admin.php:575
-#: ../sb-includes/admin.php:750
-#: ../sb-includes/admin.php:1286
+#: ../sb-includes/admin.php:495 ../sb-includes/admin.php:575
+#: ../sb-includes/admin.php:750 ../sb-includes/admin.php:1289
 #: ../sb-includes/ajax.php:144
 msgid "Edit"
 msgstr "Редактировать"
@@ -724,154 +731,145 @@ msgstr "проповедник"
 msgid "The images folder is not writeable. You won't be able to upload images."
 msgstr "Папка для изображений недоступна для записи."
 
-#: ../sb-includes/admin.php:514
-#: ../sb-includes/admin.php:561
+#: ../sb-includes/admin.php:514 ../sb-includes/admin.php:561
 #: ../sb-includes/admin.php:735
 msgid "Name"
 msgstr "Имя"
 
-#: ../sb-includes/admin.php:522
-#: ../sb-includes/admin.php:1769
+#: ../sb-includes/admin.php:522 ../sb-includes/admin.php:1773
 msgid "Description"
 msgstr "Описание"
 
-#: ../sb-includes/admin.php:534
-#: ../sb-includes/admin.php:562
+#: ../sb-includes/admin.php:534 ../sb-includes/admin.php:562
 msgid "Image"
 msgstr "Изображение"
 
-#: ../sb-includes/admin.php:555
-#: ../sb-includes/admin.php:729
+#: ../sb-includes/admin.php:555 ../sb-includes/admin.php:729
 msgid "add new"
 msgstr "добавить новое"
 
-#: ../sb-includes/admin.php:560
-#: ../sb-includes/admin.php:734
-#: ../sb-includes/admin.php:1010
-#: ../sb-includes/admin.php:1045
-#: ../sb-includes/admin.php:1094
-#: ../sb-includes/admin.php:1262
+#: ../sb-includes/admin.php:560 ../sb-includes/admin.php:734
+#: ../sb-includes/admin.php:1010 ../sb-includes/admin.php:1045
+#: ../sb-includes/admin.php:1094 ../sb-includes/admin.php:1265
 msgid "ID"
 msgstr "ID"
 
-#: ../sb-includes/admin.php:564
-#: ../sb-includes/admin.php:738
-#: ../sb-includes/admin.php:1013
-#: ../sb-includes/admin.php:1049
-#: ../sb-includes/admin.php:1098
-#: ../sb-includes/admin.php:1269
+#: ../sb-includes/admin.php:564 ../sb-includes/admin.php:738
+#: ../sb-includes/admin.php:1013 ../sb-includes/admin.php:1049
+#: ../sb-includes/admin.php:1098 ../sb-includes/admin.php:1272
 msgid "Actions"
 msgstr "Действия"
 
 #: ../sb-includes/admin.php:577
 msgid "You must have at least one preacher in the database."
-msgstr ""
+msgstr "Вы должны иметь как минимум одного проповедника в базе данных."
 
-#: ../sb-includes/admin.php:577
-#: ../sb-includes/admin.php:579
-#: ../sb-includes/admin.php:581
-#: ../sb-includes/admin.php:752
-#: ../sb-includes/admin.php:754
-#: ../sb-includes/admin.php:766
-#: ../sb-includes/admin.php:1025
-#: ../sb-includes/admin.php:1069
-#: ../sb-includes/admin.php:1286
-#: ../sb-includes/ajax.php:144
+#: ../sb-includes/admin.php:577 ../sb-includes/admin.php:579
+#: ../sb-includes/admin.php:581 ../sb-includes/admin.php:752
+#: ../sb-includes/admin.php:754 ../sb-includes/admin.php:766
+#: ../sb-includes/admin.php:1025 ../sb-includes/admin.php:1069
+#: ../sb-includes/admin.php:1289 ../sb-includes/ajax.php:144
 #: ../sb-includes/ajax.php:190
 msgid "Delete"
 msgstr "Удаление"
 
-#: ../sb-includes/admin.php:581
-#: ../sb-includes/admin.php:754
-#, fuzzy, php-format
+#: ../sb-includes/admin.php:581 ../sb-includes/admin.php:754
+#, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr "Вы действительно хотите удалить все данные?"
+msgstr "Вы действительно хотите удалить %s?"
 
 #: ../sb-includes/admin.php:599
-msgid "You do not have the correct permissions to manage the series and services database"
-msgstr "У вас недостаточно прав для управления сервисами и сериями"
+msgid ""
+"You do not have the correct permissions to manage the series and services "
+"database"
+msgstr "У вас недостаточно прав для управления базой данных"
 
-#: ../sb-includes/admin.php:623
-#: ../sb-includes/admin.php:702
-#: ../sb-includes/admin.php:1603
-#, fuzzy
+#: ../sb-includes/admin.php:623 ../sb-includes/admin.php:702
+#: ../sb-includes/admin.php:1607
 msgid "New service's name @ default time?"
-msgstr "Перезаписать стандартное время"
+msgstr "Новое название служения @ время?"
 
-#: ../sb-includes/admin.php:623
-#: ../sb-includes/admin.php:1603
+#: ../sb-includes/admin.php:623 ../sb-includes/admin.php:1607
 msgid "Service's name @ 18:00"
-msgstr ""
+msgstr "Служение @ 18:00"
 
-#: ../sb-includes/admin.php:649
-#: ../sb-includes/admin.php:688
-#: ../sb-includes/admin.php:1618
-#, fuzzy
+#: ../sb-includes/admin.php:649 ../sb-includes/admin.php:688
+#: ../sb-includes/admin.php:1622
 msgid "New series' name?"
-msgstr "Новое имя файла?"
+msgstr "Новое имя темы?"
 
-#: ../sb-includes/admin.php:649
-#: ../sb-includes/admin.php:1618
-#, fuzzy
+#: ../sb-includes/admin.php:649 ../sb-includes/admin.php:1622
 msgid "Series' name"
-msgstr "Серии: "
+msgstr "Название темы: "
 
 #: ../sb-includes/admin.php:736
 msgid "Default time"
 msgstr "Стандартное время"
 
-#: ../sb-includes/admin.php:750
-#: ../sb-includes/admin.php:1025
-#: ../sb-includes/admin.php:1069
-#: ../sb-includes/ajax.php:190
+#: ../sb-includes/admin.php:750 ../sb-includes/admin.php:1025
+#: ../sb-includes/admin.php:1069 ../sb-includes/ajax.php:190
 msgid "Rename"
 msgstr "Переименовать"
 
 #: ../sb-includes/admin.php:752
 #, php-format
-msgid "You cannot delete this %1$s as you must have at least one %1$s in the database"
+msgid ""
+"You cannot delete this %1$s as you must have at least one %1$s in the "
+"database"
 msgstr ""
+"Вы не можете удалить %1$s, потому как должна оставаться как минимум одна "
+"%1$s запись в базе данных"
 
 #: ../sb-includes/admin.php:758
-msgid "Some sermons are currently assigned to that service. You can only delete services that are not used in the database."
-msgstr "Некоторые проповеди уже назначены этим сервисом. Вы можете удалить только те сервисы, которые не используются в базе данных."
+msgid ""
+"Some sermons are currently assigned to that service. You can only delete "
+"services that are not used in the database."
+msgstr ""
+"Некоторые проповеди уже назначены этим сервисом. Вы можете удалить только те "
+"проповеди, которые не используются в базе данных."
 
 #: ../sb-includes/admin.php:761
-msgid "Some sermons are currently in that series. You can only delete series that are empty."
-msgstr "Некоторые проповеди уже назначены этим сервисом. Вы можете удалить только те серии, которые не используются в базе данных."
+msgid ""
+"Some sermons are currently in that series. You can only delete series that "
+"are empty."
+msgstr ""
+"Некоторые проповеди уже назначены этим темам. Вы можете удалить только те "
+"темы, которые не используются в базе данных."
 
 #: ../sb-includes/admin.php:764
-msgid "That preacher has sermons in the database. You can only delete preachers who have no sermons in the database."
-msgstr "Некоторые проповеди уже назначены этим сервисом. Вы можете удалить только те сервисы, которые не используются в базе данных."
+msgid ""
+"That preacher has sermons in the database. You can only delete preachers who "
+"have no sermons in the database."
+msgstr ""
+"Этот проповедник содержит проповеди в базе данных. Вы можете удалить только "
+"тех, которые не используются в базе данных."
 
 #: ../sb-includes/admin.php:788
 msgid "You do not have the correct permissions to upload sermons"
 msgstr "У вас недостаточно прав для загрузки проповедей"
 
 #: ../sb-includes/admin.php:802
-#, fuzzy, php-format
+#, php-format
 msgid "File %s already exists"
-msgstr " уже существуют."
+msgstr "Файл %s уже существует"
 
 #: ../sb-includes/admin.php:821
 msgid "Invalid URL."
-msgstr ""
+msgstr "Неверный URL."
 
 #: ../sb-includes/admin.php:823
 msgid "Your host does not allow remote downloading of files."
-msgstr ""
+msgstr "Ваш сервер не позволяет удаленную загрузку файлов."
 
 #: ../sb-includes/admin.php:856
 msgid "Files saved to database."
 msgstr "Файлы сохранены в базе данных."
 
-#: ../sb-includes/admin.php:859
-#: ../sb-includes/admin.php:1413
+#: ../sb-includes/admin.php:859 ../sb-includes/admin.php:1417
 msgid " already exists."
 msgstr " уже существуют."
 
-#: ../sb-includes/admin.php:863
-#: ../sb-includes/admin.php:1418
+#: ../sb-includes/admin.php:863 ../sb-includes/admin.php:1422
 msgid "You are not permitted to upload files of that type."
 msgstr "У вас нет прав на закачку файла данного типа."
 
@@ -881,23 +879,21 @@ msgstr "Новое имя файла?"
 
 #: ../sb-includes/admin.php:909
 msgid "You are not permitted files with that extension."
-msgstr "Вам не разрешены файлы с данным расширением."
+msgstr "Файлы с данным расширением запрещены."
 
 #: ../sb-includes/admin.php:911
 msgid "The script is unable to rename your file."
-msgstr "Скрипт запретил вам переименовывать файл."
+msgstr "Скрипт не может переименовывать ваш файл."
 
 #: ../sb-includes/admin.php:939
 msgid "The script is unable to delete your file."
-msgstr "Скрипт запретил вам удалять файл."
+msgstr "Скрипт не может удалить ваш файл."
 
-#: ../sb-includes/admin.php:950
-#: ../sb-includes/admin.php:969
+#: ../sb-includes/admin.php:950 ../sb-includes/admin.php:969
 msgid "Previous"
 msgstr "Предыдущий"
 
-#: ../sb-includes/admin.php:956
-#: ../sb-includes/admin.php:975
+#: ../sb-includes/admin.php:956 ../sb-includes/admin.php:975
 msgid "Next"
 msgstr "Следующий"
 
@@ -907,40 +903,34 @@ msgstr "Загрузить файлы"
 
 #: ../sb-includes/admin.php:1005
 msgid "Unlinked files"
-msgstr "Разъединенные файлы"
+msgstr "Несвязанные файлы"
 
-#: ../sb-includes/admin.php:1011
-#: ../sb-includes/admin.php:1046
+#: ../sb-includes/admin.php:1011 ../sb-includes/admin.php:1046
 #: ../sb-includes/admin.php:1095
 msgid "File name"
 msgstr "Имя файла"
 
-#: ../sb-includes/admin.php:1012
-#: ../sb-includes/admin.php:1047
+#: ../sb-includes/admin.php:1012 ../sb-includes/admin.php:1047
 #: ../sb-includes/admin.php:1096
 msgid "File type"
 msgstr "Тип файла"
 
-#: ../sb-includes/admin.php:1024
-#: ../sb-includes/ajax.php:189
-#, fuzzy
+#: ../sb-includes/admin.php:1024 ../sb-includes/ajax.php:189
 msgid "Create sermon"
-msgstr "Создать новую серию"
+msgstr "Создать проповедь"
 
 #: ../sb-includes/admin.php:1040
 msgid "Linked files"
-msgstr "Объединенные файлы"
+msgstr "Связанные файлы"
 
-#: ../sb-includes/admin.php:1048
-#: ../sb-includes/admin.php:1097
-#: ../sb-includes/frontend.php:143
-#: ../sb-includes/widget.php:76
+#: ../sb-includes/admin.php:1048 ../sb-includes/admin.php:1097
+#: ../sb-includes/frontend.php:143 ../sb-includes/widget.php:76
 msgid "Sermon"
 msgstr "Проповедь"
 
 #: ../sb-includes/admin.php:1084
 msgid "Search for files"
-msgstr "Поиск для файлов"
+msgstr "Поиск файлов"
 
 #: ../sb-includes/admin.php:1088
 msgid "Search"
@@ -955,15 +945,18 @@ msgid "Clean up"
 msgstr "Очистка"
 
 #: ../sb-includes/admin.php:1123
-msgid "Pressing the button below scans every sermon in the database, and removes missing attachments. Use with caution!"
-msgstr "После нажатия на кнопку ниже, проповеди сканируются в базе данных и отсутствующие вложения будут удалены. Используйте с осторожностью!"
+msgid ""
+"Pressing the button below scans every sermon in the database, and removes "
+"missing attachments. Use with caution!"
+msgstr ""
+"После нажатия на кнопку ниже, проповеди сканируются в базе данных и "
+"отсутствующие вложения будут удалены. Используйте с осторожностью!"
 
 #: ../sb-includes/admin.php:1124
 msgid "Clean up missing files"
-msgstr "Очистка ошибочных файлов"
+msgstr "Очистка отсутствующих файлов"
 
-#: ../sb-includes/admin.php:1173
-#: ../sb-includes/admin.php:1371
+#: ../sb-includes/admin.php:1173 ../sb-includes/admin.php:1375
 msgid "You do not have the correct permissions to edit sermons"
 msgstr "У вас недостаточно прав для редактирования проповедей"
 
@@ -971,521 +964,583 @@ msgstr "У вас недостаточно прав для редактиров�
 msgid "Sermon saved to database."
 msgstr "Проповедь сохранена в базу данных."
 
-#: ../sb-includes/admin.php:1178
+#: ../sb-includes/admin.php:1179
 #, fuzzy, php-format
-msgid "If you find SermonBrowser useful, please consider %1$ssupporting%2$s the ministry of Nathanael and Anna Ayling in Japan."
-msgstr "Если вы нашли SermonBrowser полезным, внесите, пожалуйста, %1$sпожертвование%2$s."
+msgid ""
+"If you find SermonBrowser useful, please consider %1$ssupporting%2$s the "
+"ministry of Nathanael and Anna Ayling in Japan."
+msgstr ""
+"Если вы нашли SermonBrowser полезным, внесите, пожалуйста, %1$sпожертвование"
+"%2$s."
 
-#: ../sb-includes/admin.php:1184
+#: ../sb-includes/admin.php:1181
+msgid ""
+"Sermon Browser 2.0 is under development. If you're a coder, and would like "
+"to help, please check the <a href=\"https://www.assembla.com/spaces/sermon-"
+"browser-2/documents\">SB2 development website</a>."
+msgstr ""
+
+#: ../sb-includes/admin.php:1187
 msgid "You do not have the correct permissions to delete sermons"
 msgstr "У вас нет прав на удаление проповеди"
 
-#: ../sb-includes/admin.php:1192
+#: ../sb-includes/admin.php:1195
 msgid "Sermon removed from database."
-msgstr "Проповедник удален "
+msgstr "Проповедь удалена из базы данных."
 
-#: ../sb-includes/admin.php:1233
-#: ../sb-includes/admin.php:1263
-#: ../sb-includes/admin.php:1709
+#: ../sb-includes/admin.php:1236 ../sb-includes/admin.php:1266
+#: ../sb-includes/admin.php:1713
 msgid "Title"
 msgstr "Название"
 
-#: ../sb-includes/admin.php:1237
-#: ../sb-includes/admin.php:1264
-#: ../sb-includes/admin.php:1723
-#: ../sb-includes/frontend.php:997
+#: ../sb-includes/admin.php:1240 ../sb-includes/admin.php:1267
+#: ../sb-includes/admin.php:1727 ../sb-includes/frontend.php:1019
 msgid "Preacher"
 msgstr "Проповедник"
 
-#: ../sb-includes/admin.php:1246
-#: ../sb-includes/admin.php:1267
-#: ../sb-includes/admin.php:1742
-#: ../sb-includes/frontend.php:1023
+#: ../sb-includes/admin.php:1249 ../sb-includes/admin.php:1270
+#: ../sb-includes/admin.php:1746 ../sb-includes/frontend.php:1045
 msgid "Series"
-msgstr "Серия"
+msgstr "Темы"
 
-#: ../sb-includes/admin.php:1254
+#: ../sb-includes/admin.php:1257
 msgid "Filter"
 msgstr "Фильтр"
 
-#: ../sb-includes/admin.php:1265
-#: ../sb-includes/admin.php:1763
+#: ../sb-includes/admin.php:1268 ../sb-includes/admin.php:1767
+#: ../sb-includes/frontend.php:836 ../sb-includes/frontend.php:927
 msgid "Date"
 msgstr "Дата"
 
-#: ../sb-includes/admin.php:1266
-#: ../sb-includes/admin.php:1783
+#: ../sb-includes/admin.php:1269 ../sb-includes/admin.php:1787
 msgid "Service"
-msgstr "Сервис"
+msgstr "Служение"
 
-#: ../sb-includes/admin.php:1268
+#: ../sb-includes/admin.php:1271
 msgid "Stats"
 msgstr "Статистика"
 
-#: ../sb-includes/admin.php:1279
-#: ../sb-includes/ajax.php:137
+#: ../sb-includes/admin.php:1282 ../sb-includes/ajax.php:137
 msgid "Unknown"
-msgstr "неизвестно"
+msgstr "Неизвестно"
 
-#: ../sb-includes/admin.php:1316
+#: ../sb-includes/admin.php:1319
 msgid "You do not have the correct permissions to edit or create sermons"
 msgstr "У вас нет прав на создание или редактирование проповеди"
 
-#: ../sb-includes/admin.php:1365
+#: ../sb-includes/admin.php:1369
 msgid "You do not have the correct permissions to create sermons"
 msgstr "У вас нет прав на создание проповеди"
 
-#: ../sb-includes/admin.php:1487
+#: ../sb-includes/admin.php:1491
 msgid "No ID3 tags found."
-msgstr ""
+msgstr "ID3 тегов не найдено."
 
-#: ../sb-includes/admin.php:1584
-#, fuzzy
+#: ../sb-includes/admin.php:1588
 msgid "New preacher's name?"
-msgstr "Новое имя файла?"
+msgstr "Новое имя проповедника?"
 
-#: ../sb-includes/admin.php:1584
-#, fuzzy
+#: ../sb-includes/admin.php:1588
 msgid "Preacher's name"
 msgstr "Проповедник"
 
-#: ../sb-includes/admin.php:1704
+#: ../sb-includes/admin.php:1708
 msgid "Enter sermon details"
-msgstr ""
+msgstr "Введите детали проповеди"
 
-#: ../sb-includes/admin.php:1715
+#: ../sb-includes/admin.php:1719
 msgid "Tags (comma separated)"
 msgstr "Теги (разделенные запятыми)"
 
-#: ../sb-includes/admin.php:1738
+#: ../sb-includes/admin.php:1742
 msgid "Create new preacher"
 msgstr "Создать нового проповедника"
 
-#: ../sb-includes/admin.php:1757
+#: ../sb-includes/admin.php:1761
 msgid "Create new series"
-msgstr "Создать новую серию"
+msgstr "Создать новую тему"
 
-#: ../sb-includes/admin.php:1792
+#: ../sb-includes/admin.php:1796
 msgid "Create new service"
-msgstr "Создать новый сервис"
+msgstr "Создать новое служение"
 
-#: ../sb-includes/admin.php:1798
+#: ../sb-includes/admin.php:1802
 msgid "Time"
 msgstr "Время"
 
-#: ../sb-includes/admin.php:1801
+#: ../sb-includes/admin.php:1805
 msgid "Override default time"
-msgstr "Перезаписать стандартное время"
+msgstr "Изменить стандартное время"
 
-#: ../sb-includes/admin.php:1807
+#: ../sb-includes/admin.php:1811
 msgid "Bible passage"
-msgstr "Библия"
+msgstr "Места из Библии"
 
-#: ../sb-includes/admin.php:1807
-#: ../sb-includes/admin.php:1850
+#: ../sb-includes/admin.php:1811 ../sb-includes/admin.php:1854
 msgid "add more"
 msgstr "добавить больше"
 
-#: ../sb-includes/admin.php:1811
+#: ../sb-includes/admin.php:1815
 msgid "From"
 msgstr "От"
 
-#: ../sb-includes/admin.php:1812
+#: ../sb-includes/admin.php:1816
 msgid "To"
-msgstr "Кому"
+msgstr "До"
 
-#: ../sb-includes/admin.php:1850
+#: ../sb-includes/admin.php:1854
 msgid "Attachments"
-msgstr "Вложение"
+msgstr "Вложения"
 
-#: ../sb-includes/admin.php:1859
+#: ../sb-includes/admin.php:1863
 msgid "Choose existing file:"
 msgstr "Выберите существующий файл:"
 
-#: ../sb-includes/admin.php:1860
+#: ../sb-includes/admin.php:1864
 msgid "Upload a new one:"
 msgstr "Загрузить один новый:"
 
-#: ../sb-includes/admin.php:1861
+#: ../sb-includes/admin.php:1865
 msgid "Enter an URL:"
 msgstr "Введите УРЛ:"
 
-#: ../sb-includes/admin.php:1862
+#: ../sb-includes/admin.php:1866
 #, fuzzy
 msgid "Enter embed or shortcode:"
 msgstr "Введите код для вставки:"
 
-#: ../sb-includes/admin.php:2074
+#: ../sb-includes/admin.php:2078
 msgid "Help page"
 msgstr "Страница с помощью"
 
-#: ../sb-includes/admin.php:2135
-msgid "Error:</b> The MP3 shortcode must link to individual sermon files. You do this by including <span style=\"color:red\">%SERMONURL%</span> in your shortcode (e.g. [audio:%SERMONURL%]). SermonBrowser will then replace %SERMONURL% with a link to each sermon."
+#: ../sb-includes/admin.php:2139
+msgid ""
+"Error:</b> The MP3 shortcode must link to individual sermon files. You do "
+"this by including <span style=\"color:red\">%SERMONURL%</span> in your "
+"shortcode (e.g. [audio:%SERMONURL%]). SermonBrowser will then replace "
+"%SERMONURL% with a link to each sermon."
 msgstr ""
+"Ошибка: </b> Короткая ссылка для  MP3 должна ссылаться на конкретный файл "
+"проповеди. Это можно сделать включив <span style=\"color:red\">%SERMONURL%</"
+"span> в ваш код  (напр. [audio:%SERMONURL%]). SermonBrowser автоматически "
+"заменит %SERMONURL%  на нужную ссылку проповеди."
 
-#: ../sb-includes/admin.php:2140
+#: ../sb-includes/admin.php:2144
 #, fuzzy, php-format
-msgid "Tip: Installing the %1$sWordpress Audio Player%2$s, or another Wordpress MP3 player plugin will allow users to listen to your sermons more easily."
-msgstr "Совет: установка %1$sWordpress Audio Player%2$s позволит пользователям слушать проповеди без затруднений."
-
-#: ../sb-includes/admin.php:2143
-msgid "Error:</b> You have specified a custom MP3 shortcode, but Wordpress doesn&#146;t know how to interpret it. Make sure the shortcode is correct, and that the appropriate plugin is activated."
+msgid ""
+"Tip: Installing the %1$sWordpress Audio Player%2$s, or another Wordpress MP3 "
+"player plugin will allow users to listen to your sermons more easily."
 msgstr ""
+"Совет: установка %1$sWordpress Audio Player%2$s позволит пользователям "
+"слушать проповеди без затруднений."
 
-#: ../sb-includes/admin.php:2148
+#: ../sb-includes/admin.php:2147
+msgid ""
+"Error:</b> You have specified a custom MP3 shortcode, but Wordpress "
+"doesn&#146;t know how to interpret it. Make sure the shortcode is correct, "
+"and that the appropriate plugin is activated."
+msgstr ""
+"Ошибка: </ b> Вы указали код для MP3, но Wordpress не знает, как его "
+"интерпретировать. Убедитесь, что короткий код указан правильно, и что "
+"соответствующий плагин активирован."
+
+#: ../sb-includes/admin.php:2152
 msgid "Hint:"
+msgstr "Подсказка:"
+
+#: ../sb-includes/admin.php:2152
+#, php-format
+msgid ""
+"%sCreate a page%s that includes the shortcode [sermons], so that "
+"SermonBrowser knows where to display the sermons on your site."
 msgstr ""
+"Вы должны %sсоздать страницу%s содержащую тэг [sermons] для отображения "
+"проповедей на вашем сайте."
 
-#: ../sb-includes/admin.php:2148
-#, fuzzy, php-format
-msgid "%sCreate a page%s that includes the shortcode [sermons], so that SermonBrowser knows where to display the sermons on your site."
-msgstr "Вы должны создать пост или страницу, включающте код [sermons] для отображения проповеди на вашем сайте."
-
-#: ../sb-includes/admin.php:2185
+#: ../sb-includes/admin.php:2189
 msgid "You have"
 msgstr "У вас"
 
-#: ../sb-includes/admin.php:2189
-#: ../sb-includes/admin.php:2197
+#: ../sb-includes/admin.php:2193 ../sb-includes/admin.php:2201
 msgid "in"
 msgstr "в "
 
-#: ../sb-includes/admin.php:2193
+#: ../sb-includes/admin.php:2197
 msgid "from"
 msgstr "из"
 
-#: ../sb-includes/admin.php:2198
-#, fuzzy, php-format
+#: ../sb-includes/admin.php:2202
+#, php-format
 msgid "%s series"
-msgstr "%d серий"
+msgstr "%s тем"
 
-#: ../sb-includes/admin.php:2201
+#: ../sb-includes/admin.php:2205
 msgid "using"
 msgstr "используется"
 
-#: ../sb-includes/admin.php:2209
+#: ../sb-includes/admin.php:2213
 #, php-format
 msgid "The most popular sermon is %s, which has been downloaded %s times"
 msgstr "Самая популярная проповедь - %s, которая скачивалась %s"
 
-#: ../sb-includes/admin.php:2357
-#: ../sb-includes/admin.php:2434
+#: ../sb-includes/admin.php:2361 ../sb-includes/admin.php:2438
 #: ../sb-includes/widget.php:303
 msgid "Title:"
 msgstr "Название:"
 
-#: ../sb-includes/admin.php:2359
-#: ../sb-includes/admin.php:2436
+#: ../sb-includes/admin.php:2363 ../sb-includes/admin.php:2440
 #: ../sb-includes/widget.php:305
 msgid "Number of sermons: "
 msgstr "Количестов проповедей:"
 
-#: ../sb-includes/admin.php:2361
-#: ../sb-includes/widget.php:307
+#: ../sb-includes/admin.php:2365 ../sb-includes/widget.php:307
 msgid "Display preacher"
 msgstr "Отображать проповедника"
 
-#: ../sb-includes/admin.php:2362
-#: ../sb-includes/widget.php:308
+#: ../sb-includes/admin.php:2366 ../sb-includes/widget.php:308
 msgid "Display bible passage"
 msgstr "Отображать bible passage"
 
-#: ../sb-includes/admin.php:2363
-#: ../sb-includes/widget.php:309
+#: ../sb-includes/admin.php:2367 ../sb-includes/widget.php:309
 msgid "Display date"
 msgstr "Отображать дату"
 
-#: ../sb-includes/admin.php:2364
-#: ../sb-includes/widget.php:310
+#: ../sb-includes/admin.php:2368 ../sb-includes/widget.php:310
 msgid "Display mini-player"
 msgstr "Отображать мини-плейер"
 
-#: ../sb-includes/admin.php:2368
-#: ../sb-includes/widget.php:314
+#: ../sb-includes/admin.php:2372 ../sb-includes/widget.php:314
 msgid "Preacher: "
 msgstr "Проповедник:"
 
-#: ../sb-includes/admin.php:2371
-#: ../sb-includes/admin.php:2382
-#: ../sb-includes/admin.php:2393
-#: ../sb-includes/frontend.php:999
-#: ../sb-includes/frontend.php:1007
-#: ../sb-includes/frontend.php:1017
-#: ../sb-includes/frontend.php:1025
-#: ../sb-includes/widget.php:317
-#: ../sb-includes/widget.php:328
-#: ../sb-includes/widget.php:339
+#: ../sb-includes/admin.php:2375 ../sb-includes/admin.php:2386
+#: ../sb-includes/admin.php:2397 ../sb-includes/frontend.php:1021
+#: ../sb-includes/frontend.php:1029 ../sb-includes/frontend.php:1039
+#: ../sb-includes/frontend.php:1047 ../sb-includes/widget.php:317
+#: ../sb-includes/widget.php:328 ../sb-includes/widget.php:339
 msgid "[All]"
 msgstr "[Все]"
 
-#: ../sb-includes/admin.php:2379
-#: ../sb-includes/widget.php:325
+#: ../sb-includes/admin.php:2383 ../sb-includes/widget.php:325
 msgid "Service: "
-msgstr "Сервис:"
+msgstr "Служения:"
 
-#: ../sb-includes/admin.php:2390
-#: ../sb-includes/widget.php:336
+#: ../sb-includes/admin.php:2394 ../sb-includes/widget.php:336
 msgid "Series: "
-msgstr "Серии: "
+msgstr "Темы: "
 
-#: ../sb-includes/admin.php:2438
-#, fuzzy
+#: ../sb-includes/admin.php:2442
 msgid "Display popular sermons"
-msgstr "Отображать мини-плейер"
+msgstr "Отображение популярных проповедей"
 
-#: ../sb-includes/admin.php:2439
-#, fuzzy
+#: ../sb-includes/admin.php:2443
 msgid "Display popular series"
-msgstr "Отображать мини-плейер"
+msgstr "Отображать популярные темы"
 
-#: ../sb-includes/admin.php:2440
-#, fuzzy
+#: ../sb-includes/admin.php:2444
 msgid "Display popular preachers"
-msgstr "Отображать проповедника"
+msgstr "Отображать популярных проповедников"
 
-#: ../sb-includes/admin.php:2466
-msgid "SermonBrowser can automatically pre-fill this form by reading ID3 tags from MP3 files."
+#: ../sb-includes/admin.php:2470
+msgid ""
+"SermonBrowser can automatically pre-fill this form by reading ID3 tags from "
+"MP3 files."
 msgstr ""
+"SermonBrowser может автоматически заполнить эту форму, читая ID3 теги из MP3-"
+"файлов."
 
-#: ../sb-includes/admin.php:2469
+#: ../sb-includes/admin.php:2473
 #, php-format
-msgid "You will need to set the %s before you can import MP3s and pre-fill the Add Sermons form."
+msgid ""
+"You will need to set the %s before you can import MP3s and pre-fill the Add "
+"Sermons form."
 msgstr ""
+"Вам нужно настроить %s, прежде чем вы сможете автоматически импортировать "
+"данные из MP3."
 
-#: ../sb-includes/admin.php:2469
+#: ../sb-includes/admin.php:2473
 msgid "import options"
-msgstr ""
+msgstr "импорт параметров"
 
-#: ../sb-includes/admin.php:2483
+#: ../sb-includes/admin.php:2487
 #, php-format
 msgid "Select an MP3 file here to have the %s form pre-filled using ID3 tags."
-msgstr ""
+msgstr "Выберите MP3 файл чтобы заполнить форму %s с использованием ID3 тегов."
 
-#: ../sb-includes/admin.php:2483
+#: ../sb-includes/admin.php:2487
 #, fuzzy
 msgid "Add Sermons"
 msgstr "Добавить проповедь"
 
-#: ../sb-includes/admin.php:2483
-#, fuzzy
+#: ../sb-includes/admin.php:2487
 msgid "Upload file"
-msgstr "Загрузить файлы"
+msgstr "Загрузить файл"
 
-#: ../sb-includes/admin.php:2488
+#: ../sb-includes/admin.php:2492
 msgid "File to upload"
 msgstr "Файл для загрузки"
 
-#: ../sb-includes/admin.php:2494
+#: ../sb-includes/admin.php:2498
 msgid "Upload"
 msgstr "Загрузка"
 
-#: ../sb-includes/admin.php:2499
+#: ../sb-includes/admin.php:2503
 msgid "Upload is disabled. Please contact your systems administrator."
 msgstr "Загрузка отключена. Свяжитесь с системным администратором."
 
-#: ../sb-includes/admin.php:2503
+#: ../sb-includes/admin.php:2507
 msgid "Upload is disabled. Please check your folder setting in Options."
 msgstr "Загрузка отключена. Провертьте настройки папки в Настройках."
 
-#: ../sb-includes/admin.php:2510
+#: ../sb-includes/admin.php:2514
 msgid "URL to import"
-msgstr ""
+msgstr "URL для импорта"
 
-#: ../sb-includes/admin.php:2513
-#, fuzzy
+#: ../sb-includes/admin.php:2517
 msgid "Link to remote file"
-msgstr "Объединенные файлы"
+msgstr "Ссылка на удаленный файл"
 
-#: ../sb-includes/admin.php:2513
+#: ../sb-includes/admin.php:2517
 msgid "Copy remote file to server"
-msgstr ""
+msgstr "Copy удаленный файл к серверу"
 
-#: ../sb-includes/admin.php:2515
-#, fuzzy
+#: ../sb-includes/admin.php:2519
 msgid "Import"
-msgstr "больше"
+msgstr "Импорт"
 
-#: ../sb-includes/admin.php:2523
+#: ../sb-includes/admin.php:2527
 #, fuzzy
 msgid "Choose existing file"
 msgstr "Выберите существующий файл:"
 
-#: ../sb-includes/admin.php:2534
-#, fuzzy
+#: ../sb-includes/admin.php:2538
 msgid "Select"
-msgstr "Удаление"
-
-#: ../sb-includes/admin.php:2547
-#, fuzzy
-msgid "SermonBrowser Help"
-msgstr "Теги Sermon Browser "
+msgstr "Выберите"
 
 #: ../sb-includes/admin.php:2551
-msgid "From this page you can edit or delete any of your sermons. The most recent sermons are found at the top. Use the filter options to quickly find the one you want."
-msgstr ""
+msgid "SermonBrowser Help"
+msgstr "Помощь Sermon Browser "
 
-#: ../sb-includes/admin.php:2558
-msgid "It&#146;s important that these options are set correctly, as otherwise SermonBrowser won&#146;t behave as you expect."
+#: ../sb-includes/admin.php:2555
+msgid ""
+"From this page you can edit or delete any of your sermons. The most recent "
+"sermons are found at the top. Use the filter options to quickly find the one "
+"you want."
 msgstr ""
+"На этой странице вы можете редактировать либо управлять вашими проповедями. "
+"Самая актуальная проповедь находятся на самом верху. Используйте фильтр "
+"чтобы быстро найти то что нужно."
 
-#: ../sb-includes/admin.php:2559
+#: ../sb-includes/admin.php:2562
+msgid ""
+"It&#146;s important that these options are set correctly, as otherwise "
+"SermonBrowser won&#146;t behave as you expect."
+msgstr ""
+"Важно, чтобы эти параметры были заданы правильно, в противном случае "
+"SermonBrowser может работать с ошибками."
+
+#: ../sb-includes/admin.php:2563
 msgid "The upload folder would normally be <b>wp-content/uploads/sermons</b>"
 msgstr ""
-
-#: ../sb-includes/admin.php:2560
-msgid "You should only change the public podcast feed if you re-direct your podcast using a service like Feedburner. Otherwise it should be the same as the private podcast feed."
-msgstr ""
-
-#: ../sb-includes/admin.php:2561
-msgid "The MP3 shortcode you need will be in the documation of your favourite MP3 plugin. Use the tag %SERMONURL% in place of the URL of the MP3 file (e.g. [haiku url=\"%SERMONURL%\"] or [audio:%SERMONURL%])."
-msgstr ""
+"+ Загрузить папку будет нормально будет% 3CB % 3Ewp содержание % 2Fuploads % "
+"2Fsermons % 3C% 2Fb % 3E"
 
 #: ../sb-includes/admin.php:2564
+msgid ""
+"You should only change the public podcast feed if you re-direct your podcast "
+"using a service like Feedburner. Otherwise it should be the same as the "
+"private podcast feed."
+msgstr ""
+"Вам нужно только указать ссылку на публичный подкаст, если вы хотите "
+"перенаправить свою трансляцию с помощью сервисов вроде Feedburner. В "
+"противном случае фид должен совпадать со ссылкой на локальный подкаст."
+
+#: ../sb-includes/admin.php:2565
+msgid ""
+"The MP3 shortcode you need will be in the documation of your favourite MP3 "
+"plugin. Use the tag %SERMONURL% in place of the URL of the MP3 file (e.g. "
+"[haiku url=\"%SERMONURL%\"] or [audio:%SERMONURL%])."
+msgstr ""
+"Чтобы вставить нужный код для MP3 читайте документацию к медиа плагину, "
+"который используется Wordpress для проигрывания медиа. Используйте тег "
+"%SERMONURL% вместо прямой ссылки на MP3-файл (например, [haiku url="
+"\"%SERMONURL%\"] или [audio:%SERMONURL%])."
+
+#: ../sb-includes/admin.php:2568
 #, php-format
-msgid "Template editing is one of the most powerful features of SermonBrowser. Be sure to look at the complete list of %stemplate tags%s."
+msgid ""
+"Template editing is one of the most powerful features of SermonBrowser. Be "
+"sure to look at the complete list of %stemplate tags%s."
 msgstr ""
-
-#: ../sb-includes/admin.php:2570
-msgid "Tutorial Screencasts"
-msgstr ""
-
-#: ../sb-includes/admin.php:2571
-msgid "Frequently Asked Questions"
-msgstr ""
-
-#: ../sb-includes/admin.php:2572
-msgid "Support Forum"
-msgstr ""
-
-#: ../sb-includes/admin.php:2573
-msgid "Shortcode syntax"
-msgstr ""
+"Редактирование шаблонов является одним из наиболее мощных функций "
+"SermonBrowser. Не забудьте обратить внимание на полный перечень %stemplate "
+"tags%s."
 
 #: ../sb-includes/admin.php:2574
-#, fuzzy
+msgid "Tutorial Screencasts"
+msgstr "Учебник и Видеоуроки"
+
+#: ../sb-includes/admin.php:2575
+msgid "Frequently Asked Questions"
+msgstr "Часто задаваемые Вопросы"
+
+#: ../sb-includes/admin.php:2576
+msgid "Support Forum"
+msgstr "Поддержка и форум"
+
+#: ../sb-includes/admin.php:2577
+msgid "Shortcode syntax"
+msgstr "Синтаксис короткой ссылки"
+
+#: ../sb-includes/admin.php:2578
 msgid "Donate"
-msgstr "Дата"
+msgstr "Пожертвовать"
 
 #: ../sb-includes/ajax.php:196
 msgid "No results"
 msgstr "Нет результатов"
 
-#: ../sb-includes/frontend.php:45
-#: ../sb-includes/frontend.php:93
-#: ../sb-includes/widget.php:55
-#: ../sb-includes/widget.php:209
+#: ../sb-includes/frontend.php:45 ../sb-includes/frontend.php:93
+#: ../sb-includes/widget.php:55 ../sb-includes/widget.php:209
 msgid "by"
 msgstr "по"
 
-#: ../sb-includes/frontend.php:50
-#: ../sb-includes/widget.php:60
+#: ../sb-includes/frontend.php:50 ../sb-includes/widget.php:60
 msgid "on"
 msgstr "на "
 
-#: ../sb-includes/frontend.php:98
-#: ../sb-includes/widget.php:214
+#: ../sb-includes/frontend.php:98 ../sb-includes/widget.php:214
 msgid " on "
 msgstr " на "
 
 #: ../sb-includes/frontend.php:123
-#, fuzzy
 msgid "List Sermons"
-msgstr "Редактировать проповедь"
+msgstr "Список проповедей"
 
-#: ../sb-includes/frontend.php:519
+#: ../sb-includes/frontend.php:529
 msgid "Sermon podcast"
-msgstr "Подкаст Sermon'а"
+msgstr "Подкаст проповеди"
 
-#: ../sb-includes/frontend.php:528
+#: ../sb-includes/frontend.php:538
 msgid "Custom sermon podcast"
-msgstr "Пользовательский подкаст Sermon'а"
+msgstr "Пользовательский подкаст проповеди"
 
-#: ../sb-includes/frontend.php:550
+#: ../sb-includes/frontend.php:560
 msgid "Unknown Date"
 msgstr "Неизвестная дата"
 
-#: ../sb-includes/frontend.php:641
+#: ../sb-includes/frontend.php:651
 msgid "Next page"
 msgstr "Следующая страница"
 
-#: ../sb-includes/frontend.php:652
+#: ../sb-includes/frontend.php:662
 msgid "Previous page"
 msgstr "Предыдущая страница"
 
-#: ../sb-includes/frontend.php:688
-#, fuzzy, php-format
+#: ../sb-includes/frontend.php:698
+#, php-format
 msgid "%s file"
-msgstr "%d серий"
+msgstr "%s файл"
 
-#: ../sb-includes/frontend.php:718
+#: ../sb-includes/frontend.php:715
+msgid "Download"
+msgstr ""
+
+#: ../sb-includes/frontend.php:729
 msgid "About"
 msgstr "О нас"
 
-#: ../sb-includes/frontend.php:808
+#: ../sb-includes/frontend.php:829
 msgid "more"
 msgstr "больше"
 
-#: ../sb-includes/frontend.php:892
+#: ../sb-includes/frontend.php:913
 msgid "Show filter"
 msgstr "Показать фильтр"
 
-#: ../sb-includes/frontend.php:893
+#: ../sb-includes/frontend.php:914
 msgid "Hide filter"
 msgstr "Скрыть фильтр"
 
-#: ../sb-includes/frontend.php:939
+#: ../sb-includes/frontend.php:960
 msgid "Active filter"
 msgstr "Активный фильтр"
 
-#: ../sb-includes/frontend.php:1005
-msgid "Services"
-msgstr "Сервисы"
+#: ../sb-includes/frontend.php:1007
+msgid "Ascending"
+msgstr ""
 
-#: ../sb-includes/frontend.php:1015
+#: ../sb-includes/frontend.php:1008
+msgid "Descending"
+msgstr ""
+
+#: ../sb-includes/frontend.php:1027
+msgid "Services"
+msgstr "Служения"
+
+#: ../sb-includes/frontend.php:1037
 msgid "Book"
 msgstr "Книга"
 
-#: ../sb-includes/frontend.php:1033
+#: ../sb-includes/frontend.php:1055
 msgid "Start date"
 msgstr "Дата начала"
 
-#: ../sb-includes/frontend.php:1035
+#: ../sb-includes/frontend.php:1057
 msgid "End date"
 msgstr "Дата окончания"
 
-#: ../sb-includes/frontend.php:1039
+#: ../sb-includes/frontend.php:1061
 msgid "Keywords"
 msgstr "Ключевые слова"
 
-#: ../sb-includes/frontend.php:1043
+#: ../sb-includes/frontend.php:1065
 msgid "Sort by"
 msgstr "Сортировать по"
 
-#: ../sb-includes/frontend.php:1050
+#: ../sb-includes/frontend.php:1072
 msgid "Direction"
 msgstr "Направление"
 
-#: ../sb-includes/frontend.php:1060
+#: ../sb-includes/frontend.php:1082
 msgid "Filter &raquo;"
 msgstr "Фильтр &raquo;"
 
 #: ../sb-includes/uninstall.php:25
 msgid "All sermon data has been removed."
-msgstr "Все данные плагина удалены."
+msgstr "Все данные проповеди были удалены."
 
 #: ../sb-includes/uninstall.php:27
 #, fuzzy
 msgid "Uninstall completed. The SermonBrowser plugin has been deactivated."
 msgstr "Удаление завершено. Sermon Browser был деактивирован."
 
+#~ msgid "Auto resize images?"
+#~ msgstr "Изменять размер изображений?"
+
+#~ msgid "Thumbnail size"
+#~ msgstr "Миниатюра размером"
+
+#~ msgid "Source image is too small or has a wrong dimensions."
+#~ msgstr ""
+#~ "Исходное изображение слишком маленькое или имеет неправильный размер."
+
+#~ msgid "Could not resize uploaded file. Probably this is not image file."
+#~ msgstr ""
+#~ "Не получилось уменьшить загруженый файл. Возможно это это не графический "
+#~ "файл."
+
 #~ msgid "You can't delete this preacher."
 #~ msgstr "Вы не можете удалить этого проповедника."
+
 #~ msgid "Congratulations, you just completed the installation!"
 #~ msgstr "Поздравляем, установка завершена!"
+
 #~ msgid "Uploads"
 #~ msgstr "Загрузки"
+
 #~ msgid "Delete all data"
 #~ msgstr "Удалить все данные"
+
 #~ msgid "Are you sure?"
 #~ msgstr "Вы уверены?"
-

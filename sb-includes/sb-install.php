@@ -165,7 +165,7 @@ function sb_default_multi_template () {
 $multi = <<<HERE
 <div class="sermon-browser">
 	[filters_form]
-   	<div class="clear">
+   	<div class="sb-clear">
 		<h4>Subscribe to Podcast</h4>
 		<table class="podcast">
 			<tr>
@@ -188,7 +188,7 @@ $multi = <<<HERE
 			</tr>
 		</table>
 	</div>
-	<h2 class="clear">Sermons ([sermons_count])</h2>
+	<h2 class="sb-clear">Sermons ([sermons_count])</h2>
    	<div class="floatright">[next_page]</div>
    	<div class="floatleft">[previous_page]</div>
 	<table class="sermons">
@@ -260,22 +260,22 @@ $css = <<<HERE
 	clear: both;
 }
 
-#content div.sermon-browser table, #content div.sermon-browser td {
+div.sermon-browser table, div.sermon-browser td {
 	border-top: none;
 	border-bottom: none;
 	border-left: none;
 	border-right: none;
 }
 
-#content div.sermon-browser tr td {
+div.sermon-browser tr td {
 	padding: 4px 0;
 }
 
-#content div.sermon-browser table.podcast table {
+div.sermon-browser table.podcast table {
 	margin: 0 1em;
 }
 
-#content div.sermon-browser td.sermon-title, #content div.sermon-browser td.sermon-passage {
+div.sermon-browser td.sermon-title, div.sermon-browser td.sermon-passage {
 	font-family: "Helvetica Neue",Arial,Helvetica,"Nimbus Sans L",sans-serif;
 }
 
@@ -284,7 +284,7 @@ div.sermon-browser table.sermons {
 	clear:both;
 }
 
-#content div.sermon-browser table.sermons td.sermon-title {
+div.sermon-browser table.sermons td.sermon-title {
 	font-weight:bold;
 	font-size: 140%;
 	padding-top: 2em;
@@ -295,7 +295,7 @@ div.sermon-browser table.sermons td.sermon-passage {
 	font-size: 110%;
 }
 
-#content div.sermon-browser table.sermons td.preacher {
+div.sermon-browser table.sermons td.preacher {
 	border-bottom: 1px solid #444444;
 	padding-bottom: 1em;
 }
@@ -479,7 +479,7 @@ h2 div.sb_edit_link {
 	font-size: 80%;
 }
 
-.clear {
+.sb-clear {
 	clear:both;
 }
 HERE;

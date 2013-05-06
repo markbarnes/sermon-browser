@@ -87,11 +87,11 @@ function sb_widget_sermon($args, $widget_args=1) {
 			$foo = unserialize($sermon->start);
 			$bar = unserialize($sermon->end);
 			if (isset ($foo[0]) && isset($bar[0]))
-				echo " <span class=\"sermon-passage\">(".sb_get_books($foo[0], $bar[0]).")</span>";
+				echo " <span class=\"sermon-passage\">(".sb_get_books($foo[0], $bar[0], FALSE).")</span>";
 		}
 		if ($preacherz) {
 			echo " <span class=\"sermon-preacher\">".__('by', $sermon_domain)." <a href=\"";
-			sb_print_preacher_link($sermon);
+			sb_print_preacher_link($sermon, false);
 			echo "\">".stripslashes($sermon->preacher)."</a></span>";
 		}
 		if ($date)
@@ -164,6 +164,9 @@ function sb_widget_popular ($args) {
 		echo $before_title.$options['title'].$after_title;
 	$jscript = '';
 	$trigger = array();
+	$output = array();
+	$series_final = array();
+	$preachers_final = array();
 	if ($options['display_sermons']) {
 		$sermons = $wpdb->get_results("SELECT sermons.id, sermons.title, sum(stuff.count) AS total
 									   FROM {$wpdb->prefix}sb_stuff AS stuff
@@ -359,19 +362,20 @@ function sb_download_page ($page_url) {
 }
 
 // Returns human friendly Bible reference (e.g. John 3:1-16, not John 3:1-John 3:16)
-function sb_tidy_reference ($start, $end, $add_link = FALSE) {
+function sb_tidy_reference ($start, $end, $add_link = FALSE, $relative_link = TRUE) {
 	if (!trim($start['book'])) {
 		return "";
 	}
-	$start_book = trim($start['book']);
-	$end_book = trim($end['book']);
+	$translated_books = array_combine(sb_get_default('eng_bible_books'), sb_get_default('bible_books'));
+	$start_book = $translated_books[trim($start['book'])];
+	$end_book = $translated_books[trim($end['book'])];
 	$start_chapter = trim($start['chapter']);
 	$end_chapter = trim($end['chapter']);
 	$start_verse = trim($start['verse']);
 	$end_verse = trim($end['verse']);
 	if ($add_link) {
-		$start_book = "<a href=\"".sb_get_book_link($start_book)."\">{$start_book}</a>";
-		$end_book = "<a href=\"".sb_get_book_link($end_book)."\">{$end_book}</a>";
+		$start_book = "<a href=\"".sb_get_book_link($start_book, $relative_link)."\">{$start_book}</a>";
+		$end_book = "<a href=\"".sb_get_book_link($end_book, $relative_link)."\">{$end_book}</a>";
 	}
 	if ($start_book == $end_book) {
 		if ($start_chapter == $end_chapter) {
@@ -395,8 +399,8 @@ function sb_print_bible_passage ($start, $end) {
 }
 
 // Returns human friendly Bible reference with link to filter
-function sb_get_books($start, $end) {
-	return sb_tidy_reference ($start, $end, TRUE);
+function sb_get_books($start, $end, $relative_link = TRUE) {
+	return sb_tidy_reference ($start, $end, TRUE, $relative_link);
 }
 
 //Add Bible text to single sermon page
@@ -465,6 +469,7 @@ function sb_add_other_bibles ($start, $end, $version) {
 	if ($version == 'hnv')
 		return '<div class="'.$version.'"><p>Sorry, the Hebrew Names Version is no longer available.</p></div>';
 	$reference = str_replace(' ', '+', sb_tidy_reference ($start, $end));
+	$reference = str_replace('Psalm+', 'Psalms+', $reference);		//Fix for API "Psalms" vs "Psalm"
 	$old_chapter = $start['chapter'];
 	$url = "http://api.preachingcentral.com/bible.php?passage={$reference}&version={$version}";
 	$xml = sb_get_xml(sb_download_page($url));
@@ -495,7 +500,7 @@ function sb_edit_link ($id) {
 }
 
 // Returns URL for search links
-function sb_build_url($arr, $clear = false) {
+function sb_build_url($arr, $clear = false, $relative_link = false) {
 	global $wpdb;
 	// Word list for URL building purpose
 	$wl = array('preacher', 'title', 'date', 'enddate', 'series', 'service', 'sortby', 'dir', 'book', 'stag', 'podcast');
@@ -505,10 +510,15 @@ function sb_build_url($arr, $clear = false) {
 			$bar[] = rawurlencode($k).'='.rawurlencode($v);
 		}
 	}
-	if (isset($bar))
-		return sb_display_url().sb_query_char().implode('&amp;', $bar);
-	else
+	if (isset($bar)) {
+		if ($relative_link)
+			return sb_query_char().implode('&amp;', $bar);
+		else
+			return sb_display_url().sb_query_char().implode('&amp;', $bar);
+	}
+	else {
 		return sb_display_url();
+	}
 }
 
 // Adds javascript and CSS where required
@@ -560,34 +570,34 @@ function sb_podcast_url() {
 // Prints sermon search URL
 function sb_print_sermon_link($sermon, $echo = true) {
 	if ($echo)
-		echo sb_build_url(array('sermon_id' => $sermon->id), true);
+		echo sb_build_url(array('sermon_id' => $sermon->id), true, true);
 	else
-		return sb_build_url(array('sermon_id' => $sermon->id), true);
+		return sb_build_url(array('sermon_id' => $sermon->id), true, true);
 }
 
 // Prints preacher search URL
-function sb_print_preacher_link($sermon) {
-	echo sb_build_url(array('preacher' => $sermon->pid));
+function sb_print_preacher_link($sermon, $relative_link = true) {
+	echo sb_build_url(array('preacher' => $sermon->pid), false, $relative_link);
 }
 
 // Prints series search URL
 function sb_print_series_link($sermon) {
-	echo sb_build_url(array('series' => $sermon->ssid));
+	echo sb_build_url(array('series' => $sermon->ssid), false, true);
 }
 
 // Prints service search URL
 function sb_print_service_link($sermon) {
-	echo sb_build_url(array('service' => $sermon->sid));
+	echo sb_build_url(array('service' => $sermon->sid), false, true);
 }
 
 // Prints bible book search URL
-function sb_get_book_link($book_name) {
-	return sb_build_url(array('book' => $book_name));
+function sb_get_book_link($book_name, $relative_link = true) {
+	return sb_build_url(array('book' => $book_name), false, $relative_link);
 }
 
 // Prints tag search URL
-function sb_get_tag_link($tag) {
-	return sb_build_url(array('stag' => $tag));
+function sb_get_tag_link($tag, $relative_link = true) {
+	return sb_build_url(array('stag' => $tag), false, $relative_link);
 }
 
 // Prints tags
@@ -625,7 +635,7 @@ function sb_print_tag_clouds($minfont=80, $maxfont=150) {
 	arsort($cnt);
 	foreach ($cnt as $tag => $count) {
 		$size = $minfont + $fontrange * (log($count) - $minlog) / $logrange;
-		$out[] = '<a style="font-size:'.(int) $size.'%" href="'.sb_get_tag_link($tag).'">'.$tag.'</a>';
+		$out[] = '<a style="font-size:'.(int) $size.'%" href="'.sb_get_tag_link($tag, FALSE).'">'.$tag.'</a>';
 	}
 	echo implode(' ', $out);
 }
@@ -635,9 +645,9 @@ function sb_print_next_page_link($limit = 0) {
 	global $sermon_domain, $record_count;
 	if ($limit == 0)
 		$limit = sb_get_option('sermons_per_page');
-	$current = isset($_REQUEST['page']) ? (int) $_REQUEST['page'] : 1;
+	$current = isset($_REQUEST['pagenum']) ? (int) $_REQUEST['pagenum'] : 1;
 	if ($current < ceil($record_count / $limit)) {
-		$url = sb_build_url(array('page' => ++$current));
+		$url = sb_build_url(array('pagenum' => ++$current), false, true);
 		echo '<a href="'.$url.'">'.__('Next page', $sermon_domain).' &raquo;</a>';
 	}
 }
@@ -646,9 +656,9 @@ function sb_print_next_page_link($limit = 0) {
 function sb_print_prev_page_link($limit = 0) {
 	global $sermon_domain;
 	if ($limit == 0) $limit = sb_get_option('sermons_per_page');
-	$current = isset($_REQUEST['page']) ? (int) $_REQUEST['page'] : 1;
+	$current = isset($_REQUEST['pagenum']) ? (int) $_REQUEST['pagenum'] : 1;
 	if ($current > 1) {
-		$url = sb_build_url(array('page' => --$current));
+		$url = sb_build_url(array('pagenum' => --$current), false, true);
 		echo '<a href="'.$url.'">&laquo; '.__('Previous page', $sermon_domain).'</a>';
 	}
 }
@@ -693,15 +703,16 @@ function sb_print_url($url) {
 
 // Print link to attached external URLs
 function sb_print_url_link($url) {
+	global $sermon_domain;
 	echo '<div class="sermon_file">';
 	sb_print_url ($url);
-	if (substr($url, -4) == ".mp3" && function_exists('ap_insert_player_widgets')) {
+	if (substr($url, -4) == ".mp3") {
 		if (substr($url,0,7) == "http://") {
 			$param="url"; }
 		else {
 			$param="file_name"; }
 		$url = rawurlencode($url);
-		echo ' <a href="'.sb_display_url().sb_query_char().'download&amp;'.$param.'='.$url.'">Download</a>';
+        echo ' <a href="'.sb_display_url().sb_query_char().'download&amp;'.$param.'='.$url.'">'.__('Download', $sermon_domain).'</a>';
 	}
 	echo '</div>';
 }
@@ -789,7 +800,12 @@ function sb_get_single_sermon($id) {
 //Prints the filter line for a given parameter
 function sb_print_filter_line ($id, $results, $filter, $display, $max_num = 7) {
 	global $sermon_domain, $more_applied;
-	echo "<div id = \"{$id}\" class=\"filter\">\r<span class=\"filter-heading\">".ucwords($id).":</span> \r";
+	$translate_book = FALSE;
+	if ($id == 'book') {
+		$translate_book = TRUE;
+		$translated_books = array_combine(sb_get_default('eng_bible_books'), sb_get_default('bible_books'));
+	}
+	echo "<div id = \"{$id}\" class=\"filter\">\r<span class=\"filter-heading\">".__(ucwords($id), $sermon_domain).":</span> \r";
 	$i = 1;
 	$more = FALSE;
 	foreach ($results as $result) {
@@ -800,7 +816,12 @@ function sb_print_filter_line ($id, $results, $filter, $display, $max_num = 7) {
 		}
 		if ($i != 1)
 			echo ", \r";
-		echo '<a href="'.sb_build_url(array($id => $result->$filter)).'">'.stripslashes($result->$display).'</a>&nbsp;('.$result->count.')';
+			if ($translate_book) {
+				echo '<a href="'.sb_build_url(array($id => $result->$filter), false, true).'">'.$translated_books[stripslashes($result->$display)].'</a>&nbsp;('.$result->count.')';
+			}
+			else {
+				echo '<a href="'.sb_build_url(array($id => $result->$filter), false, true).'">'.stripslashes($result->$display).'</a>&nbsp;('.$result->count.')';
+			}
 		$i++;
 	}
 	echo ".";
@@ -811,8 +832,8 @@ function sb_print_filter_line ($id, $results, $filter, $display, $max_num = 7) {
 
 //Prints the filter line for the date parameter
 function sb_print_date_filter_line ($dates) {
-	global $more_applied;
-	$date_output = "<div id = \"dates\" class=\"filter\">\r<span class=\"filter-heading\">Date:</span> \r";
+	global $more_applied, $sermon_domain;
+	$date_output = "<div id = \"dates\" class=\"filter\">\r<span class=\"filter-heading\">".__('Date', $sermon_domain).":</span> \r";
 	$first = $dates[0];
 	$last = end($dates);
 	$count = 0;
@@ -825,7 +846,7 @@ function sb_print_date_filter_line ($dates) {
 				if ($date->month != $previous_month) {
 					if ($count != 0)
 						$date_output .= '('.$count.'), ';
-					$date_output .= '<a href="'.sb_build_url(Array ('date' => $date->year.'-'.$date->month.'-01', 'enddate' => $date->year.'-'.$date->month.'-31')).'">'.strftime('%B', strtotime("{$date->year}-{$date->month}-{$date->day}")).'</a> ';
+					$date_output .= '<a href="'.sb_build_url(Array ('date' => $date->year.'-'.$date->month.'-01', 'enddate' => $date->year.'-'.$date->month.'-31'), false, true).'">'.strftime('%B', strtotime("{$date->year}-{$date->month}-{$date->day}")).'</a> ';
 					$previous_month = $date->month;
 					$count = 1;
 				} else
@@ -839,7 +860,7 @@ function sb_print_date_filter_line ($dates) {
 			if ($date->year !== $previous_year) {
 				if ($count !== 0)
 					$date_output .= '('.$count.'), ';
-				$date_output .= '<a href="'.sb_build_url(Array ('date' => $date->year.'-01-01', 'enddate' => $date->year.'-12-31')).'">'.$date->year.'</a> ';
+				$date_output .= '<a href="'.sb_build_url(Array ('date' => $date->year.'-01-01', 'enddate' => $date->year.'-12-31'), false, true).'">'.$date->year.'</a> ';
 				$previous_year = $date->year;
 				$count = 1;
 			} else
@@ -903,13 +924,13 @@ function sb_print_filters($filter) {
 					if ($output != '')
 						$output .= "\r, ";
 					if ($filter_option == 'date') {
-						$output .= '<strong>Date</strong>:&nbsp;';
+						$output .= '<strong>'.__('Date', $sermon_domain).'</strong>:&nbsp;';
 						if (substr($_REQUEST['date'],0,4) == substr($_REQUEST['enddate'],0,4))
 							$output .= substr($_REQUEST['date'],0,4).'&nbsp;(<a href="'.sb_url_minus_parameter('date', 'enddate').'">x</a>)';
 						if (substr($_REQUEST['date'],5,2) == substr($_REQUEST['enddate'],5,2))
-							$output .= ', '.strftime('%B', strtotime($_REQUEST['date'])).' (<a href="'.sb_build_url(Array ('date' => substr($_REQUEST['date'],0,4).'-01-01', 'enddate' => substr($_REQUEST['date'],0,4).'-12-31')).'">x</a>)';
+							$output .= ', '.strftime('%B', strtotime($_REQUEST['date'])).' (<a href="'.sb_build_url(Array ('date' => substr($_REQUEST['date'],0,4).'-01-01', 'enddate' => substr($_REQUEST['date'],0,4).'-12-31'), false, true).'">x</a>)';
 					} else {
-						$output .= '<strong>'.ucwords($filter_option).'</strong>:&nbsp;*'.$filter_option.'*';
+						$output .= '<strong>'.__(ucwords($filter_option), $sermon_domain).'</strong>:&nbsp;*'.$filter_option.'*';
 						$output .= '&nbsp;(<a href="'.sb_url_minus_parameter($filter_option).'">x</a>)';
 					}
 				}
@@ -930,7 +951,7 @@ function sb_print_filters($filter) {
 
 		$more_applied = array();
 		$output = str_replace ('*preacher*', isset($preachers[0]->name) ? $preachers[0]->name : '', $output);
-		$output = str_replace ('*book*', isset($_REQUEST['book']) ? htmlentities($_REQUEST['book']) : '', $output);
+		$output = str_replace ('*book*', isset($_REQUEST['book']) ? __(htmlentities($_REQUEST['book']), $sermon_domain) : '', $output);
 		$output = str_replace ('*service*', isset($services[0]->name) ? $services[0]->name : '', $output);
 		$output = str_replace ('*series*', isset($series[0]->name) ? $series[0]->name : '', $output);
 
@@ -971,6 +992,7 @@ function sb_print_filters($filter) {
 		}
 	} elseif ($filter['filter'] == 'dropdown') {
 		// Drop-down filter
+		$translated_books = array_combine(sb_get_default('eng_bible_books'), sb_get_default('bible_books'));
 		$preachers = $wpdb->get_results("SELECT p.*, count(p.id) AS count FROM {$wpdb->prefix}sb_preachers AS p JOIN {$wpdb->prefix}sb_sermons AS s ON p.id = s.preacher_id GROUP BY p.id ORDER BY count DESC, s.datetime DESC");
 		$series = $wpdb->get_results("SELECT ss.*, count(ss.id) AS count FROM {$wpdb->prefix}sb_series AS ss JOIN {$wpdb->prefix}sb_sermons AS sermons ON ss.id = sermons.series_id GROUP BY ss.id ORDER BY sermons.datetime DESC");
 		$services = $wpdb->get_results("SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id GROUP BY s.id ORDER BY count DESC");
@@ -982,8 +1004,8 @@ function sb_print_filters($filter) {
 			'Passage' => 'b.id',
 		);
 		$di = array(
-			'Ascending' => 'asc',
-			'Descending' => 'desc',
+			__('Ascending', $sermon_domain) => 'asc',
+			__('Descending', $sermon_domain) => 'desc',
 		);
 		$csb = isset($_REQUEST['sortby']) ? $_REQUEST['sortby'] : 'm.datetime';
 		$cd = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : 'desc';
@@ -1016,7 +1038,7 @@ function sb_print_filters($filter) {
 							<td class="field"><select name="book">
 									<option value=""><?php _e('[All]', $sermon_domain) ?></option>
 									<?php foreach ($book_count as $book): ?>
-									<option value="<?php echo $book->name ?>" <?php echo isset($_REQUEST['book']) && $_REQUEST['book'] == $book->name ? 'selected=selected' : '' ?>><?php echo stripslashes($book->name). ' ('.$book->count.')' ?></option>
+									<option value="<?php echo $book->name ?>" <?php echo isset($_REQUEST['book']) && $_REQUEST['book'] == $book->name ? 'selected=selected' : '' ?>><?php echo $translated_books[stripslashes($book->name)]. ' ('.$book->count.')' ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
