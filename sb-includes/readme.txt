@@ -260,6 +260,7 @@ Important security fixes. All users should upgrade to this version.
 * **Bug fix:** Fixed fatal error on versions of WordPress earlier than 3.0.
 * **Bug fix:** Always use absolute links when pretty permalinks are not being used ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/announcing-version-0-45-5/#p19841)).
 * **Bug fix:** Bible book names not showing correctly on add sermon admin screen for translated sites ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/language-support/)).
+* See [changeset](http://plugins.trac.wordpress.org/changeset/710876/sermon-browser)
 
 = 0.45.5 (6 May 2013) =
 * **Thanks:** Updated version patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/).
@@ -275,7 +276,7 @@ Important security fixes. All users should upgrade to this version.
 * **Bug fix:** Translation fixes ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/problem-with-romanian-bible-books-showing-in-english/), [link](http://www.sermonbrowser.com/forum/sermon-browser-support/translating-things-which-arent-on-the-pot-file/)).
 * **Bug fix:** Prevent PHP warnings when ini_set function is disabled ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/warning-ini_set-has-been-disabled/)).
 * **Enhancement:** New Hindi translation, and updated Romanian and Russian translations (thanks to [Chandel](http://outshinesolutions.com/), [Lucian Mihailescu](http://lucianwebservice.com/) and [Vadym Gulyi](http://www.vady.kiev.ua/)).
-* See [changeset](http://plugins.trac.wordpress.org/changeset?reponame=&new=708683%40sermon-browser%2Ftrunk&old=389534%40sermon-browser%2Ftrunk).
+* See [changeset](http://plugins.trac.wordpress.org/changeset/708683/sermon-browser)
 
 = 0.45.4 (26 May 2011) =
 * **Bug fix:** Fixes broken iTunes feed on some installations.

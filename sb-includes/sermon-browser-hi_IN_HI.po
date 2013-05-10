@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AMA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-06 15:37-0000\n"
+"POT-Creation-Date: 2013-05-10 12:20-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: shivangi <shivangi@outshinesolutions.com>\n"
 "Language-Team: Outshine Solutions <ash.pr@outshinesolutions.com>\n"
@@ -28,339 +28,339 @@ msgstr "नहीं मिली फ़ाइल"
 msgid "URL not found"
 msgstr "यूआरएल नहीं मिला"
 
-#: ../sermon.php:277 ../sermon.php:278 ../sermon.php:544
+#: ../sermon.php:285 ../sermon.php:286 ../sermon.php:552
 #: ../sb-includes/admin.php:563 ../sb-includes/admin.php:737
 #: ../sb-includes/admin.php:1260 ../sb-includes/frontend.php:125
 #: ../sb-includes/widget.php:78
 msgid "Sermons"
 msgstr "उपदेश"
 
-#: ../sermon.php:280 ../sb-includes/frontend.php:122
+#: ../sermon.php:288 ../sb-includes/frontend.php:122
 msgid "Edit Sermon"
 msgstr "उपदेश संपादित करें"
 
-#: ../sermon.php:282 ../sb-includes/frontend.php:127
+#: ../sermon.php:290 ../sb-includes/frontend.php:127
 msgid "Add Sermon"
 msgstr "उपदेश में जोड़ें"
 
-#: ../sermon.php:284 ../sb-includes/admin.php:259
+#: ../sermon.php:292 ../sb-includes/admin.php:259
 #: ../sb-includes/frontend.php:130
 msgid "Files"
 msgstr "फ़ाइलें"
 
-#: ../sermon.php:285 ../sb-includes/admin.php:555
+#: ../sermon.php:293 ../sb-includes/admin.php:555
 #: ../sb-includes/frontend.php:132
 msgid "Preachers"
 msgstr "प्रचारकों"
 
-#: ../sermon.php:286 ../sb-includes/frontend.php:133
+#: ../sermon.php:294 ../sb-includes/frontend.php:133
 msgid "Series &amp; Services"
 msgstr "श्रृंखला &amp; सेवाएं"
 
-#: ../sermon.php:287 ../sb-includes/frontend.php:136
+#: ../sermon.php:295 ../sb-includes/frontend.php:136
 msgid "Options"
 msgstr "विकल्प"
 
-#: ../sermon.php:288 ../sb-includes/admin.php:390
+#: ../sermon.php:296 ../sb-includes/admin.php:390
 #: ../sb-includes/frontend.php:137
 msgid "Templates"
 msgstr "टेम्पलेट्स"
 
-#: ../sermon.php:289 ../sb-includes/admin.php:327 ../sb-includes/admin.php:328
+#: ../sermon.php:297 ../sb-includes/admin.php:327 ../sb-includes/admin.php:328
 #: ../sb-includes/admin.php:342 ../sb-includes/frontend.php:140
 msgid "Uninstall"
 msgstr "स्थापना रद्द करें"
 
-#: ../sermon.php:290 ../sb-includes/frontend.php:141
+#: ../sermon.php:298 ../sb-includes/frontend.php:141
 msgid "Help"
 msgstr "मदद"
 
-#: ../sermon.php:291 ../sb-includes/frontend.php:142
+#: ../sermon.php:299 ../sb-includes/frontend.php:142
 msgid "Pray for Japan"
 msgstr "जापान के लिए प्रार्थना करो"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Genesis"
 msgstr "उत्पत्ति"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Exodus"
 msgstr "निष्क्रमण"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Leviticus"
 msgstr "छिछोरापन"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Numbers"
 msgstr "नंबर"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Deuteronomy"
 msgstr "Deuteronomy"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Joshua"
 msgstr "जोशुआ"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Judges"
 msgstr "न्यायाधीश"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ruth"
 msgstr "दया"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Samuel"
 msgstr "1 शमूएल"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Samuel"
 msgstr "2 शमूएल"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Kings"
 msgstr "1 किंग्स"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Kings"
 msgstr "2 किंग्स"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Chronicles"
 msgstr "1 इतिहास"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Chronicles"
 msgstr "2 इतिहास"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ezra"
 msgstr "एज्रा"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Nehemiah"
 msgstr "नहेमायाह"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Esther"
 msgstr "एस्थर"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Job"
 msgstr "काम"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Psalm"
 msgstr "भजन"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Proverbs"
 msgstr "कहावत"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ecclesiastes"
 msgstr "Ecclesiastes"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Song of Solomon"
 msgstr "सुलेमान के गीत या भजन"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Isaiah"
 msgstr "यशायाह"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Jeremiah"
 msgstr "कालनिंदक"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Lamentations"
 msgstr "विलाप"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ezekiel"
 msgstr "ईजेकील"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Daniel"
 msgstr "सच्चा न्यायकर्ता"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Hosea"
 msgstr "Hosea"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Joel"
 msgstr "जोएल"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Amos"
 msgstr "अमोस"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Obadiah"
 msgstr "ओबद्याह"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Jonah"
 msgstr "जोनाह"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Micah"
 msgstr "मीका"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Nahum"
 msgstr "नहूम"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Habakkuk"
 msgstr "Habakkuk"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Zephaniah"
 msgstr "Zephaniah"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Haggai"
 msgstr "Haggai"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Zechariah"
 msgstr "Zechariah"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Malachi"
 msgstr "Malachi"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Matthew"
 msgstr "मैथ्यू"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Mark"
 msgstr "मार्क"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Luke"
 msgstr "ल्यूक"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "John"
 msgstr "जॉन"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Acts"
 msgstr "अधिनियमों"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Romans"
 msgstr "रोमन"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Corinthians"
 msgstr "1 कुरिन्थियों"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Corinthians"
 msgstr "2 कुरिन्थियों"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Galatians"
 msgstr "गलाटियन्स"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ephesians"
 msgstr "Ephesians"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Philippians"
 msgstr "Philippians"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Colossians"
 msgstr "Colossians"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Thessalonians"
 msgstr "1 Thessalonians"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Thessalonians"
 msgstr "2 Thessalonians"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Timothy"
 msgstr "1 टिमोथी"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Timothy"
 msgstr "2 टिमोथी"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Titus"
 msgstr "Titus"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Philemon"
 msgstr "Philemon"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Hebrews"
 msgstr "Hebrews"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "James"
 msgstr "जेम्स"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Peter"
 msgstr "1पीटर"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Peter"
 msgstr "2 पीटर"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 John"
 msgstr "1 जॉन"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 John"
 msgstr "2 जॉन"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "3 John"
 msgstr "3 जॉन"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Jude"
 msgstr "Jude"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Revelation"
 msgstr "रहस्योद्घाटन"
 
-#: ../sermon.php:505 ../sb-includes/frontend.php:329
+#: ../sermon.php:513 ../sb-includes/frontend.php:329
 msgid "No sermons found."
 msgstr "उपदेश नहीं पाया."
 
-#: ../sermon.php:542
+#: ../sermon.php:550
 msgid "Display a list of recent sermons."
 msgstr "हाल के उपदेश की एक सूची प्रदर्शित करें."
 
-#: ../sermon.php:559 ../sb-includes/frontend.php:112
+#: ../sermon.php:567 ../sb-includes/frontend.php:112
 #: ../sb-includes/widget.php:92 ../sb-includes/widget.php:104
 msgid "Sermon Browser tags"
 msgstr "उपदेश ब्राउज़र टैग"
 
-#: ../sermon.php:561
+#: ../sermon.php:569
 msgid "Most popular sermons"
 msgstr "सबसे लोकप्रिय उपदेश"
 
-#: ../sermon.php:562
+#: ../sermon.php:570
 msgid "Display a list of the most popular sermons, series or preachers."
 msgstr "सबसे लोकप्रिय उपदेश, श्रृंखला या प्रचारकों की सूची प्रदर्शित करता है."
 

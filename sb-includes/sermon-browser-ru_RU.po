@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AMA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-06 15:37-0000\n"
+"POT-Creation-Date: 2013-05-10 12:20-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Vadym Gulyi <me@vady.kiev.ua>\n"
 "Language-Team: Fat Cow <zhr@tut.by>\n"
@@ -28,339 +28,339 @@ msgstr "Файл не найден"
 msgid "URL not found"
 msgstr "URL не найден"
 
-#: ../sermon.php:277 ../sermon.php:278 ../sermon.php:544
+#: ../sermon.php:285 ../sermon.php:286 ../sermon.php:552
 #: ../sb-includes/admin.php:563 ../sb-includes/admin.php:737
 #: ../sb-includes/admin.php:1260 ../sb-includes/frontend.php:125
 #: ../sb-includes/widget.php:78
 msgid "Sermons"
 msgstr "Проповеди"
 
-#: ../sermon.php:280 ../sb-includes/frontend.php:122
+#: ../sermon.php:288 ../sb-includes/frontend.php:122
 msgid "Edit Sermon"
 msgstr "Редактировать проповедь"
 
-#: ../sermon.php:282 ../sb-includes/frontend.php:127
+#: ../sermon.php:290 ../sb-includes/frontend.php:127
 msgid "Add Sermon"
 msgstr "Добавить проповедь"
 
-#: ../sermon.php:284 ../sb-includes/admin.php:259
+#: ../sermon.php:292 ../sb-includes/admin.php:259
 #: ../sb-includes/frontend.php:130
 msgid "Files"
 msgstr "Файлы"
 
-#: ../sermon.php:285 ../sb-includes/admin.php:555
+#: ../sermon.php:293 ../sb-includes/admin.php:555
 #: ../sb-includes/frontend.php:132
 msgid "Preachers"
 msgstr "Проповедники"
 
-#: ../sermon.php:286 ../sb-includes/frontend.php:133
+#: ../sermon.php:294 ../sb-includes/frontend.php:133
 msgid "Series &amp; Services"
 msgstr "Темы и служения"
 
-#: ../sermon.php:287 ../sb-includes/frontend.php:136
+#: ../sermon.php:295 ../sb-includes/frontend.php:136
 msgid "Options"
 msgstr "Настройки"
 
-#: ../sermon.php:288 ../sb-includes/admin.php:390
+#: ../sermon.php:296 ../sb-includes/admin.php:390
 #: ../sb-includes/frontend.php:137
 msgid "Templates"
 msgstr "Шаблоны"
 
-#: ../sermon.php:289 ../sb-includes/admin.php:327 ../sb-includes/admin.php:328
+#: ../sermon.php:297 ../sb-includes/admin.php:327 ../sb-includes/admin.php:328
 #: ../sb-includes/admin.php:342 ../sb-includes/frontend.php:140
 msgid "Uninstall"
 msgstr "Удаление"
 
-#: ../sermon.php:290 ../sb-includes/frontend.php:141
+#: ../sermon.php:298 ../sb-includes/frontend.php:141
 msgid "Help"
 msgstr "Помощь"
 
-#: ../sermon.php:291 ../sb-includes/frontend.php:142
+#: ../sermon.php:299 ../sb-includes/frontend.php:142
 msgid "Pray for Japan"
 msgstr "Молитесь за Японию"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Genesis"
 msgstr "Бытие"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Exodus"
 msgstr "Исход"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Leviticus"
 msgstr "Левит"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Numbers"
 msgstr "Числа"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Deuteronomy"
 msgstr "Второзаконие"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Joshua"
 msgstr "Книга Иисуса  Навина"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Judges"
 msgstr "Книга Судей Израилевых"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ruth"
 msgstr "Книга Руфи"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Samuel"
 msgstr "Первая книга Царств"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Samuel"
 msgstr "Вторая книга Царств"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Kings"
 msgstr "Третья книга Царств"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Kings"
 msgstr "Четвертая книга Царств"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Chronicles"
 msgstr "Первая книга Паралипоменон"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Chronicles"
 msgstr "Вторая книга Паралипоменон"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ezra"
 msgstr "Первая книга Ездры"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Nehemiah"
 msgstr "Книга Неемии"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Esther"
 msgstr "Книга Есфири"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Job"
 msgstr "Книга Иова"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Psalm"
 msgstr "псалом"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Proverbs"
 msgstr "Книга Притчей Соломоновых"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ecclesiastes"
 msgstr "Книга Екклесиаста, или Проповедника"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Song of Solomon"
 msgstr "Песня из Соломона"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Isaiah"
 msgstr "Книга пророка Исаии"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Jeremiah"
 msgstr "Книга пророка Иеремии"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Lamentations"
 msgstr "Книга Плач Иеремии"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ezekiel"
 msgstr "Книга пророка Иезекииля"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Daniel"
 msgstr "Книга пророка Даниила"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Hosea"
 msgstr "Книга пророка Осии"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Joel"
 msgstr "Книга пророка Иоиля"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Amos"
 msgstr "Книга пророка Амоса"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Obadiah"
 msgstr "Книга пророка Авдия"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Jonah"
 msgstr "Книга пророка Ионы"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Micah"
 msgstr "Книга пророка Михея"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Nahum"
 msgstr "Книга пророка Наума"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Habakkuk"
 msgstr "Книга пророка Аввакума"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Zephaniah"
 msgstr "Книга пророка Софонии"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Haggai"
 msgstr "Книга пророка Аггея"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Zechariah"
 msgstr "Книга пророка Захарии"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Malachi"
 msgstr "Книга пророка Малахии"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Matthew"
 msgstr "Евангелие от Матфея"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Mark"
 msgstr "Евангелие от Марка"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Luke"
 msgstr "Евангелие от Луки"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "John"
 msgstr "Евангелие от Иоанна"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Acts"
 msgstr "Деяния"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Romans"
 msgstr "Послание к Римлянам"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Corinthians"
 msgstr "Первое Послание к Коринфянам"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Corinthians"
 msgstr "Второе Послание к Коринфянам"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Galatians"
 msgstr "Послание к Галатам"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ephesians"
 msgstr "Послание к Ефесянам"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Philippians"
 msgstr "Послание к Филиппийцам"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Colossians"
 msgstr "Послание к Колоссянам"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Thessalonians"
 msgstr "Первое Послание к Фессалоникийцам"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Thessalonians"
 msgstr "Второе Послание к Фессалоникийцам"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Timothy"
 msgstr "Первое Послание к Тимофею"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Timothy"
 msgstr "Второе Послание к Тимофею"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Titus"
 msgstr "Послание к Титу"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Philemon"
 msgstr "Послание к Филимону"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Hebrews"
 msgstr "Послание к Евреям"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "James"
 msgstr "Послание Иакова"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Peter"
 msgstr "Первое Послание Петра"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Peter"
 msgstr "Второе Послание Петра"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 John"
 msgstr "Первое Послание Иоанна"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 John"
 msgstr "Второе Послание Иоанна"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "3 John"
 msgstr "Третье Послание Иоанна"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Jude"
 msgstr "Послание Иуды"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Revelation"
 msgstr "Откровение"
 
-#: ../sermon.php:505 ../sb-includes/frontend.php:329
+#: ../sermon.php:513 ../sb-includes/frontend.php:329
 msgid "No sermons found."
 msgstr "Не найдено проповедей."
 
-#: ../sermon.php:542
+#: ../sermon.php:550
 msgid "Display a list of recent sermons."
 msgstr "Отображать список последних проповедей."
 
-#: ../sermon.php:559 ../sb-includes/frontend.php:112
+#: ../sermon.php:567 ../sb-includes/frontend.php:112
 #: ../sb-includes/widget.php:92 ../sb-includes/widget.php:104
 msgid "Sermon Browser tags"
 msgstr "Теги Sermon Browser "
 
-#: ../sermon.php:561
+#: ../sermon.php:569
 msgid "Most popular sermons"
 msgstr "Самое популярное проповеди"
 
-#: ../sermon.php:562
+#: ../sermon.php:570
 msgid "Display a list of the most popular sermons, series or preachers."
 msgstr "Отображать список самых популярных проповедей, тем или проповедников."
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-06 15:36-0000\n"
+"POT-Creation-Date: 2013-05-10 12:19-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mark Barnes\n"
 "Language-Team: \n"
@@ -27,339 +27,339 @@ msgstr ""
 msgid "URL not found"
 msgstr "URL nicht gefunden"
 
-#: ../sermon.php:277 ../sermon.php:278 ../sermon.php:544
+#: ../sermon.php:285 ../sermon.php:286 ../sermon.php:552
 #: ../sb-includes/admin.php:563 ../sb-includes/admin.php:737
 #: ../sb-includes/admin.php:1260 ../sb-includes/frontend.php:125
 #: ../sb-includes/widget.php:78
 msgid "Sermons"
 msgstr "Predigten"
 
-#: ../sermon.php:280 ../sb-includes/frontend.php:122
+#: ../sermon.php:288 ../sb-includes/frontend.php:122
 msgid "Edit Sermon"
 msgstr "Predigt bearbeiten"
 
-#: ../sermon.php:282 ../sb-includes/frontend.php:127
+#: ../sermon.php:290 ../sb-includes/frontend.php:127
 msgid "Add Sermon"
 msgstr "Predigt hinzufuegen"
 
-#: ../sermon.php:284 ../sb-includes/admin.php:259
+#: ../sermon.php:292 ../sb-includes/admin.php:259
 #: ../sb-includes/frontend.php:130
 msgid "Files"
 msgstr "Dateien"
 
-#: ../sermon.php:285 ../sb-includes/admin.php:555
+#: ../sermon.php:293 ../sb-includes/admin.php:555
 #: ../sb-includes/frontend.php:132
 msgid "Preachers"
 msgstr "Pastoren"
 
-#: ../sermon.php:286 ../sb-includes/frontend.php:133
+#: ../sermon.php:294 ../sb-includes/frontend.php:133
 msgid "Series &amp; Services"
 msgstr "Reihen &amp; Gottesdienste"
 
-#: ../sermon.php:287 ../sb-includes/frontend.php:136
+#: ../sermon.php:295 ../sb-includes/frontend.php:136
 msgid "Options"
 msgstr "Einstellungen"
 
-#: ../sermon.php:288 ../sb-includes/admin.php:390
+#: ../sermon.php:296 ../sb-includes/admin.php:390
 #: ../sb-includes/frontend.php:137
 msgid "Templates"
 msgstr "Vorlagen"
 
-#: ../sermon.php:289 ../sb-includes/admin.php:327 ../sb-includes/admin.php:328
+#: ../sermon.php:297 ../sb-includes/admin.php:327 ../sb-includes/admin.php:328
 #: ../sb-includes/admin.php:342 ../sb-includes/frontend.php:140
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#: ../sermon.php:290 ../sb-includes/frontend.php:141
+#: ../sermon.php:298 ../sb-includes/frontend.php:141
 msgid "Help"
 msgstr "Hilfe"
 
-#: ../sermon.php:291 ../sb-includes/frontend.php:142
+#: ../sermon.php:299 ../sb-includes/frontend.php:142
 msgid "Pray for Japan"
 msgstr ""
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Genesis"
 msgstr "1. Buch Mose"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Exodus"
 msgstr "2. Buch Mose"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Leviticus"
 msgstr "3. Buch Mose"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Numbers"
 msgstr "4. Buch Mose"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Deuteronomy"
 msgstr "5. Buch Mose"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Joshua"
 msgstr "Josua"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Judges"
 msgstr "Richter"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ruth"
 msgstr "Ruth"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Samuel"
 msgstr "1. Buch Samuel"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Samuel"
 msgstr "2. Buch Samuel"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Kings"
 msgstr "1. Buch Koenige"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Kings"
 msgstr "2. Buch Koenige"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Chronicles"
 msgstr "1. Buch Chronik"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Chronicles"
 msgstr "2. Buch Chronik"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ezra"
 msgstr "Esra"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Nehemiah"
 msgstr "Nehemia"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Esther"
 msgstr ""
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Job"
 msgstr "Hiob"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Psalm"
 msgstr "Psalm"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Proverbs"
 msgstr "Sprueche Salomos"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ecclesiastes"
 msgstr "Prediger Salomo"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Song of Solomon"
 msgstr "Hohelied Salomos"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Isaiah"
 msgstr "Jesaja"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Jeremiah"
 msgstr "Jeremia"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Lamentations"
 msgstr "Klagelieder"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ezekiel"
 msgstr "Hesekiel"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Daniel"
 msgstr "Daniel"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Hosea"
 msgstr "Hosea"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Joel"
 msgstr ""
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Amos"
 msgstr ""
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Obadiah"
 msgstr "Obadja"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Jonah"
 msgstr "Jona"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Micah"
 msgstr "Micha"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Nahum"
 msgstr ""
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Habakkuk"
 msgstr ""
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Zephaniah"
 msgstr "Zephanja"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Haggai"
 msgstr ""
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Zechariah"
 msgstr "Sacharja"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Malachi"
 msgstr "Maleachi"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Matthew"
 msgstr "Matthaeus"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Mark"
 msgstr "Markus"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Luke"
 msgstr "Lukas"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "John"
 msgstr "Johannes"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Acts"
 msgstr "Apostelgeschichte"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Romans"
 msgstr "Roemer"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Corinthians"
 msgstr "1. Korinther"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Corinthians"
 msgstr "2. Korinther"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Galatians"
 msgstr "Galater"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Ephesians"
 msgstr "Epheser"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Philippians"
 msgstr "Philipper"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Colossians"
 msgstr "Kolosser"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Thessalonians"
 msgstr "1. Thessalonicher"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Thessalonians"
 msgstr "2. Thessalonicher"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Timothy"
 msgstr "1. Timotheus"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Timothy"
 msgstr "2. Timotheus"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Titus"
 msgstr "Titus"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Philemon"
 msgstr "Philemon"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Hebrews"
 msgstr "Hebraeer"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "James"
 msgstr "Jakobus"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 Peter"
 msgstr "1. Petrus"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 Peter"
 msgstr "2. Petrus"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "1 John"
 msgstr "1. Johannes"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "2 John"
 msgstr "2. Johannes"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "3 John"
 msgstr "3. Johannes"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Jude"
 msgstr "Judas"
 
-#: ../sermon.php:365
+#: ../sermon.php:373
 msgid "Revelation"
 msgstr "Offenbarung"
 
-#: ../sermon.php:505 ../sb-includes/frontend.php:329
+#: ../sermon.php:513 ../sb-includes/frontend.php:329
 msgid "No sermons found."
 msgstr "Keine Predigten gefunden"
 
-#: ../sermon.php:542
+#: ../sermon.php:550
 msgid "Display a list of recent sermons."
 msgstr "Eine Liste aller Predigten anzeigen"
 
-#: ../sermon.php:559 ../sb-includes/frontend.php:112
+#: ../sermon.php:567 ../sb-includes/frontend.php:112
 #: ../sb-includes/widget.php:92 ../sb-includes/widget.php:104
 msgid "Sermon Browser tags"
 msgstr ""
 
-#: ../sermon.php:561
+#: ../sermon.php:569
 msgid "Most popular sermons"
 msgstr "Beliebteste Predigten"
 
-#: ../sermon.php:562
+#: ../sermon.php:570
 msgid "Display a list of the most popular sermons, series or preachers."
 msgstr "Eine Liste der beliebtesten Predigten, Reihen oder Pastoren anzeigen."
 
