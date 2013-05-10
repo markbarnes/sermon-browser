@@ -511,7 +511,7 @@ function sb_build_url($arr, $clear = false, $relative_link = false) {
 		}
 	}
 	if (isset($bar)) {
-		if ($relative_link)
+		if ($relative_link and get_option('permalink_structure'))  // relative links don't work if pretty permalinks are not being used
 			return sb_query_char().implode('&amp;', $bar);
 		else
 			return sb_display_url().sb_query_char().implode('&amp;', $bar);

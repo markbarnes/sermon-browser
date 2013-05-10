@@ -1578,7 +1578,7 @@ function sb_new_sermon() {
 		$tags = implode(', ', (array) $tags);
 	} else
 		$startArr = $endArr = array();
-	$books = sb_get_bible_books();
+	$books = sb_get_default('eng_bible_books');
 ?>
 	<script type="text/javascript">
 		var timeArr = new Array();

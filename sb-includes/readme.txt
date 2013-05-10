@@ -2,7 +2,7 @@
 Contributors: mark8barnes
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
-Requires at least: 2.6
+Requires at least: 2.9.2
 Tested up to: 3.5.1
 Stable tag: trunk
 
@@ -224,6 +224,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.6 =
+Three more bug fixes, collated and patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/).
+
 = 0.45.5 =
 Many bug fixes, collated and patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/) - thanks, Ben! See the support forum for details and recommendations: http://www.sermonbrowser.com/forum/sermon-browser-support/announcing-version-0-45-5/
 
@@ -253,7 +256,12 @@ Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
 
-= 0.45.5 (3 May 2013) =
+= 0.45.6 (10 May 2013) =
+* **Bug fix:** Fixed fatal error on versions of WordPress earlier than 3.0.
+* **Bug fix:** Always use absolute links when pretty permalinks are not being used ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/announcing-version-0-45-5/#p19841)).
+* **Bug fix:** Bible book names not showing correctly on add sermon admin screen for translated sites ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/language-support/)).
+
+= 0.45.5 (6 May 2013) =
 * **Thanks:** Updated version patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/).
 * **Bug fix:** Fix style sheet call when WordPress is installed in a subdirectory (home_url is different than site_url) ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/sermon-browser-screen-layout-issues)).
 * **Bug fix:** Help Sermon Browser choose the correct page for the links ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/all-links-broken/)).
