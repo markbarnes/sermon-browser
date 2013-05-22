@@ -751,7 +751,7 @@ function sb_manage_everything() {
 								<?php if (count($v['data']) < 2) { ?>
 									| <a href="javascript:alert('<?php printf(__('You cannot delete this %1$s as you must have at least one %1$s in the database', $sermon_domain), $k); ?>')"><?php _e('Delete', $sermon_domain) ?></a>
 								<?php } elseif ($item->sermon_count == 0) { ?>
-									| <a href="javascript:alert('<?php printf(__('Are you sure you want to delete %s?', $sermon_domain), $item->name); ?>')"><?php _e('Delete', $sermon_domain) ?></a>
+									| <a href="javascript:if(confirm('<?php printf(__('Are you sure you want to delete %s?', $sermon_domain), $item->name); ?>')){delete<?php echo $k ?>(<?php echo $item->id ?>)}"><?php _e('Delete', $sermon_domain) ?></a>
 								<?php } else { ?>
 									| <a href="javascript:alert('<?php switch ($k) {
 										case "Services":
@@ -2521,7 +2521,7 @@ function sb_print_upload_form () {
 	<?php } ?>
 	</form>
 	<?php if ($_GET['page'] == 'sermon-browser/new_sermon.php') { ?>
-		<form method="get" action="<?php echo admin_url();?>">
+		<form method="get" action="<?php echo admin_url('admin.php?page=sermon-browser/new_sermon.php');?>">
 		<input type="hidden" name="page" value="sermon-browser/new_sermon.php" />
 		<tr>
 			<th nowrap valign="top" scope="row"><?php _e('Choose existing file', $sermon_domain) ?>: </th>

@@ -28,13 +28,13 @@ function sb_display_sermons($options = array()) {
 		array(), 1, $limit
 	);
 	if ($url_only == 1)
-		sb_print_sermon_link($sermons[0]);
+		sb_print_sermon_link($sermons[0], true, false);
 	else {
 		echo "<ul class=\"sermon-widget\">\r";
 		foreach ((array) $sermons as $sermon) {
 			echo "\t<li>";
 			echo "<span class=\"sermon-title\"><a href=\"";
-			sb_print_sermon_link($sermon);
+			sb_print_sermon_link($sermon, true, false);
 			echo "\">".stripslashes($sermon->title)."</a></span>";
 			if ($display_passage) {
 				$foo = unserialize($sermon->start);
@@ -43,7 +43,7 @@ function sb_display_sermons($options = array()) {
 			}
 			if ($display_preacher) {
 				echo "<span class=\"sermon-preacher\">".__('by', $sermon_domain)." <a href=\"";
-				sb_print_preacher_link($sermon);
+				sb_print_preacher_link($sermon, false);
 				echo "\">".stripslashes($sermon->preacher)."</a></span>";
 			}
 			if ($display_date)
@@ -568,11 +568,11 @@ function sb_podcast_url() {
 }
 
 // Prints sermon search URL
-function sb_print_sermon_link($sermon, $echo = true) {
+function sb_print_sermon_link($sermon, $echo = true, $relative_link = true) {
 	if ($echo)
-		echo sb_build_url(array('sermon_id' => $sermon->id), true, true);
+		echo sb_build_url(array('sermon_id' => $sermon->id), true, $relative_link);
 	else
-		return sb_build_url(array('sermon_id' => $sermon->id), true, true);
+		return sb_build_url(array('sermon_id' => $sermon->id), true, $relative_link);
 }
 
 // Prints preacher search URL
