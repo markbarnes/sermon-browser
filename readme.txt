@@ -5,6 +5,8 @@ Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wp
 Requires at least: 2.9.2
 Tested up to: 3.5.1
 Stable tag: trunk
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl.html
 
 Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 
@@ -224,6 +226,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.7 =
+Three more bug fixes, collated and patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/).
+
 = 0.45.6 =
 Three more bug fixes, collated and patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/).
 
@@ -255,6 +260,12 @@ Adds WordPress 3.1 compatibility, fixes several bugs (including an important sec
 Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
+
+= 0.45.7 (21 May 2013) =
+* **Bug fix:** Fix for function sb_display_sermons, a function users can use to display sermons in their theme templates ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/problem-with-recent-sermons-url-link-on-the-front-page/)).
+* **Bug fix:** Fix ability to delete series, services, and preachers ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/bug-fix-delete-series-services-and-preachers/)).
+* **Bug fix:** Import ID3 tags now working from Create Sermon page ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/you-do-not-have-the-correct-permissions-to-create-sermons/#p3152)).
+* See [changeset](http://plugins.trac.wordpress.org/changeset/716907/sermon-browser)
 
 = 0.45.6 (10 May 2013) =
 * **Bug fix:** Fixed fatal error on versions of WordPress earlier than 3.0.
