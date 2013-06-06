@@ -669,7 +669,7 @@ function sb_print_url($url) {
 	require (SB_INCLUDES_DIR.'/filetypes.php');
 	$pathinfo = pathinfo($url);
 	$ext = $pathinfo['extension'];
-	if (substr($url,0,7) == "http://")
+	if ((substr($url,0,7) == "http://") or (substr($url,0,8) == 'https://'))
 		$url=sb_display_url().sb_query_char(FALSE).'show&url='.rawurlencode($url);
 	else
 		if (strtolower($ext) == 'mp3')
@@ -707,7 +707,7 @@ function sb_print_url_link($url) {
 	echo '<div class="sermon_file">';
 	sb_print_url ($url);
 	if (substr($url, -4) == ".mp3") {
-		if (substr($url,0,7) == "http://") {
+		if ((substr($url,0,7) == "http://") or (substr($url,0,8) == 'https://')) {
 			$param="url"; }
 		else {
 			$param="file_name"; }
@@ -1109,7 +1109,7 @@ function sb_first_mp3($sermon, $stats= TRUE) {
 	$stuff = array_merge((array)$stuff['Files'], (array)$stuff['URLs']);
 	foreach ((array) $stuff as $file) {
 		if (strtolower(substr($file, strrpos($file, '.') + 1)) == 'mp3') {
-			if (substr($file,0,7) == "http://") {
+			if ((substr($url,0,7) == "http://") or (substr($url,0,8) == 'https://')) {
 				if ($stats)
 					$file=sb_display_url().sb_query_char().'show&amp;url='.rawurlencode($file);
 			} else {

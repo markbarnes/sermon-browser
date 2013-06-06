@@ -44,7 +44,7 @@ function sb_options() {
 		sb_update_option('filter_type', 'oneclick');
 		sb_update_option('filter_hide', 'hide');
 		sb_update_option('hide_no_attachments', false);
-		sb_update_option('mp3_shortcode', '[audio:%SERMONURL%]');
+		sb_update_option('mp3_shortcode', '[audio mp3="%SERMONURL%"]');
 		   if (!is_dir(SB_ABSPATH.$dir))
 			if (sb_mkdir(SB_ABSPATH.$dir))
 				@chmod(SB_ABSPATH.$dir, 0777);
@@ -192,7 +192,7 @@ function sb_options() {
 				<td><?php if (sb_display_url()=='') { echo htmlspecialchars(site_url()); } else { echo htmlspecialchars(sb_display_url()); } echo sb_query_char(); ?>podcast</td>
 			</tr>
 			<tr>
-				<td align="right" style="vertical-align:middle"><?php _e('MP3 shortcode', $sermon_domain) ?>: </td>
+				<td align="right" style="vertical-align:middle"><?php _e('MP3 shortcode', $sermon_domain) ?>: <br/><?php _e('Default: ', $sermon_domain) ?>[audio mp3=&quot;%SERMONURL%&quot;]</td>
 				<td><input type="text" name="mp3_shortcode" value="<?php echo htmlspecialchars(sb_get_option('mp3_shortcode')) ?>" style="width:100%" /></td>
 			</tr>
 			<tr>

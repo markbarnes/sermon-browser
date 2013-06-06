@@ -10,6 +10,8 @@ License URI: http://www.gnu.org/licenses/gpl.html
 
 Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 
+
+
 == Description ==
 
 The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to their website, where they can be searched, listened to, and downloaded. It is easy to use with comprehensive help and tutorials, and is used on hundreds of church websites. You can view working demos at [Bethel Evangelical Church](http://www.bethel-clydach.co.uk/sermons/), or the [Evangelical Movement of Wales](http://www.emw.org.uk/sermons/). Features include:
@@ -30,30 +32,40 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 14. Active [community support fourm](http://www.sermonbrowser.com/forum/).
 15. English, German, Portugese Brazilian, Romanian, Russian and Spanish translations included.
 
+
+
 == Installation ==
 
-1. Download the plugin, and unzip it.
-2. Place the sermon-browser folder in your wp-content/plugins folder and upload it to your website.
-3. Activate the plugin from the plugins tab of your Wordpress admin.
-4. You may have to change the permissions the upload folder (by default `wp-content/uploads/sermons`). See the FAQ for more details.
-5. Create a Wordpress page with the text `[sermons]`. The plugin will display your sermons on this page.
-6. You can also display sermons (filtered according to your criteria) on additional pages or posts by using **shortcodes**. See the Customisation page for more details.
+= Install the plugin in one of two ways: =
+* In your WordPress admin panel, go to Plugins, Add New.  Search for "sermon browser".  Find "Sermon Browser" by Mark Barnes, and click "Install Now".
 
-#### Installation in Wordpress MU
+	or
+
+* [Download the plugin](https://wordpress.org/plugins/sermon-browser/), unzip it, and upload it to your website, placing the sermon-browser folder in your wp-content/plugins folder.
+
+= After you have installed the plugin: =
+1. Activate the plugin from the plugins tab of your Wordpress admin.
+2. You may have to change the permissions the upload folder (by default `wp-content/uploads/sermons`). See the FAQ for more details.
+3. Create a Wordpress page with the text `[sermons]`. The plugin will display your sermons on this page.
+4. You can also display sermons (filtered according to your criteria) on additional pages or posts by using **shortcodes**. See the Customisation page for more details.
+
+= Installation in Wordpress MU =
 1. Download the plugin, and unzip it.
 2. Place the contents of the sermon-browser folder in your wp-content/mu-plugins folder and upload it to your website.
 3. The plugin will be automatically activated and available for each user.
 
+
+
 == Frequently Asked Questions ==
 
-#### I've activated the plugin, and entered in a few sermons, but they are not showing up to my website users. Where are they? ####
+= I've activated the plugin, and entered in a few sermons, but they are not showing up to my website users. Where are they? =
 SermonBrowser only displays your sermons where you choose. You need to create the page/post where you want the sermons to appear (or edit an existing one), and add [sermons] to the page/post. You can also add some explantory text if you wish. If you do so, the text will appear on all your sermons pages. If you want your text to only appear on the list of sermons, not on individual sermon pages, you need to edit the SermonBrowser templates (see customisation).
 
-#### What does the error message "Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777." mean? ####
+= What does the error message "Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777." mean? =
 SermonBrowser tries to set the correct permissions on your folders for you, but sometimes restrictions mean that you have to do it yourself. You need to make sure that SermonBrowser is able to write to your sermons upload folder (usually `/wp-content/uploads/sermons/`). [This tutorial](http://samdevol.com/wordpress-troubleshooting-permissions-chmod-and-paths-oh-my/) explains how to use the free FileZilla FTP software to do this.
 
-#### SermonBrowser spends a long time attempting to upload files, but the file is never uploaded. What's happening? ####
-The most likely cause is that you're reaching either the maximum filesize that can be uploaded, or the maximum time a PHP script can run for. [Editing your php.ini](http://articles.techrepublic.com.com/5100-10878_11-5272345.html) may help overcome these problems - but if you're on shared hosting, it's possible your host has set maximum limits you cannot change. If that's the case, you should upload your files via FTP. This is generally a better option than using your browser, particularly if you have several files to upload. If you do edit your php.ini file, these settings should be adequate:
+= SermonBrowser spends a long time attempting to upload files, but the file is never uploaded. What's happening? =
+The most likely cause is that you're reaching either the maximum filesize that can be uploaded, or the maximum time a PHP script can run for. [Editing your php.ini](http://www.techrepublic.com/article/a-tour-of-the-phpini-configuration-file-part-2/5272345) may help overcome these problems - but if you're on shared hosting, it's possible your host has set maximum limits you cannot change. If that's the case, you should upload your files via FTP. This is generally a better option than using your browser, particularly if you have several files to upload. If you do edit your php.ini file, these settings should be adequate:
 
 `file_uploads = On
 upload_max_filesize = 15M
@@ -62,11 +74,13 @@ max_execution_time = 600
 max_input_time = 600
 memory_limit = 48M`
 
-#### Why are my MP3 files are appearing as an icon, rather than as a player, as I've seen on other SermonBrowser sites? ####
-You need to install and activate your favourite WordPress MP3 plugin. If you're not using the recommended the [1PixelOut Audio Player](http://wpaudioplayer.com/), you'll also need to update the MP3 shortcode on the options page. SermonBrowser supports any WordPress MP3 player that allows you add the player by entering shortcodes in a post or page.
+= Why are my MP3 files are appearing as an icon, rather than as a player, as I've seen on other SermonBrowser sites? =
+If you are using a version of WordPress older than 3.6, you need to install and activate your favourite WordPress MP3 plugin. WordPress 3.6 has the MediaElement.js player built-in; if you are running an older version of WordPress, you can install the [Mediaelement.js plugin](https://wordpress.org/plugins/media-element-html5-video-and-audio-player/).  SermonBrowser also supports any WordPress MP3 player that allows you add the player by entering shortcodes in a post or page. To use a different media player plugin, change the MP3 shortcode setting on the Sermons, Options admin page.
 
-#### How do I change the Bible version from the ESV? ####
+= How do I change the Bible version from the ESV? =
 Several Bible versions are supported by Sermon Browser. To switch to a different version, go to Options, and edit the single template. Replace `[esvtext]` with the appropriate template tag for the alternative version.(Template tags are listed on the `Customisation` page of this site). For example, to switch to the KJV, use the tag `[kjvtext]`. Thanks go to Crossway for providing access to the ESV, bible.org for the NET Bible. Other versions are supplied by SermonBrowser itself.
+
+There are lots of other versions available in non-English languages.  [This forum post](http://www.sermonbrowser.com/forum/sermon-browser-support/german-bible-support/#p19464) describes what is available and how to add a new version to your Sermon Browser installation.
 
 If you're desperate to use other versions not currently supported, you can manage it using other WordPress plugins (albeit with reduced functionality). The eBibleicious plugin allows for NASB, MSG, KJV, NKJV, ESV, HCSB, and NCV (use it in 'snippet' mode). However, there are three disadvantages. (1) To use it, you'll need to register for an API key (although it is free). (2) It uses Javascript so search engines won't see the Bible text, and nor will users with javascript turned off. (3) Most importantly, it only shows a maximum of four verses (the ESV shows up to 500 verses!).
 
@@ -74,60 +88,62 @@ You can also use the [RefTagger](http://www.reftagger.com) plugin, though this s
 
 To use either of these alternatives, just download, install and activate them as you would for any other plugin. Check their settings (make sure you enter get an API key if you're using eBiblicious). You then need to make one change to your SermonBrowser options. In the Single Sermon form, look for `[esvtext]` and replace it with `[biblepassage]`. (By default it's right at the end of the code.)
 
-#### When using a flash audio player, my pastor sounds like a chipmunk! What's going on? ####
-This 'feature' is caused by a well-known bug in Adobe Flash. In order for the files to play correctly, when they are saved, the sample rate needs to be set at a multiple of 11.025kHz (i.e. 11.025, 22.05 or 44.1).
-
-#### How do I get recent sermons to display in my sidebar or elsewhere in my theme? ####
+= How do I get recent sermons to display in my sidebar or elsewhere in my theme? =
 SermonBrowser comes with several widgets you can add to your sidebars - just go to Appearance and choose Widgets.
 
-If you want to add sermons elsewhere on your site, and your comfortable in editing template files, add the following code: `<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_preacher' => 1, 'display_passage' => 1, 'display_date' => 1, 'display_player' => 0, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5, 'url_only' => 0)) ?>`. Each of the values in that line can be changed or omitted (if they are omitted, the default values are used). For example, you could just use: `<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_player' => 1, 'preacher' => 12) ?>`. The various array keys are used to specify the following:
+If you want to add sermons elsewhere on your site, and you are comfortable in editing template files, add the following code: `<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_preacher' => 1, 'display_passage' => 1, 'display_date' => 1, 'display_player' => 0, 'preacher' => 0, 'service' => 0, 'series' => 0, 'limit' => 5, 'url_only' => 0)) ?>`. Each of the values in that line can be changed or omitted (if they are omitted, the default values are used). For example, you could just use: `<?php if (function_exists('sb_display_sermons')) sb_display_sermons(array('display_player' => 1, 'preacher' => 12) ?>`. The various array keys are used to specify the following:
 
 * display_preacher, display_passage, display_date and display_player affect what is displayed (0 is off, 1 is on).
 * preacher, service and series allow you to limit the output to a particular preacher, service or series. Simply change the number of the ID of the preacher/services/series you want to display. You can get the ID from the Preachers page, or the Series & Services page. 0 shows all preachers/services/series.
 * limit is the maximum number of sermons you want displayed.
 * url_only means that only the URL of a sermon is returned. It's useful if you want to create your own link (e.g. click here for Bob's latest sermon). url_only means the display_ values are ignored, and limit is set to 1.
 
-#### My host only allows me a certain amount of disk space, and I have so many sermons uploaded, I've run out of space! What can I do? ####
-You could, of course, change your host to someone a little more generous! You should also make sure you encode your sermons at a medium to high compression. Usually, 22.05kHz, 48kbps mono is more than adequate (you could probably go down to 32kbps for even higher compression). 48kbps means every minute of recording takes up 360kb of disk space, so a thirty minute sermon will just over 10Mb. At this setting, 5Gb would be enough for over 450 sermons.
+= My host only allows me a certain amount of disk space, and I have so many sermons uploaded, I've run out of space! What can I do? =
+You could, of course, change your host to someone a little more generous! You should also make sure you encode your sermons at a medium to high compression. Usually, 22.05kHz, 48kbps mono is more than adequate (you could probably go down to 32kbps for even higher compression). 48kbps means every minute of recording takes up 360kb of disk space, so a thirty minute sermon will be just over 10Mb. At this setting, 5Gb would be enough for over 450 sermons.
 
-If you can't change your host, you can still use SermonBrowser. You'll just have to upload your sermon files to another site - preferably a free one! You can then use the other sites embed code, or just link to the MP3 file if they allow you (when you add your sermon to SermonBrowser, select "Enter an URL" and paste it in).
+If you can't change your host, you can still use SermonBrowser. You'll just have to upload your sermon files to another site - preferably a free one! You can then use the other site's embed code, or just link to the MP3 file if they allow you (when you add your sermon to SermonBrowser, select "Enter an URL" and paste it in).
 
-#### How do I upload videos to SermonBrowser? ####
+= How do I upload videos to SermonBrowser? =
 You can't - but you can upload videos to other sites, then embed them in your sermons. You can use any site that allows you to embed your video in other websites, including [YouTube](http://www.youtube.com), but we recommend [Vimeo](http://www.vimeo.com/) as the most suitable for sermons. That's because most video-sharing sites are designed for relatively short clips of 10 minutes or so, but Vimeo will accept videos of any length - and there are no quotas for the maximum size of a video, nor the number of videos you can store. Once your video is uploaded and available on Vimeo or YouTube, you can copy the embed code it gives you, edit your sermon, select "Enter embed code" and paste it in. If you are using a video plugin, you can even use that plugin's shortcode in the embed code.
 
-#### Can I turn off the "Powered by Sermonbrowser" link? ####
+= Can I turn off the "Powered by Sermonbrowser" link? =
 The link is there so that people from other churches who listen to your sermons can find out about SermonBrowser themselves. But if you'd like to remove the link, just remove [creditlink] from the templates in SermonBrowser Options.
 
-#### What is the difference between the public and private podcast feeds? ####
+= What is the difference between the public and private podcast feeds? =
 In SermonBrowser options, you are able to change the address of the public podcast feed. This is the feed that is shown on your sermons page, and is usually the same as your private feed (i.e. you won't need to change it). However, if you use a service such as FeedBurner, you can use your private feed to send data to feedburner, and change your public feed to your Feedburner address. If you do not use a service like Feedburner, just make sure your public and private feeds are the same.
 
-#### On the sermons page, what is the difference between subscribing to our podcast, and subscribing to a podcast for this search? ####
-The link called subscribe to our podcast gives a podcast of all sermons that you add to your site through SermonBrowser. But it may be that some people may just want to subscribe to a feed for certain speakers, or for a certain service. If they wish to do this, they should set the search filters and perform their search, then click on the Subscribe to a podcast for this search link. This will give them a podcast according to the filter they selected. You could also copy this link, and display it elsewhere on the site - for example to provide separate feeds for morning and evening services.
+= On the sermons page, what is the difference between subscribing to the podcast for "All sermons", and subscribing to a podcast for "Filtered sermons"? =
+The link under Subscribe to Podcast for "All sermons" gives a podcast of all sermons that you add to your site through SermonBrowser. But it may be that some people may just want to subscribe to a feed for certain speakers, or for a certain service. If they wish to do this, they should set the search filters and perform their search, then click on the subscribe link for "Filtered sermons." This will give them a podcast according to the filter they selected. You could also copy this link, and display it elsewhere on the site - for example to provide separate feeds for morning and evening services.
 
-#### Can I change the default sort order of the sermons? ####
+= Can I change the default sort order of the sermons? =
 Yes. Use the **shortcode** `[sermons dir=asc]` instead of just `[sermons]`.
 
-#### Why do I get a page not found error when I click on my podcast feed? ####
+= Why do I get a page not found error when I click on my podcast feed? =
 You've probably changed the address of your public feed to an incorrect value. Try changing it back to the same value as your private feed in Sermon Options.
 
-Can I change the way sermons are displayed?
+= Can I change the way sermons are displayed? =
 Yes, definately, although you need to know a little HTML and/or CSS. SermonBrowser has a powerful templating function, so you can exclude certain parts of the output (e.g. if you don't want the links to other sermons preached on the same day to be displayed). The **Customisation** section has much more information.
 
-#### The search form is too big/too small for my layout. How do I make it narrower/wider? ####
+= The search form is too big/too small for my layout. How do I make it narrower/wider? =
 The search form is set to roughly 500 pixels, which should be about right for most WordPress templates. To change it, look for a line in the CSS stylesheet that begins `table.sermonbrowser td.field input`, and change the width specified after it. To make the form narrower, reduce the width. To make it bigger, increase the width. You'll also need to change the width of the date fields on the line below, which should be 20 pixels smaller.
 
-#### Why is sometimes the Bible text missing? ####
-This usually happens for one of three reasons: (1) The Bible texts are provided by external websites, and sometimes they can go do. If you can't see Genesis 1 then the problem is with those websites. They're rarely down for long. (2) If you specify an invalid bible passage (e.g. Romans 22). If this is the case your sermon page will display ERROR: No results were found for your search. (3) If your webhost has disabled allow_url_fopen and cURL. Some cheaper webhosts have these essential features switched off. If they have, you won't be able to use this facility.
+Alternatively, you could try using the one-click style filter, which is inherently responsive.  The one-click style filter is selected on the Sermons, Options admin screen.
 
-#### Why does my sermon page say I have exceeded my quota for ESV lookups? ####
+= Why is sometimes the Bible text missing? =
+This usually happens for one of three reasons: (1) The Bible texts are provided by external websites, and sometimes they can go down. If you can't see Genesis 1 then the problem is with those websites. They're rarely down for long. (2) If you specify an invalid bible passage (e.g. Romans 22). If this is the case your sermon page will display ERROR: No results were found for your search. (3) If your webhost has disabled allow_url_fopen and cURL. Some cheaper webhosts have these essential features switched off. If they have, you won't be able to use this facility.
+
+= Why does my sermon page say I have exceeded my quota for ESV lookups? =
 The ESV website only allows 5,000 lookups per day from each IP address. That should be enough for most users of SermonBrowser. However, if you are using a shared host, there will be hundreds (perhaps thousands) of other websites on the same IP address as you. If any are also using the ESV API, they also get counted towards that total. If you are using less than 5,000 lookups per day (i.e. you are having less than 5,000 pageviews of your sermon pages), and you receive the error message you'll need to do two things in order to continue to display the text. (1) Sign up for an ESV API key. (2) Edit frontend.php (one of the SermonBrowser files). Look for the function `sb_add_esv_text` (at the time of writing it began on line 412), and replace ...`passageQuery?key=IP&passage=`... with ...`passageQuery?key=YOURAPIKEY&passage=`...
 
 If you are having more than 5,000 page views per day, then this won't help. Instead, leave a message on the forum explaining your problem. SermonBrowser could probably be modified to provide a caching mechanism to reduce the likelihood of this error occurring, if there is demand.
 
-#### How can I change the file icons that Sermon Browser uses, or add new icons? ####
+= How can I change the file icons that Sermon Browser uses, or add new icons? =
 You'll need to edit the `filetypes.php` file that comes with Sermon Browser. The icon is chosen on the basis of the file extension (or in the case of URLs the file extension then the site address). If you do create new icons for other filetypes, consider sending them to the author so they can be included in future versions of the plugin.
 
-#### Are there any more Frequently Asked Questions? ####
+= Where is the best place to go for help, ask questions, or discuss a potential bug? =
+Sermon Browser has an [active support forum](http://www.sermonbrowser.com/forum/sermon-browser-support/) on sermonbrowser.com.  If you post there looking for help on your website, don't forget to include a link to your site.
+
+= Are there any more Frequently Asked Questions? =
 Yes.  There are additonal [FAQs on the Sermon Browser support forum](http://www.sermonbrowser.com/forum/sermon-browser-support/troubleshooting-faq/).
 
 == Screenshots ==
@@ -137,6 +153,8 @@ Yes.  There are additonal [FAQs on the Sermon Browser support forum](http://www.
 3. **Editing a sermon:** You can see a wide variety of information can be entered, including the bible passage being preached on, and any files linked to the sermon. Any number of Bible passages can be included, and any number of files (e.g. you could attach an mp3 file for the audio recording, a powerpoint file, and a PDF of the sermon text).
 4. **The options page:** You can customise SermonBrowser through this option page. At the bottom of the screen are the settings that allow you to customise how MP3 ID3 tags will be imported.
 5. **Using the template facility:** The powerful templating facility means that with a little knowledge of HTML, CSS, and the Sermon Browser template tags, you can easily adapt Sermon Browser's output to suit your own requirements. SermonBrowser produces valid XHTML code, using semantically correct markup and is fully standards compliant.
+
+
 
 == Customisation ==
 
@@ -200,9 +218,11 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 * **[date]** - The date of the sermon
 * **[files_loop][/files_loop]** - These two tags should be placed around the [file] tag if you want to display all the files linked with to sermon. They are not needed if you only want to display the first file.
 * **[file]** - Displays the files and external URLs
+* **[file_with_download]** - The same as [file], but includes a download link after the media player for MP3 files
 * **[embed_loop][/embed_loop]** - These two tags should be placed around the tag if you want to display all the embedded objects linked to this sermon. They are not needed if you only want to display the first embedded object.
 * **[embed]** - Displays an embedded object (e.g. video)
 * **[creditlink]** - displays a "Powered by Sermon Browser" link.
+* **[editlink]** - Displays a link to edit the current sermon if you are logged in as an admin
 
 #### Sermon page only ####
 * **[preacher_description]** - The description of the preacher.
@@ -221,10 +241,16 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 * **[akjvtext]** - Displays the full text of the AKJV Bible for all passages linked to that sermon.
 * **[hnvtext]** - Displays the full text of the HNV Bible for all passages linked to that sermon.
 * **[lbrvtext]** - Displays the full text of the Reina Valera Bible (Spanish) for all passages linked to that sermon.
+* **[cornilescutext]** - Displays the full text of the Cornilescu Bible (Romanian) for all passages linked to that sermon.
+* **[synodaltext]** - Displays the full text of the Synodal 1876 Translation (Russian) for all passages linked to that sermon.
 * **[biblepassage]** - Displays the reference of the bible passages for that sermon. Useful for utilising other bible plugins (see FAQ).
 
 
+
 == Upgrade Notice ==
+
+= 0.45.8 =
+More bug fixes, collated and patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/).
 
 = 0.45.7 =
 Three more bug fixes, collated and patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/).
@@ -259,7 +285,14 @@ Adds WordPress 3.1 compatibility, fixes several bugs (including an important sec
 = 0.43.6 =
 Important security fixes. All users should upgrade to this version.
 
+
+
 == Changelog ==
+
+= 0.45.8 (31 May 2013) =
+* **Bug fix:** Allow MP3 external URLs beginning with "https://" ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/url-redirect-not-working/#p19959)).
+* **Bug fix:** Sermon page not recognized for new installs ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/bug-fix-sermon-page-not-recognized-for-new-installs/)).
+* **Enhancement:** Default settings now support MediaElement.js player, or built-in player with WordPress 3.6 ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/heads-up-about-wordpress-3-6/#p19977)).
 
 = 0.45.7 (21 May 2013) =
 * **Bug fix:** Fix for function sb_display_sermons, a function users can use to display sermons in their theme templates ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/problem-with-recent-sermons-url-link-on-the-front-page/)).

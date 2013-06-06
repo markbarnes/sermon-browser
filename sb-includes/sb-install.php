@@ -157,7 +157,7 @@ function sb_install() {
 	sb_update_option('import_album', false);
 	sb_update_option('import_comments', false);
 	sb_update_option('import_filename', 'none');
-	sb_update_option('mp3_shortcode', '[audio:%SERMONURL%]');
+	sb_update_option('mp3_shortcode', '[audio mp3="%SERMONURL%"]');
 }
 
 //Default template for search results
