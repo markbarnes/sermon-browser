@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser v0.44\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-22 23:28-0000\n"
-"PO-Revision-Date: 2013-05-22 23:28-0000\n"
+"POT-Creation-Date: 2013-06-06 01:03-0000\n"
+"PO-Revision-Date: 2013-06-06 01:04-0000\n"
 "Last-Translator: Mark Barnes\n"
 "Language-Team: DJIO | www.DJIO.com.br <traducoes@djio.com.br>\n"
 "Language: pt_BR\n"
@@ -518,6 +518,12 @@ msgstr "Feed privado do Podcast"
 #: sb-includes/admin.php:195
 msgid "MP3 shortcode"
 msgstr ""
+
+# @ sermon
+#: sb-includes/admin.php:195
+#, fuzzy
+msgid "Default: "
+msgstr "Horário padrão"
 
 # @ sermon
 #: sb-includes/admin.php:199

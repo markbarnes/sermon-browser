@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-22 23:28-0000\n"
+"POT-Creation-Date: 2013-06-06 01:04-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Lucian Mihailescu <intercer@gmail.com>\n"
 "Language-Team: InterCer.net <intercer@gmail.com>\n"
@@ -422,6 +422,11 @@ msgstr "Feed podcast privat"
 #: ../sb-includes/admin.php:195
 msgid "MP3 shortcode"
 msgstr "cod scurt MP3"
+
+#: ../sb-includes/admin.php:195
+#, fuzzy
+msgid "Default: "
+msgstr "Timp implicit"
 
 #: ../sb-includes/admin.php:199
 msgid "Sermons per page"

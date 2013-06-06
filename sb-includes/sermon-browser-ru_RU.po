@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AMA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-22 23:28-0000\n"
+"POT-Creation-Date: 2013-06-06 01:04-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Vadym Gulyi <me@vady.kiev.ua>\n"
 "Language-Team: Fat Cow <zhr@tut.by>\n"
@@ -421,6 +421,11 @@ msgstr "Лента приватных подкастов"
 #: ../sb-includes/admin.php:195
 msgid "MP3 shortcode"
 msgstr "MP3 короткая ссылка"
+
+#: ../sb-includes/admin.php:195
+#, fuzzy
+msgid "Default: "
+msgstr "Стандартное время"
 
 #: ../sb-includes/admin.php:199
 msgid "Sermons per page"

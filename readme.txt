@@ -293,6 +293,7 @@ Important security fixes. All users should upgrade to this version.
 * **Bug fix:** Allow MP3 external URLs beginning with "https://" ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/url-redirect-not-working/#p19959)).
 * **Bug fix:** Sermon page not recognized for new installs ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/bug-fix-sermon-page-not-recognized-for-new-installs/)).
 * **Enhancement:** Default settings now support MediaElement.js player, or built-in player with WordPress 3.6 ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/heads-up-about-wordpress-3-6/#p19977)).
+* See [changeset](http://plugins.trac.wordpress.org/changeset/723323/)
 
 = 0.45.7 (21 May 2013) =
 * **Bug fix:** Fix for function sb_display_sermons, a function users can use to display sermons in their theme templates ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/problem-with-recent-sermons-url-link-on-the-front-page/)).

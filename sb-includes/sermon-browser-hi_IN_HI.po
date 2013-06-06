@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AMA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-22 23:28-0000\n"
+"POT-Creation-Date: 2013-06-06 01:03-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: shivangi <shivangi@outshinesolutions.com>\n"
 "Language-Team: Outshine Solutions <ash.pr@outshinesolutions.com>\n"
@@ -419,6 +419,11 @@ msgstr "निजी पॉडकास्ट फ़ीड"
 #: ../sb-includes/admin.php:195
 msgid "MP3 shortcode"
 msgstr "MP3 लघुकोडः"
+
+#: ../sb-includes/admin.php:195
+#, fuzzy
+msgid "Default: "
+msgstr "डिफ़ॉल्ट समय"
 
 #: ../sb-includes/admin.php:199
 msgid "Sermons per page"
