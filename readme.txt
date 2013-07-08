@@ -1,5 +1,5 @@
 === Sermon Browser ===
-Contributors: mark8barnes
+Contributors: mark8barnes, bhengh
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 2.9.2
