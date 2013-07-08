@@ -3,7 +3,7 @@ Contributors: mark8barnes, bhengh
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 2.9.2
-Tested up to: 3.5.1
+Tested up to: 3.5.2
 Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl.html
@@ -18,7 +18,7 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 
 1. Store thousands of sermons, and **search** them by topic, preacher, bible passage or date.
 2. Full **podcasting** capabilities, including custom podcasts for individual users.
-3. Sermons uploaded in mp3 format can be **played directly** on your website using your choice of WordPress MP3 plugins (including [1PixelOut Audio Player](http://wpaudioplayer.com/)).
+3. Sermons uploaded in mp3 format can be **played directly** on your website using your choice of WordPress MP3 plugins (including [MediaElement.js](https://wordpress.org/plugins/media-element-html5-video-and-audio-player/)).
 4. Three optional **sidebar widgets** can display sermons on all of your posts or pages.
 5. **Embed videos** and other flash files from sites such as [YouTube](http://www.youtube.com/) or [Vimeo](http://www.vimeo.com/), using either HTML code provided by those sites, or shortcode providing by a WordPress plugin.
 6. **Other file types** can also be uploaded, including PDF, Powerpoint, Word, text and RTF. Multiple files can be attached to single sermons.
@@ -249,6 +249,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.9 =
+Six more bug fixes.
+
 = 0.45.8 =
 More bug fixes, collated and patched by [Ben Miller](http://www.sermonbrowser.com/forum/profile/bhengh/).
 
@@ -288,6 +291,14 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.45.9 (8 July 2013) =
+* **Bug fix:** Auto fill of Bible books on Sermon edit admin screen works better ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/adding-second-bible-passage-bug/)).
+* **Bug fix:** Fix Bible passage link on function sb_display_sermons ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/relative-vs-absolute-url-on-home-page/)).
+* **Bug fix:** Fix sermon title link on Recent Sermons widget.
+* **Bug fix:** Loosen requirements for a valid header from MP3 at external URL ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/patch-for-invalid-url-problem-on-url-import/)).
+* **Bug fix:** Fix "No Sermons Found" bug when sermon is missing Series info.
+* **Bug fix:** Widget miniplayer didn't work with MP3 files attached via URL ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/mini-player-not-working-1/)).
 
 = 0.45.8 (31 May 2013) =
 * **Bug fix:** Allow MP3 external URLs beginning with "https://" ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/url-redirect-not-working/#p19959)).

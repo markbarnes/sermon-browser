@@ -39,7 +39,7 @@ function sb_display_sermons($options = array()) {
 			if ($display_passage) {
 				$foo = unserialize($sermon->start);
 				$bar = unserialize($sermon->end);
-				echo "<span class=\"sermon-passage\"> (".sb_get_books($foo[0], $bar[0]).")</span>";
+				echo "<span class=\"sermon-passage\"> (".sb_get_books($foo[0], $bar[0], FALSE).")</span>";
 			}
 			if ($display_preacher) {
 				echo "<span class=\"sermon-preacher\">".__('by', $sermon_domain)." <a href=\"";
@@ -82,7 +82,7 @@ function sb_widget_sermon($args, $widget_args=1) {
 	foreach ((array) $sermons as $sermon){
 		$i++;
 		echo "<li><span class=\"sermon-title\">";
-		echo "<a href=".sb_build_url(array('sermon_id' => $sermon->id), true).">".stripslashes($sermon->title)."</a></span>";
+		echo '<a href="'.sb_build_url(array('sermon_id' => $sermon->id), true).'">'.stripslashes($sermon->title).'</a></span>';
 		if ($book) {
 			$foo = unserialize($sermon->start);
 			$bar = unserialize($sermon->end);
@@ -775,8 +775,17 @@ function sb_print_sameday_sermon_link($sermon) {
 function sb_get_single_sermon($id) {
 	global $wpdb;
 	$id = (int) $id;
-	$sermon = $wpdb->get_row("SELECT m.id, m.title, m.datetime, m.start, m.end, m.description, p.id as pid, p.name as preacher, p.image as image, p.description as preacher_description, s.id as sid, s.name as service, ss.id as ssid, ss.name as series FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_preachers as p, {$wpdb->prefix}sb_services as s, {$wpdb->prefix}sb_series as ss where m.preacher_id = p.id and m.service_id = s.id and m.series_id = ss.id and m.id = {$id}");
+	$sermon = $wpdb->get_row("SELECT m.id, m.title, m.datetime, m.start, m.end, m.description, p.id as pid, p.name as preacher, p.image as image, p.description as preacher_description, s.id as sid, s.name as service FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_preachers as p, {$wpdb->prefix}sb_services as s where m.preacher_id = p.id and m.service_id = s.id and m.id = {$id}");
+	$series = $wpdb->get_row("SELECT ss.id as ssid, ss.name as series FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_series as ss WHERE m.series_id = ss.id and m.id = {$id}");
 	if ($sermon) {
+		if ($series) {
+			$sermon->series = $series->series;
+			$sermon->ssid = $series->ssid;
+		}
+		else {
+			$sermon->series = '';
+			$sermon->ssid = 0;
+		}
 		$file = $code = $tags = array();
 		$stuff = $wpdb->get_results("SELECT f.id, f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $id ORDER BY id desc");
 		$rawtags = $wpdb->get_results("SELECT t.name FROM {$wpdb->prefix}sb_sermons_tags as st LEFT JOIN {$wpdb->prefix}sb_tags as t ON st.tag_id = t.id WHERE st.sermon_id = {$sermon->id} ORDER BY t.name asc");
@@ -1109,7 +1118,7 @@ function sb_first_mp3($sermon, $stats= TRUE) {
 	$stuff = array_merge((array)$stuff['Files'], (array)$stuff['URLs']);
 	foreach ((array) $stuff as $file) {
 		if (strtolower(substr($file, strrpos($file, '.') + 1)) == 'mp3') {
-			if ((substr($url,0,7) == "http://") or (substr($url,0,8) == 'https://')) {
+			if ((substr($file,0,7) == "http://") or (substr($file,0,8) == 'https://')) {
 				if ($stats)
 					$file=sb_display_url().sb_query_char().'show&amp;url='.rawurlencode($file);
 			} else {

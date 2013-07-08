@@ -794,7 +794,9 @@ function sb_files() {
 		$valid_url = false;
 		if(ini_get('allow_url_fopen')) {
 			$headers = array_change_key_case(get_headers($url, 1),CASE_LOWER);
-			if ($headers[0] == 'HTTP/1.1 200 OK') {
+			$matches = array();
+			$matched = preg_match('#HTTP/\d+\.\d+ (\d+)#', $headers[0], $matches);
+			if ($matched && $matches[1] == '200') {
 				if ($_POST['import_type'] == 'download') {
 					$filename = substr($url, strrpos ($url, '/')+1);
 					$filename = substr($filename, 0, strrpos ($filename, '?'));
@@ -1633,6 +1635,7 @@ function sb_new_sermon() {
 			var p = jQuery('#passage').clone();
 			p.attr('id', 'passage' + gpid);
 			jQuery('tr:first td:first', p).prepend('[<a href="javascript:removePassage(' + gpid++ + ')">x</a>] ');
+			jQuery("select", p).attr('value', '');
 			jQuery("input", p).attr('value', '');
 			jQuery('.passage:last').after(p);
 		}
@@ -1640,8 +1643,7 @@ function sb_new_sermon() {
 			jQuery('#passage' + id).remove();
 		}
 		function syncBook(s) {
-			if (jQuery('#endbook')[0].value != "") return;
-			var slc = jQuery('#startbook')[0].value;
+			var slc = jQuery(s)[0].value;
 			jQuery('.passage').each(function(i) {
 				if (this == jQuery(s).parents('.passage')[0]) {
 					jQuery('.end').each(function(j) {
