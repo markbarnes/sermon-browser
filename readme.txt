@@ -299,6 +299,7 @@ Important security fixes. All users should upgrade to this version.
 * **Bug fix:** Loosen requirements for a valid header from MP3 at external URL ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/patch-for-invalid-url-problem-on-url-import/)).
 * **Bug fix:** Fix "No Sermons Found" bug when sermon is missing Series info.
 * **Bug fix:** Widget miniplayer didn't work with MP3 files attached via URL ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/mini-player-not-working-1/)).
+* See [changeset](https://plugins.trac.wordpress.org/changeset/737860/sermon-browser)
 
 = 0.45.8 (31 May 2013) =
 * **Bug fix:** Allow MP3 external URLs beginning with "https://" ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/url-redirect-not-working/#p19959)).

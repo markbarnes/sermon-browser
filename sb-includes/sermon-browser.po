@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-06 01:03-0000\n"
+"POT-Creation-Date: 2013-07-08 12:35-0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mark Barnes\n"
 "Language-Team: \n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __;_e;_x\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: ..\n"
 
 #: ../sermon.php:105 ../sermon.php:114 ../sermon.php:168
@@ -29,7 +29,7 @@ msgstr ""
 
 #: ../sermon.php:285 ../sermon.php:286 ../sermon.php:552
 #: ../sb-includes/admin.php:563 ../sb-includes/admin.php:737
-#: ../sb-includes/admin.php:1260 ../sb-includes/frontend.php:125
+#: ../sb-includes/admin.php:1262 ../sb-includes/frontend.php:125
 #: ../sb-includes/widget.php:78
 msgid "Sermons"
 msgstr ""
@@ -592,7 +592,7 @@ msgid "Reset to defaults"
 msgstr ""
 
 #: ../sb-includes/admin.php:301 ../sb-includes/admin.php:412
-#: ../sb-includes/admin.php:543 ../sb-includes/admin.php:1886
+#: ../sb-includes/admin.php:543 ../sb-includes/admin.php:1888
 msgid "Save"
 msgstr ""
 
@@ -692,7 +692,7 @@ msgid "Add"
 msgstr ""
 
 #: ../sb-includes/admin.php:495 ../sb-includes/admin.php:575
-#: ../sb-includes/admin.php:750 ../sb-includes/admin.php:1289
+#: ../sb-includes/admin.php:750 ../sb-includes/admin.php:1291
 #: ../sb-includes/ajax.php:144
 msgid "Edit"
 msgstr ""
@@ -710,7 +710,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ../sb-includes/admin.php:522 ../sb-includes/admin.php:1773
+#: ../sb-includes/admin.php:522 ../sb-includes/admin.php:1775
 msgid "Description"
 msgstr ""
 
@@ -723,14 +723,14 @@ msgid "add new"
 msgstr ""
 
 #: ../sb-includes/admin.php:560 ../sb-includes/admin.php:734
-#: ../sb-includes/admin.php:1010 ../sb-includes/admin.php:1045
-#: ../sb-includes/admin.php:1094 ../sb-includes/admin.php:1265
+#: ../sb-includes/admin.php:1012 ../sb-includes/admin.php:1047
+#: ../sb-includes/admin.php:1096 ../sb-includes/admin.php:1267
 msgid "ID"
 msgstr ""
 
 #: ../sb-includes/admin.php:564 ../sb-includes/admin.php:738
-#: ../sb-includes/admin.php:1013 ../sb-includes/admin.php:1049
-#: ../sb-includes/admin.php:1098 ../sb-includes/admin.php:1272
+#: ../sb-includes/admin.php:1015 ../sb-includes/admin.php:1051
+#: ../sb-includes/admin.php:1100 ../sb-includes/admin.php:1274
 msgid "Actions"
 msgstr ""
 
@@ -741,8 +741,8 @@ msgstr ""
 #: ../sb-includes/admin.php:577 ../sb-includes/admin.php:579
 #: ../sb-includes/admin.php:581 ../sb-includes/admin.php:752
 #: ../sb-includes/admin.php:754 ../sb-includes/admin.php:766
-#: ../sb-includes/admin.php:1025 ../sb-includes/admin.php:1069
-#: ../sb-includes/admin.php:1289 ../sb-includes/ajax.php:144
+#: ../sb-includes/admin.php:1027 ../sb-includes/admin.php:1071
+#: ../sb-includes/admin.php:1291 ../sb-includes/ajax.php:144
 #: ../sb-includes/ajax.php:190
 msgid "Delete"
 msgstr ""
@@ -759,20 +759,20 @@ msgid ""
 msgstr ""
 
 #: ../sb-includes/admin.php:623 ../sb-includes/admin.php:702
-#: ../sb-includes/admin.php:1607
+#: ../sb-includes/admin.php:1609
 msgid "New service's name @ default time?"
 msgstr ""
 
-#: ../sb-includes/admin.php:623 ../sb-includes/admin.php:1607
+#: ../sb-includes/admin.php:623 ../sb-includes/admin.php:1609
 msgid "Service's name @ 18:00"
 msgstr ""
 
 #: ../sb-includes/admin.php:649 ../sb-includes/admin.php:688
-#: ../sb-includes/admin.php:1622
+#: ../sb-includes/admin.php:1624
 msgid "New series' name?"
 msgstr ""
 
-#: ../sb-includes/admin.php:649 ../sb-includes/admin.php:1622
+#: ../sb-includes/admin.php:649 ../sb-includes/admin.php:1624
 msgid "Series' name"
 msgstr ""
 
@@ -780,8 +780,8 @@ msgstr ""
 msgid "Default time"
 msgstr ""
 
-#: ../sb-includes/admin.php:750 ../sb-includes/admin.php:1025
-#: ../sb-includes/admin.php:1069 ../sb-includes/ajax.php:190
+#: ../sb-includes/admin.php:750 ../sb-includes/admin.php:1027
+#: ../sb-includes/admin.php:1071 ../sb-includes/ajax.php:190
 msgid "Rename"
 msgstr ""
 
@@ -814,267 +814,267 @@ msgstr ""
 msgid "You do not have the correct permissions to upload sermons"
 msgstr ""
 
-#: ../sb-includes/admin.php:802
+#: ../sb-includes/admin.php:804
 #, php-format
 msgid "File %s already exists"
 msgstr ""
 
-#: ../sb-includes/admin.php:821
+#: ../sb-includes/admin.php:823
 msgid "Invalid URL."
 msgstr ""
 
-#: ../sb-includes/admin.php:823
+#: ../sb-includes/admin.php:825
 msgid "Your host does not allow remote downloading of files."
 msgstr ""
 
-#: ../sb-includes/admin.php:856
+#: ../sb-includes/admin.php:858
 msgid "Files saved to database."
 msgstr ""
 
-#: ../sb-includes/admin.php:859 ../sb-includes/admin.php:1417
+#: ../sb-includes/admin.php:861 ../sb-includes/admin.php:1419
 msgid " already exists."
 msgstr ""
 
-#: ../sb-includes/admin.php:863 ../sb-includes/admin.php:1422
+#: ../sb-includes/admin.php:865 ../sb-includes/admin.php:1424
 msgid "You are not permitted to upload files of that type."
 msgstr ""
 
-#: ../sb-includes/admin.php:896
+#: ../sb-includes/admin.php:898
 msgid "New file name?"
 msgstr ""
 
-#: ../sb-includes/admin.php:909
+#: ../sb-includes/admin.php:911
 msgid "You are not permitted files with that extension."
 msgstr ""
 
-#: ../sb-includes/admin.php:911
+#: ../sb-includes/admin.php:913
 msgid "The script is unable to rename your file."
 msgstr ""
 
-#: ../sb-includes/admin.php:939
+#: ../sb-includes/admin.php:941
 msgid "The script is unable to delete your file."
 msgstr ""
 
-#: ../sb-includes/admin.php:950 ../sb-includes/admin.php:969
+#: ../sb-includes/admin.php:952 ../sb-includes/admin.php:971
 msgid "Previous"
 msgstr ""
 
-#: ../sb-includes/admin.php:956 ../sb-includes/admin.php:975
+#: ../sb-includes/admin.php:958 ../sb-includes/admin.php:977
 msgid "Next"
 msgstr ""
 
-#: ../sb-includes/admin.php:993
+#: ../sb-includes/admin.php:995
 msgid "Upload Files"
 msgstr ""
 
-#: ../sb-includes/admin.php:1005
+#: ../sb-includes/admin.php:1007
 msgid "Unlinked files"
 msgstr ""
 
-#: ../sb-includes/admin.php:1011 ../sb-includes/admin.php:1046
-#: ../sb-includes/admin.php:1095
+#: ../sb-includes/admin.php:1013 ../sb-includes/admin.php:1048
+#: ../sb-includes/admin.php:1097
 msgid "File name"
 msgstr ""
 
-#: ../sb-includes/admin.php:1012 ../sb-includes/admin.php:1047
-#: ../sb-includes/admin.php:1096
+#: ../sb-includes/admin.php:1014 ../sb-includes/admin.php:1049
+#: ../sb-includes/admin.php:1098
 msgid "File type"
 msgstr ""
 
-#: ../sb-includes/admin.php:1024 ../sb-includes/ajax.php:189
+#: ../sb-includes/admin.php:1026 ../sb-includes/ajax.php:189
 msgid "Create sermon"
 msgstr ""
 
-#: ../sb-includes/admin.php:1040
+#: ../sb-includes/admin.php:1042
 msgid "Linked files"
 msgstr ""
 
-#: ../sb-includes/admin.php:1048 ../sb-includes/admin.php:1097
+#: ../sb-includes/admin.php:1050 ../sb-includes/admin.php:1099
 #: ../sb-includes/frontend.php:143 ../sb-includes/widget.php:76
 msgid "Sermon"
 msgstr ""
 
-#: ../sb-includes/admin.php:1084
+#: ../sb-includes/admin.php:1086
 msgid "Search for files"
 msgstr ""
 
-#: ../sb-includes/admin.php:1088
+#: ../sb-includes/admin.php:1090
 msgid "Search"
 msgstr ""
 
-#: ../sb-includes/admin.php:1103
+#: ../sb-includes/admin.php:1105
 msgid "Search results will appear here."
 msgstr ""
 
-#: ../sb-includes/admin.php:1121
+#: ../sb-includes/admin.php:1123
 msgid "Clean up"
 msgstr ""
 
-#: ../sb-includes/admin.php:1123
+#: ../sb-includes/admin.php:1125
 msgid ""
 "Pressing the button below scans every sermon in the database, and removes "
 "missing attachments. Use with caution!"
 msgstr ""
 
-#: ../sb-includes/admin.php:1124
+#: ../sb-includes/admin.php:1126
 msgid "Clean up missing files"
 msgstr ""
 
-#: ../sb-includes/admin.php:1173 ../sb-includes/admin.php:1375
+#: ../sb-includes/admin.php:1175 ../sb-includes/admin.php:1377
 msgid "You do not have the correct permissions to edit sermons"
 msgstr ""
 
-#: ../sb-includes/admin.php:1176
+#: ../sb-includes/admin.php:1178
 msgid "Sermon saved to database."
 msgstr ""
 
-#: ../sb-includes/admin.php:1179
+#: ../sb-includes/admin.php:1181
 #, php-format
 msgid ""
 "If you find SermonBrowser useful, please consider %1$ssupporting%2$s the "
 "ministry of Nathanael and Anna Ayling in Japan."
 msgstr ""
 
-#: ../sb-includes/admin.php:1181
+#: ../sb-includes/admin.php:1183
 msgid ""
 "Sermon Browser 2.0 is under development. If you're a coder, and would like "
 "to help, please check the <a href=\"https://www.assembla.com/spaces/sermon-"
 "browser-2/documents\">SB2 development website</a>."
 msgstr ""
 
-#: ../sb-includes/admin.php:1187
+#: ../sb-includes/admin.php:1189
 msgid "You do not have the correct permissions to delete sermons"
 msgstr ""
 
-#: ../sb-includes/admin.php:1195
+#: ../sb-includes/admin.php:1197
 msgid "Sermon removed from database."
 msgstr ""
 
-#: ../sb-includes/admin.php:1236 ../sb-includes/admin.php:1266
-#: ../sb-includes/admin.php:1713
+#: ../sb-includes/admin.php:1238 ../sb-includes/admin.php:1268
+#: ../sb-includes/admin.php:1715
 msgid "Title"
 msgstr ""
 
-#: ../sb-includes/admin.php:1240 ../sb-includes/admin.php:1267
-#: ../sb-includes/admin.php:1727 ../sb-includes/frontend.php:1019
+#: ../sb-includes/admin.php:1242 ../sb-includes/admin.php:1269
+#: ../sb-includes/admin.php:1729 ../sb-includes/frontend.php:1028
 msgid "Preacher"
 msgstr ""
 
-#: ../sb-includes/admin.php:1249 ../sb-includes/admin.php:1270
-#: ../sb-includes/admin.php:1746 ../sb-includes/frontend.php:1045
+#: ../sb-includes/admin.php:1251 ../sb-includes/admin.php:1272
+#: ../sb-includes/admin.php:1748 ../sb-includes/frontend.php:1054
 msgid "Series"
 msgstr ""
 
-#: ../sb-includes/admin.php:1257
+#: ../sb-includes/admin.php:1259
 msgid "Filter"
 msgstr ""
 
-#: ../sb-includes/admin.php:1268 ../sb-includes/admin.php:1767
-#: ../sb-includes/frontend.php:836 ../sb-includes/frontend.php:927
+#: ../sb-includes/admin.php:1270 ../sb-includes/admin.php:1769
+#: ../sb-includes/frontend.php:845 ../sb-includes/frontend.php:936
 msgid "Date"
 msgstr ""
 
-#: ../sb-includes/admin.php:1269 ../sb-includes/admin.php:1787
+#: ../sb-includes/admin.php:1271 ../sb-includes/admin.php:1789
 msgid "Service"
 msgstr ""
 
-#: ../sb-includes/admin.php:1271
+#: ../sb-includes/admin.php:1273
 msgid "Stats"
 msgstr ""
 
-#: ../sb-includes/admin.php:1282 ../sb-includes/ajax.php:137
+#: ../sb-includes/admin.php:1284 ../sb-includes/ajax.php:137
 msgid "Unknown"
 msgstr ""
 
-#: ../sb-includes/admin.php:1319
+#: ../sb-includes/admin.php:1321
 msgid "You do not have the correct permissions to edit or create sermons"
 msgstr ""
 
-#: ../sb-includes/admin.php:1369
+#: ../sb-includes/admin.php:1371
 msgid "You do not have the correct permissions to create sermons"
 msgstr ""
 
-#: ../sb-includes/admin.php:1491
+#: ../sb-includes/admin.php:1493
 msgid "No ID3 tags found."
 msgstr ""
 
-#: ../sb-includes/admin.php:1588
+#: ../sb-includes/admin.php:1590
 msgid "New preacher's name?"
 msgstr ""
 
-#: ../sb-includes/admin.php:1588
+#: ../sb-includes/admin.php:1590
 msgid "Preacher's name"
 msgstr ""
 
-#: ../sb-includes/admin.php:1708
+#: ../sb-includes/admin.php:1710
 msgid "Enter sermon details"
 msgstr ""
 
-#: ../sb-includes/admin.php:1719
+#: ../sb-includes/admin.php:1721
 msgid "Tags (comma separated)"
 msgstr ""
 
-#: ../sb-includes/admin.php:1742
+#: ../sb-includes/admin.php:1744
 msgid "Create new preacher"
 msgstr ""
 
-#: ../sb-includes/admin.php:1761
+#: ../sb-includes/admin.php:1763
 msgid "Create new series"
 msgstr ""
 
-#: ../sb-includes/admin.php:1796
+#: ../sb-includes/admin.php:1798
 msgid "Create new service"
 msgstr ""
 
-#: ../sb-includes/admin.php:1802
+#: ../sb-includes/admin.php:1804
 msgid "Time"
 msgstr ""
 
-#: ../sb-includes/admin.php:1805
+#: ../sb-includes/admin.php:1807
 msgid "Override default time"
 msgstr ""
 
-#: ../sb-includes/admin.php:1811
+#: ../sb-includes/admin.php:1813
 msgid "Bible passage"
 msgstr ""
 
-#: ../sb-includes/admin.php:1811 ../sb-includes/admin.php:1854
+#: ../sb-includes/admin.php:1813 ../sb-includes/admin.php:1856
 msgid "add more"
 msgstr ""
 
-#: ../sb-includes/admin.php:1815
+#: ../sb-includes/admin.php:1817
 msgid "From"
 msgstr ""
 
-#: ../sb-includes/admin.php:1816
+#: ../sb-includes/admin.php:1818
 msgid "To"
 msgstr ""
 
-#: ../sb-includes/admin.php:1854
+#: ../sb-includes/admin.php:1856
 msgid "Attachments"
 msgstr ""
 
-#: ../sb-includes/admin.php:1863
+#: ../sb-includes/admin.php:1865
 msgid "Choose existing file:"
 msgstr ""
 
-#: ../sb-includes/admin.php:1864
+#: ../sb-includes/admin.php:1866
 msgid "Upload a new one:"
 msgstr ""
 
-#: ../sb-includes/admin.php:1865
+#: ../sb-includes/admin.php:1867
 msgid "Enter an URL:"
 msgstr ""
 
-#: ../sb-includes/admin.php:1866
+#: ../sb-includes/admin.php:1868
 msgid "Enter embed or shortcode:"
 msgstr ""
 
-#: ../sb-includes/admin.php:2078
+#: ../sb-includes/admin.php:2080
 msgid "Help page"
 msgstr ""
 
-#: ../sb-includes/admin.php:2139
+#: ../sb-includes/admin.php:2141
 msgid ""
 "Error:</b> The MP3 shortcode must link to individual sermon files. You do "
 "this by including <span style=\"color:red\">%SERMONURL%</span> in your "
@@ -1082,244 +1082,244 @@ msgid ""
 "%SERMONURL% with a link to each sermon."
 msgstr ""
 
-#: ../sb-includes/admin.php:2144
+#: ../sb-includes/admin.php:2146
 #, php-format
 msgid ""
 "Tip: Installing the %1$sWordpress Audio Player%2$s, or another Wordpress MP3 "
 "player plugin will allow users to listen to your sermons more easily."
 msgstr ""
 
-#: ../sb-includes/admin.php:2147
+#: ../sb-includes/admin.php:2149
 msgid ""
 "Error:</b> You have specified a custom MP3 shortcode, but Wordpress "
 "doesn&#146;t know how to interpret it. Make sure the shortcode is correct, "
 "and that the appropriate plugin is activated."
 msgstr ""
 
-#: ../sb-includes/admin.php:2152
+#: ../sb-includes/admin.php:2154
 msgid "Hint:"
 msgstr ""
 
-#: ../sb-includes/admin.php:2152
+#: ../sb-includes/admin.php:2154
 #, php-format
 msgid ""
 "%sCreate a page%s that includes the shortcode [sermons], so that "
 "SermonBrowser knows where to display the sermons on your site."
 msgstr ""
 
-#: ../sb-includes/admin.php:2189
+#: ../sb-includes/admin.php:2191
 msgid "You have"
 msgstr ""
 
-#: ../sb-includes/admin.php:2193 ../sb-includes/admin.php:2201
+#: ../sb-includes/admin.php:2195 ../sb-includes/admin.php:2203
 msgid "in"
 msgstr ""
 
-#: ../sb-includes/admin.php:2197
+#: ../sb-includes/admin.php:2199
 msgid "from"
 msgstr ""
 
-#: ../sb-includes/admin.php:2202
+#: ../sb-includes/admin.php:2204
 #, php-format
 msgid "%s series"
 msgstr ""
 
-#: ../sb-includes/admin.php:2205
+#: ../sb-includes/admin.php:2207
 msgid "using"
 msgstr ""
 
-#: ../sb-includes/admin.php:2213
+#: ../sb-includes/admin.php:2215
 #, php-format
 msgid "The most popular sermon is %s, which has been downloaded %s times"
 msgstr ""
 
-#: ../sb-includes/admin.php:2361 ../sb-includes/admin.php:2438
+#: ../sb-includes/admin.php:2363 ../sb-includes/admin.php:2440
 #: ../sb-includes/widget.php:303
 msgid "Title:"
 msgstr ""
 
-#: ../sb-includes/admin.php:2363 ../sb-includes/admin.php:2440
+#: ../sb-includes/admin.php:2365 ../sb-includes/admin.php:2442
 #: ../sb-includes/widget.php:305
 msgid "Number of sermons: "
 msgstr ""
 
-#: ../sb-includes/admin.php:2365 ../sb-includes/widget.php:307
+#: ../sb-includes/admin.php:2367 ../sb-includes/widget.php:307
 msgid "Display preacher"
 msgstr ""
 
-#: ../sb-includes/admin.php:2366 ../sb-includes/widget.php:308
+#: ../sb-includes/admin.php:2368 ../sb-includes/widget.php:308
 msgid "Display bible passage"
 msgstr ""
 
-#: ../sb-includes/admin.php:2367 ../sb-includes/widget.php:309
+#: ../sb-includes/admin.php:2369 ../sb-includes/widget.php:309
 msgid "Display date"
 msgstr ""
 
-#: ../sb-includes/admin.php:2368 ../sb-includes/widget.php:310
+#: ../sb-includes/admin.php:2370 ../sb-includes/widget.php:310
 msgid "Display mini-player"
 msgstr ""
 
-#: ../sb-includes/admin.php:2372 ../sb-includes/widget.php:314
+#: ../sb-includes/admin.php:2374 ../sb-includes/widget.php:314
 msgid "Preacher: "
 msgstr ""
 
-#: ../sb-includes/admin.php:2375 ../sb-includes/admin.php:2386
-#: ../sb-includes/admin.php:2397 ../sb-includes/frontend.php:1021
-#: ../sb-includes/frontend.php:1029 ../sb-includes/frontend.php:1039
-#: ../sb-includes/frontend.php:1047 ../sb-includes/widget.php:317
+#: ../sb-includes/admin.php:2377 ../sb-includes/admin.php:2388
+#: ../sb-includes/admin.php:2399 ../sb-includes/frontend.php:1030
+#: ../sb-includes/frontend.php:1038 ../sb-includes/frontend.php:1048
+#: ../sb-includes/frontend.php:1056 ../sb-includes/widget.php:317
 #: ../sb-includes/widget.php:328 ../sb-includes/widget.php:339
 msgid "[All]"
 msgstr ""
 
-#: ../sb-includes/admin.php:2383 ../sb-includes/widget.php:325
+#: ../sb-includes/admin.php:2385 ../sb-includes/widget.php:325
 msgid "Service: "
 msgstr ""
 
-#: ../sb-includes/admin.php:2394 ../sb-includes/widget.php:336
+#: ../sb-includes/admin.php:2396 ../sb-includes/widget.php:336
 msgid "Series: "
 msgstr ""
 
-#: ../sb-includes/admin.php:2442
+#: ../sb-includes/admin.php:2444
 msgid "Display popular sermons"
 msgstr ""
 
-#: ../sb-includes/admin.php:2443
+#: ../sb-includes/admin.php:2445
 msgid "Display popular series"
 msgstr ""
 
-#: ../sb-includes/admin.php:2444
+#: ../sb-includes/admin.php:2446
 msgid "Display popular preachers"
 msgstr ""
 
-#: ../sb-includes/admin.php:2470
+#: ../sb-includes/admin.php:2472
 msgid ""
 "SermonBrowser can automatically pre-fill this form by reading ID3 tags from "
 "MP3 files."
 msgstr ""
 
-#: ../sb-includes/admin.php:2473
+#: ../sb-includes/admin.php:2475
 #, php-format
 msgid ""
 "You will need to set the %s before you can import MP3s and pre-fill the Add "
 "Sermons form."
 msgstr ""
 
-#: ../sb-includes/admin.php:2473
+#: ../sb-includes/admin.php:2475
 msgid "import options"
 msgstr ""
 
-#: ../sb-includes/admin.php:2487
+#: ../sb-includes/admin.php:2489
 #, php-format
 msgid "Select an MP3 file here to have the %s form pre-filled using ID3 tags."
 msgstr ""
 
-#: ../sb-includes/admin.php:2487
+#: ../sb-includes/admin.php:2489
 msgid "Add Sermons"
 msgstr ""
 
-#: ../sb-includes/admin.php:2487
+#: ../sb-includes/admin.php:2489
 msgid "Upload file"
 msgstr ""
 
-#: ../sb-includes/admin.php:2492
+#: ../sb-includes/admin.php:2494
 msgid "File to upload"
 msgstr ""
 
-#: ../sb-includes/admin.php:2498
+#: ../sb-includes/admin.php:2500
 msgid "Upload"
 msgstr ""
 
-#: ../sb-includes/admin.php:2503
+#: ../sb-includes/admin.php:2505
 msgid "Upload is disabled. Please contact your systems administrator."
 msgstr ""
 
-#: ../sb-includes/admin.php:2507
+#: ../sb-includes/admin.php:2509
 msgid "Upload is disabled. Please check your folder setting in Options."
 msgstr ""
 
-#: ../sb-includes/admin.php:2514
+#: ../sb-includes/admin.php:2516
 msgid "URL to import"
 msgstr ""
 
-#: ../sb-includes/admin.php:2517
+#: ../sb-includes/admin.php:2519
 msgid "Link to remote file"
 msgstr ""
 
-#: ../sb-includes/admin.php:2517
+#: ../sb-includes/admin.php:2519
 msgid "Copy remote file to server"
 msgstr ""
 
-#: ../sb-includes/admin.php:2519
+#: ../sb-includes/admin.php:2521
 msgid "Import"
 msgstr ""
 
-#: ../sb-includes/admin.php:2527
+#: ../sb-includes/admin.php:2529
 msgid "Choose existing file"
 msgstr ""
 
-#: ../sb-includes/admin.php:2538
+#: ../sb-includes/admin.php:2540
 msgid "Select"
 msgstr ""
 
-#: ../sb-includes/admin.php:2551
+#: ../sb-includes/admin.php:2553
 msgid "SermonBrowser Help"
 msgstr ""
 
-#: ../sb-includes/admin.php:2555
+#: ../sb-includes/admin.php:2557
 msgid ""
 "From this page you can edit or delete any of your sermons. The most recent "
 "sermons are found at the top. Use the filter options to quickly find the one "
 "you want."
 msgstr ""
 
-#: ../sb-includes/admin.php:2562
+#: ../sb-includes/admin.php:2564
 msgid ""
 "It&#146;s important that these options are set correctly, as otherwise "
 "SermonBrowser won&#146;t behave as you expect."
 msgstr ""
 
-#: ../sb-includes/admin.php:2563
+#: ../sb-includes/admin.php:2565
 msgid "The upload folder would normally be <b>wp-content/uploads/sermons</b>"
 msgstr ""
 
-#: ../sb-includes/admin.php:2564
+#: ../sb-includes/admin.php:2566
 msgid ""
 "You should only change the public podcast feed if you re-direct your podcast "
 "using a service like Feedburner. Otherwise it should be the same as the "
 "private podcast feed."
 msgstr ""
 
-#: ../sb-includes/admin.php:2565
+#: ../sb-includes/admin.php:2567
 msgid ""
 "The MP3 shortcode you need will be in the documation of your favourite MP3 "
 "plugin. Use the tag %SERMONURL% in place of the URL of the MP3 file (e.g. "
 "[haiku url=\"%SERMONURL%\"] or [audio:%SERMONURL%])."
 msgstr ""
 
-#: ../sb-includes/admin.php:2568
+#: ../sb-includes/admin.php:2570
 #, php-format
 msgid ""
 "Template editing is one of the most powerful features of SermonBrowser. Be "
 "sure to look at the complete list of %stemplate tags%s."
 msgstr ""
 
-#: ../sb-includes/admin.php:2574
+#: ../sb-includes/admin.php:2576
 msgid "Tutorial Screencasts"
 msgstr ""
 
-#: ../sb-includes/admin.php:2575
+#: ../sb-includes/admin.php:2577
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: ../sb-includes/admin.php:2576
+#: ../sb-includes/admin.php:2578
 msgid "Support Forum"
 msgstr ""
 
-#: ../sb-includes/admin.php:2577
+#: ../sb-includes/admin.php:2579
 msgid "Shortcode syntax"
 msgstr ""
 
-#: ../sb-includes/admin.php:2578
+#: ../sb-includes/admin.php:2580
 msgid "Donate"
 msgstr ""
 
@@ -1377,59 +1377,59 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: ../sb-includes/frontend.php:829
+#: ../sb-includes/frontend.php:838
 msgid "more"
 msgstr ""
 
-#: ../sb-includes/frontend.php:913
+#: ../sb-includes/frontend.php:922
 msgid "Show filter"
 msgstr ""
 
-#: ../sb-includes/frontend.php:914
+#: ../sb-includes/frontend.php:923
 msgid "Hide filter"
 msgstr ""
 
-#: ../sb-includes/frontend.php:960
+#: ../sb-includes/frontend.php:969
 msgid "Active filter"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1007
+#: ../sb-includes/frontend.php:1016
 msgid "Ascending"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1008
+#: ../sb-includes/frontend.php:1017
 msgid "Descending"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1027
+#: ../sb-includes/frontend.php:1036
 msgid "Services"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1037
+#: ../sb-includes/frontend.php:1046
 msgid "Book"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1055
+#: ../sb-includes/frontend.php:1064
 msgid "Start date"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1057
+#: ../sb-includes/frontend.php:1066
 msgid "End date"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1061
+#: ../sb-includes/frontend.php:1070
 msgid "Keywords"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1065
+#: ../sb-includes/frontend.php:1074
 msgid "Sort by"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1072
+#: ../sb-includes/frontend.php:1081
 msgid "Direction"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1082
+#: ../sb-includes/frontend.php:1091
 msgid "Filter &raquo;"
 msgstr ""
 
