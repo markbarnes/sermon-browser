@@ -249,6 +249,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.10 =
+More bug fixes and new Welsh language translation.
+
 = 0.45.9 =
 Six more bug fixes.
 
@@ -291,6 +294,13 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.45.10 (31 July 2013) =
+* **Enhancement:** Welsh translation (cy) added.
+* **Bug fix:** Sermon Tag Widget fixed. ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/sermon-browser-tags-widget-doesnt-display-tags-correctly/)).
+* **Bug fix:** Bible book links fixed for translated installations. ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/language-support/page-3/#p20409)).
+* **Bug fix:** Bible books in database were wrong for new installations on non-English sites.  Corrected new installations.
+* See [changeset](https://plugins.trac.wordpress.org/changeset/748934/sermon-browser)
 
 = 0.45.9 (8 July 2013) =
 * **Bug fix:** Auto fill of Bible books on Sermon edit admin screen works better ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/adding-second-bible-passage-bug/)).

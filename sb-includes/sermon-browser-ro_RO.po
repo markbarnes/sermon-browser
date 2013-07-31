@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-08 12:36-0600\n"
+"POT-Creation-Date: 2013-07-31 15:55-0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Lucian Mihailescu <intercer@gmail.com>\n"
 "Language-Team: InterCer.net <intercer@gmail.com>\n"
@@ -444,7 +444,7 @@ msgstr "Drop-down"
 msgid "One-click"
 msgstr "Un-click"
 
-#: ../sb-includes/admin.php:207 ../sb-includes/frontend.php:765
+#: ../sb-includes/admin.php:207 ../sb-includes/frontend.php:766
 msgid "None"
 msgstr "Niciunul"
 
@@ -1010,12 +1010,12 @@ msgid "Title"
 msgstr "Titlu"
 
 #: ../sb-includes/admin.php:1242 ../sb-includes/admin.php:1269
-#: ../sb-includes/admin.php:1729 ../sb-includes/frontend.php:1028
+#: ../sb-includes/admin.php:1729 ../sb-includes/frontend.php:1029
 msgid "Preacher"
 msgstr "Predicator"
 
 #: ../sb-includes/admin.php:1251 ../sb-includes/admin.php:1272
-#: ../sb-includes/admin.php:1748 ../sb-includes/frontend.php:1054
+#: ../sb-includes/admin.php:1748 ../sb-includes/frontend.php:1055
 msgid "Series"
 msgstr "Serii"
 
@@ -1024,7 +1024,7 @@ msgid "Filter"
 msgstr "Filtru"
 
 #: ../sb-includes/admin.php:1270 ../sb-includes/admin.php:1769
-#: ../sb-includes/frontend.php:845 ../sb-includes/frontend.php:936
+#: ../sb-includes/frontend.php:846 ../sb-includes/frontend.php:937
 msgid "Date"
 msgstr "Dată"
 
@@ -1229,9 +1229,9 @@ msgid "Preacher: "
 msgstr "Predicator:"
 
 #: ../sb-includes/admin.php:2377 ../sb-includes/admin.php:2388
-#: ../sb-includes/admin.php:2399 ../sb-includes/frontend.php:1030
-#: ../sb-includes/frontend.php:1038 ../sb-includes/frontend.php:1048
-#: ../sb-includes/frontend.php:1056 ../sb-includes/widget.php:317
+#: ../sb-includes/admin.php:2399 ../sb-includes/frontend.php:1031
+#: ../sb-includes/frontend.php:1039 ../sb-includes/frontend.php:1049
+#: ../sb-includes/frontend.php:1057 ../sb-includes/widget.php:317
 #: ../sb-includes/widget.php:328 ../sb-includes/widget.php:339
 msgid "[All]"
 msgstr "[Toată lista]"
@@ -1444,80 +1444,80 @@ msgstr "Podcast predici personalizat"
 msgid "Unknown Date"
 msgstr "Dată necunoscută"
 
-#: ../sb-includes/frontend.php:651
+#: ../sb-includes/frontend.php:652
 msgid "Next page"
 msgstr "Pagina următoare"
 
-#: ../sb-includes/frontend.php:662
+#: ../sb-includes/frontend.php:663
 msgid "Previous page"
 msgstr "Pagina anterioară"
 
-#: ../sb-includes/frontend.php:698
+#: ../sb-includes/frontend.php:699
 #, php-format
 msgid "%s file"
 msgstr "%s fișier"
 
-#: ../sb-includes/frontend.php:715
+#: ../sb-includes/frontend.php:716
 msgid "Download"
 msgstr ""
 
-#: ../sb-includes/frontend.php:729
+#: ../sb-includes/frontend.php:730
 msgid "About"
 msgstr "Despre"
 
-#: ../sb-includes/frontend.php:838
+#: ../sb-includes/frontend.php:839
 msgid "more"
 msgstr "mai mult"
 
-#: ../sb-includes/frontend.php:922
+#: ../sb-includes/frontend.php:923
 msgid "Show filter"
 msgstr "Arată filtru"
 
-#: ../sb-includes/frontend.php:923
+#: ../sb-includes/frontend.php:924
 msgid "Hide filter"
 msgstr "Ascunde filtru"
 
-#: ../sb-includes/frontend.php:969
+#: ../sb-includes/frontend.php:970
 msgid "Active filter"
 msgstr "Filtru activ"
 
-#: ../sb-includes/frontend.php:1016
+#: ../sb-includes/frontend.php:1017
 msgid "Ascending"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1017
+#: ../sb-includes/frontend.php:1018
 msgid "Descending"
 msgstr ""
 
-#: ../sb-includes/frontend.php:1036
+#: ../sb-includes/frontend.php:1037
 msgid "Services"
 msgstr "Servicii religioase"
 
-#: ../sb-includes/frontend.php:1046
+#: ../sb-includes/frontend.php:1047
 msgid "Book"
 msgstr "Cartea"
 
-#: ../sb-includes/frontend.php:1064
+#: ../sb-includes/frontend.php:1065
 msgid "Start date"
 msgstr "Dată început"
 
-#: ../sb-includes/frontend.php:1066
+#: ../sb-includes/frontend.php:1067
 msgid "End date"
 msgstr "Dată sfârșit"
 
-#: ../sb-includes/frontend.php:1070
+#: ../sb-includes/frontend.php:1071
 msgid "Keywords"
 msgstr "Cuvinte cheie"
 
-#: ../sb-includes/frontend.php:1074
+#: ../sb-includes/frontend.php:1075
 msgid "Sort by"
 msgstr "Sortat după"
 
-#: ../sb-includes/frontend.php:1081
+#: ../sb-includes/frontend.php:1082
 msgid "Direction"
 msgstr "Direcție"
 
-#: ../sb-includes/frontend.php:1091
+#: ../sb-includes/frontend.php:1092
 msgid "Filter &raquo;"
 msgstr "Filtru &raquo;"
 
