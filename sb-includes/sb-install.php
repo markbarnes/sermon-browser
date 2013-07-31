@@ -144,7 +144,7 @@ function sb_install() {
 	sb_update_option('style_date_modified', strtotime('now'));
 	sb_update_option('search_output', strtr(sb_default_multi_template(), sb_search_results_dictionary()));
 	sb_update_option('single_output', strtr(sb_default_single_template(), sb_sermon_page_dictionary()));
-	$books = sb_get_default('bible_books');
+	$books = sb_get_default('eng_bible_books');
 	foreach ($books as $book)
 		$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, '{$book}')");
 	sb_update_option('db_version', SB_DATABASE_VERSION);

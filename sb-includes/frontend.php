@@ -374,8 +374,8 @@ function sb_tidy_reference ($start, $end, $add_link = FALSE, $relative_link = TR
 	$start_verse = trim($start['verse']);
 	$end_verse = trim($end['verse']);
 	if ($add_link) {
-		$start_book = "<a href=\"".sb_get_book_link($start_book, $relative_link)."\">{$start_book}</a>";
-		$end_book = "<a href=\"".sb_get_book_link($end_book, $relative_link)."\">{$end_book}</a>";
+		$start_book = "<a href=\"".sb_get_book_link(trim($start['book']), $relative_link)."\">{$start_book}</a>";
+		$end_book = "<a href=\"".sb_get_book_link(trim($end['book']), $relative_link)."\">{$end_book}</a>";
 	}
 	if ($start_book == $end_book) {
 		if ($start_chapter == $end_chapter) {
@@ -621,12 +621,13 @@ function sb_print_tag_clouds($minfont=80, $maxfont=150) {
 		else
 			$cnt[$tag->name] = 1;
 	}
+	unset($cnt['']);
 	$fontrange = $maxfont - $minfont;
 	$maxcnt = 0;
 	$mincnt = 1000000;
 	foreach ($cnt as $cur) {
 		if ($cur > $maxcnt) $maxcnt = $cur;
-		if ($cur < $mincnt) $minct = $cur;
+		if ($cur < $mincnt) $mincnt = $cur;
 	}
 	$cntrange = $maxcnt + 1 - $mincnt;
 	$minlog = log($mincnt);

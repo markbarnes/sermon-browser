@@ -146,7 +146,7 @@ function sb_database_upgrade ($old_version) {
 			sb_update_option('hide_no_attachments', false);
 			sb_update_option('db_version', '1.6');
 		case '1.6' :
-			sb_update_option('mp3_shortcode', '[audio:%SERMONURL%]');
+			sb_update_option('mp3_shortcode', '[audio mp3="%SERMONURL%"]');
 			sb_update_option('db_version', '1.7');
 			return;
 		default :
