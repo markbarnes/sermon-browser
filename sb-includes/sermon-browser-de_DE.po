@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-31 15:54-0600\n"
+"POT-Creation-Date: 2013-08-07 12:37-0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Mark Barnes\n"
 "Language-Team: \n"
@@ -616,7 +616,7 @@ msgid "Reset to defaults"
 msgstr "Auf Standardeinstellungen Zuruecksetzen"
 
 #: ../sb-includes/admin.php:301 ../sb-includes/admin.php:412
-#: ../sb-includes/admin.php:543 ../sb-includes/admin.php:1888
+#: ../sb-includes/admin.php:543 ../sb-includes/admin.php:1893
 msgid "Save"
 msgstr "Speichern"
 
@@ -743,7 +743,7 @@ msgstr ""
 msgid "Name"
 msgstr "Name"
 
-#: ../sb-includes/admin.php:522 ../sb-includes/admin.php:1775
+#: ../sb-includes/admin.php:522 ../sb-includes/admin.php:1780
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -794,22 +794,22 @@ msgstr ""
 "administrieren"
 
 #: ../sb-includes/admin.php:623 ../sb-includes/admin.php:702
-#: ../sb-includes/admin.php:1609
+#: ../sb-includes/admin.php:1614
 #, fuzzy
 msgid "New service's name @ default time?"
 msgstr "Standard-Zeit ueberschreiben"
 
-#: ../sb-includes/admin.php:623 ../sb-includes/admin.php:1609
+#: ../sb-includes/admin.php:623 ../sb-includes/admin.php:1614
 msgid "Service's name @ 18:00"
 msgstr ""
 
 #: ../sb-includes/admin.php:649 ../sb-includes/admin.php:688
-#: ../sb-includes/admin.php:1624
+#: ../sb-includes/admin.php:1629
 #, fuzzy
 msgid "New series' name?"
 msgstr "Neuer Dateiname?"
 
-#: ../sb-includes/admin.php:649 ../sb-includes/admin.php:1624
+#: ../sb-includes/admin.php:649 ../sb-includes/admin.php:1629
 #, fuzzy
 msgid "Series' name"
 msgstr "Reihe: "
@@ -999,17 +999,17 @@ msgid "Sermon removed from database."
 msgstr "Predigt aus der Datenbank entfernt."
 
 #: ../sb-includes/admin.php:1238 ../sb-includes/admin.php:1268
-#: ../sb-includes/admin.php:1715
+#: ../sb-includes/admin.php:1720
 msgid "Title"
 msgstr "Titel"
 
 #: ../sb-includes/admin.php:1242 ../sb-includes/admin.php:1269
-#: ../sb-includes/admin.php:1729 ../sb-includes/frontend.php:1029
+#: ../sb-includes/admin.php:1734 ../sb-includes/frontend.php:1029
 msgid "Preacher"
 msgstr "Pastor"
 
 #: ../sb-includes/admin.php:1251 ../sb-includes/admin.php:1272
-#: ../sb-includes/admin.php:1748 ../sb-includes/frontend.php:1055
+#: ../sb-includes/admin.php:1753 ../sb-includes/frontend.php:1055
 msgid "Series"
 msgstr "Reihe"
 
@@ -1017,12 +1017,12 @@ msgstr "Reihe"
 msgid "Filter"
 msgstr "Filter"
 
-#: ../sb-includes/admin.php:1270 ../sb-includes/admin.php:1769
+#: ../sb-includes/admin.php:1270 ../sb-includes/admin.php:1774
 #: ../sb-includes/frontend.php:846 ../sb-includes/frontend.php:937
 msgid "Date"
 msgstr "Datum"
 
-#: ../sb-includes/admin.php:1271 ../sb-includes/admin.php:1789
+#: ../sb-includes/admin.php:1271 ../sb-includes/admin.php:1794
 msgid "Service"
 msgstr "Gottesdienst"
 
@@ -1042,107 +1042,98 @@ msgstr "Sie haben nicht die Rechte, um Predigten anzulegen oder zu bearbeiten"
 msgid "You do not have the correct permissions to create sermons"
 msgstr "Sie haben nicht die Rechte, um Predigten anzulegen"
 
-#: ../sb-includes/admin.php:1493
+#: ../sb-includes/admin.php:1498
 msgid "No ID3 tags found."
 msgstr "Keine ID3-Tags gefunden"
 
-#: ../sb-includes/admin.php:1590
+#: ../sb-includes/admin.php:1595
 #, fuzzy
 msgid "New preacher's name?"
 msgstr "Neuer Dateiname?"
 
-#: ../sb-includes/admin.php:1590
+#: ../sb-includes/admin.php:1595
 #, fuzzy
 msgid "Preacher's name"
 msgstr "Pastoren"
 
-#: ../sb-includes/admin.php:1710
+#: ../sb-includes/admin.php:1715
 msgid "Enter sermon details"
 msgstr "Geben Sie die Predigt-Details ein"
 
-#: ../sb-includes/admin.php:1721
+#: ../sb-includes/admin.php:1726
 msgid "Tags (comma separated)"
 msgstr "Tags (komma-separiert)"
 
-#: ../sb-includes/admin.php:1744
+#: ../sb-includes/admin.php:1749
 msgid "Create new preacher"
 msgstr "Neuen Pastor anlegen"
 
-#: ../sb-includes/admin.php:1763
+#: ../sb-includes/admin.php:1768
 msgid "Create new series"
 msgstr "Neue Reihe anlegen"
 
-#: ../sb-includes/admin.php:1798
+#: ../sb-includes/admin.php:1803
 msgid "Create new service"
 msgstr "Neuen Gottesdienst anlegen"
 
-#: ../sb-includes/admin.php:1804
+#: ../sb-includes/admin.php:1809
 msgid "Time"
 msgstr "Zeit"
 
-#: ../sb-includes/admin.php:1807
+#: ../sb-includes/admin.php:1812
 msgid "Override default time"
 msgstr "Standard-Zeit ueberschreiben"
 
-#: ../sb-includes/admin.php:1813
+#: ../sb-includes/admin.php:1818
 msgid "Bible passage"
 msgstr "Bibelstelle"
 
-#: ../sb-includes/admin.php:1813 ../sb-includes/admin.php:1856
+#: ../sb-includes/admin.php:1818 ../sb-includes/admin.php:1861
 msgid "add more"
 msgstr "mehr hinzufuegen"
 
-#: ../sb-includes/admin.php:1817
+#: ../sb-includes/admin.php:1822
 msgid "From"
 msgstr "von"
 
-#: ../sb-includes/admin.php:1818
+#: ../sb-includes/admin.php:1823
 msgid "To"
 msgstr "bis"
 
-#: ../sb-includes/admin.php:1856
+#: ../sb-includes/admin.php:1861
 msgid "Attachments"
 msgstr "Anhaenge"
 
-#: ../sb-includes/admin.php:1865
+#: ../sb-includes/admin.php:1870
 msgid "Choose existing file:"
 msgstr "Bestehende Datei auswaehlen"
 
-#: ../sb-includes/admin.php:1866
+#: ../sb-includes/admin.php:1871
 msgid "Upload a new one:"
 msgstr "Eine neue hochladen"
 
-#: ../sb-includes/admin.php:1867
+#: ../sb-includes/admin.php:1872
 msgid "Enter an URL:"
 msgstr "Eine URL eingeben"
 
-#: ../sb-includes/admin.php:1868
+#: ../sb-includes/admin.php:1873
 #, fuzzy
 msgid "Enter embed or shortcode:"
 msgstr "Diesen Einbettungscode eingeben"
 
-#: ../sb-includes/admin.php:2080
+#: ../sb-includes/admin.php:2085
 msgid "Help page"
 msgstr "Hilfeseite"
 
-#: ../sb-includes/admin.php:2141
+#: ../sb-includes/admin.php:2146
 msgid ""
 "Error:</b> The MP3 shortcode must link to individual sermon files. You do "
 "this by including <span style=\"color:red\">%SERMONURL%</span> in your "
-"shortcode (e.g. [audio:%SERMONURL%]). SermonBrowser will then replace "
-"%SERMONURL% with a link to each sermon."
+"shortcode (e.g. [audio mp3=\"%SERMONURL%\"]). SermonBrowser will then "
+"replace %SERMONURL% with a link to each sermon."
 msgstr ""
 
-#: ../sb-includes/admin.php:2146
-#, fuzzy, php-format
-msgid ""
-"Tip: Installing the %1$sWordpress Audio Player%2$s, or another Wordpress MP3 "
-"player plugin will allow users to listen to your sermons more easily."
-msgstr ""
-"Tipp: Wenn Sie den %1$sWordpress Audio Player%2$s installieren, koennen Ihre "
-"Besucher die Predigten einfacher anhoeren."
-
-#: ../sb-includes/admin.php:2149
+#: ../sb-includes/admin.php:2150
 msgid ""
 "Error:</b> You have specified a custom MP3 shortcode, but Wordpress "
 "doesn&#146;t know how to interpret it. Make sure the shortcode is correct, "
@@ -1511,6 +1502,14 @@ msgstr "Alle Predigtdaten wurden geloescht"
 #: ../sb-includes/uninstall.php:27
 msgid "Uninstall completed. The SermonBrowser plugin has been deactivated."
 msgstr "Deinstallation beendet. Das SermonBrowser-Plugin wurde deaktiviert."
+
+#, fuzzy
+#~ msgid ""
+#~ "Tip: Installing the %1$sWordpress Audio Player%2$s, or another Wordpress "
+#~ "MP3 player plugin will allow users to listen to your sermons more easily."
+#~ msgstr ""
+#~ "Tipp: Wenn Sie den %1$sWordpress Audio Player%2$s installieren, koennen "
+#~ "Ihre Besucher die Predigten einfacher anhoeren."
 
 #~ msgid "You can't delete this preacher."
 #~ msgstr "Sie koennen diesen Pastor nicht loeschen."

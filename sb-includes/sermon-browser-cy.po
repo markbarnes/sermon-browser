@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser 0.41\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-31 15:54-0600\n"
-"PO-Revision-Date: 2013-07-31 15:54-0600\n"
+"POT-Creation-Date: 2013-08-07 12:36-0600\n"
+"PO-Revision-Date: 2013-08-07 12:37-0600\n"
 "Last-Translator: Rhoslyn Prys <post@meddal.com>\n"
 "Language-Team: Cymraeg\n"
 "Language: en\n"
@@ -614,7 +614,7 @@ msgid "Reset to defaults"
 msgstr "Ailosod i'r rhagosodedig"
 
 #: ../sb-includes/admin.php:301 ../sb-includes/admin.php:412
-#: ../sb-includes/admin.php:543 ../sb-includes/admin.php:1888
+#: ../sb-includes/admin.php:543 ../sb-includes/admin.php:1893
 msgid "Save"
 msgstr "Cadw"
 
@@ -743,7 +743,7 @@ msgstr ""
 msgid "Name"
 msgstr "Enw"
 
-#: ../sb-includes/admin.php:522 ../sb-includes/admin.php:1775
+#: ../sb-includes/admin.php:522 ../sb-includes/admin.php:1780
 msgid "Description"
 msgstr "Disgrifiad"
 
@@ -794,20 +794,20 @@ msgstr ""
 "gwasanaethau"
 
 #: ../sb-includes/admin.php:623 ../sb-includes/admin.php:702
-#: ../sb-includes/admin.php:1609
+#: ../sb-includes/admin.php:1614
 msgid "New service's name @ default time?"
 msgstr "Enw'r gwasanaeth newydd @ amser rhagosodedig?"
 
-#: ../sb-includes/admin.php:623 ../sb-includes/admin.php:1609
+#: ../sb-includes/admin.php:623 ../sb-includes/admin.php:1614
 msgid "Service's name @ 18:00"
 msgstr "Enw gwasanaeth @ 18:00"
 
 #: ../sb-includes/admin.php:649 ../sb-includes/admin.php:688
-#: ../sb-includes/admin.php:1624
+#: ../sb-includes/admin.php:1629
 msgid "New series' name?"
 msgstr "Enw'r gyfres newydd?"
 
-#: ../sb-includes/admin.php:649 ../sb-includes/admin.php:1624
+#: ../sb-includes/admin.php:649 ../sb-includes/admin.php:1629
 msgid "Series' name"
 msgstr "Enw'r gyfres"
 
@@ -1001,17 +1001,17 @@ msgid "Sermon removed from database."
 msgstr "Pregethau wedi eu tynnu o'r gronfa ddata."
 
 #: ../sb-includes/admin.php:1238 ../sb-includes/admin.php:1268
-#: ../sb-includes/admin.php:1715
+#: ../sb-includes/admin.php:1720
 msgid "Title"
 msgstr "Teitl"
 
 #: ../sb-includes/admin.php:1242 ../sb-includes/admin.php:1269
-#: ../sb-includes/admin.php:1729 ../sb-includes/frontend.php:1029
+#: ../sb-includes/admin.php:1734 ../sb-includes/frontend.php:1029
 msgid "Preacher"
 msgstr "Pregethwr"
 
 #: ../sb-includes/admin.php:1251 ../sb-includes/admin.php:1272
-#: ../sb-includes/admin.php:1748 ../sb-includes/frontend.php:1055
+#: ../sb-includes/admin.php:1753 ../sb-includes/frontend.php:1055
 msgid "Series"
 msgstr "Cyfres"
 
@@ -1019,12 +1019,12 @@ msgstr "Cyfres"
 msgid "Filter"
 msgstr "Hidl"
 
-#: ../sb-includes/admin.php:1270 ../sb-includes/admin.php:1769
+#: ../sb-includes/admin.php:1270 ../sb-includes/admin.php:1774
 #: ../sb-includes/frontend.php:846 ../sb-includes/frontend.php:937
 msgid "Date"
 msgstr "Dyddiad"
 
-#: ../sb-includes/admin.php:1271 ../sb-includes/admin.php:1789
+#: ../sb-includes/admin.php:1271 ../sb-includes/admin.php:1794
 msgid "Service"
 msgstr "Gwasanaeth"
 
@@ -1044,108 +1044,100 @@ msgstr "Nid oes gennych y caniatâd angenrheidiol i olygu na chreu pregethau"
 msgid "You do not have the correct permissions to create sermons"
 msgstr "Nid oes gennych y caniatâd angenrheidiol i greu pregethau"
 
-#: ../sb-includes/admin.php:1493
+#: ../sb-includes/admin.php:1498
 msgid "No ID3 tags found."
 msgstr "Heb ganfod tagiau ID3."
 
-#: ../sb-includes/admin.php:1590
+#: ../sb-includes/admin.php:1595
 msgid "New preacher's name?"
 msgstr "Enw'r pregethwr newydd?"
 
-#: ../sb-includes/admin.php:1590
+#: ../sb-includes/admin.php:1595
 msgid "Preacher's name"
 msgstr "Enw'r Pregethwr"
 
-#: ../sb-includes/admin.php:1710
+#: ../sb-includes/admin.php:1715
 msgid "Enter sermon details"
 msgstr "Rhowch fanylion y bregeth"
 
-#: ../sb-includes/admin.php:1721
+#: ../sb-includes/admin.php:1726
 msgid "Tags (comma separated)"
 msgstr "Tagiau (gwahanwyd gan atalnod)"
 
-#: ../sb-includes/admin.php:1744
+#: ../sb-includes/admin.php:1749
 msgid "Create new preacher"
 msgstr "Creu pregethwr newydd"
 
-#: ../sb-includes/admin.php:1763
+#: ../sb-includes/admin.php:1768
 msgid "Create new series"
 msgstr "Creu cyfres newydd"
 
-#: ../sb-includes/admin.php:1798
+#: ../sb-includes/admin.php:1803
 msgid "Create new service"
 msgstr "Creu gwasanaeth newydd"
 
-#: ../sb-includes/admin.php:1804
+#: ../sb-includes/admin.php:1809
 msgid "Time"
 msgstr "Amser"
 
-#: ../sb-includes/admin.php:1807
+#: ../sb-includes/admin.php:1812
 msgid "Override default time"
 msgstr "Anwybyddu'r amser rhagosodedig"
 
-#: ../sb-includes/admin.php:1813
+#: ../sb-includes/admin.php:1818
 msgid "Bible passage"
 msgstr "Darn o'r Beibl"
 
-#: ../sb-includes/admin.php:1813 ../sb-includes/admin.php:1856
+#: ../sb-includes/admin.php:1818 ../sb-includes/admin.php:1861
 msgid "add more"
 msgstr "ychwanegu"
 
-#: ../sb-includes/admin.php:1817
+#: ../sb-includes/admin.php:1822
 msgid "From"
 msgstr "O"
 
-#: ../sb-includes/admin.php:1818
+#: ../sb-includes/admin.php:1823
 msgid "To"
 msgstr "Hyd"
 
-#: ../sb-includes/admin.php:1856
+#: ../sb-includes/admin.php:1861
 msgid "Attachments"
 msgstr "Atodiadau"
 
-#: ../sb-includes/admin.php:1865
+#: ../sb-includes/admin.php:1870
 msgid "Choose existing file:"
 msgstr "Dewis ffeil presennol:"
 
-#: ../sb-includes/admin.php:1866
+#: ../sb-includes/admin.php:1871
 msgid "Upload a new one:"
 msgstr "Llwytho un newydd i fyny:"
 
-#: ../sb-includes/admin.php:1867
+#: ../sb-includes/admin.php:1872
 msgid "Enter an URL:"
 msgstr "Rhowch URL:"
 
-#: ../sb-includes/admin.php:1868
+#: ../sb-includes/admin.php:1873
 msgid "Enter embed or shortcode:"
 msgstr "Rhowch god mewnbynnu neu fyr:"
 
-#: ../sb-includes/admin.php:2080
+#: ../sb-includes/admin.php:2085
 msgid "Help page"
 msgstr "Tudalen gymorth"
 
-#: ../sb-includes/admin.php:2141
+#: ../sb-includes/admin.php:2146
+#, fuzzy
 msgid ""
 "Error:</b> The MP3 shortcode must link to individual sermon files. You do "
 "this by including <span style=\"color:red\">%SERMONURL%</span> in your "
-"shortcode (e.g. [audio:%SERMONURL%]). SermonBrowser will then replace "
-"%SERMONURL% with a link to each sermon."
+"shortcode (e.g. [audio mp3=\"%SERMONURL%\"]). SermonBrowser will then "
+"replace %SERMONURL% with a link to each sermon."
 msgstr ""
 "Gwall:</b> Rhaid i god byr yr MP3 gysylltu i ffeiliau pregethau unigol. Mae "
 "hyn yn digwydd drwy i chi gynnwys <span style=\"color:red\">%SERMONURL%</"
 "span> yn eich cod byr (e.e.[audio:%SERMONURL%]). Bydd SermonBrowser yn newid "
 "%SERMONURL% i ddolen i bob pregeth."
 
-#: ../sb-includes/admin.php:2146
-#, php-format
-msgid ""
-"Tip: Installing the %1$sWordpress Audio Player%2$s, or another Wordpress MP3 "
-"player plugin will allow users to listen to your sermons more easily."
-msgstr ""
-"Cyngor: Bydd gosod %1$sWordpress Audio Player%2$s neu chwaraewr MP3 arall "
-"WordPress yn caniatáu i ddefnyddwyr wrando ar eich pregethau'n haws."
-
-#: ../sb-includes/admin.php:2149
+#: ../sb-includes/admin.php:2150
 msgid ""
 "Error:</b> You have specified a custom MP3 shortcode, but Wordpress "
 "doesn&#146;t know how to interpret it. Make sure the shortcode is correct, "
@@ -1523,6 +1515,13 @@ msgstr "Mae'r holl ddata pregethau wedi eu tynnu."
 msgid "Uninstall completed. The SermonBrowser plugin has been deactivated."
 msgstr ""
 "Dadosod wedi ei gwblhau. Mae ategyn Sermon Browser wedi ei ddadweithredu."
+
+#~ msgid ""
+#~ "Tip: Installing the %1$sWordpress Audio Player%2$s, or another Wordpress "
+#~ "MP3 player plugin will allow users to listen to your sermons more easily."
+#~ msgstr ""
+#~ "Cyngor: Bydd gosod %1$sWordpress Audio Player%2$s neu chwaraewr MP3 arall "
+#~ "WordPress yn caniatáu i ddefnyddwyr wrando ar eich pregethau'n haws."
 
 #~ msgid "Congratulations, you just completed the installation!"
 #~ msgstr "Llongyfarchiadau rydych wedi cwblhau'r gosod!"

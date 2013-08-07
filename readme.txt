@@ -18,7 +18,7 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 
 1. Store thousands of sermons, and **search** them by topic, preacher, bible passage or date.
 2. Full **podcasting** capabilities, including custom podcasts for individual users.
-3. Sermons uploaded in mp3 format can be **played directly** on your website using your choice of WordPress MP3 plugins (including [MediaElement.js](https://wordpress.org/plugins/media-element-html5-video-and-audio-player/)).
+3. Sermons uploaded in mp3 format can be **played directly** on your website using the WordPress 3.6 built-in player or your choice of WordPress MP3 plugins (including [MediaElement.js](https://wordpress.org/plugins/media-element-html5-video-and-audio-player/)).
 4. Three optional **sidebar widgets** can display sermons on all of your posts or pages.
 5. **Embed videos** and other flash files from sites such as [YouTube](http://www.youtube.com/) or [Vimeo](http://www.vimeo.com/), using either HTML code provided by those sites, or shortcode providing by a WordPress plugin.
 6. **Other file types** can also be uploaded, including PDF, Powerpoint, Word, text and RTF. Multiple files can be attached to single sermons.
@@ -249,6 +249,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.11 =
+WordPress 3.6 compatibility fix.
+
 = 0.45.10 =
 More bug fixes and new Welsh language translation.
 
@@ -294,6 +297,10 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.45.11 (7 August 2013) =
+* **Bug fix:** Fixed Media Upload conflict with WordPress 3.6 related to getid3 library. ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/wordpress-3-6-any-issues/#p20501)).
+* See [changeset](https://plugins.trac.wordpress.org/changeset/753109/sermon-browser)
 
 = 0.45.10 (31 July 2013) =
 * **Enhancement:** Welsh translation (cy) added.
