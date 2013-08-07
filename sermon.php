@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.sermonbrowser.com/
 Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
-Version: 0.45.10
+Version: 0.45.11
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008-2013 Mark Barnes
@@ -53,7 +53,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.45.10');
+define('SB_CURRENT_VERSION', '0.45.11');
 define('SB_DATABASE_VERSION', '1.7');
 sb_define_constants();
 add_action ('plugins_loaded', 'sb_hijack');
@@ -708,8 +708,10 @@ function sb_define_constants() {
 	define ('SB_WP_CONTENT_DIR', sb_sanitise_path(WP_CONTENT_DIR));
 	define ('SB_INCLUDES_DIR', SB_PLUGIN_DIR.'/sermon-browser/sb-includes');
 	define ('SB_ABSPATH', sb_sanitise_path(ABSPATH));
-	define ('GETID3_INCLUDEPATH', SB_PLUGIN_DIR.'/'.plugin_basename(dirname(__FILE__)).'/sb-includes/getid3/');
-	define ('GETID3_HELPERAPPSDIR', GETID3_INCLUDEPATH);
+	if ( version_compare(get_bloginfo('version'), '3.6', '<') ) {
+		define ('GETID3_INCLUDEPATH', SB_PLUGIN_DIR.'/'.plugin_basename(dirname(__FILE__)).'/sb-includes/getid3/');
+		define ('GETID3_HELPERAPPSDIR', GETID3_INCLUDEPATH);
+	}
 }
 
 /**

@@ -28,7 +28,12 @@ function sb_mp3_duration($media_name, $media_type) {
 		if ($duration)
 			return $duration;
 		else {
-			require_once(SB_INCLUDES_DIR.'/getid3/getid3.php');
+			if ( ! class_exists( 'getID3' ) ) {
+				if ( version_compare(get_bloginfo('version'), '3.6', '<') )
+					require(SB_INCLUDES_DIR.'/getid3/getid3.php');				
+				else
+					require( ABSPATH . WPINC . '/ID3/getid3.php' );
+			}
 			$getID3 = new getID3;
 			$MediaFileInfo = $getID3->analyze(SB_ABSPATH.sb_get_option('upload_dir').$media_name);
 			$duration = isset($MediaFileInfo['playtime_string']) ? $MediaFileInfo['playtime_string'] : '';

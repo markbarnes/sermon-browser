@@ -1463,9 +1463,14 @@ function sb_new_sermon() {
 
 	$id3_tags = array();
 	if (isset($_GET['getid3'])) {
-		require_once(SB_INCLUDES_DIR.'/getid3/getid3.php');
 		$file_data = $wpdb->get_row("SELECT name, type FROM {$wpdb->prefix}sb_stuff WHERE id = ".$wpdb->escape($_GET['getid3']));
 		if ($file_data !== NULL) {
+			if ( ! class_exists( 'getID3' ) ) {
+				if ( version_compare(get_bloginfo('version'), '3.6', '<') )
+					require(SB_INCLUDES_DIR.'/getid3/getid3.php');				
+				else
+					require( ABSPATH . WPINC . '/ID3/getid3.php' );
+			}
 			$getID3 = new getID3;
 			if ($file_data->type == 'url') {
 				$filename = substr($file_data->name, strrpos ($file_data->name, '/')+1);
@@ -2138,17 +2143,12 @@ function sb_do_alerts() {
 	global $wpdb, $sermon_domain;
 	if (stripos(sb_get_option('mp3_shortcode'), '%SERMONURL%') === FALSE) {
 		echo '<div id="message" class="updated fade"><p><b>';
-		_e('Error:</b> The MP3 shortcode must link to individual sermon files. You do this by including <span style="color:red">%SERMONURL%</span> in your shortcode (e.g. [audio:%SERMONURL%]). SermonBrowser will then replace %SERMONURL% with a link to each sermon.', $sermon_domain);
+		_e('Error:</b> The MP3 shortcode must link to individual sermon files. You do this by including <span style="color:red">%SERMONURL%</span> in your shortcode (e.g. [audio mp3="%SERMONURL%"]). SermonBrowser will then replace %SERMONURL% with a link to each sermon.', $sermon_domain);
 		echo '</div>';
 	} elseif (do_shortcode(sb_get_option('mp3_shortcode')) == sb_get_option('mp3_shortcode')) {
-		if ((substr(sb_get_option('mp3_shortcode'), 0, 18) == '[audio:%SERMONURL%') && !function_exists('ap_insert_player_widgets')) {
-			if ($wpdb->get_var("SELECT COUNT(id) FROM {$wpdb->prefix}sb_stuff WHERE name LIKE '%.mp3'")>0)
-				echo '<div id="message" class="updated"><p><b>'.sprintf(__('Tip: Installing the %1$sWordpress Audio Player%2$s, or another Wordpress MP3 player plugin will allow users to listen to your sermons more easily.', $sermon_domain), '<a href="'.site_url().'/wp-admin/plugin-install.php?tab=search&s=audio%20player&type=term&search=Search">', '</a>').'</b></div>';
-		} elseif (substr(sb_get_option('mp3_shortcode'), 0, 18) != '[audio:%SERMONURL%') {
-			echo '<div id="message" class="updated fade"><p><b>';
-			_e('Error:</b> You have specified a custom MP3 shortcode, but Wordpress doesn&#146;t know how to interpret it. Make sure the shortcode is correct, and that the appropriate plugin is activated.', $sermon_domain);
-			echo '</div>';
-		}
+		echo '<div id="message" class="updated fade"><p><b>';
+		_e('Error:</b> You have specified a custom MP3 shortcode, but Wordpress doesn&#146;t know how to interpret it. Make sure the shortcode is correct, and that the appropriate plugin is activated.', $sermon_domain);
+		echo '</div>';
 	}
 	if (sb_display_url() == "") {
 		echo '<div id="message" class="updated"><p><b>'.__('Hint:', $sermon_domain).'</b> '.sprintf(__('%sCreate a page%s that includes the shortcode [sermons], so that SermonBrowser knows where to display the sermons on your site.', $sermon_domain), '<a href="'.site_url().'/wp-admin/page-new.php">', '</a>').'</div>';
