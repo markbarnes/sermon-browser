@@ -126,7 +126,7 @@ function sb_options() {
 		if (!is_dir(SB_ABSPATH.$dir))
 			if (sb_mkdir(SB_ABSPATH.$dir))
 				@chmod(SB_ABSPATH.$dir, 0777);
-		if(!is_dir(SB_ABSPATH.$dir.'images') && sb_mkdir(SB_ABSPATH.$sermonUploadDir.'images'))
+		if(!is_dir(SB_ABSPATH.$dir.'images') && sb_mkdir(SB_ABSPATH.$dir.'images'))
 			@chmod(SB_ABSPATH.$dir.'images', 0777);
 		   $checkSermonUpload = sb_checkSermonUploadable();
 		   switch ($checkSermonUpload) {
@@ -434,8 +434,8 @@ function sb_manage_preachers() {
 	$sermonUploadDir = sb_get_option('upload_dir');
 	//Save changes
 	if (isset($_POST['save'])) {
-		$name = $wpdb->escape($_POST['name']);
-		$description = $wpdb->escape($_POST['description']);
+		$name = esc_sql($_POST['name']);
+		$description = esc_sql($_POST['description']);
 		$error = false;
 		$pid = (int) $_REQUEST['pid'];
 
@@ -811,11 +811,11 @@ function sb_files() {
 						fwrite($file, $remote_contents);
 						fclose($remote_file);
 						fclose($file);
-						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '".$wpdb->escape($filename)."', 0, 0, 0)");
+						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '".esc_sql($filename)."', 0, 0, 0)");
 						echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";
 					}
 				} else {
-					$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'url', '".$wpdb->escape($url)."', 0, 0, 0)");
+					$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'url', '".esc_sql($url)."', 0, 0, 0)");
 					echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";
 					die();
 				}
@@ -1325,11 +1325,11 @@ function sb_new_sermon() {
 
 	if (isset($_POST['save']) && isset($_POST['title'])) {
 	// prepare
-		$title = $wpdb->escape($_POST['title']);
+		$title = esc_sql($_POST['title']);
 		$preacher_id = (int) $_POST['preacher'];
 		$service_id = (int) $_POST['service'];
 		$series_id = (int) $_POST['series'];
-		$time = isset($_POST['time']) ? $wpdb->escape($_POST['time']) : '';
+		$time = isset($_POST['time']) ? esc_sql($_POST['time']) : '';
 		$startz = $endz = array();
 		for ($foo = 0; $foo < count($_POST['start']['book']); $foo++) {
 			if (!empty($_POST['start']['chapter'][$foo]) && !empty($_POST['end']['chapter'][$foo]) && !empty($_POST['start']['verse'][$foo]) && !empty($_POST['end']['verse'][$foo])) {
@@ -1345,8 +1345,8 @@ function sb_new_sermon() {
 				);
 			}
 		}
-		$start = $wpdb->escape(serialize($startz));
-		$end = $wpdb->escape(serialize($endz));
+		$start = esc_sql(serialize($startz));
+		$end = esc_sql(serialize($endz));
 		$date = strtotime($_POST['date']);
 		$override = (isset($_POST['override']) && $_POST['override'] == 'on') ? 1 : 0;
 		if ($date) {
@@ -1365,7 +1365,7 @@ function sb_new_sermon() {
 			$description = mysql_real_escape_string($_POST['description']);
 		}
 		// edit or not edit
-		if (!$_GET['mid']) { // new
+		if ( !isset($_GET['mid']) or !$_GET['mid'] ) { // new
 			//Security check
 			if (!current_user_can('publish_pages'))
 				wp_die(__("You do not have the correct permissions to create sermons", $sermon_domain));
@@ -1412,9 +1412,9 @@ function sb_new_sermon() {
 				if ($file_allowed) {
 					$prefix = '';
 					$dest = SB_ABSPATH.sb_get_option('upload_dir').$prefix.$filename;
-					if ($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = '".$wpdb->escape($filename)."'") == 0 && move_uploaded_file($_FILES['upload']['tmp_name'][$uid], $dest)) {
+					if ($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = '".esc_sql($filename)."'") == 0 && move_uploaded_file($_FILES['upload']['tmp_name'][$uid], $dest)) {
 						$filename = $prefix.mysql_real_escape_string($filename);
-						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '".$wpdb->escape($filename)."', $id, 0, 0)");
+						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '".esc_sql($filename)."', $id, 0, 0)");
 					} else {
 						echo '<div id="message" class="updated fade"><p><b>'.$filename.__(' already exists.', $sermon_domain).'</b></div>';
 						$error = true;
@@ -1463,7 +1463,7 @@ function sb_new_sermon() {
 
 	$id3_tags = array();
 	if (isset($_GET['getid3'])) {
-		$file_data = $wpdb->get_row("SELECT name, type FROM {$wpdb->prefix}sb_stuff WHERE id = ".$wpdb->escape($_GET['getid3']));
+		$file_data = $wpdb->get_row("SELECT name, type FROM {$wpdb->prefix}sb_stuff WHERE id = ".esc_sql($_GET['getid3']));
 		if ($file_data !== NULL) {
 			if ( ! class_exists( 'getID3' ) ) {
 				if ( version_compare(get_bloginfo('version'), '3.6', '<') )
@@ -1531,8 +1531,8 @@ function sb_new_sermon() {
 			if ($date_format != '') {
 				$filename = substr($filename, 0, strrpos($filename, '.'));
 				$filename = str_replace ('--', '-', str_replace ('/', '-', $filename));
-				$filename = trim(ereg_replace('[^0-9-]', '', $filename), '-');
-				$date = explode('-', $filename, 3);
+				$filename = trim(preg_replace('/[^0-9-]/', '', $filename), '-');
+				$date = explode('-', $filename);
 				$id3_tags['date'] = '';
 				if (count($date) >= 3) {
 					if ($date_format == 'uk')
@@ -2348,15 +2348,15 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 		$date = '';
 		$player = '';
 	} else {
-		$limit = attribute_escape($options[$number]['limit']);
-		$preacher = attribute_escape($options[$number]['preacher']);
-		$service = attribute_escape($options[$number]['service']);
-		$series = attribute_escape($options[$number]['series']);
+		$limit = esc_attr($options[$number]['limit']);
+		$preacher = esc_attr($options[$number]['preacher']);
+		$service = esc_attr($options[$number]['service']);
+		$series = esc_attr($options[$number]['series']);
 		$preacherz = (int) $options[$number]['preacherz'];
 		$book = (int) $options[$number]['book'];
-		$title = attribute_escape($options[$number]['title']);
+		$title = esc_attr($options[$number]['title']);
 		$date = (int) $options[$number]['date'];
-		$player = attribute_escape($options[$number]['player']);
+		$player = esc_attr($options[$number]['player']);
 	}
 
 ?>
@@ -2430,11 +2430,11 @@ function sb_widget_popular_control() {
 		sb_update_option('popular_widget_options', $options);
 	}
 
-	$title = attribute_escape($options['title']);
-	$limit = attribute_escape($options['limit']);
-	$display_sermons = (boolean) attribute_escape($options['display_sermons']);
-	$display_series = (boolean) attribute_escape($options['display_series']);
-	$display_preachers = (boolean) attribute_escape($options['display_preachers']);
+	$title = esc_attr($options['title']);
+	$limit = esc_attr($options['limit']);
+	$display_sermons = (boolean) esc_attr($options['display_sermons']);
+	$display_series = (boolean) esc_attr($options['display_series']);
+	$display_preachers = (boolean) esc_attr($options['display_preachers']);
 
 ?>
 		<p><?php _e('Title:'); ?> <input class="widefat" id="widget-popular-title" name="widget-popular-title" type="text" value="<?php echo $title; ?>" /></p>

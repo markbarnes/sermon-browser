@@ -417,7 +417,7 @@ div.esv span.small-caps {
 }
 
 div.net p.poetry {
-	font-style: italics;
+	font-style: italic;
 	margin: 0
 }
 

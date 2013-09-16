@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.sermonbrowser.com/
 Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
-Version: 0.45.11
+Version: 0.45.12
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008-2013 Mark Barnes
@@ -53,7 +53,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.45.11');
+define('SB_CURRENT_VERSION', '0.45.12');
 define('SB_DATABASE_VERSION', '1.7');
 sb_define_constants();
 add_action ('plugins_loaded', 'sb_hijack');
@@ -72,8 +72,8 @@ if (version_compare(PHP_VERSION, '5.0.0', '<'))
 function sb_hijack() {
 
 	global $filetypes, $wpdb, $sermon_domain;
-
-	if (function_exists('wp_timezone_supported') && wp_timezone_supported())
+	
+	if ( version_compare(get_bloginfo('version'), '3.2', '>=') || (function_exists('wp_timezone_supported') && wp_timezone_supported()) )
 		wp_timezone_override_offset();
 
 	if (isset($_POST['sermon']) && $_POST['sermon'] == 1)
@@ -83,7 +83,7 @@ function sb_hijack() {
 
 	//Forces sermon download of local file
 	if (isset($_GET['download']) AND isset($_GET['file_name'])) {
-		$file_name = $wpdb->escape(rawurldecode($_GET['file_name']));
+		$file_name = esc_sql(rawurldecode($_GET['file_name']));
 		$file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
 		if (!is_null($file_name)) {
 			header("Pragma: public");
@@ -92,7 +92,7 @@ function sb_hijack() {
 			header("Content-Type: application/force-download");
 			header("Content-Type: application/octet-stream");
 			header("Content-Type: application/download");
-			header('Content-Disposition: attachment; filename="'.$file_name.'";');
+			header('Content-Disposition: attachment; filename="'.$file_name.'"');
 			header("Content-Transfer-Encoding: binary");
 			sb_increase_download_count ($file_name);
 			$file_name = SB_ABSPATH.sb_get_option('upload_dir').$file_name;
@@ -139,7 +139,7 @@ function sb_hijack() {
 			if (isset($headers['content-disposition']))
 				header ('Content-Disposition: '.$headers['content-disposition']);
 			else
-				header('Content-Disposition: attachment; filename="'.basename($url).'";');
+				header('Content-Disposition: attachment; filename="'.basename($url).'"');
 			header("Content-Transfer-Encoding: binary");
 			header($_SERVER['SERVER_PROTOCOL'].' 200 OK');
 			sb_increase_download_count($url);
@@ -157,7 +157,7 @@ function sb_hijack() {
 	//Returns local file (doesn't force download)
 	if (isset($_GET['show']) AND isset($_GET['file_name'])) {
 		global $filetypes;
-		$file_name = $wpdb->escape(rawurldecode($_GET['file_name']));
+		$file_name = esc_sql(rawurldecode($_GET['file_name']));
 		$file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
 		if (!is_null($file_name)) {
 			$url = sb_get_option('upload_url').$file_name;
@@ -515,11 +515,11 @@ function sb_shortcode($atts, $content=null) {
 		}
 	} else {
 		if (isset($_REQUEST['sortby']))
-			$sort_criteria = $wpdb->escape($_REQUEST['sortby']);
+			$sort_criteria = esc_sql($_REQUEST['sortby']);
 		else
 			$sort_criteria = 'm.datetime';
 		if (!empty($atts['dir']))
-			$dir = $wpdb->escape($atts['dir']);
+			$dir = esc_sql($atts['dir']);
 		elseif ($sort_criteria == 'm.datetime')
 			$dir = 'desc';
 		else
@@ -774,19 +774,24 @@ function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0, $
 	$bs = '';
 	$filter = array_merge($default_filter, (array)$filter);
 	$order = array_merge($default_order, (array)$order);
+	if ( strtolower($order['dir']) != 'desc' and strtolower($order['dir']) != 'asc' )
+		$order['dir'] = $default_order['dir'];
+	$valid_sortby_values = array( 'm.id', 'm.title', 'm.datetime', 'm.start', 'm.end', 'p.id', 'p.name', 's.id', 's.name', 'ss.id', 'ss.name');
+	if ( !in_array($order['by'], $valid_sortby_values) )
+		$order['by'] = $default_order['by'];
 	$page = (int) $page;
 	$cond = '1=1 ';
 	if ($filter['title'] != '') {
-		$cond .= "AND (m.title LIKE '%" . $wpdb->escape($filter['title']) . "%' OR m.description LIKE '%" . $wpdb->escape($filter['title']). "%' OR t.name LIKE '%" . $wpdb->escape($filter['title']) . "%') ";
+		$cond .= "AND (m.title LIKE '%" . esc_sql($filter['title']) . "%' OR m.description LIKE '%" . esc_sql($filter['title']). "%' OR t.name LIKE '%" . esc_sql($filter['title']) . "%') ";
 	}
 	if ($filter['preacher'] != 0) {
 		$cond .= 'AND m.preacher_id = ' . (int) $filter['preacher'] . ' ';
 	}
 	if ($filter['date'] != '') {
-		$cond .= 'AND m.datetime >= "' . $wpdb->escape($filter['date']) . '" ';
+		$cond .= 'AND m.datetime >= "' . esc_sql($filter['date']) . '" ';
 	}
 	if ($filter['enddate'] != '') {
-		$cond .= 'AND m.datetime <= "' . $wpdb->escape($filter['enddate']) . '" ';
+		$cond .= 'AND m.datetime <= "' . esc_sql($filter['enddate']) . '" ';
 	}
 	if ($filter['series'] != 0) {
 		$cond .= 'AND m.series_id = ' . (int) $filter['series'] . ' ';
@@ -795,22 +800,22 @@ function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0, $
 		$cond .= 'AND m.service_id = ' . (int) $filter['service'] . ' ';
 	}
 	if ($filter['book'] != '') {
-		$cond .= 'AND bs.book_name = "' . $wpdb->escape($filter['book']) . '" ';
+		$cond .= 'AND bs.book_name = "' . esc_sql($filter['book']) . '" ';
 	} else {
 		$bs = "AND bs.order = 0 AND bs.type= 'start' ";
 	}
 	if ($filter['tag'] != '') {
-		$cond .= "AND t.name LIKE '%" . $wpdb->escape($filter['tag']) . "%' ";
+		$cond .= "AND t.name LIKE '%" . esc_sql($filter['tag']) . "%' ";
 	}
 	if ($filter['id'] != '') {
-		$cond .= "AND m.id LIKE '" . $wpdb->escape($filter['id']) . "' ";
+		$cond .= "AND m.id LIKE '" . esc_sql($filter['id']) . "' ";
 	}
 	if ($hide_empty) {
 		$cond .= "AND stuff.name != '' ";
 	}
 	$offset = $limit * ($page - 1);
 	if ($order['by'] == 'b.id' ) {
-		$order['by'] = 'b.id '.$wpdb->escape($order['dir']).', bs.chapter '.$wpdb->escape($order['dir']).', bs.verse';
+		$order['by'] = 'b.id '.esc_sql($order['dir']).', bs.chapter '.esc_sql($order['dir']).', bs.verse';
 	}
 	return "SELECT SQL_CALC_FOUND_ROWS DISTINCT m.id, m.title, m.description, m.datetime, m.time, m.start, m.end, p.id as pid, p.name as preacher, p.description as preacher_description, p.image, s.id as sid, s.name as service, ss.id as ssid, ss.name as series
 		FROM {$wpdb->prefix}sb_sermons as m
@@ -875,7 +880,7 @@ function sb_get_stuff($sermon, $mp3_only = FALSE) {
 function sb_increase_download_count ($stuff_name) {
 	if (function_exists('current_user_can')&&!(current_user_can('edit_posts')|current_user_can('publish_posts'))) {
 		global $wpdb;
-		$wpdb->query("UPDATE ".$wpdb->prefix."sb_stuff SET COUNT=COUNT+1 WHERE name='".$wpdb->escape($stuff_name)."'");
+		$wpdb->query("UPDATE ".$wpdb->prefix."sb_stuff SET COUNT=COUNT+1 WHERE name='".esc_sql($stuff_name)."'");
 	}
 }
 

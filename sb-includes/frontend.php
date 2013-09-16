@@ -707,7 +707,7 @@ function sb_print_url_link($url) {
 	global $sermon_domain;
 	echo '<div class="sermon_file">';
 	sb_print_url ($url);
-	if (substr($url, -4) == ".mp3") {
+	if (strtolower(substr($url, -4)) == ".mp3") {
 		if ((substr($url,0,7) == "http://") or (substr($url,0,8) == 'https://')) {
 			$param="url"; }
 		else {

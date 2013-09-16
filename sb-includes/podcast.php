@@ -24,7 +24,7 @@ function sb_media_size($media_name, $media_type) {
 function sb_mp3_duration($media_name, $media_type) {
 	global $wpdb;
 	if (strtolower(substr($media_name, -3)) == 'mp3' && $media_type == 'Files') {
-		$duration = $wpdb->get_var("SELECT duration FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' AND name = '".$wpdb->escape($media_name)."'");
+		$duration = $wpdb->get_var("SELECT duration FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' AND name = '".esc_sql($media_name)."'");
 		if ($duration)
 			return $duration;
 		else {
@@ -37,7 +37,7 @@ function sb_mp3_duration($media_name, $media_type) {
 			$getID3 = new getID3;
 			$MediaFileInfo = $getID3->analyze(SB_ABSPATH.sb_get_option('upload_dir').$media_name);
 			$duration = isset($MediaFileInfo['playtime_string']) ? $MediaFileInfo['playtime_string'] : '';
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET duration = '".$wpdb->escape($duration)."' WHERE type = 'file' AND name = '".$wpdb->escape($media_name)."'");
+			$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET duration = '".esc_sql($duration)."' WHERE type = 'file' AND name = '".esc_sql($media_name)."'");
 			return $duration;
 		}
 	}
