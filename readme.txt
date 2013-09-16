@@ -3,7 +3,7 @@ Contributors: mark8barnes, bhengh
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 2.9.2
-Tested up to: 3.6
+Tested up to: 3.6.1
 Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl.html
@@ -249,6 +249,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.12 =
+More bug fixes.
+
 = 0.45.11 =
 WordPress 3.6 compatibility fix.
 
@@ -297,6 +300,16 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.45.12 (16 September 2013) =
+* **Bug fix:** Removed call to deprecated wp_timezone_supported function if WordPress version is 3.2 or later.
+* **Bug fix:** In default style template, font-style should be "italic", not "italics". ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/italics-not-a-font-style-in-sb-style-css/)).
+* **Bug fix:** Replaced deprecated functions wpdb::escape, attribute_escape, ereg_replace
+* **Bug fix:** Download link now works for MP3 URLs with capital letter extensions. (Lowercase extensions recommended for best compatibility.) ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/download-link-not-working-for-mp3/)).
+* **Bug fix:** Strengthen plugin against bad URL requests. ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/error_log-entry-for-20-aug-2013-re-sermon-browser/)).
+* **Bug fix:** Fixed creation of "images" subfolder when moving sermon Upload folder to new location.
+* **Bug fix:** Improved download link operation on Android. ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/downloading-mp3s-on-android-phones/)).
+* See [changeset](http://plugins.trac.wordpress.org/changeset/773534/sermon-browser)
 
 = 0.45.11 (7 August 2013) =
 * **Bug fix:** Fixed Media Upload conflict with WordPress 3.6 related to getid3 library. ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/wordpress-3-6-any-issues/#p20501)).
