@@ -691,7 +691,6 @@ function sb_manage_everything() {
 					if (r) {
 						jQuery('#Series' + id).text(ss);
 						jQuery('#linkSeries' + id).attr('href', 'javascript:renameSeries(' + id + ', "' + ss + '")');
-						Fat.fade_element('Series' + id);
 					};
 				});
 			}
@@ -710,8 +709,6 @@ function sb_manage_everything() {
 						jQuery('#Services' + id).text(sz);
 						jQuery('#time' + id).text(t);
 						jQuery('#linkServices' + id).attr('href', 'javascript:renameServices(' + id + ', "' + s + '")');
-						Fat.fade_element('Services' + id);
-						Fat.fade_element('time' + id);
 					};
 				});
 			}
@@ -895,10 +892,8 @@ function sb_files() {
 						if (r == 'renamed') {
 							jQuery('#' + id).text(f.substring(0,f.lastIndexOf(".")));
 							jQuery('#link' + id).attr('href', 'javascript:rename(' + id + ', "' + f + '")');
-							Fat.fade_element(id);
 							jQuery('#s' + id).text(f.substring(0,f.lastIndexOf(".")));
 							jQuery('#slink' + id).attr('href', 'javascript:rename(' + id + ', "' + f + '")');
-							Fat.fade_element('s' + id);
 						} else {
 							if (r == 'forbidden') {
 								alert('<?php _e('You are not permitted files with that extension.', $sermon_domain) ?>');
@@ -1552,7 +1547,7 @@ function sb_new_sermon() {
 
 	$timeArr = '';
 	for ($lol = 0; $lol < count($serviceId); $lol++) {
-		$timeArr .= "timeArr[{$serviceId[$lol]}] = '{$deftime[$lol]}';";
+		$timeArr .= "timeArr[{$serviceId[$lol]}] = '$deftime[$lol]';";
 	}
 
 	if (isset($_GET['mid'])) {

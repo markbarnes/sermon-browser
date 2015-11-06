@@ -21,7 +21,7 @@ if (isset($_POST['pname'])) { // preacher
 	}
 } elseif (isset($_POST['sname'])) { // service
 	$sname = $_POST['sname'];
-	list($sname, $stime) = preg_split('@', $sname);
+	list($sname, $stime) = explode('@', $sname);
 	$sname = trim($sname);
 	$stime = trim($stime);
 	if (isset($_POST['sid'])) {
