@@ -1547,7 +1547,7 @@ function sb_new_sermon() {
 
 	$timeArr = '';
 	for ($lol = 0; $lol < count($serviceId); $lol++) {
-		$timeArr .= "timeArr[{$serviceId[$lol]}] = '$deftime[$lol]';";
+		$timeArr .= "timeArr[{$serviceId[$lol]}] = '{$deftime[$lol]}';";
 	}
 
 	if (isset($_GET['mid'])) {
