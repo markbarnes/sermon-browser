@@ -2,8 +2,8 @@
 Contributors: mark8barnes, bhengh
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
-Requires at least: 2.9.2
-Tested up to: 3.8.1
+Requires at least: 3.6
+Tested up to: 4.3.1
 Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl.html
@@ -18,7 +18,7 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 
 1. Store thousands of sermons, and **search** them by topic, preacher, bible passage or date.
 2. Full **podcasting** capabilities, including custom podcasts for individual users.
-3. Sermons uploaded in mp3 format can be **played directly** on your website using the WordPress 3.6 built-in player or your choice of WordPress MP3 plugins (including [MediaElement.js](https://wordpress.org/plugins/media-element-html5-video-and-audio-player/)).
+3. Sermons uploaded in mp3 format can be **played directly** on your website using the WordPress 3.6 built-in player or your choice of WordPress MP3 plugins.
 4. Three optional **sidebar widgets** can display sermons on all of your posts or pages.
 5. **Embed videos** and other flash files from sites such as [YouTube](http://www.youtube.com/) or [Vimeo](http://www.vimeo.com/), using either HTML code provided by those sites, or shortcode providing by a WordPress plugin.
 6. **Other file types** can also be uploaded, including PDF, Powerpoint, Word, text and RTF. Multiple files can be attached to single sermons.
@@ -27,7 +27,7 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 9. Details about each sermon can be **added automatically from the MP3's ID3 tags**.
 10. Powerful **templating function** allows complete customisation to complement the look of your site.
 11. Simple statistics show how often each sermon has been listened to.
-12. Support for both multisite (WordPress 3.0 and above) and [WordPress MU (WPMU)](http://mu.wordpress.org/) for earlier versions of WordPress.
+12. Support for multisite.
 13. Extensive **help** and [tutorial screencasts](http://www.sermonbrowser.com/tutorials/).
 14. Active [community support fourm](http://www.sermonbrowser.com/forum/).
 15. English, German, Portugese Brazilian, Romanian, Russian and Spanish translations included.
@@ -248,6 +248,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 
 == Upgrade Notice ==
+
+= 0.45.13 =
+Compatibility with PHP 5.2 to 5.6 and WordPress 3.6 to 4.3.
 
 = 0.45.12 =
 More bug fixes.

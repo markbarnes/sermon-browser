@@ -424,12 +424,7 @@ function sb_add_esv_text ($start, $end) {
 
 // Converts XML string to object
 function sb_get_xml ($content) {
-	if (class_exists('SimpleXMLElement')) {
-		$xml = new SimpleXMLElement($content);
-	} else {
-		$xml = new SimpleXMLElement4();
-		$xml = $xml->xml_load_file($content, 'object', 'utf-8');
-	}
+    $xml = new SimpleXMLElement($content);
 	return $xml;
 }
 
@@ -438,10 +433,7 @@ function sb_add_net_text ($start, $end) {
 	$reference = str_replace(' ', '+', sb_tidy_reference ($start, $end));
 	$old_chapter = $start['chapter'];
 	$net_url = "http://labs.bible.org/api/xml/verse.php?passage={$reference}";
-	if (class_exists('SimpleXMLElement')) // Ignore paragraph formatting on PHP4 because xml_parse_into_struct doesn't like HTML tags
-		$xml = sb_get_xml(sb_download_page($net_url.'&formatting=para'));
-	else
-		$xml = sb_get_xml(sb_download_page($net_url));
+	$xml = sb_get_xml(sb_download_page($net_url.'&formatting=para'));
 	$output='';
 	$items = array();
 	$items = $xml->item;
@@ -506,7 +498,7 @@ function sb_build_url($arr, $clear = false, $relative_link = false) {
 	$wl = array('preacher', 'title', 'date', 'enddate', 'series', 'service', 'sortby', 'dir', 'book', 'stag', 'podcast');
 	$foo = array_merge((array) $_GET, (array) $_POST, $arr);
 	foreach ($foo as $k => $v) {
-		if (in_array($k, array_keys($arr)) | (in_array($k, $wl) && !$clear)) {
+		if (in_array($k, array_keys($arr)) || (in_array($k, $wl) && !$clear)) {
 			$bar[] = rawurlencode($k).'='.rawurlencode($v);
 		}
 	}
@@ -979,7 +971,7 @@ function sb_print_filters($filter) {
 			sb_print_filter_line ('service', $services, 'id', 'name', 10);
 		sb_print_date_filter_line ($dates);
 		echo "</div>\r";
-		if (count($more_applied) > 0 | $output != '' | $hide_custom_podcast === TRUE | $hide_filter === TRUE) {
+		if (count($more_applied) > 0 || $output != '' || $hide_custom_podcast === TRUE || $hide_filter === TRUE) {
 			echo "<script type=\"text/javascript\">\r";
 			echo "\tjQuery(document).ready(function() {\r";
 			if ($hide_filter === TRUE)
@@ -1063,13 +1055,13 @@ function sb_print_filters($filter) {
 						</tr>
 						<tr>
 							<td class="fieldname"><?php _e('Start date', $sermon_domain) ?></td>
-							<td class="field"><input type="text" name="date" id="date" value="<?php echo isset($_REQUEST['date']) ? mysql_real_escape_string($_REQUEST['date']) : '' ?>" /></td>
+							<td class="field"><input type="text" name="date" id="date" value="<?php echo htmlspecialchars(isset($_REQUEST['date']) ? $_REQUEST['date'] : '') ?>" /></td>
 							<td class="fieldname rightcolumn"><?php _e('End date', $sermon_domain) ?></td>
-							<td class="field"><input type="text" name="enddate" id="enddate" value="<?php echo isset($_REQUEST['enddate']) ? mysql_real_escape_string($_REQUEST['enddate']) : '' ?>" /></td>
+							<td class="field"><input type="text" name="enddate" id="enddate" value="<?php echo htmlspecialchars(isset($_REQUEST['enddate']) ? $_REQUEST['enddate'] : '') ?>" /></td>
 						</tr>
 						<tr>
 							<td class="fieldname"><?php _e('Keywords', $sermon_domain) ?></td>
-							<td class="field" colspan="3"><input style="width: 98.5%" type="text" id="title" name="title" value="<?php echo isset($_REQUEST['title']) ? mysql_real_escape_string($_REQUEST['title']) : '' ?>" /></td>
+							<td class="field" colspan="3"><input style="width: 98.5%" type="text" id="title" name="title" value="<?php echo htmlspecialchars(isset($_REQUEST['title']) ? $_REQUEST['title'] : '') ?>" /></td>
 						</tr>
 						<tr>
 							<td class="fieldname"><?php _e('Sort by', $sermon_domain) ?></td>
@@ -1113,7 +1105,7 @@ function sb_print_filters($filter) {
 // Stats have to be turned off for iTunes compatibility
 function sb_first_mp3($sermon, $stats= TRUE) {
 	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-	if (stripos($user_agent, 'itunes') !== FALSE | stripos($user_agent, 'FeedBurner') !== FALSE)
+	if (stripos($user_agent, 'itunes') !== FALSE || stripos($user_agent, 'FeedBurner') !== FALSE)
 		$stats = FALSE;
 	$stuff = sb_get_stuff($sermon, true);
 	$stuff = array_merge((array)$stuff['Files'], (array)$stuff['URLs']);

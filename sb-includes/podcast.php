@@ -29,10 +29,7 @@ function sb_mp3_duration($media_name, $media_type) {
 			return $duration;
 		else {
 			if ( ! class_exists( 'getID3' ) ) {
-				if ( version_compare(get_bloginfo('version'), '3.6', '<') )
-					require(SB_INCLUDES_DIR.'/getid3/getid3.php');				
-				else
-					require( ABSPATH . WPINC . '/ID3/getid3.php' );
+			    require(GETID3_INCLUDEPATH.'getid3.php' );
 			}
 			$getID3 = new getID3;
 			$MediaFileInfo = $getID3->analyze(SB_ABSPATH.sb_get_option('upload_dir').$media_name);
@@ -57,7 +54,7 @@ function sb_xml_entity_encode ($string) {
 // Stats have to be turned off for iTunes compatibility
 function sb_podcast_file_url($media_name, $media_type) {
 	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-	if (stripos($user_agent, 'itunes') !== FALSE | stripos($user_agent, 'FeedBurner') !== FALSE)
+	if (stripos($user_agent, 'itunes') !== FALSE || stripos($user_agent, 'FeedBurner') !== FALSE)
 		$stats = FALSE;
 	else
 		$stats = TRUE;
@@ -100,8 +97,7 @@ $sermons = sb_get_sermons(
 	1000000
 );
 
-if (function_exists('wp_timezone_override_offset'))
-	wp_timezone_override_offset();
+wp_timezone_override_offset();
 
 header('Content-Type: application/rss+xml');
 echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
@@ -134,7 +130,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 			if ($mp3count > 15)
 				break;
 			$media = sb_get_stuff($sermon);
-			if (is_array($media['Files']) | is_array($media['URLs'])) {
+			if (is_array($media['Files']) || is_array($media['URLs'])) {
 				foreach ($media as $media_type => $media_names)
 					if (is_array($media_names) && $media_type != 'Code')
 						foreach ((array)$media_names as $media_name)

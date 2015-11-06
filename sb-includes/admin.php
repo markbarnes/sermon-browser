@@ -164,7 +164,7 @@ function sb_options() {
 	// HTML for options page
 ?>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
 		<form method="post">
 		<h2><?php _e('Basic Options', $sermon_domain) ?></h2>
 		<br style="clear:both"/>
@@ -357,7 +357,7 @@ function sb_uninstall () {
 function sb_templates () {
 	global $sermon_domain;
 	//Security check
-	if (function_exists('current_user_can')&&!current_user_can('manage_options'))
+	if (!current_user_can('manage_options'))
 			wp_die(__("You do not have the correct permissions to edit the SermonBrowser templates", $sermon_domain));
 	//Save templates or reset to default
 	if (isset($_POST['save']) || isset($_POST['resetdefault'])) {
@@ -386,7 +386,7 @@ function sb_templates () {
 	?>
 	<form method="post">
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
 		<h2><?php _e('Templates', $sermon_domain) ?></h2>
 		<br/>
 		<table border="0" class="widefat">
@@ -427,15 +427,15 @@ function sb_templates () {
 function sb_manage_preachers() {
 	global $wpdb, $sermon_domain;
 	//Security check
-	if (function_exists('current_user_can')&&!current_user_can('manage_categories'))
+	if (!current_user_can('manage_categories'))
 			wp_die(__("You do not have the correct permissions to manage the preachers' database", $sermon_domain));
 	if (isset($_GET['saved']))
 		echo '<div id="message" class="updated fade"><p><b>'.__('Preacher saved to database.', $sermon_domain).'</b></div>';
 	$sermonUploadDir = sb_get_option('upload_dir');
 	//Save changes
 	if (isset($_POST['save'])) {
-		$name = esc_sql($_POST['name']);
-		$description = esc_sql($_POST['description']);
+		$name = $_POST['name'];
+		$description = $_POST['description'];
 		$error = false;
 		$pid = (int) $_REQUEST['pid'];
 
@@ -449,7 +449,7 @@ function sb_manage_preachers() {
 				@chmod(SB_ABSPATH.$sermonUploadDir.'images', 0777);
 			$dest = SB_ABSPATH.$sermonUploadDir.'images/'.$filename;
 			if (@move_uploaded_file($_FILES['upload']['tmp_name'], $dest))
-				$filename = $prefix.mysql_real_escape_string($filename);
+				$filename = $prefix.$filename;
 			else {
 				$error = true;
 				echo '<div id="message" class="updated fade"><p><b>'.__('Could not save uploaded file. Please try again.', $sermon_domain).'</b></div>';
@@ -461,15 +461,15 @@ function sb_manage_preachers() {
 		}
 
 		if ($pid == 0) {
-			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_preachers VALUES (null, '$name', '$description', '$filename')");
+			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_preachers VALUES (null, %s, %s, %s)", $name, $description, $filename));
 		} else {
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_preachers SET name = '$name', description = '$description', image = '$filename' WHERE id = $pid");
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s, description = %s, image = %s WHERE id = $pid", $name, $description, $filename));
 			if ($_POST['old'] != $filename)
-				@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.mysql_real_escape_string($_POST['old']));
+				@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$_POST['old']);
 		}
 		if(isset($_POST['remove'])){
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_preachers SET name = '$name', description = '$description', image = '' WHERE id = $pid");
-			@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.mysql_real_escape_string($_POST['old']));
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s, description = %s, image = '' WHERE id = $pid", $name, $description));
+			@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$_POST['old']);
 		}
 		if(!$error)
 			echo "<script>document.location = '".site_url()."/wp-admin/admin.php?page=sermon-browser/preachers.php&saved=true';</script>";
@@ -491,7 +491,7 @@ function sb_manage_preachers() {
 	//Display HTML
 ?>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
 		<h2><?php echo $_GET['act'] == 'new' ? __('Add', $sermon_domain) : __('Edit', $sermon_domain) ?> <?php _e('preacher', $sermon_domain) ?></h2>
 		<br style="clear:both">
 		<?php
@@ -551,7 +551,7 @@ function sb_manage_preachers() {
 	sb_do_alerts();
 ?>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
 		<h2><?php _e('Preachers', $sermon_domain) ?> (<a href="<?php echo site_url() ?>/wp-admin/admin.php?page=sermon-browser/preachers.php&act=new"><?php _e('add new', $sermon_domain) ?></a>)</h2>
 		<br/>
 		<table class="widefat" style="width:auto">
@@ -595,7 +595,7 @@ function sb_manage_preachers() {
 function sb_manage_everything() {
 	global $wpdb, $sermon_domain;
 	//Security check
-	if (function_exists('current_user_can')&&!current_user_can('manage_categories'))
+	if (!current_user_can('manage_categories'))
 			wp_die(__("You do not have the correct permissions to manage the series and services database", $sermon_domain));
 
 	$series = $wpdb->get_results("SELECT {$wpdb->prefix}sb_series.*, COUNT({$wpdb->prefix}sb_sermons.id) AS sermon_count FROM {$wpdb->prefix}sb_series LEFT JOIN {$wpdb->prefix}sb_sermons ON series_id = {$wpdb->prefix}sb_series.id GROUP BY id ORDER BY name ASC");
@@ -725,7 +725,7 @@ function sb_manage_everything() {
 ?>
 	<a name="manage-<?php echo $k ?>"></a>
 	<div class="wrap">
-		<?php if ($k == 'Series') { ?><a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a><?php } ?>
+		<?php if ($k == 'Series') { ?><a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a><?php } ?>
 		<h2><?php echo $k ?> (<a href="javascript:createNew<?php echo $k ?>()"><?php _e('add new', $sermon_domain) ?></a>)</h2>
 		<br style="clear:both">
 		<table class="widefat" style="width:auto">
@@ -811,11 +811,11 @@ function sb_files() {
 						fwrite($file, $remote_contents);
 						fclose($remote_file);
 						fclose($file);
-						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '".esc_sql($filename)."', 0, 0, 0)");
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0)", $filename));
 						echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";
 					}
 				} else {
-					$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'url', '".esc_sql($url)."', 0, 0, 0)");
+					$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'url', %s, 0, 0, 0)", $url));
 					echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";
 					die();
 				}
@@ -829,17 +829,11 @@ function sb_files() {
 			$filename = basename($_FILES['upload']['name']);
 			if (IS_MU) {
 				$file_allowed = FALSE;
-				global $wp_version;
-				if (version_compare ($wp_version, '3.0', '<'))
-					require_once(SB_ABSPATH . 'wp-includes/wpmu-functions.php');
-				else
-					require_once(SB_ABSPATH . 'wp-includes/ms-functions.php');
-				if (function_exists('get_site_option')) {
-					$allowed_extensions = explode(" ", get_site_option("upload_filetypes"));
-					foreach ($allowed_extensions as $ext) {
-						if (substr(strtolower($filename), -(strlen($ext)+1)) == ".".strtolower($ext))
-							$file_allowed = TRUE;
-					}
+				require_once(SB_ABSPATH . 'wp-includes/ms-functions.php');
+				$allowed_extensions = explode(" ", get_site_option("upload_filetypes"));
+				foreach ($allowed_extensions as $ext) {
+					if (substr(strtolower($filename), -(strlen($ext)+1)) == ".".strtolower($ext))
+						$file_allowed = TRUE;
 				}
 			} else {
 				$file_allowed = TRUE;
@@ -847,11 +841,10 @@ function sb_files() {
 			if ($file_allowed) {
 				$prefix = '';
 				$dest = SB_ABSPATH.sb_get_option('upload_dir').$prefix.$filename;
-				if($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = '".mysql_real_escape_string($filename)."'") == 0) {
-					$filename = mysql_real_escape_string($filename);
+				if($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = %s", $filename)) == 0) {
 					if (move_uploaded_file($_FILES['upload']['tmp_name'], $dest)) {
 						$filename = $prefix.$filename;
-						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '{$filename}', 0, 0, 0)");
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0)", $filename));
 						if (sb_import_options_set ())
 							echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";
 						else
@@ -991,7 +984,7 @@ function sb_files() {
 	</script>
 	<a name="top"></a>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
 		<h2><?php _e('Upload Files', $sermon_domain) ?></h2>
 		<?php if (!sb_import_options_set()) {
 			echo '<p class="plugin-update">';
@@ -1135,7 +1128,7 @@ function sb_files() {
 */
 function sb_ping_gallery() {
 	global $wpdb;
-	if((ini_get('allow_url_fopen') | function_exists('curl_init')) & get_option('blog_public') == 1 & get_option('ping_sites') != "") {
+	if((ini_get('allow_url_fopen') || function_exists('curl_init')) & get_option('blog_public') == 1 & get_option('ping_sites') != "") {
 		$url = "http://ping.preachingcentral.com/?sg_ping";
 		$url .= "&name=".rawurlencode(get_option('blogname'));
 		$url .= "&tagline=".rawurlencode(get_option('blogdescription'));
@@ -1171,7 +1164,7 @@ function sb_ping_gallery() {
 function sb_manage_sermons() {
 	global $wpdb, $sermon_domain;
 	//Security check
-	if (function_exists('current_user_can') && !(current_user_can('publish_posts') || current_user_can('publish_pages')))
+	if (!(current_user_can('publish_posts') || current_user_can('publish_pages')))
 		wp_die(__("You do not have the correct permissions to edit sermons", $sermon_domain));
 	sb_do_alerts();
 	if (isset($_GET['saved'])) {
@@ -1185,7 +1178,7 @@ function sb_manage_sermons() {
 
 	if (isset($_GET['mid'])) {
 		//Security check
-		if (function_exists('current_user_can')&&!current_user_can('publish_posts'))
+		if (!current_user_can('publish_posts'))
 			wp_die(__("You do not have the correct permissions to delete sermons", $sermon_domain));
 		$mid = (int) $_GET['mid'];
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_sermons WHERE id = $mid;");
@@ -1231,7 +1224,7 @@ function sb_manage_sermons() {
 		}
 	</script>
 	<div class="wrap">
-			<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+			<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
 			<h2>Filter</h2>
 			<form id="searchform" name="searchform">
 			<fieldset style="float:left; margin-right: 1em">
@@ -1287,7 +1280,7 @@ function sb_manage_sermons() {
 						<td><?php echo sb_sermon_stats($sermon->id) ?></td>
 						<td style="text-align:center">
 							<?php //Security check
-									if (function_exists('current_user_can') && current_user_can('publish_posts')) { ?>
+									if (current_user_can('publish_posts')) { ?>
 									<a href="<?php echo admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}"); ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"); ?>"><?php _e('Delete', $sermon_domain); ?></a> |
 							<?php } ?>
 							<a href="<?php echo sb_display_url().sb_query_char(true).'sermon_id='.$sermon->id;?>">View</a>
@@ -1325,11 +1318,11 @@ function sb_new_sermon() {
 
 	if (isset($_POST['save']) && isset($_POST['title'])) {
 	// prepare
-		$title = esc_sql($_POST['title']);
+		$title = $_POST['title'];
 		$preacher_id = (int) $_POST['preacher'];
 		$service_id = (int) $_POST['service'];
 		$series_id = (int) $_POST['series'];
-		$time = isset($_POST['time']) ? esc_sql($_POST['time']) : '';
+		$time = isset($_POST['time']) ? $_POST['time'] : '';
 		$startz = $endz = array();
 		for ($foo = 0; $foo < count($_POST['start']['book']); $foo++) {
 			if (!empty($_POST['start']['chapter'][$foo]) && !empty($_POST['end']['chapter'][$foo]) && !empty($_POST['start']['verse'][$foo]) && !empty($_POST['end']['verse'][$foo])) {
@@ -1345,8 +1338,8 @@ function sb_new_sermon() {
 				);
 			}
 		}
-		$start = esc_sql(serialize($startz));
-		$end = esc_sql(serialize($endz));
+		$start = serialize($startz);
+		$end = serialize($endz);
 		$date = strtotime($_POST['date']);
 		$override = (isset($_POST['override']) && $_POST['override'] == 'on') ? 1 : 0;
 		if ($date) {
@@ -1359,52 +1352,47 @@ function sb_new_sermon() {
 			$date = date('Y-m-d H:i:s', $date);
 		} else
 			$date = '1970-01-01 00:00';
-		if (function_exists('current_user_can') && !current_user_can('unfiltered_html')) {
-			$description = mysql_real_escape_string(wp_kses($_POST['description'], $allowedposttags));
+		if (!current_user_can('unfiltered_html')) {
+			$description = wp_kses($_POST['description'], $allowedposttags);
 		} else {
-			$description = mysql_real_escape_string($_POST['description']);
+			$description = $_POST['description'];
 		}
 		// edit or not edit
 		if ( !isset($_GET['mid']) or !$_GET['mid'] ) { // new
 			//Security check
 			if (!current_user_can('publish_pages'))
 				wp_die(__("You do not have the correct permissions to create sermons", $sermon_domain));
-			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_sermons VALUES (null, '$title', '$preacher_id', '$date', '$service_id', '$series_id', '$start', '$end', '$description', '$time', '$override', 0)");
+			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_sermons VALUES (null, %s, '$preacher_id', '$date', '$service_id', '$series_id', %s, %s, %s, %s, '$override', 0)", $title, $start, $end, $description, $time));
 			$id = $wpdb->insert_id;
 		} else { // edit
 			//Security check
 			if (!current_user_can('publish_posts'))
 				wp_die(__("You do not have the correct permissions to edit sermons", $sermon_domain));
 			$id = (int) $_GET['mid'];
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons SET title = '$title', preacher_id = '$preacher_id', datetime = '$date', series_id = '$series_id', start = '$start', end = '$end', description = '$description', time = '$time', service_id = '$service_id', override = '$override' WHERE id = $id");
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_sermons SET title = %s, preacher_id = '$preacher_id', datetime = '$date', series_id = '$series_id', start = %s, end = %s, description = %s, time = '$time', service_id = '$service_id', override = '$override' WHERE id = $id", $title, $start, $end, $description));
 			$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = 0 WHERE sermon_id = $id AND type = 'file'");
 			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE sermon_id = $id AND type <> 'file'");
 		}
 		// deal with books
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_books_sermons WHERE sermon_id = $id;");
 		if (isset($startz)) foreach ($startz as $i => $st) {
-			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, '{$st['book']}', '{$st['chapter']}', '{$st['verse']}', $i, 'start', $id);");
+			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, %s, %s, %s, $i, 'start', $id);", $st['book'], $st['chapter'], $st['verse']));
 		}
 		if (isset($endz)) foreach ($endz as $i => $ed) {
-			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, '{$ed['book']}', '{$ed['chapter']}', '{$ed['verse']}', $i, 'end', $id);");
+			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, %s, %s, %s, $i, 'end', $id);", $ed['book'], $ed['chapter'], $ed['verse']));
 		}
 		// now previously uploaded files
 		foreach ($_POST['file'] as $uid => $file) {
 			if ($file != 0)
-				$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = $id WHERE id = $file;");
+				$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = $id WHERE id = %s;", $file));
 			elseif ($_FILES['upload']['error'][$uid] == UPLOAD_ERR_OK) {
 				$filename = basename($_FILES['upload']['name'][$uid]);
 				if (IS_MU) {
 					$file_allowed = FALSE;
-					global $wp_version;
-					if (version_compare ($wp_version, '3.0', '<'))
-						require_once(SB_ABSPATH . 'wp-includes/wpmu-functions.php');
-					if (function_exists('get_site_option')) {
-						$allowed_extensions = explode(' ', get_site_option('upload_filetypes'));
-						foreach ($allowed_extensions as $ext) {
-							if (substr(strtolower($filename), -(strlen($ext)+1)) == '.'.strtolower($ext))
-								$file_allowed = TRUE;
-						}
+					$allowed_extensions = explode(' ', get_site_option('upload_filetypes'));
+					foreach ($allowed_extensions as $ext) {
+						if (substr(strtolower($filename), -(strlen($ext)+1)) == '.'.strtolower($ext))
+							$file_allowed = TRUE;
 					}
 				} else {
 					$file_allowed = TRUE;
@@ -1413,8 +1401,8 @@ function sb_new_sermon() {
 					$prefix = '';
 					$dest = SB_ABSPATH.sb_get_option('upload_dir').$prefix.$filename;
 					if ($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = '".esc_sql($filename)."'") == 0 && move_uploaded_file($_FILES['upload']['tmp_name'][$uid], $dest)) {
-						$filename = $prefix.mysql_real_escape_string($filename);
-						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '".esc_sql($filename)."', $id, 0, 0)");
+						$filename = $prefix.$filename;
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, $id, 0, 0)", $filename));
 					} else {
 						echo '<div id="message" class="updated fade"><p><b>'.$filename.__(' already exists.', $sermon_domain).'</b></div>';
 						$error = true;
@@ -1429,8 +1417,7 @@ function sb_new_sermon() {
 		// then URLs
 		foreach ((array) $_POST['url'] as $urlz) {
 			if (!empty($urlz)) {
-				$urlz = mysql_real_escape_string($urlz);
-				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'url', '$urlz', $id, 0, 0);");
+				$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'url', %s, $id, 0, 0);", $urlz));
 			}
 		}
 		// embed code next
@@ -1444,10 +1431,10 @@ function sb_new_sermon() {
 		$tags = explode(',', $_POST['tags']);
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_sermons_tags WHERE sermon_id = $id;");
 		foreach ($tags as $tag) {
-			$clean_tag = trim(mysql_real_escape_string($tag));
-			$existing_id = $wpdb->get_var("SELECT id FROM {$wpdb->prefix}sb_tags WHERE name='$clean_tag'");
+			$clean_tag = trim($tag);
+			$existing_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}sb_tags WHERE name=%s",$clean_tag));
 			if (is_null($existing_id)) {
-				$wpdb->query("INSERT  INTO {$wpdb->prefix}sb_tags VALUES (null, '$clean_tag')");
+				$wpdb->query($wpdb->prepare("INSERT  INTO {$wpdb->prefix}sb_tags VALUES (null, %s)",$clean_tag));
 				$existing_id = $wpdb->insert_id;
 			}
 			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_sermons_tags VALUES (null, $id, $existing_id)");
@@ -1463,13 +1450,10 @@ function sb_new_sermon() {
 
 	$id3_tags = array();
 	if (isset($_GET['getid3'])) {
-		$file_data = $wpdb->get_row("SELECT name, type FROM {$wpdb->prefix}sb_stuff WHERE id = ".esc_sql($_GET['getid3']));
+		$file_data = $wpdb->get_row($wpdb->prepare("SELECT name, type FROM {$wpdb->prefix}sb_stuff WHERE id = %s", $_GET['getid3']));
 		if ($file_data !== NULL) {
-			if ( ! class_exists( 'getID3' ) ) {
-				if ( version_compare(get_bloginfo('version'), '3.6', '<') )
-					require(SB_INCLUDES_DIR.'/getid3/getid3.php');				
-				else
-					require( ABSPATH . WPINC . '/ID3/getid3.php' );
+			if (!class_exists('getID3')) {
+			    require(GETID3_INCLUDEPATH.'getid3.php');
 			}
 			$getID3 = new getID3;
 			if ($file_data->type == 'url') {
@@ -1510,7 +1494,7 @@ function sb_new_sermon() {
 				if ($id3_tags['series'] != '') {
 					$series_id = $wpdb->get_var("SELECT id FROM {$wpdb->prefix}sb_series WHERE name LIKE '{$id3_tags['series']}'");
 					if ($series_id === NULL) {
-						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_series VALUES (null, '{$id3_tags['series']}', '0')");
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_series VALUES (null, %s, '0')", $id3_tags['series']));
 						$series_id = $wpdb->insert_id;
 					}
 					$id3_tags['series'] = $series_id;
@@ -1519,9 +1503,9 @@ function sb_new_sermon() {
 			if (sb_get_option ('import_artist')) {
 				$id3_tags['preacher'] = @$id3_raw_tags['comments_html']['artist'][0];
 				if ($id3_tags['preacher'] != '') {
-					$preacher_id = $wpdb->get_var("SELECT id FROM {$wpdb->prefix}sb_preachers WHERE name LIKE '{$id3_tags['preacher']}'");
+					$preacher_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}sb_preachers WHERE name LIKE %s", $id3_tags['preacher']));
 					if ($preacher_id === NULL) {
-						$wpdb->query("INSERT INTO {$wpdb->prefix}sb_preachers VALUES (null, '{$id3_tags['preacher']}', '', '')");
+						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_preachers VALUES (null, %s, '', '')", $id3_tags['preacher']));
 						$preacher_id = $wpdb->insert_id;
 					}
 					$id3_tags['preacher'] = $preacher_id;
@@ -1568,7 +1552,7 @@ function sb_new_sermon() {
 
 	$timeArr = '';
 	for ($lol = 0; $lol < count($serviceId); $lol++) {
-		$timeArr .= "timeArr[{$serviceId[$lol]}] = '$deftime[$lol]';";
+		$timeArr .= "timeArr[{$serviceId[$lol]}] = '{$deftime[$lol]}';";
 	}
 
 	if (isset($_GET['mid'])) {
@@ -1695,7 +1679,7 @@ function sb_new_sermon() {
 	</script>
 	<?php sb_do_alerts(); ?>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
 		<h2><?php echo isset($_GET['mid']) ? 'Edit Sermon' : 'Add Sermon' ?></h2>
 		<?php if (!isset($_GET['mid']) && !isset($_GET['getid3']) && sb_get_option('import_prompt')) {
 			if  (!sb_import_options_set()) {
@@ -1809,7 +1793,7 @@ function sb_new_sermon() {
 						<strong><?php _e('Time', $sermon_domain) ?></strong>
 						<div>
 							<input type="text" name="time" value="<?php echo isset($curSermon->time) ? $curSermon->time : ''?>" id="time" <?php echo isset($curSermon->override) && $curSermon->override ? '' : 'disabled="disabled" class="gray"' ?> />
-							<input type="checkbox" name="override" style="width:30px" id="override" onchange="doOverride()" <?php echo isset($curSermon->override) && $curSermon->override ? 'checked="checked"' : ''?>> <?php _e('Override default time', $sermon_domain) ?>
+							<input type="checkbox" name="override" id="override" onchange="doOverride()" <?php echo isset($curSermon->override) && $curSermon->override ? 'checked="checked"' : ''?>> <?php _e('Override default time', $sermon_domain) ?>
 						</div>
 					</td>
 				</tr>
@@ -1899,7 +1883,7 @@ function sb_new_sermon() {
 		<?php if (empty($curSermon->time)): ?>
 			jQuery('#time').val(timeArr[jQuery('*[selected]', jQuery("select[name='service']")).attr('value')]);
 		<?php endif ?>
-		<?php if (isset($mid) | (isset($filename) && $filename != '')): ?>
+		<?php if (isset($mid) || (isset($filename) && $filename != '')): ?>
 			stuff = new Array();
 			type = new Array();
 			start1 = new Array();
@@ -2020,7 +2004,7 @@ global $sermon_domain;
 sb_do_alerts();
 ?>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
 		<div style="width:45%;float:right;clear:right">
 		<h2>Thank you</h2>
 		<p>A number of individuals and churches have kindly <a href="http://www.sermonbrowser.com/donate/">donated</a> to the development of Sermon Browser. Their support is very much appreciated. Since April 2011, all donations have been sent to <a href="<?php echo admin_url('admin.php?page=sermon-browser/japan.php')?>">support the ministry of Nathanael and Anna Ayling</a> in Japan.</p>
@@ -2109,7 +2093,7 @@ function sb_japan() {
 sb_do_alerts();
 ?>
 	<div class="wrap">
-		<a href="hthttp://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right; background: #f9f9f9;" /></a>
+		<a href="hthttp://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
 		<h2 style=>Help support Christian ministry in Japan</h2>
 		<div style="float:right;clear:both; width:208px; padding-left:20px">
 			<img src="http://www.bethel-clydach.co.uk/wp-content/uploads/2010/01/Nathanael-and-Anna-188x300.jpg" width="188" height="300" />
@@ -2152,9 +2136,6 @@ function sb_do_alerts() {
 	}
 	if (sb_display_url() == "") {
 		echo '<div id="message" class="updated"><p><b>'.__('Hint:', $sermon_domain).'</b> '.sprintf(__('%sCreate a page%s that includes the shortcode [sermons], so that SermonBrowser knows where to display the sermons on your site.', $sermon_domain), '<a href="'.site_url().'/wp-admin/page-new.php">', '</a>').'</div>';
-	} else {
-		if (!function_exists('ap_insert_player_widgets')) {
-		}
 	}
 }
 
@@ -2230,15 +2211,14 @@ function sb_scan_dir() {
 	foreach ($files as $file) {
 		$bnn[] = $file->name;
 		if (!file_exists($dir.$file->name)) {
-			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE name='".mysql_real_escape_string($file->name)."' AND sermon_id=0;");
+			$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}sb_stuff WHERE name=%s AND sermon_id=0", $file->name));
 		}
 	}
 
 	if ($dh = @opendir($dir)) {
 		while (false !== ($file = readdir($dh))) {
 			if ($file != "." && $file != ".." && !is_dir($dir.$file) && !in_array($file, $bnn)) {
-				$file = mysql_real_escape_string($file);
-				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', '{$file}', 0, 0, 0);");
+				$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0);", $file));
 			   }
 		}
 		   closedir($dh);
@@ -2320,7 +2300,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 		foreach ( (array) $_POST['widget-sermon'] as $widget_number => $widget_sermon_instance ) {
 			if ( !isset($widget_sermon_instance['limit']) && isset($options[$widget_number]) )
 				continue;
-			$limit = wp_specialchars( $widget_sermon_instance['limit'] );
+			$limit = esc_html( $widget_sermon_instance['limit'] );
 			$preacherz = (int) $widget_sermon_instance['preacherz'];
 			$preacher = (int) $widget_sermon_instance['preacher'];
 			$service = (int) $widget_sermon_instance['service'];

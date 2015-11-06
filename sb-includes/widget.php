@@ -89,7 +89,7 @@ function sb_widget_sermon_init() {
 		wp_register_sidebar_widget( 'sermon-1', $name, 'sb_widget_sermon', $widget_ops, array( 'number' => -1 ) );
 		wp_register_widget_control( 'sermon-1', $name, 'sb_widget_sermon_control', $control_ops, array( 'number' => -1 ));
 	}
-	register_sidebar_widget(__('Sermon Browser tags', $sermon_domain), 'sb_widget_tag_cloud');
+	wp_register_sidebar_widget(__('Sermon Browser tags', $sermon_domain), 'sb_widget_tag_cloud');
 }
 
 /**
@@ -116,7 +116,7 @@ function sb_widget_tag_cloud ($args) {
 */
 function sb_first_mp3($sermon, $stats= TRUE) {
 	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-	if (stripos($user_agent, 'itunes') !== FALSE | stripos($user_agent, 'FeedBurner') !== FALSE)
+	if (stripos($user_agent, 'itunes') !== FALSE || stripos($user_agent, 'FeedBurner') !== FALSE)
 		$stats = FALSE;
 	$stuff = sb_get_stuff($sermon, true);
 	$stuff = array_merge((array)$stuff['Files'], (array)$stuff['URLs']);
@@ -260,7 +260,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 		foreach ( (array) $_POST['widget-sermon'] as $widget_number => $widget_sermon_instance ) {
 			if ( !isset($widget_sermon_instance['limit']) && isset($options[$widget_number]) )
 				continue;
-			$limit = wp_specialchars( $widget_sermon_instance['limit'] );
+			$limit = esc_html( $widget_sermon_instance['limit'] );
 			$preacherz = (int) $widget_sermon_instance['preacherz'];
 			$preacher = (int) $widget_sermon_instance['preacher'];
 			$service = (int) $widget_sermon_instance['service'];
@@ -288,15 +288,15 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 		$date = '';
 		$player = '';
 	} else {
-		$limit = attribute_escape($options[$number]['limit']);
-		$preacher = attribute_escape($options[$number]['preacher']);
-		$service = attribute_escape($options[$number]['service']);
-		$series = attribute_escape($options[$number]['series']);
+		$limit = esc_attr($options[$number]['limit']);
+		$preacher = esc_attr($options[$number]['preacher']);
+		$service = esc_attr($options[$number]['service']);
+		$series = esc_attr($options[$number]['series']);
 		$preacherz = (int) $options[$number]['preacherz'];
 		$book = (int) $options[$number]['book'];
-		$title = attribute_escape($options[$number]['title']);
+		$title = esc_attr($options[$number]['title']);
 		$date = (int) $options[$number]['date'];
-		$player = attribute_escape($options[$number]['player']);
+		$player = esc_attr($options[$number]['player']);
 	}
 
 ?>

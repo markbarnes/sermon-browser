@@ -4,24 +4,24 @@ define ('SB_AJAX', true);
 
 // Throughout this plugin, p stands for preacher, s stands for service and ss stands for series
 if (isset($_POST['pname'])) { // preacher
-	$pname = mysql_real_escape_string($_POST['pname']);
+	$pname = $_POST['pname'];
 	if (isset($_POST['pid'])) {
 		$pid = (int) $_POST['pid'];
 		if (isset($_POST['del'])) {
 			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_preachers WHERE id = $pid;");
 		} else {
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_preachers SET name = '$pname' WHERE id = $pid;");
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s WHERE id = $pid;", $pname));
 		}
 		echo 'done';
 		die();
 	} else {
-		$wpdb->query("INSERT INTO {$wpdb->prefix}sb_preachers VALUES (null, '$pname', '', '');");
+		$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_preachers VALUES (null, %s, '', '');", $pname));
 		echo $wpdb->insert_id;
 		die();
 	}
 } elseif (isset($_POST['sname'])) { // service
-	$sname = mysql_real_escape_string($_POST['sname']);
-	list($sname, $stime) = split('@', $sname);
+	$sname = $_POST['sname'];
+	list($sname, $stime) = preg_split('@', $sname);
 	$sname = trim($sname);
 	$stime = trim($stime);
 	if (isset($_POST['sid'])) {
@@ -33,37 +33,37 @@ if (isset($_POST['pname'])) { // preacher
 			if (!$old_time)
 				$old_time = '00:00';
 			$difference = strtotime($stime) - strtotime($old_time);
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_services SET name = '$sname', time = '$stime' WHERE id = $sid;");
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_services SET name = %s, time = %s WHERE id = $sid;", $sname, $stime));
 			$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons SET datetime = DATE_ADD(datetime, INTERVAL {$difference} SECOND) WHERE override = 0 AND service_id = $sid;");
 		}
 		echo 'done';
 		die();
 	} else {
-		$wpdb->query("INSERT INTO {$wpdb->prefix}sb_services VALUES (null, '$sname', '$stime');");
+		$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_services VALUES (null, %s, %s);", $sname, $stime));
 		echo $wpdb->insert_id;
 		die();
 	}
 } elseif (isset($_POST['ssname'])) { // series
-	$ssname = mysql_real_escape_string($_POST['ssname']);
+	$ssname = $_POST['ssname'];
 	if (isset($_POST['ssid'])) {
 		$ssid = (int) $_POST['ssid'];
 		if (isset($_POST['del'])) {
 			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_series WHERE id = $ssid;");
 		} else {
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_series SET name = '$ssname' WHERE id = $ssid;");
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_series SET name = %s WHERE id = $ssid;", $ssname));
 		}
 		echo 'done';
 		die();
 	} else {
-		$wpdb->query("INSERT INTO {$wpdb->prefix}sb_series VALUES (null, '$ssname', 0);");
+		$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_series VALUES (null, %s, 0);", $ssname));
 		echo $wpdb->insert_id;
 		die();
 	}
 } elseif (isset($_POST['fname'])) { // Files
-	$fname = mysql_real_escape_string($_POST['fname']);
+	$fname = $_POST['fname'];
 	if (isset($_POST['fid'])) {
 		$fid = (int) $_POST['fid'];
-		$oname = isset($_POST['oname']) ? mysql_real_escape_string($_POST['oname']) : '';
+		$oname = isset($_POST['oname']) ? $_POST['oname'] : '';
 		if (isset($_POST['del'])) {
 			if (!file_exists(SB_ABSPATH.sb_get_option('upload_dir').$fname) || unlink(SB_ABSPATH.sb_get_option('upload_dir').$fname)) {
 				$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE id = {$fid};");
@@ -74,25 +74,19 @@ if (isset($_POST['pname'])) { // preacher
 				die();
 			}
 		} else {
-			$oname = mysql_real_escape_string($_POST['oname']);
 			if (IS_MU) {
 				$file_allowed = FALSE;
-				global $wp_version;
-				if (version_compare ($wp_version, '3.0', '<'))
-					require_once(SB_ABSPATH . 'wp-includes/wpmu-functions.php');
-				if (function_exists('get_site_option')) {
-					$allowed_extensions = explode(" ", get_site_option("upload_filetypes"));
-					foreach ($allowed_extensions as $ext) {
-						if (substr(strtolower($filename), -(strlen($ext)+1)) == ".".strtolower($ext))
-							$file_allowed = TRUE;
-					}
+				$allowed_extensions = explode(" ", get_site_option("upload_filetypes"));
+				foreach ($allowed_extensions as $ext) {
+					if (substr(strtolower($filename), -(strlen($ext)+1)) == ".".strtolower($ext))
+						$file_allowed = TRUE;
 				}
 			} else {
 				$file_allowed = TRUE;
 			}
 			if ($file_allowed) {
 				if (!is_writable(SB_ABSPATH.sb_get_option('upload_dir').$fname) && rename(SB_ABSPATH.sb_get_option('upload_dir').$oname, SB_ABSPATH.sb_get_option('upload_dir').$fname)) {
-					$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET name = '$fname' WHERE id = $fid;");
+					$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET name = %s WHERE id = $fid;", $fname));
 					echo 'renamed';
 					die();
 				} else {
@@ -106,11 +100,10 @@ if (isset($_POST['pname'])) { // preacher
 		}
 	}
 } elseif (isset($_POST['fetch'])) { // ajax pagination
-	if (function_exists('wp_timezone_override_offset'))
-		wp_timezone_override_offset();
+    wp_timezone_override_offset();
 	$st = (int) $_POST['fetch'] - 1;
 	if (!empty($_POST['title'])) {
-		$cond = "and m.title LIKE '%" . mysql_real_escape_string($_POST['title']) . "%' ";
+		$cond = $wpdb->prepare("and m.title LIKE '%%%s%%' ", $_POST['title']);
 	} else
 		$cond = '';
 	if ($_POST['preacher'] != 0) {
@@ -163,8 +156,8 @@ if (isset($_POST['pname'])) { // preacher
 		$st = (int) $_POST['fetchL'] - 1;
 		$abc = $wpdb->get_results("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.sermon_id <> 0 AND f.type = 'file' ORDER BY f.name LIMIT {$st}, ".sb_get_option('sermons_per_page'));
 	} else {
-		$s = mysql_real_escape_string($_POST['search']);
-		$abc = $wpdb->get_results("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.name LIKE '%{$s}%' AND f.type = 'file' ORDER BY f.name;");
+		$s = $_POST['search'];
+		$abc = $wpdb->get_results($wpdb->prepare("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.name LIKE '%%%s%%' AND f.type = 'file' ORDER BY f.name;", $s));
 	}
 ?>
 <?php if (count($abc) >= 1): ?>

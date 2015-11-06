@@ -1,7 +1,6 @@
 <?php
 /*
 From http://www.zedwood.com/article/127/php-calculate-duration-of-mp3
-php5 class (will not work in php4)
 for detecting bitrate and duration of regular mp3 files (not VBR files)
 */
 
