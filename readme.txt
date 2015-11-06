@@ -307,11 +307,11 @@ Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
 
-= 0.45.14 = (6 November 2015)
+= 0.45.14 (6 November 2015) =
 * **Bug fix:** Fixed bug introduced in 0.45.13 which prevented series being edited/saved.
 * See [changeset](https://plugins.trac.wordpress.org/changeset/1281420/sermon-browser/trunk)
 
-= 0.45.13 (6 November 2015)=
+= 0.45.13 (6 November 2015) =
 * **Bug fix:** Compatibility with PHP 5.2 to 5.6 and WordPress 3.6 to 4.3.
 * See [changeset](https://plugins.trac.wordpress.org/changeset/1281163/sermon-browser)
 
