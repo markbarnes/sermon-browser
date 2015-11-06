@@ -304,6 +304,10 @@ Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
 
+= 0.45.13 =
+* **Bug fix:** Compatibility with PHP 5.2 to 5.6 and WordPress 3.6 to 4.3.
+* See [changeset](https://plugins.trac.wordpress.org/changeset/1281163/sermon-browser)
+
 = 0.45.12 (16 September 2013) =
 * **Bug fix:** Removed call to deprecated wp_timezone_supported function if WordPress version is 3.2 or later.
 * **Bug fix:** In default style template, font-style should be "italic", not "italics". ([link](http://www.sermonbrowser.com/forum/sermon-browser-support/italics-not-a-font-style-in-sb-style-css/)).
