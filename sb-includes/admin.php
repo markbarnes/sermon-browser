@@ -1448,7 +1448,7 @@ function sb_new_sermon() {
 		$file_data = $wpdb->get_row($wpdb->prepare("SELECT name, type FROM {$wpdb->prefix}sb_stuff WHERE id = %s", $_GET['getid3']));
 		if ($file_data !== NULL) {
 			if (!class_exists('getID3')) {
-			    require(GETID3_INCLUDEPATH.'getid3.php');
+			    require(ABSPATH.WPINC.'/ID3/getid3.php' );
 			}
 			$getID3 = new getID3;
 			if ($file_data->type == 'url') {
@@ -2200,6 +2200,7 @@ function sb_rightnow () {
 */
 function sb_scan_dir() {
 	global $wpdb;
+    $wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' AND name = '' AND sermon_id=0");
 	$files = $wpdb->get_results("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE type = 'file';");
 	$bnn = array();
 	$dir = SB_ABSPATH.sb_get_option('upload_dir');

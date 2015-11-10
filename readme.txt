@@ -249,6 +249,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.15 =
+Fixed bugs that prevented adding sermons from MP3 files.
+
 = 0.45.14 =
 Fixed bug introduced in 0.45.13 which prevented series being edited/saved.
 
@@ -306,6 +309,11 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.45.15 (10 November 2015) =
+* **Bug fix:** Sermon duration is now correctly calculated.
+* **Bug fix:** Fixed bug that prevented sermons being added from the 'Files' page.
+* **Bug fix:** Remove empty rows from the list of files.
 
 = 0.45.14 (6 November 2015) =
 * **Bug fix:** Fixed bug introduced in 0.45.13 which prevented series being edited/saved.

@@ -28,8 +28,8 @@ function sb_mp3_duration($media_name, $media_type) {
 		if ($duration)
 			return $duration;
 		else {
-			if ( ! class_exists( 'getID3' ) ) {
-			    require(GETID3_INCLUDEPATH.'getid3.php' );
+			if (!class_exists('getID3')) {
+			    require(ABSPATH.WPINC.'/ID3/getid3.php');
 			}
 			$getID3 = new getID3;
 			$MediaFileInfo = $getID3->analyze(SB_ABSPATH.sb_get_option('upload_dir').$media_name);
