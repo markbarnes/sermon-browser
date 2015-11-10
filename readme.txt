@@ -314,6 +314,7 @@ Important security fixes. All users should upgrade to this version.
 * **Bug fix:** Sermon duration is now correctly calculated.
 * **Bug fix:** Fixed bug that prevented sermons being added from the 'Files' page.
 * **Bug fix:** Remove empty rows from the list of files.
+* See [changeset](https://plugins.trac.wordpress.org/changeset/1283205/sermon-browser/trunk)
 
 = 0.45.14 (6 November 2015) =
 * **Bug fix:** Fixed bug introduced in 0.45.13 which prevented series being edited/saved.
