@@ -30,8 +30,18 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 12. Support for multisite.
 13. Extensive **help** and [tutorial screencasts](http://www.sermonbrowser.com/tutorials/).
 14. Active [community support fourm](http://www.sermonbrowser.com/forum/).
-15. English, German, Portugese Brazilian, Romanian, Russian and Spanish translations included.
+15. In addition to English, Brazilian Portugese, German, Hindi, Romanian, Russian, Spanish, Ukrainian and Welsh translations are included.
 
+= Translations provided by =
+
+* Brazilian Portugese [DIJO](http://www.djio.com.br/sermonbrowser-em-portugues-brasileiro-pt_br/)
+* German - Monika Gause
+* Hindi - [Chanel](http://outshinesolutions.com/)
+* Romanian - [Lucian Mihailescu](http://lucianwebservice.com/)
+* Russian - [FatCow](http://www.fatcow.com/), [Vadym Gulyi](http://www.vady.kiev.ua/) and [Alisa Bagrii](http://www.everycloudtech.com/)
+* Spanish - Juan, and Marvin Ortega
+* Ukrainian - Alisa Bagrii from [Everycloudtech](http://www.everycloudtech.com/)
+* Welsh - Emyr James
 
 
 == Installation ==
