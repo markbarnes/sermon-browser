@@ -1901,7 +1901,7 @@ function sb_new_sermon() {
 					if ($file_data->type == 'url')
 						$assocURLs[]->name = $file_data->name;
 					else
-						$assocFiles[]->id = $_GET['getid3'];
+						$assocFiles[]->id = esc_js($_GET['getid3']);
 			?>
 
 			<?php for ($lolz = 0; $lolz < count($assocFiles); $lolz++): ?>

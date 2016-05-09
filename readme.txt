@@ -1,9 +1,9 @@
 === Sermon Browser ===
-Contributors: mark8barnes, bhengh
+Contributors: mark8barnes
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 3.6
-Tested up to: 4.3.1
+Tested up to: 4.5.2
 Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl.html
@@ -259,6 +259,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.16 =
+Fixed potential XSS vulnerabilities.
+
 = 0.45.15 =
 Fixed bugs that prevented adding sermons from MP3 files.
 
@@ -319,6 +322,9 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.45.16 (21 April 2016) =
+* **Bug fix:** Fixed potential XSS vulnerabilities. 
 
 = 0.45.15 (10 November 2015) =
 * **Bug fix:** Sermon duration is now correctly calculated.

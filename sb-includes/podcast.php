@@ -80,14 +80,14 @@ function sb_mime_type($media_name) {
 
 $sermons = sb_get_sermons(
 	array(
-		'title' => isset($_REQUEST['title']) ? stripslashes($_REQUEST['title']) : '',
-		'preacher' => isset($_REQUEST['preacher']) ? $_REQUEST['preacher'] : '',
-		'date' => isset($_REQUEST['date']) ? $_REQUEST['date'] : '',
-		'enddate' => isset($_REQUEST['enddate']) ? $_REQUEST['enddate'] : '',
-		'series' => isset($_REQUEST['series']) ? $_REQUEST['series'] : '',
-		'service' => isset($_REQUEST['service']) ? $_REQUEST['service'] : '',
-		'book' => isset($_REQUEST['book']) ? stripslashes($_REQUEST['book']) : '',
-		'tag' => isset($_REQUEST['stag']) ? stripslashes($_REQUEST['stag']) : '',
+		'title' => isset($_REQUEST['title']) ? esc_sql($_REQUEST['title']) : '',
+		'preacher' => isset($_REQUEST['preacher']) ? (int)$_REQUEST['preacher'] : '',
+		'date' => isset($_REQUEST['date']) ? esc_sql($_REQUEST['date']) : '',
+		'enddate' => isset($_REQUEST['enddate']) ? esc_sql($_REQUEST['enddate']) : '',
+		'series' => isset($_REQUEST['series']) ? (int)$_REQUEST['series'] : '',
+		'service' => isset($_REQUEST['service']) ? (int)$_REQUEST['service'] : '',
+		'book' => isset($_REQUEST['book']) ? esc_sql($_REQUEST['book']) : '',
+		'tag' => isset($_REQUEST['stag']) ? esc_sql($_REQUEST['stag']) : '',
 	),
 	array(
 		'by' => 'm.datetime',

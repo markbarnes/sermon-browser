@@ -4,7 +4,7 @@ Plugin Name: Sermon Browser
 Plugin URI: http://www.sermonbrowser.com/
 Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
-Version: 0.45.15
+Version: 0.45.16
 Author URI: http://www.4-14.org.uk/
 
 Copyright (c) 2008-2015 Mark Barnes
@@ -52,7 +52,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.45.15');
+define('SB_CURRENT_VERSION', '0.45.16');
 define('SB_DATABASE_VERSION', '1.7');
 sb_define_constants();
 add_action ('plugins_loaded', 'sb_hijack');
@@ -474,17 +474,17 @@ function sb_shortcode($atts, $content=null) {
 	$atts = shortcode_atts(array(
 		'filter' => sb_get_option('filter_type'),
 		'filterhide' => sb_get_option('filter_hide'),
-		'id' => isset($_REQUEST['sermon_id']) ? $_REQUEST['sermon_id'] : '',
-		'preacher' => isset($_REQUEST['preacher']) ? $_REQUEST['preacher'] : '',
-		'series' => isset($_REQUEST['series']) ? $_REQUEST['series'] : '',
-		'book' => isset($_REQUEST['book']) ? stripslashes($_REQUEST['book']) : '',
-		'service' => isset($_REQUEST['service']) ? $_REQUEST['service'] : '',
-		'date' => isset($_REQUEST['date']) ? $_REQUEST['date'] : '',
-		'enddate' => isset($_REQUEST['enddate']) ? $_REQUEST['enddate'] : '',
-		'tag' => isset($_REQUEST['stag']) ? stripslashes($_REQUEST['stag']) : '',
-		'title' => isset($_REQUEST['title']) ? stripslashes($_REQUEST['title']) : '',
+		'id' => isset($_REQUEST['sermon_id']) ? (int)$_REQUEST['sermon_id'] : '',
+		'preacher' => isset($_REQUEST['preacher']) ? (int)$_REQUEST['preacher'] : '',
+		'series' => isset($_REQUEST['series']) ? (int)$_REQUEST['series'] : '',
+		'book' => isset($_REQUEST['book']) ? sanitize_text_field($_REQUEST['book']) : '',
+		'service' => isset($_REQUEST['service']) ? (int)$_REQUEST['service'] : '',
+		'date' => isset($_REQUEST['date']) ? sanitize_text_field($_REQUEST['date']) : '',
+		'enddate' => isset($_REQUEST['enddate']) ? sanitize_text_field($_REQUEST['enddate']) : '',
+		'tag' => isset($_REQUEST['stag']) ? sanitize_text_field($_REQUEST['stag']) : '',
+		'title' => isset($_REQUEST['title']) ? sanitize_text_field($_REQUEST['title']) : '',
 		'limit' => '0',
-		'dir' => isset($_REQUEST['dir']) ? stripslashes($_REQUEST['dir']) : '',	),
+		'dir' => isset($_REQUEST['dir']) ? sanitize_text_field($_REQUEST['dir']) : '',	),
 	$atts);
 	if ($atts['id'] != '') {
 		if (strtolower($atts['id']) == 'latest') {
@@ -514,7 +514,7 @@ function sb_shortcode($atts, $content=null) {
 			$dir = 'asc';
 		$sort_order = array('by' => $sort_criteria, 'dir' =>  $dir);
 		if (isset($_REQUEST['pagenum']))
-			$page = $_REQUEST['pagenum'];
+			$page = (int)$_REQUEST['pagenum'];
 		else
 			$page = 1;
 		$hide_empty = sb_get_option('hide_no_attachments');
