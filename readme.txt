@@ -325,6 +325,7 @@ Important security fixes. All users should upgrade to this version.
 
 = 0.45.16 (21 April 2016) =
 * **Bug fix:** Fixed potential XSS vulnerabilities. 
+* See [changeset](https://plugins.trac.wordpress.org/changeset/1413162/sermon-browser/trunk)
 
 = 0.45.15 (10 November 2015) =
 * **Bug fix:** Sermon duration is now correctly calculated.
