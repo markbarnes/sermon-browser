@@ -259,6 +259,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.17 =
+Minor, under-the-hood changes to translations.
+
 = 0.45.16 =
 Fixed potential XSS vulnerabilities.
 
@@ -322,6 +325,9 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.45.17 (23 May 2016) =
+* **Enhancement:** Minor, under-the-hood changes to translations. 
 
 = 0.45.16 (21 April 2016) =
 * **Bug fix:** Fixed potential XSS vulnerabilities. 

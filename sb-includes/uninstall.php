@@ -22,9 +22,9 @@ foreach ($special_options as $option)
 	delete_option("sermonbrowser_{$option}");
 
 if (IS_MU) {
-	echo '<div id="message" class="updated fade"><p><b>'.__('All sermon data has been removed.', $sermon_domain).'</b></div>';
+	echo '<div id="message" class="updated fade"><p><b>'.__('All sermon data has been removed.', 'sermon-browser').'</b></div>';
 } else {
-	echo '<div id="message" class="updated fade"><p><b>'.__('Uninstall completed. The SermonBrowser plugin has been deactivated.', $sermon_domain).'</b></div>';
+	echo '<div id="message" class="updated fade"><p><b>'.__('Uninstall completed. The SermonBrowser plugin has been deactivated.', 'sermon-browser').'</b></div>';
 	$activeplugins = get_option('active_plugins');
 	array_splice($activeplugins, array_search('sermon-browser/sermon.php', $activeplugins), 1 );
 	do_action('deactivate_sermon-browser/sermon.php');

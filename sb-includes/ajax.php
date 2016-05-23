@@ -1,10 +1,9 @@
 <?php
-global $sermon_domain;
 define ('SB_AJAX', true);
 
 // Throughout this plugin, p stands for preacher, s stands for service and ss stands for series
 if (isset($_POST['pname'])) { // preacher
-	$pname = $_POST['pname'];
+	$pname = sanitize_text_field($_POST['pname']);
 	if (isset($_POST['pid'])) {
 		$pid = (int) $_POST['pid'];
 		if (isset($_POST['del'])) {
@@ -20,7 +19,7 @@ if (isset($_POST['pname'])) { // preacher
 		die();
 	}
 } elseif (isset($_POST['sname'])) { // service
-	$sname = $_POST['sname'];
+	$sname = sanitize_text_field($_POST['sname']);
 	list($sname, $stime) = explode('@', $sname);
 	$sname = trim($sname);
 	$stime = trim($stime);
@@ -44,7 +43,7 @@ if (isset($_POST['pname'])) { // preacher
 		die();
 	}
 } elseif (isset($_POST['ssname'])) { // series
-	$ssname = $_POST['ssname'];
+	$ssname = sanitize_text_field($_POST['ssname']);
 	if (isset($_POST['ssid'])) {
 		$ssid = (int) $_POST['ssid'];
 		if (isset($_POST['del'])) {
@@ -59,7 +58,7 @@ if (isset($_POST['pname'])) { // preacher
 		echo $wpdb->insert_id;
 		die();
 	}
-} elseif (isset($_POST['fname'])) { // Files
+} elseif (isset($_POST['fname']) && validate_file (sb_get_option('upload_dir').$_POST['fname']) === 0) { // Files
 	$fname = $_POST['fname'];
 	if (isset($_POST['fid'])) {
 		$fid = (int) $_POST['fid'];
@@ -85,7 +84,7 @@ if (isset($_POST['pname'])) { // preacher
 				$file_allowed = TRUE;
 			}
 			if ($file_allowed) {
-				if (!is_writable(SB_ABSPATH.sb_get_option('upload_dir').$fname) && rename(SB_ABSPATH.sb_get_option('upload_dir').$oname, SB_ABSPATH.sb_get_option('upload_dir').$fname)) {
+				if ((validate_file (sb_get_option('upload_dir').$_POST['oname']) === 0) && !is_writable(SB_ABSPATH.sb_get_option('upload_dir').$fname) && rename(SB_ABSPATH.sb_get_option('upload_dir').$oname, SB_ABSPATH.sb_get_option('upload_dir').$fname)) {
 					$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET name = %s WHERE id = $fid;", $fname));
 					echo 'renamed';
 					die();
@@ -127,14 +126,14 @@ if (isset($_POST['pname'])) { // preacher
 			<th style="text-align:center" scope="row"><?php echo $sermon->id ?></th>
 			<td><?php echo stripslashes($sermon->title) ?></td>
 			<td><?php echo stripslashes($sermon->pname) ?></td>
-			<td><?php echo ($sermon->datetime == '1970-01-01 00:00:00') ? __('Unknown', $sermon_domain) : strftime('%d %b %y', strtotime($sermon->datetime)); ?></td>
+			<td><?php echo ($sermon->datetime == '1970-01-01 00:00:00') ? __('Unknown', 'sermon-browser') : strftime('%d %b %y', strtotime($sermon->datetime)); ?></td>
 			<td><?php echo stripslashes($sermon->sname) ?></td>
 			<td><?php echo stripslashes($sermon->ssname) ?></td>
 			<td><?php echo sb_sermon_stats($sermon->id) ?></td>
 			<td style="text-align:center">
 				<?php //Security check
 						if (current_user_can('edit_posts')) { ?>
-						<a href="<?php echo admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}"); ?>"><?php _e('Edit', $sermon_domain) ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"); ?>"><?php _e('Delete', $sermon_domain); ?></a> |
+						<a href="<?php echo admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}"); ?>"><?php _e('Edit', 'sermon-browser') ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"); ?>"><?php _e('Delete', 'sermon-browser'); ?></a> |
 				<?php } ?>
 				<a href="<?php echo sb_display_url().sb_query_char(true).'sermon_id='.$sermon->id;?>">View</a>
 			</td>
@@ -162,9 +161,9 @@ if (isset($_POST['pname'])) { // preacher
 ?>
 <?php if (count($abc) >= 1): ?>
 	<?php foreach ($abc as $file): ?>
-		<tr class="file <?php echo (++$i % 2 == 0) ? 'alternate' : '' ?>" id="<?php echo $_POST['fetchU'] ? '' : 's' ?>file<?php echo $file->id ?>">
+		<tr class="file <?php echo (++$i % 2 == 0) ? 'alternate' : '' ?>" id="<?php echo (int)$_POST['fetchU'] ? '' : 's' ?>file<?php echo $file->id ?>">
 			<th style="text-align:center" scope="row"><?php echo $file->id ?></th>
-			<td id="<?php echo $_POST['fetchU'] ? '' : 's' ?><?php echo $file->id ?>"><?php echo substr($file->name, 0, strrpos($file->name, '.')) ?></td>
+			<td id="<?php echo (int)$_POST['fetchU'] ? '' : 's' ?><?php echo $file->id ?>"><?php echo substr($file->name, 0, strrpos($file->name, '.')) ?></td>
 			<td style="text-align:center"><?php echo isset($filetypes[substr($file->name, strrpos($file->name, '.') + 1)]['name']) ? $filetypes[substr($file->name, strrpos($file->name, '.') + 1)]['name'] : strtoupper(substr($file->name, strrpos($file->name, '.') + 1)) ?></td>
 			<?php if (!isset($_POST['fetchU'])) { ?><td><?php echo stripslashes($file->title) ?></td><?php } ?>
 			<td style="text-align:center">
@@ -179,14 +178,14 @@ if (isset($_POST['pname'])) { // preacher
 					return false;
 				}
 				</script>
-				<?php if (isset($_POST['fetchU'])) { ?><a id="" href="<?php echo admin_url("admin.php?page=sermon-browser/new_sermon.php&amp;getid3={$file->id}"); ?>"><?php _e('Create sermon', $sermon_domain) ?></a> | <?php } ?>
-				<a id="link<?php echo $file->id ?>" href="javascript:rename(<?php echo $file->id ?>, '<?php echo $file->name ?>')"><?php _e('Rename', $sermon_domain) ?></a> | <a onclick="return deletelinked_<?php echo $file->id;?>('<?php echo str_replace("'", '', $file->name) ?>', '<?php echo str_replace("'", '', $file->title) ?>');" href="javascript:kill(<?php echo $file->id ?>, '<?php echo $file->name ?>');"><?php _e('Delete', $sermon_domain) ?></a>
+				<?php if (isset($_POST['fetchU'])) { ?><a id="" href="<?php echo admin_url("admin.php?page=sermon-browser/new_sermon.php&amp;getid3={$file->id}"); ?>"><?php _e('Create sermon', 'sermon-browser') ?></a> | <?php } ?>
+				<a id="link<?php echo $file->id ?>" href="javascript:rename(<?php echo $file->id ?>, '<?php echo $file->name ?>')"><?php _e('Rename', 'sermon-browser') ?></a> | <a onclick="return deletelinked_<?php echo $file->id;?>('<?php echo str_replace("'", '', $file->name) ?>', '<?php echo str_replace("'", '', $file->title) ?>');" href="javascript:kill(<?php echo $file->id ?>, '<?php echo $file->name ?>');"><?php _e('Delete', 'sermon-browser') ?></a>
 			</td>
 		</tr>
 	<?php endforeach ?>
 <?php else: ?>
 	<tr>
-		<td><?php _e('No results', $sermon_domain) ?></td>
+		<td><?php _e('No results', 'sermon-browser') ?></td>
 	</tr>
 <?php endif ?>
 <?php
