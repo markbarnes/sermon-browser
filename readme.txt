@@ -334,9 +334,11 @@ Important security fixes. All users should upgrade to this version.
 * **Bug fix:** Fixed bug that prevented shortcodes from working. 
 * **Enhancement:** No need to surround embedded videos with the [embed] shortcode. 
 * **Enhancement:** Added Italian translation (thanks to Manoah Cammarano)
+* See [changeset](https://plugins.trac.wordpress.org/changeset/1426889/sermon-browser/trunk)
 
 = 0.45.17 (23 May 2016) =
 * **Enhancement:** Minor, under-the-hood changes to translations. 
+* See [changeset](https://plugins.trac.wordpress.org/changeset/1422176/sermon-browser/trunk)
 
 = 0.45.16 (21 April 2016) =
 * **Bug fix:** Fixed potential XSS vulnerabilities. 
