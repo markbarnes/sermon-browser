@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-09 18:13+0100\n"
-"PO-Revision-Date: 2016-05-09 18:14+0100\n"
+"POT-Creation-Date: 2016-05-30 15:18+0100\n"
+"PO-Revision-Date: 2016-05-30 15:18+0100\n"
 "Last-Translator: Rhoslyn Prys <post@meddal.com>\n"
 "Language-Team: Cymraeg\n"
 "Language: cy_GB\n"
@@ -16,19 +16,19 @@ msgstr ""
 "11) ? 2 : 3;\n"
 "X-Generator: Poedit 1.8.7\n"
 "X-Poedit-KeywordsList: __;_e;_x\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: ../sb-includes/admin.php:31
+#: sb-includes/admin.php:31
 msgid ""
 "You do not have the correct permissions to edit the SermonBrowser options"
 msgstr "Nid oes gennych y caniatâd angenrheidiol i olygu dewis SermonBrowser"
 
-#: ../sb-includes/admin.php:84 ../sb-includes/admin.php:93
+#: sb-includes/admin.php:84 sb-includes/admin.php:93
 msgid "Upload is disabled. Please contact your administrator."
 msgstr "Mae llwytho i fyny wedi ei atal. Cysylltwch â’ch gweinyddwr."
 
-#: ../sb-includes/admin.php:86 ../sb-includes/admin.php:135
+#: sb-includes/admin.php:86 sb-includes/admin.php:135
 msgid ""
 "Error: The upload folder is not writeable. You need to CHMOD the folder to "
 "666 or 777."
@@ -36,80 +36,79 @@ msgstr ""
 "Gwall: Nid yw'r ffolder llwythi yn ysgrifenadwy. Mae angen CHMOD y ffolder i "
 "666 neu 777."
 
-#: ../sb-includes/admin.php:95 ../sb-includes/admin.php:140
+#: sb-includes/admin.php:95 sb-includes/admin.php:140
 msgid "Error: The upload folder you have specified does not exist."
 msgstr "Gwall: Nid yw'r ffolder llwythi hwn yn bodoli."
 
-#: ../sb-includes/admin.php:101
+#: sb-includes/admin.php:101
 msgid "Default loaded successfully."
 msgstr "Llwythodd y rhagosodedig yn llwyddiannus."
 
-#: ../sb-includes/admin.php:145
+#: sb-includes/admin.php:145
 msgid "Options saved successfully."
 msgstr "Dewisiadau wedi eu cadw'n llwyddiannus."
 
-#: ../sb-includes/admin.php:154
+#: sb-includes/admin.php:153
 msgid "Error"
 msgstr "Gwall"
 
-#: ../sb-includes/admin.php:160
+#: sb-includes/admin.php:158
 msgid "Warning"
 msgstr "Rhybudd"
 
-#: ../sb-includes/admin.php:169
+#: sb-includes/admin.php:167
 msgid "Basic Options"
 msgstr "Dewisiadau Sylfaenol"
 
-#: ../sb-includes/admin.php:176
+#: sb-includes/admin.php:174
 msgid "Upload folder"
 msgstr "Ffolder Llwytho i Fyny"
 
-#: ../sb-includes/admin.php:187
+#: sb-includes/admin.php:185
 msgid "Public podcast feed"
 msgstr "Llif podlediad cyhoeddus"
 
-#: ../sb-includes/admin.php:191
+#: sb-includes/admin.php:189
 msgid "Private podcast feed"
 msgstr "Llif podlediad preifat"
 
-#: ../sb-includes/admin.php:195
+#: sb-includes/admin.php:193
 msgid "MP3 shortcode"
 msgstr "Cod byr MP3"
 
-#: ../sb-includes/admin.php:195
-#, fuzzy
+#: sb-includes/admin.php:193
 msgid "Default: "
-msgstr "Amser rhagosodedig"
+msgstr "Rhagosodiad:"
 
-#: ../sb-includes/admin.php:199
+#: sb-includes/admin.php:197
 msgid "Sermons per page"
 msgstr "Pregethau'r dudalen"
 
-#: ../sb-includes/admin.php:203
+#: sb-includes/admin.php:201
 msgid "Filter type"
 msgstr "Math o hidl"
 
-#: ../sb-includes/admin.php:207
+#: sb-includes/admin.php:205
 msgid "Drop-down"
 msgstr "Cwymplen"
 
-#: ../sb-includes/admin.php:207
+#: sb-includes/admin.php:205
 msgid "One-click"
 msgstr "Un clic"
 
-#: ../sb-includes/admin.php:207 ../sb-includes/frontend.php:756
+#: sb-includes/admin.php:205 sb-includes/frontend.php:748
 msgid "None"
 msgstr "Dim"
 
-#: ../sb-includes/admin.php:219
+#: sb-includes/admin.php:217
 msgid "Minimise filter"
 msgstr "Lleihau'r hidl"
 
-#: ../sb-includes/admin.php:223
+#: sb-includes/admin.php:221
 msgid "Hide sermons without attachments?"
 msgstr "Cuddio pregethau heb atodiad?"
 
-#: ../sb-includes/admin.php:236
+#: sb-includes/admin.php:234
 msgid ""
 "The upload folder is not writeable. You need to specify a folder that you "
 "have permissions to write to."
@@ -117,11 +116,11 @@ msgstr ""
 "Nid yw'r ffolder llwythi yn ysgrifenadwy. Mae angen enwi ffolder y mae "
 "gennych ganiatâd i ysgrifennu iddo."
 
-#: ../sb-includes/admin.php:238 ../sb-includes/admin.php:248
+#: sb-includes/admin.php:236 sb-includes/admin.php:246
 msgid "The upload folder you have specified does not exist."
 msgstr "Nid yw'r ffolder llwythi hwn yn bodoli."
 
-#: ../sb-includes/admin.php:239
+#: sb-includes/admin.php:237
 msgid ""
 "Your administrator does not allow file uploads. You will need to upload via "
 "FTP."
@@ -129,19 +128,19 @@ msgstr ""
 "Nid yw eichgweinyddwr yn caniatáu llwytho i fyny. Rhaid llwytho i fyny drwy "
 "FTP."
 
-#: ../sb-includes/admin.php:241 ../sb-includes/admin.php:250
+#: sb-includes/admin.php:239 sb-includes/admin.php:248
 msgid "The maximum file size you can upload is only "
 msgstr "Maint mwyaf y ffeil i'w llwytho i fyny yw "
 
-#: ../sb-includes/admin.php:241
+#: sb-includes/admin.php:239
 msgid "k. You may need to upload via FTP."
 msgstr "k. Efallai fod angen i chi lwytho i fyny drwy FTP."
 
-#: ../sb-includes/admin.php:243 ../sb-includes/admin.php:252
+#: sb-includes/admin.php:241 sb-includes/admin.php:250
 msgid "The maximum time allowed for any script to run is only "
 msgstr "Yr amser hiraf ar gyfer rhedeg sgript yw "
 
-#: ../sb-includes/admin.php:243
+#: sb-includes/admin.php:241
 msgid ""
 " seconds. If your files take longer than this to upload, you will need to "
 "upload via FTP."
@@ -149,7 +148,7 @@ msgstr ""
 " eiliad. Os yw eich ffeiliau'n cymryd mwy o amser i lwytho i fyny na hyn, "
 "mae angen i chi lwytho drwy FTP."
 
-#: ../sb-includes/admin.php:246
+#: sb-includes/admin.php:244
 msgid ""
 "The upload folder is not writeable. You need to specify a folder that you "
 "have permissions to write to, or CHMOD this folder to 666 or 777."
@@ -157,7 +156,7 @@ msgstr ""
 "Nid yw'r ffolder llwythi yn ysgrifenadwy. Rhaid i chi enwi ffolder y mae "
 "gennych ganiatâd i ysgrifennu ato, neu CHMOD y ffolder hwn i 666 neu 777."
 
-#: ../sb-includes/admin.php:249
+#: sb-includes/admin.php:247
 msgid ""
 "Your php.ini file does not allow uploads. Please change file_uploads in php."
 "ini."
@@ -165,43 +164,43 @@ msgstr ""
 "Nid yw eich ffeil php.ini yn caniatáu llwythi. Newidiwch file_uploads yn php."
 "ini."
 
-#: ../sb-includes/admin.php:250
+#: sb-includes/admin.php:248
 msgid "k. Please change upload_max_filesize to at least 15M in php.ini."
 msgstr "k. Newidiwch upload_max_filesize i o leiaf 15M yn php.ini."
 
-#: ../sb-includes/admin.php:251
+#: sb-includes/admin.php:249
 msgid "The maximum file size you send through the browser is only "
 msgstr "Maint mwyaf ffeil i'w anfon drwy'r porwr yw "
 
-#: ../sb-includes/admin.php:251
+#: sb-includes/admin.php:249
 msgid "k. Please change post_max_size to at least 15M in php.ini."
 msgstr "k. Newidiwch post_max_size i o leiaf 15M yn php.ini."
 
-#: ../sb-includes/admin.php:252
+#: sb-includes/admin.php:250
 msgid " seconds. Please change max_execution_time to at least 600 in php.ini."
 msgstr " eiliad. Newidiwch max_execution_time i fod o leiaf 600 yn php.ini."
 
-#: ../sb-includes/admin.php:253
+#: sb-includes/admin.php:251
 msgid "The maximum time allowed for an upload script to run is only "
 msgstr "Yr amser hiraf ar gyfer rhedeg sgript llwytho yw "
 
-#: ../sb-includes/admin.php:253
+#: sb-includes/admin.php:251
 msgid " seconds. Please change max_input_time to at least 600 in php.ini."
 msgstr " eiliad. Newidiwch max_input_time i fod o leiaf 600 yn php.ini."
 
-#: ../sb-includes/admin.php:254
+#: sb-includes/admin.php:252
 msgid "The maximum amount of memory allowed is only "
 msgstr "Uchafswm y cof yw "
 
-#: ../sb-includes/admin.php:254
+#: sb-includes/admin.php:252
 msgid "k. Please change memory_limit to at least 16M in php.ini."
 msgstr "k. Newidiwch memory_limit i o leiaf 16M yn php.ini."
 
-#: ../sb-includes/admin.php:258
+#: sb-includes/admin.php:256
 msgid "Import Options"
 msgstr "Dewisiadau Mewnforio"
 
-#: ../sb-includes/admin.php:259
+#: sb-includes/admin.php:257
 #, php-format
 msgid ""
 "SermonBrowser can speed up the process of importing existing MP3s by reading "
@@ -216,75 +215,74 @@ msgstr ""
 "chi ei fewnforio i SermonBrowser. Unwaith i chi wneud eich dewisiadau, ewch "
 "i %s i fewnforio eich ffeiliau."
 
-#: ../sb-includes/admin.php:259 ../sb-includes/frontend.php:130
-#: ../sermon.php:280
+#: sb-includes/admin.php:257 sb-includes/frontend.php:128 sermon.php:279
 msgid "Files"
 msgstr "Ffeiliau"
 
-#: ../sb-includes/admin.php:262
+#: sb-includes/admin.php:260
 msgid "Add files prompt to top of Add Sermon page?"
 msgstr "Ychwanegu anogiad ffeiliau i frig tudalen SermonBrowser?"
 
-#: ../sb-includes/admin.php:266
+#: sb-includes/admin.php:264
 msgid "Use title tag for sermon title?"
 msgstr "Defnyddio teitl tag fel teitl pregeth?"
 
-#: ../sb-includes/admin.php:270
+#: sb-includes/admin.php:268
 msgid "Use artist tag for preacher?"
 msgstr "Defnyddio tag artist ar gyfer pregethwr?"
 
-#: ../sb-includes/admin.php:274
+#: sb-includes/admin.php:272
 msgid "Use album tag for series?"
 msgstr "Defnyddio tag albwm ar gyfer cyfres?"
 
-#: ../sb-includes/admin.php:278
+#: sb-includes/admin.php:276
 msgid "Use comments tag for sermon description?"
 msgstr "Defnyddio tag sylwadau ar gyfer disgrifiad o'r bregeth?"
 
-#: ../sb-includes/admin.php:282
+#: sb-includes/admin.php:280
 msgid "Attempt to extract date from filename"
 msgstr "Ceisio tynnu dyddiad o'r enw ffeil"
 
-#: ../sb-includes/admin.php:285
+#: sb-includes/admin.php:283
 msgid "Disabled"
 msgstr "Analluogwyd"
 
-#: ../sb-includes/admin.php:286
+#: sb-includes/admin.php:284
 msgid "UK-formatted date (dd-mm-yyyy)"
 msgstr "Dyddiad fformat DU (dd-mm-bbbb)"
 
-#: ../sb-includes/admin.php:287
+#: sb-includes/admin.php:285
 msgid "US-formatted date (mm-dd-yyyy)"
 msgstr "Dyddiad fformat UDA (mm-dd-bbbb)"
 
-#: ../sb-includes/admin.php:288
+#: sb-includes/admin.php:286
 msgid "International formatted date (yyyy-mm-dd)"
 msgstr "Dyddiad fformat rhyngwladol (bbbb-mm-dd)"
 
-#: ../sb-includes/admin.php:296
+#: sb-includes/admin.php:294
 msgid ""
 "(Use if you name your files something like 2008-11-06-eveningsermon.mp3)"
 msgstr ""
 "(Defnyddiwch os ydych yn enwi ei ffeiliau fel 2008-11-06-pregethnos.mp3)"
 
-#: ../sb-includes/admin.php:301 ../sb-includes/admin.php:412
+#: sb-includes/admin.php:299 sb-includes/admin.php:408
 msgid "Reset to defaults"
 msgstr "Ailosod i'r rhagosodedig"
 
-#: ../sb-includes/admin.php:301 ../sb-includes/admin.php:412
-#: ../sb-includes/admin.php:543 ../sb-includes/admin.php:1872
+#: sb-includes/admin.php:299 sb-includes/admin.php:408
+#: sb-includes/admin.php:539 sb-includes/admin.php:1868
 msgid "Save"
 msgstr "Cadw"
 
-#: ../sb-includes/admin.php:314
+#: sb-includes/admin.php:311
 msgid "You do not have the correct permissions to Uninstall SermonBrowser"
 msgstr "Nid oes gennych y caniatâd angenrheidiol i Ddadosod SermonBrowser"
 
-#: ../sb-includes/admin.php:321
+#: sb-includes/admin.php:318
 msgid "Reset SermonBrowser"
 msgstr "Ailosod SermonBrowser"
 
-#: ../sb-includes/admin.php:322 ../sb-includes/admin.php:328
+#: sb-includes/admin.php:319 sb-includes/admin.php:325
 #, php-format
 msgid ""
 "Clicking the %s button below will remove ALL data (sermons, preachers, "
@@ -293,25 +291,24 @@ msgstr ""
 "Bydd clicio'r botwm %s yn tynnu'r HOLL ddata (pregethau, pregethwyr, "
 "cyfresi, ac ati) o SermonBrowser"
 
-#: ../sb-includes/admin.php:322 ../sb-includes/admin.php:342
+#: sb-includes/admin.php:319 sb-includes/admin.php:339
 msgid "Delete all"
 msgstr "Dileu popeth"
 
-#: ../sb-includes/admin.php:324 ../sb-includes/admin.php:332
+#: sb-includes/admin.php:321 sb-includes/admin.php:329
 msgid "You will NOT be able to undo this action."
 msgstr "NI fydd nodd dadwneud hyn."
 
-#: ../sb-includes/admin.php:327 ../sb-includes/admin.php:328
-#: ../sb-includes/admin.php:342 ../sb-includes/frontend.php:140
-#: ../sermon.php:285
+#: sb-includes/admin.php:324 sb-includes/admin.php:325
+#: sb-includes/admin.php:339 sb-includes/frontend.php:138 sermon.php:284
 msgid "Uninstall"
 msgstr "Dadosod"
 
-#: ../sb-includes/admin.php:330
+#: sb-includes/admin.php:327
 msgid "and will deactivate the SermonBrowser plugin"
 msgstr "a bydd yn dadweithredu ategyn SermonBrowser"
 
-#: ../sb-includes/admin.php:334
+#: sb-includes/admin.php:331
 msgid ""
 "If you only want to temporarily disable SermonBrowser, just deactivate it "
 "from the plugins page."
@@ -319,60 +316,59 @@ msgstr ""
 "Os dadweithredu SermonBrowser dros dro rydych am ei wneud, gwnewch hynny o'r "
 "dudalen ategion."
 
-#: ../sb-includes/admin.php:339
+#: sb-includes/admin.php:336
 msgid "Also remove all uploaded files"
 msgstr "A thynnu'r holl ffeiliau sydd wedi eu llwytho i fyny"
 
-#: ../sb-includes/admin.php:342
+#: sb-includes/admin.php:339
 msgid "Do you REALLY want to delete all data?"
 msgstr "Ydych chi WIR eisiau dileu'r holl ddata?"
 
-#: ../sb-includes/admin.php:347
+#: sb-includes/admin.php:344
 msgid "Are you REALLY REALLY sure you want to remove SermonBrowser?"
 msgstr "Ydych chi'n WIRIONEDDOL SIWR eich bod chi eisiau dileu SermonBrowser?"
 
-#: ../sb-includes/admin.php:361
+#: sb-includes/admin.php:357
 msgid ""
 "You do not have the correct permissions to edit the SermonBrowser templates"
 msgstr "Nid oes gennych y caniatâd priodol i olygu templediSermonBrowser"
 
-#: ../sb-includes/admin.php:381
+#: sb-includes/admin.php:377
 msgid "Templates saved successfully."
 msgstr "Templedi wedi eu cadw'n llwyddiannus."
 
-#: ../sb-includes/admin.php:390 ../sb-includes/frontend.php:137
-#: ../sermon.php:284
+#: sb-includes/admin.php:386 sb-includes/frontend.php:135 sermon.php:283
 msgid "Templates"
 msgstr "Templedi"
 
-#: ../sb-includes/admin.php:394
+#: sb-includes/admin.php:390
 msgid "Search results page"
 msgstr "Tudalen canlyniadau chwilio"
 
-#: ../sb-includes/admin.php:400
+#: sb-includes/admin.php:396
 msgid "Sermon page"
 msgstr "Tudalen pregethau"
 
-#: ../sb-includes/admin.php:406
+#: sb-includes/admin.php:402
 msgid "Style"
 msgstr "Arddull"
 
-#: ../sb-includes/admin.php:431
+#: sb-includes/admin.php:427
 msgid ""
 "You do not have the correct permissions to manage the preachers' database"
 msgstr ""
 "Nid oes gennych y caniatâd angenrheidiol i reoli tudalen cronfa ddata "
 "pregethwyr"
 
-#: ../sb-includes/admin.php:433
+#: sb-includes/admin.php:429
 msgid "Preacher saved to database."
 msgstr "Pregethwr wedi ei gadw i'r gronfa ddata."
 
-#: ../sb-includes/admin.php:455
+#: sb-includes/admin.php:451
 msgid "Could not save uploaded file. Please try again."
 msgstr "Methu cadw ffeil wedi ei lwytho i fyny. Ceisiwch eto."
 
-#: ../sb-includes/admin.php:460
+#: sb-includes/admin.php:456
 msgid ""
 "Could not upload file. Please check the Options page for any errors or "
 "warnings."
@@ -380,93 +376,90 @@ msgstr ""
 "Methu llwytho ffeil i fyny. Gwiriwch y dudalen Dewisiadau am wallau neu "
 "rybuddion."
 
-#: ../sb-includes/admin.php:481 ../sb-includes/admin.php:579
+#: sb-includes/admin.php:477 sb-includes/admin.php:575
 msgid ""
 "You cannot delete this preacher until you first delete any sermons they have "
 "preached."
 msgstr ""
 "Nid oes modd dileu'r pregethwr nes i chi yn gyntaf ddileu eu pregethau."
 
-#: ../sb-includes/admin.php:495
+#: sb-includes/admin.php:491
 msgid "Add"
 msgstr "Ychwanegu"
 
-#: ../sb-includes/admin.php:495 ../sb-includes/admin.php:575
-#: ../sb-includes/admin.php:747 ../sb-includes/admin.php:1279
-#: ../sb-includes/ajax.php:137
+#: sb-includes/admin.php:491 sb-includes/admin.php:571
+#: sb-includes/admin.php:743 sb-includes/admin.php:1275
+#: sb-includes/ajax.php:136
 msgid "Edit"
 msgstr "Golygu"
 
-#: ../sb-includes/admin.php:495
+#: sb-includes/admin.php:491
 msgid "preacher"
 msgstr "pregethwr"
 
-#: ../sb-includes/admin.php:506
+#: sb-includes/admin.php:502
 msgid "The images folder is not writeable. You won't be able to upload images."
 msgstr ""
 "Nid yw'r ffolder delweddau'n ysgrifenadwy. Nid oes modd llwytho delweddau i "
 "fyny."
 
-#: ../sb-includes/admin.php:514 ../sb-includes/admin.php:561
-#: ../sb-includes/admin.php:732
+#: sb-includes/admin.php:510 sb-includes/admin.php:557
+#: sb-includes/admin.php:728
 msgid "Name"
 msgstr "Enw"
 
-#: ../sb-includes/admin.php:522 ../sb-includes/admin.php:1759
+#: sb-includes/admin.php:518 sb-includes/admin.php:1755
 msgid "Description"
 msgstr "Disgrifiad"
 
-#: ../sb-includes/admin.php:534 ../sb-includes/admin.php:562
+#: sb-includes/admin.php:530 sb-includes/admin.php:558
 msgid "Image"
 msgstr "Delwedd"
 
-#: ../sb-includes/admin.php:555 ../sb-includes/frontend.php:132
-#: ../sermon.php:281
+#: sb-includes/admin.php:551 sb-includes/frontend.php:130 sermon.php:280
 msgid "Preachers"
 msgstr "Pregethwyr"
 
-#: ../sb-includes/admin.php:555 ../sb-includes/admin.php:726
+#: sb-includes/admin.php:551 sb-includes/admin.php:722
 msgid "add new"
 msgstr "ychwanegu"
 
-#: ../sb-includes/admin.php:560 ../sb-includes/admin.php:731
-#: ../sb-includes/admin.php:1000 ../sb-includes/admin.php:1035
-#: ../sb-includes/admin.php:1084 ../sb-includes/admin.php:1255
+#: sb-includes/admin.php:556 sb-includes/admin.php:727
+#: sb-includes/admin.php:996 sb-includes/admin.php:1031
+#: sb-includes/admin.php:1080 sb-includes/admin.php:1251
 msgid "ID"
 msgstr "Dynodiad"
 
-#: ../sb-includes/admin.php:563 ../sb-includes/admin.php:734
-#: ../sb-includes/admin.php:1250 ../sb-includes/frontend.php:125
-#: ../sb-includes/widget.php:78 ../sermon.php:273 ../sermon.php:274
-#: ../sermon.php:540
+#: sb-includes/admin.php:559 sb-includes/admin.php:730
+#: sb-includes/admin.php:1246 sb-includes/frontend.php:123
+#: sb-includes/widget.php:77 sermon.php:272 sermon.php:273 sermon.php:537
 msgid "Sermons"
 msgstr "Pregethau"
 
-#: ../sb-includes/admin.php:564 ../sb-includes/admin.php:735
-#: ../sb-includes/admin.php:1003 ../sb-includes/admin.php:1039
-#: ../sb-includes/admin.php:1088 ../sb-includes/admin.php:1262
+#: sb-includes/admin.php:560 sb-includes/admin.php:731
+#: sb-includes/admin.php:999 sb-includes/admin.php:1035
+#: sb-includes/admin.php:1084 sb-includes/admin.php:1258
 msgid "Actions"
 msgstr "Gweithredoedd"
 
-#: ../sb-includes/admin.php:577
+#: sb-includes/admin.php:573
 msgid "You must have at least one preacher in the database."
 msgstr "Rhaid bod o leiaf un pregethwr yn y gronfa ddata."
 
-#: ../sb-includes/admin.php:577 ../sb-includes/admin.php:579
-#: ../sb-includes/admin.php:581 ../sb-includes/admin.php:749
-#: ../sb-includes/admin.php:751 ../sb-includes/admin.php:763
-#: ../sb-includes/admin.php:1015 ../sb-includes/admin.php:1059
-#: ../sb-includes/admin.php:1279 ../sb-includes/ajax.php:137
-#: ../sb-includes/ajax.php:183
+#: sb-includes/admin.php:573 sb-includes/admin.php:575
+#: sb-includes/admin.php:577 sb-includes/admin.php:745
+#: sb-includes/admin.php:747 sb-includes/admin.php:759
+#: sb-includes/admin.php:1011 sb-includes/admin.php:1055
+#: sb-includes/admin.php:1275 sb-includes/ajax.php:136 sb-includes/ajax.php:182
 msgid "Delete"
 msgstr "Dileu"
 
-#: ../sb-includes/admin.php:581 ../sb-includes/admin.php:751
+#: sb-includes/admin.php:577 sb-includes/admin.php:747
 #, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "Ydych chi'n siŵr eich bod eisiau dileu %s?"
 
-#: ../sb-includes/admin.php:599
+#: sb-includes/admin.php:595
 msgid ""
 "You do not have the correct permissions to manage the series and services "
 "database"
@@ -474,34 +467,34 @@ msgstr ""
 "Nid oes gennych y caniatâd angenrheidiol i reoli cronfa ddata cyfres a "
 "gwasanaethau"
 
-#: ../sb-includes/admin.php:623 ../sb-includes/admin.php:701
-#: ../sb-includes/admin.php:1593
+#: sb-includes/admin.php:619 sb-includes/admin.php:697
+#: sb-includes/admin.php:1589
 msgid "New service's name @ default time?"
 msgstr "Enw'r gwasanaeth newydd @ amser rhagosodedig?"
 
-#: ../sb-includes/admin.php:623 ../sb-includes/admin.php:1593
+#: sb-includes/admin.php:619 sb-includes/admin.php:1589
 msgid "Service's name @ 18:00"
 msgstr "Enw gwasanaeth @ 18:00"
 
-#: ../sb-includes/admin.php:649 ../sb-includes/admin.php:688
-#: ../sb-includes/admin.php:1608
+#: sb-includes/admin.php:645 sb-includes/admin.php:684
+#: sb-includes/admin.php:1604
 msgid "New series' name?"
 msgstr "Enw'r gyfres newydd?"
 
-#: ../sb-includes/admin.php:649 ../sb-includes/admin.php:1608
+#: sb-includes/admin.php:645 sb-includes/admin.php:1604
 msgid "Series' name"
 msgstr "Enw'r gyfres"
 
-#: ../sb-includes/admin.php:733
+#: sb-includes/admin.php:729
 msgid "Default time"
 msgstr "Amser rhagosodedig"
 
-#: ../sb-includes/admin.php:747 ../sb-includes/admin.php:1015
-#: ../sb-includes/admin.php:1059 ../sb-includes/ajax.php:183
+#: sb-includes/admin.php:743 sb-includes/admin.php:1011
+#: sb-includes/admin.php:1055 sb-includes/ajax.php:182
 msgid "Rename"
 msgstr "Ailenwi"
 
-#: ../sb-includes/admin.php:749
+#: sb-includes/admin.php:745
 #, php-format
 msgid ""
 "You cannot delete this %1$s as you must have at least one %1$s in the "
@@ -510,7 +503,7 @@ msgstr ""
 "Nid oes modd dileu'r %1$s hwn am bod yn rhaid cael o leiaf un %1$s yn y "
 "gronfa ddata"
 
-#: ../sb-includes/admin.php:755
+#: sb-includes/admin.php:751
 msgid ""
 "Some sermons are currently assigned to that service. You can only delete "
 "services that are not used in the database."
@@ -518,7 +511,7 @@ msgstr ""
 "Mae rhai pregethau wedi eu neilltuo i'r gwasanaeth hwnna. Dim ond "
 "gwasanaethu sydd ddim yn cael eu defnyddio y mae modd eu dileu."
 
-#: ../sb-includes/admin.php:758
+#: sb-includes/admin.php:754
 msgid ""
 "Some sermons are currently in that series. You can only delete series that "
 "are empty."
@@ -526,7 +519,7 @@ msgstr ""
 "Mae rhai pregethau yn y gyfres honno. Dim ond cyfresi gwag y mae modd eu "
 "dileu."
 
-#: ../sb-includes/admin.php:761
+#: sb-includes/admin.php:757
 msgid ""
 "That preacher has sermons in the database. You can only delete preachers who "
 "have no sermons in the database."
@@ -534,107 +527,107 @@ msgstr ""
 "Mae gan y pregethwr bregethau yn y gronfa ddata. Dim ond pregethwyr sydd heb "
 "bregethau y mae modd eu dileu."
 
-#: ../sb-includes/admin.php:785
+#: sb-includes/admin.php:781
 msgid "You do not have the correct permissions to upload sermons"
 msgstr "Nid oes gennych y caniatâd angenrheidiol i lwytho pregethau i fyny"
 
-#: ../sb-includes/admin.php:801
+#: sb-includes/admin.php:797
 #, php-format
 msgid "File %s already exists"
 msgstr "Mae %s yn bodoli eisoes"
 
-#: ../sb-includes/admin.php:820
+#: sb-includes/admin.php:816
 msgid "Invalid URL."
 msgstr "URL annilys."
 
-#: ../sb-includes/admin.php:822
+#: sb-includes/admin.php:818
 msgid "Your host does not allow remote downloading of files."
 msgstr "Nid yw eich gwesteiwr yn caniatáu llwytho ffeiliau o bell i lawr."
 
-#: ../sb-includes/admin.php:848
+#: sb-includes/admin.php:844
 msgid "Files saved to database."
 msgstr "Ffeiliau wedi eu cadw i'r gronfa ddata."
 
-#: ../sb-includes/admin.php:851 ../sb-includes/admin.php:1402
+#: sb-includes/admin.php:847 sb-includes/admin.php:1398
 msgid " already exists."
 msgstr " yn bodoli eisoes."
 
-#: ../sb-includes/admin.php:855 ../sb-includes/admin.php:1407
+#: sb-includes/admin.php:851 sb-includes/admin.php:1403
 msgid "You are not permitted to upload files of that type."
 msgstr "Nid oes caniatad i chi lwytho i fyny ffeiliau o'r fath."
 
-#: ../sb-includes/admin.php:888
+#: sb-includes/admin.php:884
 msgid "New file name?"
 msgstr "Enw ffeil newydd?"
 
-#: ../sb-includes/admin.php:899
+#: sb-includes/admin.php:895
 msgid "You are not permitted files with that extension."
 msgstr "Nid oes caniatâd i chi gael ffeiliau gyda'r estyniad yna."
 
-#: ../sb-includes/admin.php:901
+#: sb-includes/admin.php:897
 msgid "The script is unable to rename your file."
 msgstr "Nid yw'r sgript yn gallu ailenwi eich ffeil."
 
-#: ../sb-includes/admin.php:929
+#: sb-includes/admin.php:925
 msgid "The script is unable to delete your file."
 msgstr "Nid yw'r sgript yn gallu dileu eich ffeil."
 
-#: ../sb-includes/admin.php:940 ../sb-includes/admin.php:959
+#: sb-includes/admin.php:936 sb-includes/admin.php:955
 msgid "Previous"
 msgstr "Cynt"
 
-#: ../sb-includes/admin.php:946 ../sb-includes/admin.php:965
+#: sb-includes/admin.php:942 sb-includes/admin.php:961
 msgid "Next"
 msgstr "Nesaf"
 
-#: ../sb-includes/admin.php:983
+#: sb-includes/admin.php:979
 msgid "Upload Files"
 msgstr "Llwytho Ffeiliau i Fyny"
 
-#: ../sb-includes/admin.php:995
+#: sb-includes/admin.php:991
 msgid "Unlinked files"
 msgstr "Ffeiliau heb eu cysylltu"
 
-#: ../sb-includes/admin.php:1001 ../sb-includes/admin.php:1036
-#: ../sb-includes/admin.php:1085
+#: sb-includes/admin.php:997 sb-includes/admin.php:1032
+#: sb-includes/admin.php:1081
 msgid "File name"
 msgstr "Enw ffeil"
 
-#: ../sb-includes/admin.php:1002 ../sb-includes/admin.php:1037
-#: ../sb-includes/admin.php:1086
+#: sb-includes/admin.php:998 sb-includes/admin.php:1033
+#: sb-includes/admin.php:1082
 msgid "File type"
 msgstr "Math ffeil"
 
-#: ../sb-includes/admin.php:1014 ../sb-includes/ajax.php:182
+#: sb-includes/admin.php:1010 sb-includes/ajax.php:181
 msgid "Create sermon"
 msgstr "Creu pregeth"
 
-#: ../sb-includes/admin.php:1030
+#: sb-includes/admin.php:1026
 msgid "Linked files"
 msgstr "Ffeiliau wedi eu cysylltu"
 
-#: ../sb-includes/admin.php:1038 ../sb-includes/admin.php:1087
-#: ../sb-includes/frontend.php:143 ../sb-includes/widget.php:76
+#: sb-includes/admin.php:1034 sb-includes/admin.php:1083
+#: sb-includes/frontend.php:141 sb-includes/widget.php:75
 msgid "Sermon"
 msgstr "Pregeth"
 
-#: ../sb-includes/admin.php:1074
+#: sb-includes/admin.php:1070
 msgid "Search for files"
 msgstr "Chwilio am ffeiliau"
 
-#: ../sb-includes/admin.php:1078
+#: sb-includes/admin.php:1074
 msgid "Search"
 msgstr "Chwilio"
 
-#: ../sb-includes/admin.php:1093
+#: sb-includes/admin.php:1089
 msgid "Search results will appear here."
 msgstr "Bydd canlyniadau chwilio yn ymddangos yma."
 
-#: ../sb-includes/admin.php:1111
+#: sb-includes/admin.php:1107
 msgid "Clean up"
 msgstr "Glanhau"
 
-#: ../sb-includes/admin.php:1113
+#: sb-includes/admin.php:1109
 msgid ""
 "Pressing the button below scans every sermon in the database, and removes "
 "missing attachments. Use with caution!"
@@ -642,19 +635,19 @@ msgstr ""
 "Bydd clicio ar y botwm isod yn sganio pob pregeth yn y gronfa ddata ac yn "
 "tynnu atodiadau coll. Gofal!"
 
-#: ../sb-includes/admin.php:1114
+#: sb-includes/admin.php:1110
 msgid "Clean up missing files"
 msgstr "Glanhau meysydd coll"
 
-#: ../sb-includes/admin.php:1163 ../sb-includes/admin.php:1365
+#: sb-includes/admin.php:1159 sb-includes/admin.php:1361
 msgid "You do not have the correct permissions to edit sermons"
 msgstr "Nid oes gennych y caniatâd angenrheidiol i olygu pregethau"
 
-#: ../sb-includes/admin.php:1166
+#: sb-includes/admin.php:1162
 msgid "Sermon saved to database."
 msgstr "Pregethau wedi eu cadw i'r gronfa ddata."
 
-#: ../sb-includes/admin.php:1169
+#: sb-includes/admin.php:1165
 #, php-format
 msgid ""
 "If you find SermonBrowser useful, please consider %1$ssupporting%2$s the "
@@ -663,7 +656,7 @@ msgstr ""
 "Os yw SermonBrowser yn ddefnyddiol i chi, ystyriwch gefnogi %1$ssupporting"
 "%2$s gweinidogaeth Nathanael ac Anna Ayling yn Japan."
 
-#: ../sb-includes/admin.php:1171
+#: sb-includes/admin.php:1167
 msgid ""
 "Sermon Browser 2.0 is under development. If you're a coder, and would like "
 "to help, please check the <a href=\"https://www.assembla.com/spaces/sermon-"
@@ -673,139 +666,148 @@ msgstr ""
 "gyfrannu, cysylltwch â <a href=\"https://www.assembla.com/spaces/sermon-"
 "browser-2/documents\">gwefan datblygu SB2</a>."
 
-#: ../sb-includes/admin.php:1177
+#: sb-includes/admin.php:1173
 msgid "You do not have the correct permissions to delete sermons"
 msgstr "Nid oes gennych y caniatâd angenrheidiol i ddileu pregethau"
 
-#: ../sb-includes/admin.php:1185
+#: sb-includes/admin.php:1181
 msgid "Sermon removed from database."
 msgstr "Pregethau wedi eu tynnu o'r gronfa ddata."
 
-#: ../sb-includes/admin.php:1226 ../sb-includes/admin.php:1256
-#: ../sb-includes/admin.php:1699
+#: sb-includes/admin.php:1222 sb-includes/admin.php:1252
+#: sb-includes/admin.php:1695
 msgid "Title"
 msgstr "Teitl"
 
-#: ../sb-includes/admin.php:1230 ../sb-includes/admin.php:1257
-#: ../sb-includes/admin.php:1713 ../sb-includes/frontend.php:1019
+#: sb-includes/admin.php:1226 sb-includes/admin.php:1253
+#: sb-includes/admin.php:1709 sb-includes/frontend.php:1011
 msgid "Preacher"
 msgstr "Pregethwr"
 
-#: ../sb-includes/admin.php:1239 ../sb-includes/admin.php:1260
-#: ../sb-includes/admin.php:1732 ../sb-includes/frontend.php:1045
+#: sb-includes/admin.php:1235 sb-includes/admin.php:1256
+#: sb-includes/admin.php:1728 sb-includes/frontend.php:1037
 msgid "Series"
 msgstr "Cyfres"
 
-#: ../sb-includes/admin.php:1247
+#: sb-includes/admin.php:1243
 msgid "Filter"
 msgstr "Hidl"
 
-#: ../sb-includes/admin.php:1258 ../sb-includes/admin.php:1753
-#: ../sb-includes/frontend.php:836 ../sb-includes/frontend.php:927
+#: sb-includes/admin.php:1254 sb-includes/admin.php:1749
+#: sb-includes/frontend.php:828 sb-includes/frontend.php:919
 msgid "Date"
 msgstr "Dyddiad"
 
-#: ../sb-includes/admin.php:1259 ../sb-includes/admin.php:1773
+#: sb-includes/admin.php:1255 sb-includes/admin.php:1769
 msgid "Service"
 msgstr "Gwasanaeth"
 
-#: ../sb-includes/admin.php:1261
+#: sb-includes/admin.php:1257
 msgid "Stats"
 msgstr "Ystadegau"
 
-#: ../sb-includes/admin.php:1272 ../sb-includes/ajax.php:130
+#: sb-includes/admin.php:1268 sb-includes/ajax.php:129
 msgid "Unknown"
 msgstr "Anhysbys"
 
-#: ../sb-includes/admin.php:1309
+#: sb-includes/admin.php:1305
 msgid "You do not have the correct permissions to edit or create sermons"
 msgstr "Nid oes gennych y caniatâd angenrheidiol i olygu na chreu pregethau"
 
-#: ../sb-includes/admin.php:1359
+#: sb-includes/admin.php:1355
 msgid "You do not have the correct permissions to create sermons"
 msgstr "Nid oes gennych y caniatâd angenrheidiol i greu pregethau"
 
-#: ../sb-includes/admin.php:1477
+#: sb-includes/admin.php:1473
 msgid "No ID3 tags found."
 msgstr "Heb ganfod tagiau ID3."
 
-#: ../sb-includes/admin.php:1574
+#: sb-includes/admin.php:1570
 msgid "New preacher's name?"
 msgstr "Enw'r pregethwr newydd?"
 
-#: ../sb-includes/admin.php:1574
+#: sb-includes/admin.php:1570
 msgid "Preacher's name"
 msgstr "Enw'r Pregethwr"
 
-#: ../sb-includes/admin.php:1694
+#: sb-includes/admin.php:1674 sb-includes/frontend.php:120
+#: sb-includes/frontend.php:487 sermon.php:275
+msgid "Edit Sermon"
+msgstr "Golygu Pregeth"
+
+#: sb-includes/admin.php:1674 sb-includes/frontend.php:125 sermon.php:277
+msgid "Add Sermon"
+msgstr "Ychwanegu Pregeth"
+
+#: sb-includes/admin.php:1690
 msgid "Enter sermon details"
 msgstr "Rhowch fanylion y bregeth"
 
-#: ../sb-includes/admin.php:1705
+#: sb-includes/admin.php:1701
 msgid "Tags (comma separated)"
 msgstr "Tagiau (gwahanwyd gan atalnod)"
 
-#: ../sb-includes/admin.php:1728
+#: sb-includes/admin.php:1724
 msgid "Create new preacher"
 msgstr "Creu pregethwr newydd"
 
-#: ../sb-includes/admin.php:1747
+#: sb-includes/admin.php:1743
 msgid "Create new series"
 msgstr "Creu cyfres newydd"
 
-#: ../sb-includes/admin.php:1782
+#: sb-includes/admin.php:1778
 msgid "Create new service"
 msgstr "Creu gwasanaeth newydd"
 
-#: ../sb-includes/admin.php:1788
+#: sb-includes/admin.php:1784
 msgid "Time"
 msgstr "Amser"
 
-#: ../sb-includes/admin.php:1791
+#: sb-includes/admin.php:1787
 msgid "Override default time"
 msgstr "Anwybyddu'r amser rhagosodedig"
 
-#: ../sb-includes/admin.php:1797
+#: sb-includes/admin.php:1793
 msgid "Bible passage"
 msgstr "Darn o'r Beibl"
 
-#: ../sb-includes/admin.php:1797 ../sb-includes/admin.php:1840
+#: sb-includes/admin.php:1793 sb-includes/admin.php:1836
 msgid "add more"
 msgstr "ychwanegu"
 
-#: ../sb-includes/admin.php:1801
+#: sb-includes/admin.php:1797
 msgid "From"
 msgstr "O"
 
-#: ../sb-includes/admin.php:1802
+#: sb-includes/admin.php:1798
 msgid "To"
 msgstr "Hyd"
 
-#: ../sb-includes/admin.php:1840
+#: sb-includes/admin.php:1836
 msgid "Attachments"
 msgstr "Atodiadau"
 
-#: ../sb-includes/admin.php:1849
+#: sb-includes/admin.php:1845
 msgid "Choose existing file:"
 msgstr "Dewis ffeil presennol:"
 
-#: ../sb-includes/admin.php:1850
+#: sb-includes/admin.php:1846
 msgid "Upload a new one:"
 msgstr "Llwytho un newydd i fyny:"
 
-#: ../sb-includes/admin.php:1851
+#: sb-includes/admin.php:1847
 msgid "Enter an URL:"
 msgstr "Rhowch URL:"
 
-#: ../sb-includes/admin.php:1852
+#: sb-includes/admin.php:1848
 msgid "Enter embed or shortcode:"
 msgstr "Rhowch god mewnbynnu neu fyr:"
 
-#: ../sb-includes/admin.php:2064
+#: sb-includes/admin.php:2059
 msgid "Help page"
 msgstr "Tudalen gymorth"
 
-#: ../sb-includes/admin.php:2125
+#: sb-includes/admin.php:2120
 #, fuzzy
 msgid ""
 "Error:</b> The MP3 shortcode must link to individual sermon files. You do "
@@ -818,7 +820,7 @@ msgstr ""
 "span> yn eich cod byr (e.e.[audio:%SERMONURL%]). Bydd SermonBrowser yn newid "
 "%SERMONURL% i ddolen i bob pregeth."
 
-#: ../sb-includes/admin.php:2129
+#: sb-includes/admin.php:2124
 msgid ""
 "Error:</b> You have specified a custom MP3 shortcode, but Wordpress "
 "doesn&#146;t know how to interpret it. Make sure the shortcode is correct, "
@@ -828,11 +830,11 @@ msgstr ""
 "gwybod sut i'w drin. Gwnewch yn siŵr fod y cod byr yn gywir a bod yr ategyn "
 "cywir wedi ei weithredu."
 
-#: ../sb-includes/admin.php:2133
+#: sb-includes/admin.php:2128
 msgid "Hint:"
 msgstr "Awgrym:"
 
-#: ../sb-includes/admin.php:2133
+#: sb-includes/admin.php:2128
 #, php-format
 msgid ""
 "%sCreate a page%s that includes the shortcode [sermons], so that "
@@ -841,91 +843,145 @@ msgstr ""
 "%sRhaid creu tudalen%s sy'n cynnwys y cod [sermons] fel bod SermonBrowser yn "
 "gwybod lle i ddangos pregeth eich gwefan."
 
-#: ../sb-includes/admin.php:2167
+#: sb-includes/admin.php:2162
 msgid "You have"
 msgstr "Mae gennych"
 
-#: ../sb-includes/admin.php:2171 ../sb-includes/admin.php:2179
+#: sb-includes/admin.php:2164 sb-includes/frontend.php:683
+#, fuzzy, php-format
+msgid "%s file"
+msgid_plural "%s files"
+msgstr[0] "Ffeil %s"
+msgstr[1] "Ffeil %s"
+msgstr[2] "Ffeil %s"
+msgstr[3] "Ffeil %s"
+
+#: sb-includes/admin.php:2166 sb-includes/admin.php:2174
 msgid "in"
 msgstr "yn"
 
-#: ../sb-includes/admin.php:2175
+#: sb-includes/admin.php:2167
+#, php-format
+msgid "%s sermon"
+msgid_plural "%s sermons"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: sb-includes/admin.php:2170
 msgid "from"
 msgstr "o"
 
-#: ../sb-includes/admin.php:2180
+#: sb-includes/admin.php:2171
+#, php-format
+msgid "%s preacher"
+msgid_plural "%s preachers"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: sb-includes/admin.php:2175
 #, php-format
 msgid "%s series"
 msgstr "%s cyfres"
 
-#: ../sb-includes/admin.php:2183
+#: sb-includes/admin.php:2178
 msgid "using"
 msgstr "gan ddefnyddio"
 
-#: ../sb-includes/admin.php:2191
+#: sb-includes/admin.php:2178
+#, php-format
+msgid "%s tag"
+msgid_plural "%s tags"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: sb-includes/admin.php:2182
+#, php-format
+msgid "Only one file has been downloaded"
+msgid_plural "They have been downloaded a total of %s times"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: sb-includes/admin.php:2184
+#, php-format
+msgid "an average of once per sermon"
+msgid_plural "an average of %d times per sermon"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: sb-includes/admin.php:2186
 #, php-format
 msgid "The most popular sermon is %s, which has been downloaded %s times"
 msgstr "Y bregeth fwyaf poblogaidd yw %s, sydd wedi ei lwytho i lawr %s gwaith"
 
-#: ../sb-includes/admin.php:2339 ../sb-includes/admin.php:2416
-#: ../sb-includes/widget.php:303
+#: sb-includes/admin.php:2333 sb-includes/admin.php:2408
+#: sb-includes/widget.php:299
 msgid "Title:"
 msgstr "Teitl:"
 
-#: ../sb-includes/admin.php:2341 ../sb-includes/admin.php:2418
-#: ../sb-includes/widget.php:305
+#: sb-includes/admin.php:2335 sb-includes/admin.php:2410
+#: sb-includes/widget.php:301
 msgid "Number of sermons: "
 msgstr "Nifer o bregethau: "
 
-#: ../sb-includes/admin.php:2343 ../sb-includes/widget.php:307
+#: sb-includes/admin.php:2337 sb-includes/widget.php:303
 msgid "Display preacher"
 msgstr "Dangos pregethwr"
 
-#: ../sb-includes/admin.php:2344 ../sb-includes/widget.php:308
+#: sb-includes/admin.php:2338 sb-includes/widget.php:304
 msgid "Display bible passage"
 msgstr "Dangos darn o'r Beibl"
 
-#: ../sb-includes/admin.php:2345 ../sb-includes/widget.php:309
+#: sb-includes/admin.php:2339 sb-includes/widget.php:305
 msgid "Display date"
 msgstr "Dyddiad dangos"
 
-#: ../sb-includes/admin.php:2346 ../sb-includes/widget.php:310
+#: sb-includes/admin.php:2340 sb-includes/widget.php:306
 msgid "Display mini-player"
 msgstr "Dangos chwaraewr bach"
 
-#: ../sb-includes/admin.php:2350 ../sb-includes/widget.php:314
+#: sb-includes/admin.php:2344 sb-includes/widget.php:310
 msgid "Preacher: "
 msgstr "Pregethwr: "
 
-#: ../sb-includes/admin.php:2353 ../sb-includes/admin.php:2364
-#: ../sb-includes/admin.php:2375 ../sb-includes/frontend.php:1021
-#: ../sb-includes/frontend.php:1029 ../sb-includes/frontend.php:1039
-#: ../sb-includes/frontend.php:1047 ../sb-includes/widget.php:317
-#: ../sb-includes/widget.php:328 ../sb-includes/widget.php:339
+#: sb-includes/admin.php:2347 sb-includes/admin.php:2358
+#: sb-includes/admin.php:2369 sb-includes/frontend.php:1013
+#: sb-includes/frontend.php:1021 sb-includes/frontend.php:1031
+#: sb-includes/frontend.php:1039 sb-includes/widget.php:313
+#: sb-includes/widget.php:324 sb-includes/widget.php:335
 msgid "[All]"
 msgstr "[Pob un]"
 
-#: ../sb-includes/admin.php:2361 ../sb-includes/widget.php:325
+#: sb-includes/admin.php:2355 sb-includes/widget.php:321
 msgid "Service: "
 msgstr "Gwasanaeth: "
 
-#: ../sb-includes/admin.php:2372 ../sb-includes/widget.php:336
+#: sb-includes/admin.php:2366 sb-includes/widget.php:332
 msgid "Series: "
 msgstr "Cyfres: "
 
-#: ../sb-includes/admin.php:2420
+#: sb-includes/admin.php:2412
 msgid "Display popular sermons"
 msgstr "Dangos pregethau poblogaidd"
 
-#: ../sb-includes/admin.php:2421
+#: sb-includes/admin.php:2413
 msgid "Display popular series"
 msgstr "Dangos cyfresi poblogaidd"
 
-#: ../sb-includes/admin.php:2422
+#: sb-includes/admin.php:2414
 msgid "Display popular preachers"
 msgstr "Dangos pregethwyr poblogaidd"
 
-#: ../sb-includes/admin.php:2448
+#: sb-includes/admin.php:2439
 msgid ""
 "SermonBrowser can automatically pre-fill this form by reading ID3 tags from "
 "MP3 files."
@@ -933,7 +989,7 @@ msgstr ""
 "Mae modd i SermonBrowser rhaglenwi'n awtomatig y ffurflen hon drwy ddarllen "
 "y tagiau ID3 o'r ffeiliau MP3."
 
-#: ../sb-includes/admin.php:2451
+#: sb-includes/admin.php:2442
 #, php-format
 msgid ""
 "You will need to set the %s before you can import MP3s and pre-fill the Add "
@@ -942,72 +998,72 @@ msgstr ""
 "Bydd rhaid gosod y %s cyn bod modd mewnforio'r MP3 a rhaglenwi'r ffurflen "
 "Ychwanegu Pregeth."
 
-#: ../sb-includes/admin.php:2451
+#: sb-includes/admin.php:2442
 msgid "import options"
 msgstr "dewisiadau mewnforio"
 
-#: ../sb-includes/admin.php:2465
+#: sb-includes/admin.php:2456
 #, php-format
 msgid "Select an MP3 file here to have the %s form pre-filled using ID3 tags."
 msgstr ""
 "Dewiswch ffeil MP3 yma i'r ffurflen %s gael ei rhaglenwi gan ddefnyddio "
 "tagiau ID3."
 
-#: ../sb-includes/admin.php:2465
+#: sb-includes/admin.php:2456
 msgid "Add Sermons"
 msgstr "Ychwanegu Pregethau"
 
-#: ../sb-includes/admin.php:2465
+#: sb-includes/admin.php:2456
 msgid "Upload file"
 msgstr "Llwytho Ffeil i Fyny"
 
-#: ../sb-includes/admin.php:2470
+#: sb-includes/admin.php:2461
 msgid "File to upload"
 msgstr "Ffeil i'w Llwytho"
 
-#: ../sb-includes/admin.php:2476
+#: sb-includes/admin.php:2467
 msgid "Upload"
 msgstr "Llwytho i fyny"
 
-#: ../sb-includes/admin.php:2481
+#: sb-includes/admin.php:2472
 msgid "Upload is disabled. Please contact your systems administrator."
 msgstr "Mae llwytho i fyny wedi ei atal. Cysylltwch â’ch gweinyddwr."
 
-#: ../sb-includes/admin.php:2485
+#: sb-includes/admin.php:2476
 msgid "Upload is disabled. Please check your folder setting in Options."
 msgstr ""
 "Mae llwytho i fyny wedi ei atal. Gwiriwch eich gosodiadau ffolder yn "
 "Dewisiadau."
 
-#: ../sb-includes/admin.php:2492
+#: sb-includes/admin.php:2483
 msgid "URL to import"
 msgstr "URL i'w fewnforio"
 
-#: ../sb-includes/admin.php:2495
+#: sb-includes/admin.php:2486
 msgid "Link to remote file"
 msgstr "Cyswllt i ffeil pell"
 
-#: ../sb-includes/admin.php:2495
+#: sb-includes/admin.php:2486
 msgid "Copy remote file to server"
 msgstr "Copïo’r ffeil bell i'r gweinydd"
 
-#: ../sb-includes/admin.php:2497
+#: sb-includes/admin.php:2488
 msgid "Import"
 msgstr "Mewnforio"
 
-#: ../sb-includes/admin.php:2505
+#: sb-includes/admin.php:2496
 msgid "Choose existing file"
 msgstr "Dewis y ffeil gyfredol"
 
-#: ../sb-includes/admin.php:2516
+#: sb-includes/admin.php:2507
 msgid "Select"
 msgstr "Dewis"
 
-#: ../sb-includes/admin.php:2529
+#: sb-includes/admin.php:2519
 msgid "SermonBrowser Help"
 msgstr "Cymorth SermonBrowser"
 
-#: ../sb-includes/admin.php:2533
+#: sb-includes/admin.php:2523
 msgid ""
 "From this page you can edit or delete any of your sermons. The most recent "
 "sermons are found at the top. Use the filter options to quickly find the one "
@@ -1017,7 +1073,7 @@ msgstr ""
 "pregethau diweddaraf ar y brig. Defnyddiwch yr hodl i ddod o hyd i'r un sydd "
 "ei hangen."
 
-#: ../sb-includes/admin.php:2540
+#: sb-includes/admin.php:2530
 msgid ""
 "It&#146;s important that these options are set correctly, as otherwise "
 "SermonBrowser won&#146;t behave as you expect."
@@ -1025,11 +1081,11 @@ msgstr ""
 "Mae'n bvwysig fod y dewisiadau wedi eu gosod yn gywir, neu fel arall ni fydd "
 "SermonBrowser yn gweithredu yn ôl y disgwyl."
 
-#: ../sb-includes/admin.php:2541
+#: sb-includes/admin.php:2531
 msgid "The upload folder would normally be <b>wp-content/uploads/sermons</b>"
 msgstr "Y ffolder llwytho i fyny arferol yw <b>wp-content/uploads/sermons</b>"
 
-#: ../sb-includes/admin.php:2542
+#: sb-includes/admin.php:2532
 msgid ""
 "You should only change the public podcast feed if you re-direct your podcast "
 "using a service like Feedburner. Otherwise it should be the same as the "
@@ -1039,7 +1095,7 @@ msgstr ""
 "podlediad, y dylech newid y llif podlediad cyhoeddus. Fel arall, dylai fod "
 "yr un â'r llif podlediad preifat."
 
-#: ../sb-includes/admin.php:2543
+#: sb-includes/admin.php:2533
 msgid ""
 "The MP3 shortcode you need will be in the documation of your favourite MP3 "
 "plugin. Use the tag %SERMONURL% in place of the URL of the MP3 file (e.g. "
@@ -1049,7 +1105,7 @@ msgstr ""
 "tag %SERMONURL% yn lle URL y ffeil MP3 (e.e. [haiku url=\"%SERMONURL%\"] neu "
 "[audio:%SERMONURL%])."
 
-#: ../sb-includes/admin.php:2546
+#: sb-includes/admin.php:2536
 #, php-format
 msgid ""
 "Template editing is one of the most powerful features of SermonBrowser. Be "
@@ -1058,465 +1114,474 @@ msgstr ""
 "Mae golygu templed yn un o nodweddion mwyaf pwerus Sermon Browser. Gwnewch "
 "yn siŵr eich bod yn edrych ar restr gyflawn %stemplate tags%s."
 
-#: ../sb-includes/admin.php:2552
+#: sb-includes/admin.php:2542
 msgid "Tutorial Screencasts"
 msgstr "Cyflwyniad Sgrinlediad"
 
-#: ../sb-includes/admin.php:2553
+#: sb-includes/admin.php:2543
 msgid "Frequently Asked Questions"
 msgstr "Cwestiynnau"
 
-#: ../sb-includes/admin.php:2554
+#: sb-includes/admin.php:2544
 msgid "Support Forum"
 msgstr "Fforwm Cefnogaeth"
 
-#: ../sb-includes/admin.php:2555
+#: sb-includes/admin.php:2545
 msgid "Shortcode syntax"
 msgstr "Cystrawen cod byr"
 
-#: ../sb-includes/admin.php:2556
+#: sb-includes/admin.php:2546
 msgid "Donate"
 msgstr "Rhodd"
 
-#: ../sb-includes/ajax.php:189
+#: sb-includes/ajax.php:188
 msgid "No results"
 msgstr "Dim canlyniadau"
 
-#: ../sb-includes/frontend.php:45 ../sb-includes/frontend.php:93
-#: ../sb-includes/widget.php:55 ../sb-includes/widget.php:209
+#: sb-includes/frontend.php:45 sb-includes/frontend.php:92
+#: sb-includes/widget.php:55 sb-includes/widget.php:206
 msgid "by"
 msgstr "gan"
 
-#: ../sb-includes/frontend.php:50 ../sb-includes/widget.php:60
+#: sb-includes/frontend.php:50 sb-includes/widget.php:60
 msgid "on"
 msgstr "ar"
 
-#: ../sb-includes/frontend.php:98 ../sb-includes/widget.php:214
+#: sb-includes/frontend.php:97 sb-includes/widget.php:211
 msgid " on "
 msgstr " ar "
 
-#: ../sb-includes/frontend.php:112 ../sb-includes/widget.php:92
-#: ../sb-includes/widget.php:104 ../sermon.php:555
+#: sb-includes/frontend.php:110 sb-includes/widget.php:91
+#: sb-includes/widget.php:102 sermon.php:552
 msgid "Sermon Browser tags"
 msgstr "tagiau SermonBrowser"
 
-#: ../sb-includes/frontend.php:122 ../sermon.php:276
-msgid "Edit Sermon"
-msgstr "Golygu Pregeth"
-
-#: ../sb-includes/frontend.php:123
+#: sb-includes/frontend.php:121
 msgid "List Sermons"
 msgstr "Rhestru Pregethau"
 
-#: ../sb-includes/frontend.php:127 ../sermon.php:278
-msgid "Add Sermon"
-msgstr "Ychwanegu Pregeth"
-
-#: ../sb-includes/frontend.php:133 ../sermon.php:282
+#: sb-includes/frontend.php:131 sermon.php:281
 msgid "Series &amp; Services"
 msgstr "Cyfresi a Gwasanaethau"
 
-#: ../sb-includes/frontend.php:136 ../sermon.php:283
+#: sb-includes/frontend.php:134 sermon.php:282
 msgid "Options"
 msgstr "Dewisiadau"
 
-#: ../sb-includes/frontend.php:141 ../sermon.php:286
+#: sb-includes/frontend.php:139 sermon.php:285
 msgid "Help"
 msgstr "Cymorth"
 
-#: ../sb-includes/frontend.php:142 ../sermon.php:287
+#: sb-includes/frontend.php:140 sermon.php:286
 msgid "Pray for Japan"
 msgstr "Gweddïo dros Japan"
 
-#: ../sb-includes/frontend.php:329 ../sermon.php:501
+#: sb-includes/frontend.php:326 sermon.php:499
 msgid "No sermons found."
 msgstr "Heb ganfod pregeth."
 
-#: ../sb-includes/frontend.php:519
+#: sb-includes/frontend.php:516
 msgid "Sermon podcast"
 msgstr "Podlediad pregeth"
 
-#: ../sb-includes/frontend.php:528
+#: sb-includes/frontend.php:525
 msgid "Custom sermon podcast"
 msgstr "Podlediad pergeth addasu"
 
-#: ../sb-includes/frontend.php:550
+#: sb-includes/frontend.php:546
 msgid "Unknown Date"
 msgstr "Dyddiad anhysbys"
 
-#: ../sb-includes/frontend.php:642
+#: sb-includes/frontend.php:638
 msgid "Next page"
 msgstr "Tudalen nesaf"
 
-#: ../sb-includes/frontend.php:653
+#: sb-includes/frontend.php:648
 msgid "Previous page"
 msgstr "Tudalen flaenorol"
 
-#: ../sb-includes/frontend.php:689
-#, php-format
-msgid "%s file"
-msgstr "Ffeil %s"
-
-#: ../sb-includes/frontend.php:706
+#: sb-includes/frontend.php:699
 msgid "Download"
 msgstr "Llwytho i Lawr"
 
-#: ../sb-includes/frontend.php:720
+#: sb-includes/frontend.php:712
 msgid "About"
 msgstr "Ynghylch"
 
-#: ../sb-includes/frontend.php:829
+#: sb-includes/frontend.php:821
 msgid "more"
 msgstr "rhagor"
 
-#: ../sb-includes/frontend.php:913
+#: sb-includes/frontend.php:905
 msgid "Show filter"
 msgstr "Dangos hidl"
 
-#: ../sb-includes/frontend.php:914
+#: sb-includes/frontend.php:906
 msgid "Hide filter"
 msgstr "Cuddio'r hidl"
 
-#: ../sb-includes/frontend.php:960
+#: sb-includes/frontend.php:952
 msgid "Active filter"
 msgstr "Hidl gweithredol"
 
-#: ../sb-includes/frontend.php:1007
+#: sb-includes/frontend.php:999
 msgid "Ascending"
 msgstr "I Fyny"
 
-#: ../sb-includes/frontend.php:1008
+#: sb-includes/frontend.php:1000
 msgid "Descending"
 msgstr "I Lawr"
 
-#: ../sb-includes/frontend.php:1027
+#: sb-includes/frontend.php:1019
 msgid "Services"
 msgstr "Gwasanaethau"
 
-#: ../sb-includes/frontend.php:1037
+#: sb-includes/frontend.php:1029
 msgid "Book"
 msgstr "Llyfr"
 
-#: ../sb-includes/frontend.php:1055
+#: sb-includes/frontend.php:1047
 msgid "Start date"
 msgstr "Dyddiad cychwyn"
 
-#: ../sb-includes/frontend.php:1057
+#: sb-includes/frontend.php:1049
 msgid "End date"
 msgstr "Dyddiad gorffen"
 
-#: ../sb-includes/frontend.php:1061
+#: sb-includes/frontend.php:1053
 msgid "Keywords"
 msgstr "Allweddeiriau"
 
-#: ../sb-includes/frontend.php:1065
+#: sb-includes/frontend.php:1057
 msgid "Sort by"
 msgstr "Trefnu yn ôl"
 
-#: ../sb-includes/frontend.php:1072
+#: sb-includes/frontend.php:1064
 msgid "Direction"
 msgstr "Cyfeiriad"
 
-#: ../sb-includes/frontend.php:1082
+#: sb-includes/frontend.php:1074
 msgid "Filter &raquo;"
 msgstr "Hidl &raquo;"
 
-#: ../sb-includes/uninstall.php:25
+#: sb-includes/uninstall.php:25
 msgid "All sermon data has been removed."
 msgstr "Mae'r holl ddata pregethau wedi eu tynnu."
 
-#: ../sb-includes/uninstall.php:27
+#: sb-includes/uninstall.php:27
 msgid "Uninstall completed. The SermonBrowser plugin has been deactivated."
 msgstr ""
 "Dadosod wedi ei gwblhau. Mae ategyn Sermon Browser wedi ei ddadweithredu."
 
-#: ../sermon.php:100 ../sermon.php:109 ../sermon.php:163
+#: sermon.php:101 sermon.php:110 sermon.php:164
 msgid "not found"
 msgstr "heb ganfod"
 
-#: ../sermon.php:100 ../sermon.php:163
+#: sermon.php:101 sermon.php:164
 msgid "File not found"
 msgstr "Heb ganfod ffeil"
 
-#: ../sermon.php:109
+#: sermon.php:110
 msgid "URL not found"
 msgstr "Heb ganfod URL"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Genesis"
 msgstr "Genesis"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Exodus"
 msgstr "Exodus"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Leviticus"
 msgstr "Lefiticus"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Numbers"
 msgstr "Numeri"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Deuteronomy"
 msgstr "Deuteronomium"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Joshua"
 msgstr "Josua"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Judges"
 msgstr "Llyfr y Barnwyr"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Ruth"
 msgstr "Ruth"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "1 Samuel"
 msgstr "1 Samuel"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "2 Samuel"
 msgstr "2 Samuel"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "1 Kings"
 msgstr "1 Brenhinoedd"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "2 Kings"
 msgstr "2 Brenhinoedd"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "1 Chronicles"
 msgstr "1 Cronicl"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "2 Chronicles"
 msgstr "2 Cronicl"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Ezra"
 msgstr "Esra"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Nehemiah"
 msgstr "Nehemia"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Esther"
 msgstr "Esther"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Job"
 msgstr "Job"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Psalm"
 msgstr "Salmau"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Proverbs"
 msgstr "Diarhebion"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Ecclesiastes"
 msgstr "Llyfr y Pregethwr"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Song of Solomon"
 msgstr "Caniad Solomon"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Isaiah"
 msgstr "Eseia"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Jeremiah"
 msgstr "Jeremia"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Lamentations"
 msgstr "Galarnad"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Ezekiel"
 msgstr "Eseciel"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Daniel"
 msgstr "Daniel"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Hosea"
 msgstr "Hosea"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Joel"
 msgstr "Joel"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Amos"
 msgstr "Amos"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Obadiah"
 msgstr "Obadeia"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Jonah"
 msgstr "Jona"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Micah"
 msgstr "Micha"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Nahum"
 msgstr "Nahum"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Habakkuk"
 msgstr "Habacuc"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Zephaniah"
 msgstr "Seffaneia"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Haggai"
 msgstr "Haggai"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Zechariah"
 msgstr "Sechareia"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Malachi"
 msgstr "Malachi"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Matthew"
 msgstr "Mathew"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Mark"
 msgstr "Marc"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Luke"
 msgstr "Luc"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "John"
 msgstr "Ioan"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Acts"
 msgstr "Actau"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Romans"
 msgstr "Rhufeiniaid"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "1 Corinthians"
 msgstr "1 Corinthiaid"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "2 Corinthians"
 msgstr "2 Corinthiaid"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Galatians"
 msgstr "Galatiaid"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Ephesians"
 msgstr "Effesiaid"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Philippians"
 msgstr "Philipiaid"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Colossians"
 msgstr "Colosiaid"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "1 Thessalonians"
 msgstr "1 Thesaloniaid"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "2 Thessalonians"
 msgstr "2 Thesaloniaid"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "1 Timothy"
 msgstr "1 Timotheus"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "2 Timothy"
 msgstr "2 Timotheus"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Titus"
 msgstr "Titus"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Philemon"
 msgstr "Philemon"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Hebrews"
 msgstr "Hebreaid"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "James"
 msgstr "Iago"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "1 Peter"
 msgstr "1 Pedr"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "2 Peter"
 msgstr "2 Pedr"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "1 John"
 msgstr "1 Ioan"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "2 John"
 msgstr "2 Ioan"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "3 John"
 msgstr "3 Ioan"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Jude"
 msgstr "Jwdas"
 
-#: ../sermon.php:361
+#: sermon.php:359
 msgid "Revelation"
 msgstr "Datguddiad"
 
-#: ../sermon.php:538
+#: sermon.php:535
 msgid "Display a list of recent sermons."
 msgstr "Dangos rhestr o bregethau diweddar."
 
-#: ../sermon.php:557
+#: sermon.php:554
 msgid "Most popular sermons"
 msgstr "Pregethau mwyaf poblogaidd"
 
-#: ../sermon.php:558
+#: sermon.php:555
 msgid "Display a list of the most popular sermons, series or preachers."
 msgstr "Dangos rhestr o'r pregethau, cyfresi neu bregethwyr mwyaf poblogaidd."
+
+#. Plugin Name of the plugin/theme
+msgid "Sermon Browser"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.sermonbrowser.com/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Upload sermons to your website, where they can be searched, listened to, and "
+"downloaded. Easy to use with comprehensive help and tutorials."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Mark Barnes"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://www.markbarnes.net/"
+msgstr ""
 
 #~ msgid ""
 #~ "Tip: Installing the %1$sWordpress Audio Player%2$s, or another Wordpress "
