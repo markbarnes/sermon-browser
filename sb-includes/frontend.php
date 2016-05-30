@@ -484,7 +484,7 @@ function sb_add_other_bibles ($start, $end, $version) {
 function sb_edit_link ($id) {
 	if (current_user_can('publish_posts')) {
 		$id = (int)$id;
-		echo '<div class="sb_edit_link"><a href="'.site_url().'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$id.'">Edit Sermon</a></div>';
+		echo '<div class="sb_edit_link"><a href="'.site_url().'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$id.'">'.__('Edit Sermon', 'sermon-browser').'</a></div>';
 	}
 }
 
@@ -703,7 +703,7 @@ function sb_print_url_link($url) {
 
 //Decode base64 encoded data
 function sb_print_code($code) {
-	echo do_shortcode(base64_decode($code));
+	echo apply_filters('the_content',base64_decode($code));
 }
 
 //Prints preacher description

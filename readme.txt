@@ -30,13 +30,14 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 12. Support for multisite.
 13. Extensive **help** and [tutorial screencasts](http://www.sermonbrowser.com/tutorials/).
 14. Active [community support fourm](http://www.sermonbrowser.com/forum/).
-15. In addition to English, Brazilian Portugese, German, Hindi, Romanian, Russian, Spanish, Ukrainian and Welsh translations are included.
+15. Translated into Brazilian Portugese, German, Hindi, Italian, Romanian, Russian, Spanish, Ukrainian and Welsh.
 
 = Translations provided by =
 
 * Brazilian Portugese [DIJO](http://www.djio.com.br/sermonbrowser-em-portugues-brasileiro-pt_br/)
 * German - Monika Gause
 * Hindi - [Chanel](http://outshinesolutions.com/)
+* Italian - Manoah Cammarano
 * Romanian - [Lucian Mihailescu](http://lucianwebservice.com/)
 * Russian - [FatCow](http://www.fatcow.com/), [Vadym Gulyi](http://www.vady.kiev.ua/) and [Alisa Bagrii](http://www.everycloudtech.com/)
 * Spanish - Juan, and Marvin Ortega
@@ -259,6 +260,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.18 =
+Fixes bug that prevented shortcodes from working and adds Italian translation.
+
 = 0.45.17 =
 Minor, under-the-hood changes to translations.
 
@@ -325,6 +329,11 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.45.18 (23 May 2016) =
+* **Bug fix:** Fixed bug that prevented shortcodes from working. 
+* **Enhancement:** No need to surround embedded videos with the [embed] shortcode. 
+* **Enhancement:** Added Italian translation (thanks to Manoah Cammarano)
 
 = 0.45.17 (23 May 2016) =
 * **Enhancement:** Minor, under-the-hood changes to translations. 

@@ -1671,7 +1671,7 @@ function sb_new_sermon() {
 	<?php sb_do_alerts(); ?>
 	<div class="wrap">
 		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
-		<h2><?php echo isset($_GET['mid']) ? 'Edit Sermon' : 'Add Sermon' ?></h2>
+		<h2><?php echo isset($_GET['mid']) ? __('Edit Sermon', 'sermon-browser') : __('Add Sermon', 'sermon-browser'); ?></h2>
 		<?php if (!isset($_GET['mid']) && !isset($_GET['getid3']) && sb_get_option('import_prompt')) {
 			if  (!sb_import_options_set()) {
 				echo '<p class="plugin-update">';
