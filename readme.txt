@@ -335,6 +335,7 @@ Important security fixes. All users should upgrade to this version.
 
 = 0.45.19 (31 May 2016) =
 * **Bug fix:** Fixed bug introduced in 0.45.16 that prevented iframe embeds from being saved.
+* See [changeset](https://plugins.trac.wordpress.org/changeset/1427807/sermon-browser/trunk)
 
 = 0.45.18 (30 May 2016) =
 * **Bug fix:** Fixed bug that prevented shortcodes from working. 
