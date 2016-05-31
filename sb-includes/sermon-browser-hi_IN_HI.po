@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AMA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-30 15:19+0100\n"
+"POT-Creation-Date: 2016-05-31 21:59+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: shivangi <shivangi@outshinesolutions.com>\n"
 "Language-Team: Outshine Solutions <ash.pr@outshinesolutions.com>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: _e;__\n"
 "X-Poedit-Basepath: ..\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -249,7 +249,7 @@ msgid "Reset to defaults"
 msgstr "मूलभूत में फिर सेट करें"
 
 #: sb-includes/admin.php:299 sb-includes/admin.php:408 sb-includes/admin.php:539
-#: sb-includes/admin.php:1868
+#: sb-includes/admin.php:1870
 msgid "Save"
 msgstr "बचाना"
 
@@ -369,7 +369,7 @@ msgstr "छवियों फ़ोल्डर लेखनीय नहीं
 msgid "Name"
 msgstr "नाम"
 
-#: sb-includes/admin.php:518 sb-includes/admin.php:1755
+#: sb-includes/admin.php:518 sb-includes/admin.php:1757
 msgid "Description"
 msgstr "विवरण"
 
@@ -421,19 +421,19 @@ msgstr "क्या आप सुनिश्चित हैं कि आप%
 msgid "You do not have the correct permissions to manage the series and services database"
 msgstr "आप सही अनुमतियाँ श्रृंखला और सेवाओं डेटाबेस का प्रबंधन करने के लिए नहीं है"
 
-#: sb-includes/admin.php:619 sb-includes/admin.php:697 sb-includes/admin.php:1589
+#: sb-includes/admin.php:619 sb-includes/admin.php:697 sb-includes/admin.php:1591
 msgid "New service's name @ default time?"
 msgstr "नई सेवा का नाम डिफ़ॉल्ट @ समय?"
 
-#: sb-includes/admin.php:619 sb-includes/admin.php:1589
+#: sb-includes/admin.php:619 sb-includes/admin.php:1591
 msgid "Service's name @ 18:00"
 msgstr "सेवा के नाम 18:00 @"
 
-#: sb-includes/admin.php:645 sb-includes/admin.php:684 sb-includes/admin.php:1604
+#: sb-includes/admin.php:645 sb-includes/admin.php:684 sb-includes/admin.php:1606
 msgid "New series' name?"
 msgstr "नई श्रृंखला का नाम है?"
 
-#: sb-includes/admin.php:645 sb-includes/admin.php:1604
+#: sb-includes/admin.php:645 sb-includes/admin.php:1606
 msgid "Series' name"
 msgstr "श्रृंखला नाम"
 
@@ -609,16 +609,16 @@ msgstr "आप उपदेश को नष्ट करने के लिए
 msgid "Sermon removed from database."
 msgstr "उपदेश डेटाबेस से हटा दिया."
 
-#: sb-includes/admin.php:1222 sb-includes/admin.php:1252 sb-includes/admin.php:1695
+#: sb-includes/admin.php:1222 sb-includes/admin.php:1252 sb-includes/admin.php:1697
 msgid "Title"
 msgstr "शीर्षक"
 
-#: sb-includes/admin.php:1226 sb-includes/admin.php:1253 sb-includes/admin.php:1709
+#: sb-includes/admin.php:1226 sb-includes/admin.php:1253 sb-includes/admin.php:1711
 #: sb-includes/frontend.php:1011
 msgid "Preacher"
 msgstr "उपदेशक"
 
-#: sb-includes/admin.php:1235 sb-includes/admin.php:1256 sb-includes/admin.php:1728
+#: sb-includes/admin.php:1235 sb-includes/admin.php:1256 sb-includes/admin.php:1730
 #: sb-includes/frontend.php:1037
 msgid "Series"
 msgstr "श्रृंखला"
@@ -627,12 +627,12 @@ msgstr "श्रृंखला"
 msgid "Filter"
 msgstr "फ़िल्टर"
 
-#: sb-includes/admin.php:1254 sb-includes/admin.php:1749 sb-includes/frontend.php:828
+#: sb-includes/admin.php:1254 sb-includes/admin.php:1751 sb-includes/frontend.php:828
 #: sb-includes/frontend.php:919
 msgid "Date"
 msgstr "तारीख"
 
-#: sb-includes/admin.php:1255 sb-includes/admin.php:1769
+#: sb-includes/admin.php:1255 sb-includes/admin.php:1771
 msgid "Service"
 msgstr "सेवा"
 
@@ -652,96 +652,96 @@ msgstr "आप सही अनुमतियाँ संपादित य�
 msgid "You do not have the correct permissions to create sermons"
 msgstr "आपको उपदेश बनाने के लिए सही अनुमति नहीं है"
 
-#: sb-includes/admin.php:1473
+#: sb-includes/admin.php:1475
 msgid "No ID3 tags found."
 msgstr "कोई ID3 टैग मिला."
 
-#: sb-includes/admin.php:1570
+#: sb-includes/admin.php:1572
 msgid "New preacher's name?"
 msgstr "नए उपदेशक का नाम है?"
 
-#: sb-includes/admin.php:1570
+#: sb-includes/admin.php:1572
 msgid "Preacher's name"
 msgstr "उपदेशक नाम"
 
-#: sb-includes/admin.php:1674 sb-includes/frontend.php:120 sb-includes/frontend.php:487
+#: sb-includes/admin.php:1676 sb-includes/frontend.php:120 sb-includes/frontend.php:487
 #: sermon.php:275
 msgid "Edit Sermon"
 msgstr "उपदेश संपादित करें"
 
-#: sb-includes/admin.php:1674 sb-includes/frontend.php:125 sermon.php:277
+#: sb-includes/admin.php:1676 sb-includes/frontend.php:125 sermon.php:277
 msgid "Add Sermon"
 msgstr "उपदेश में जोड़ें"
 
-#: sb-includes/admin.php:1690
+#: sb-includes/admin.php:1692
 msgid "Enter sermon details"
 msgstr "उपदेश विवरण दर्ज करें"
 
-#: sb-includes/admin.php:1701
+#: sb-includes/admin.php:1703
 msgid "Tags (comma separated)"
 msgstr "टैग (अलग अल्पविराम)"
 
-#: sb-includes/admin.php:1724
+#: sb-includes/admin.php:1726
 msgid "Create new preacher"
 msgstr "नई उपदेशक बनाएँ"
 
-#: sb-includes/admin.php:1743
+#: sb-includes/admin.php:1745
 msgid "Create new series"
 msgstr "नई श्रृंखला बनाएँ"
 
-#: sb-includes/admin.php:1778
+#: sb-includes/admin.php:1780
 msgid "Create new service"
 msgstr "नई सेवा बनाएँ"
 
-#: sb-includes/admin.php:1784
+#: sb-includes/admin.php:1786
 msgid "Time"
 msgstr "समय"
 
-#: sb-includes/admin.php:1787
+#: sb-includes/admin.php:1789
 msgid "Override default time"
 msgstr "डिफ़ॉल्ट समय ओवरराइड करें"
 
-#: sb-includes/admin.php:1793
+#: sb-includes/admin.php:1795
 msgid "Bible passage"
 msgstr "बाइबल पारित"
 
-#: sb-includes/admin.php:1793 sb-includes/admin.php:1836
+#: sb-includes/admin.php:1795 sb-includes/admin.php:1838
 msgid "add more"
 msgstr "और अधिक जोड़"
 
-#: sb-includes/admin.php:1797
+#: sb-includes/admin.php:1799
 msgid "From"
 msgstr "से"
 
-#: sb-includes/admin.php:1798
+#: sb-includes/admin.php:1800
 msgid "To"
 msgstr "तक"
 
-#: sb-includes/admin.php:1836
+#: sb-includes/admin.php:1838
 msgid "Attachments"
 msgstr "अनुलग्नक"
 
-#: sb-includes/admin.php:1845
+#: sb-includes/admin.php:1847
 msgid "Choose existing file:"
 msgstr "मौजूदा फ़ाइल चुनें:"
 
-#: sb-includes/admin.php:1846
+#: sb-includes/admin.php:1848
 msgid "Upload a new one:"
 msgstr "एक नया अपलोड करें"
 
-#: sb-includes/admin.php:1847
+#: sb-includes/admin.php:1849
 msgid "Enter an URL:"
 msgstr "एक URL दर्ज करें:"
 
-#: sb-includes/admin.php:1848
+#: sb-includes/admin.php:1850
 msgid "Enter embed or shortcode:"
 msgstr "एम्बेड या shortcode दर्ज करें:"
 
-#: sb-includes/admin.php:2059
+#: sb-includes/admin.php:2061
 msgid "Help page"
 msgstr "पृष्ठ मदद"
 
-#: sb-includes/admin.php:2120
+#: sb-includes/admin.php:2122
 #, fuzzy
 msgid ""
 "Error:</b> The MP3 shortcode must link to individual sermon files. You do this by including "
@@ -752,7 +752,7 @@ msgstr ""
 "SERMONURL% ऑडियो]) आप के <span style=\"color:red\">% अपने लघुकोडः में SERMONURL% </ span> को शामिल "
 "करके इस करते हैं. SermonBrowser तो प्रत्येक उपदेश के लिए एक कड़ी के साथ% SERMONURL% की जगह लेगा."
 
-#: sb-includes/admin.php:2124
+#: sb-includes/admin.php:2126
 msgid ""
 "Error:</b> You have specified a custom MP3 shortcode, but Wordpress doesn&#146;t know how to "
 "interpret it. Make sure the shortcode is correct, and that the appropriate plugin is "
@@ -761,11 +761,11 @@ msgstr ""
 "त्रुटि: </ b> पर आप के एक कस्टम MP3 3 shortcode निर्दिष्ट किया है, लेकिन WordPress का नहीं पता है कि यह "
 "कैसे की व्याख्या करने के लिए. यकीन है कि shortcode सही है, और उचित प्लगइन सक्रिय है"
 
-#: sb-includes/admin.php:2128
+#: sb-includes/admin.php:2130
 msgid "Hint:"
 msgstr "सुझाव:"
 
-#: sb-includes/admin.php:2128
+#: sb-includes/admin.php:2130
 #, php-format
 msgid ""
 "%sCreate a page%s that includes the shortcode [sermons], so that SermonBrowser knows where to "
@@ -774,202 +774,202 @@ msgstr ""
 "%sएक पृष्ठ बनाएँ%s  कि लघुकोडः शामिल sCreate [उपदेश] तो, कि SermonBrowser जानता जहां अपनी साइट पर "
 "उपदेश को प्रदर्शित करने के लिए."
 
-#: sb-includes/admin.php:2162
+#: sb-includes/admin.php:2164
 msgid "You have"
 msgstr "तुम हो"
 
-#: sb-includes/admin.php:2164 sb-includes/frontend.php:683
+#: sb-includes/admin.php:2166 sb-includes/frontend.php:683
 #, fuzzy, php-format
 msgid "%s file"
 msgid_plural "%s files"
 msgstr[0] "%s फाइल"
 msgstr[1] "%s फाइल"
 
-#: sb-includes/admin.php:2166 sb-includes/admin.php:2174
+#: sb-includes/admin.php:2168 sb-includes/admin.php:2176
 msgid "in"
 msgstr "में"
 
-#: sb-includes/admin.php:2167
+#: sb-includes/admin.php:2169
 #, php-format
 msgid "%s sermon"
 msgid_plural "%s sermons"
 msgstr[0] ""
 msgstr[1] ""
 
-#: sb-includes/admin.php:2170
+#: sb-includes/admin.php:2172
 msgid "from"
 msgstr "से"
 
-#: sb-includes/admin.php:2171
+#: sb-includes/admin.php:2173
 #, php-format
 msgid "%s preacher"
 msgid_plural "%s preachers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: sb-includes/admin.php:2175
+#: sb-includes/admin.php:2177
 #, php-format
 msgid "%s series"
 msgstr "%s श्रृंखला"
 
-#: sb-includes/admin.php:2178
+#: sb-includes/admin.php:2180
 msgid "using"
 msgstr "उपयोग"
 
-#: sb-includes/admin.php:2178
+#: sb-includes/admin.php:2180
 #, php-format
 msgid "%s tag"
 msgid_plural "%s tags"
 msgstr[0] ""
 msgstr[1] ""
 
-#: sb-includes/admin.php:2182
+#: sb-includes/admin.php:2184
 #, php-format
 msgid "Only one file has been downloaded"
 msgid_plural "They have been downloaded a total of %s times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: sb-includes/admin.php:2184
+#: sb-includes/admin.php:2186
 #, php-format
 msgid "an average of once per sermon"
 msgid_plural "an average of %d times per sermon"
 msgstr[0] ""
 msgstr[1] ""
 
-#: sb-includes/admin.php:2186
+#: sb-includes/admin.php:2188
 #, php-format
 msgid "The most popular sermon is %s, which has been downloaded %s times"
 msgstr "सबसे लोकप्रिय धर्मोपदेश%s है, जो%s बार डाउनलोड किया गया है"
 
-#: sb-includes/admin.php:2333 sb-includes/admin.php:2408 sb-includes/widget.php:299
+#: sb-includes/admin.php:2335 sb-includes/admin.php:2410 sb-includes/widget.php:299
 msgid "Title:"
 msgstr "शीर्षक:"
 
-#: sb-includes/admin.php:2335 sb-includes/admin.php:2410 sb-includes/widget.php:301
+#: sb-includes/admin.php:2337 sb-includes/admin.php:2412 sb-includes/widget.php:301
 msgid "Number of sermons: "
 msgstr "उपदेश की संख्या:"
 
-#: sb-includes/admin.php:2337 sb-includes/widget.php:303
+#: sb-includes/admin.php:2339 sb-includes/widget.php:303
 msgid "Display preacher"
 msgstr "प्रचारक प्रदर्शित करें"
 
-#: sb-includes/admin.php:2338 sb-includes/widget.php:304
+#: sb-includes/admin.php:2340 sb-includes/widget.php:304
 msgid "Display bible passage"
 msgstr "बाईबल मार्ग प्रदर्शित करें"
 
-#: sb-includes/admin.php:2339 sb-includes/widget.php:305
+#: sb-includes/admin.php:2341 sb-includes/widget.php:305
 msgid "Display date"
 msgstr "दिनांक प्रदर्शित करें"
 
-#: sb-includes/admin.php:2340 sb-includes/widget.php:306
+#: sb-includes/admin.php:2342 sb-includes/widget.php:306
 msgid "Display mini-player"
 msgstr "प्रदर्शन मिनी खिलाड़ी"
 
-#: sb-includes/admin.php:2344 sb-includes/widget.php:310
+#: sb-includes/admin.php:2346 sb-includes/widget.php:310
 msgid "Preacher: "
 msgstr "धर्मप्रचारक:"
 
-#: sb-includes/admin.php:2347 sb-includes/admin.php:2358 sb-includes/admin.php:2369
+#: sb-includes/admin.php:2349 sb-includes/admin.php:2360 sb-includes/admin.php:2371
 #: sb-includes/frontend.php:1013 sb-includes/frontend.php:1021 sb-includes/frontend.php:1031
 #: sb-includes/frontend.php:1039 sb-includes/widget.php:313 sb-includes/widget.php:324
 #: sb-includes/widget.php:335
 msgid "[All]"
 msgstr "[सभी]"
 
-#: sb-includes/admin.php:2355 sb-includes/widget.php:321
+#: sb-includes/admin.php:2357 sb-includes/widget.php:321
 msgid "Service: "
 msgstr "सेवा:"
 
-#: sb-includes/admin.php:2366 sb-includes/widget.php:332
+#: sb-includes/admin.php:2368 sb-includes/widget.php:332
 msgid "Series: "
 msgstr "सिरीज़:"
 
-#: sb-includes/admin.php:2412
+#: sb-includes/admin.php:2414
 msgid "Display popular sermons"
 msgstr "लोकप्रिय उपदेश प्रदर्शित करें"
 
-#: sb-includes/admin.php:2413
+#: sb-includes/admin.php:2415
 msgid "Display popular series"
 msgstr "लोकप्रिय श्रृंखला प्रदर्शित करें"
 
-#: sb-includes/admin.php:2414
+#: sb-includes/admin.php:2416
 msgid "Display popular preachers"
 msgstr "लोकप्रिय प्रचारकों प्रदर्शित करें"
 
-#: sb-includes/admin.php:2439
+#: sb-includes/admin.php:2441
 msgid "SermonBrowser can automatically pre-fill this form by reading ID3 tags from MP3 files."
 msgstr "SermonBrowser स्वचालित रूप से एमपी 3 फ़ाइलें ID3 टैग को पढ़ने के द्वारा इस प्रपत्र पूर्व भरें."
 
-#: sb-includes/admin.php:2442
+#: sb-includes/admin.php:2444
 #, php-format
 msgid ""
 "You will need to set the %s before you can import MP3s and pre-fill the Add Sermons form."
 msgstr ""
 "क्या आप%s का सेट की जरूरत है इससे पहले कि आप MP3s, आयात और पूर्व जोड़ें उपदेश फार्म को भरने कर सकते हैं .."
 
-#: sb-includes/admin.php:2442
+#: sb-includes/admin.php:2444
 msgid "import options"
 msgstr "आयात विकल्प"
 
-#: sb-includes/admin.php:2456
+#: sb-includes/admin.php:2458
 #, php-format
 msgid "Select an MP3 file here to have the %s form pre-filled using ID3 tags."
 msgstr "%s  पहले से भरे फार्म ID3 टैग का उपयोग कर एक एमपी 3 फ़ाइल का चयन करें."
 
-#: sb-includes/admin.php:2456
+#: sb-includes/admin.php:2458
 msgid "Add Sermons"
 msgstr "Add Sermons"
 
-#: sb-includes/admin.php:2456
+#: sb-includes/admin.php:2458
 msgid "Upload file"
 msgstr "फ़ाइल अपलोड करें"
 
-#: sb-includes/admin.php:2461
+#: sb-includes/admin.php:2463
 msgid "File to upload"
 msgstr "फाइल अपलोड"
 
-#: sb-includes/admin.php:2467
+#: sb-includes/admin.php:2469
 msgid "Upload"
 msgstr "अपलोड"
 
-#: sb-includes/admin.php:2472
+#: sb-includes/admin.php:2474
 msgid "Upload is disabled. Please contact your systems administrator."
 msgstr "अपलोड अक्षम है. अपने सिस्टम व्यवस्थापक से संपर्क करें."
 
-#: sb-includes/admin.php:2476
+#: sb-includes/admin.php:2478
 msgid "Upload is disabled. Please check your folder setting in Options."
 msgstr "अपलोड अक्षम है.कृपया अपने फ़ोल्डर विकल्प में सेटिंग की जाँच."
 
-#: sb-includes/admin.php:2483
+#: sb-includes/admin.php:2485
 msgid "URL to import"
 msgstr "आयात यूआरएल"
 
-#: sb-includes/admin.php:2486
+#: sb-includes/admin.php:2488
 msgid "Link to remote file"
 msgstr "दूरस्थ फ़ाइल को लिंक"
 
-#: sb-includes/admin.php:2486
+#: sb-includes/admin.php:2488
 msgid "Copy remote file to server"
 msgstr "सर्वर से दूरस्थ फ़ाइल की प्रतिलिपि बनाएँ"
 
-#: sb-includes/admin.php:2488
+#: sb-includes/admin.php:2490
 msgid "Import"
 msgstr "आयात"
 
-#: sb-includes/admin.php:2496
+#: sb-includes/admin.php:2498
 msgid "Choose existing file"
 msgstr "मौजूदा फ़ाइल को चुनें"
 
-#: sb-includes/admin.php:2507
+#: sb-includes/admin.php:2509
 msgid "Select"
 msgstr "उपदेशक नाम"
 
-#: sb-includes/admin.php:2519
+#: sb-includes/admin.php:2521
 msgid "SermonBrowser Help"
 msgstr "SermonBrowser मदद"
 
-#: sb-includes/admin.php:2523
+#: sb-includes/admin.php:2525
 msgid ""
 "From this page you can edit or delete any of your sermons. The most recent sermons are found "
 "at the top. Use the filter options to quickly find the one you want."
@@ -977,7 +977,7 @@ msgstr ""
 "आप इस पृष्ठ से संपादित करें या अपने उपदेश में से किसी को नष्ट कर सकते हैं. सबसे हाल ही में उपदेश शीर्ष पर पाया "
 "जाता है. फ़िल्टर के विकल्प का उपयोग करने के लिए जल्दी से एक आप करना चाहते हैं."
 
-#: sb-includes/admin.php:2530
+#: sb-includes/admin.php:2532
 msgid ""
 "It&#146;s important that these options are set correctly, as otherwise SermonBrowser won&#146;"
 "t behave as you expect."
@@ -985,11 +985,11 @@ msgstr ""
 "It&#146;s महत्वपूर्ण है कि ये विकल्प सही ढंग से स्थापित कर रहे हैं, के रूप में अन्यथा SermonBrowser जीत "
 "लिया&#146;t  व्यवहार के रूप में आप की उम्मीद"
 
-#: sb-includes/admin.php:2531
+#: sb-includes/admin.php:2533
 msgid "The upload folder would normally be <b>wp-content/uploads/sermons</b>"
 msgstr "अपलोड फ़ोल्डर सामान्य रूप से <b> </ b> wp-content/uploads/sermons होगा"
 
-#: sb-includes/admin.php:2532
+#: sb-includes/admin.php:2534
 msgid ""
 "You should only change the public podcast feed if you re-direct your podcast using a service "
 "like Feedburner. Otherwise it should be the same as the private podcast feed."
@@ -997,7 +997,7 @@ msgstr ""
 "आप के केवल सार्वजनिक podcast फ़ीड बदल अगर आप अपने podcast फिर से प्रत्यक्ष Feedburner की तरह एक सेवा का "
 "उपयोग करना चाहिए. अन्यथा यह निजी podcast फ़ीड के रूप में ही होना चाहिए."
 
-#: sb-includes/admin.php:2533
+#: sb-includes/admin.php:2535
 msgid ""
 "The MP3 shortcode you need will be in the documation of your favourite MP3 plugin. Use the "
 "tag %SERMONURL% in place of the URL of the MP3 file (e.g. [haiku url=\"%SERMONURL%\"] or "
@@ -1006,7 +1006,7 @@ msgstr ""
 "MP3 shortcode की जरूरत है आप अपने पसंदीदा MP3 3 प्लगइन का documation में होगा. टैग% एमपी 3 फ़ाइल (जैसे "
 "[haiku url=\"%SERMONURL%\"] or [audio:%SERMONURL%])का यूआरएल की जगह में SERMONURL% का उपयोग करें"
 
-#: sb-includes/admin.php:2536
+#: sb-includes/admin.php:2538
 #, php-format
 msgid ""
 "Template editing is one of the most powerful features of SermonBrowser. Be sure to look at "
@@ -1015,23 +1015,23 @@ msgstr ""
 "टेम्पलेट संपादन SermonBrowser के सबसे शक्तिशाली सुविधाओं में से एक है. %s template टैग%s के की पूरी सूची देखने के "
 "लिए सुनिश्चित करें."
 
-#: sb-includes/admin.php:2542
+#: sb-includes/admin.php:2544
 msgid "Tutorial Screencasts"
 msgstr "ट्यूटोरियल ब्लैकबेरी"
 
-#: sb-includes/admin.php:2543
+#: sb-includes/admin.php:2545
 msgid "Frequently Asked Questions"
 msgstr "अकसर पूछे जाने वाले प्रश्न"
 
-#: sb-includes/admin.php:2544
+#: sb-includes/admin.php:2546
 msgid "Support Forum"
 msgstr "समर्थन फोरम"
 
-#: sb-includes/admin.php:2545
+#: sb-includes/admin.php:2547
 msgid "Shortcode syntax"
 msgstr "shortcode सिंटैक्स"
 
-#: sb-includes/admin.php:2546
+#: sb-includes/admin.php:2548
 msgid "Donate"
 msgstr "दान"
 
