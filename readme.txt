@@ -260,8 +260,11 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.19 =
+Fixed bug that prevented iframe embeds from being saved.
+
 = 0.45.18 =
-Fixes bug that prevented shortcodes from working and adds Italian translation.
+Fixed bug that prevented shortcodes from working and adds Italian translation.
 
 = 0.45.17 =
 Minor, under-the-hood changes to translations.
@@ -330,7 +333,10 @@ Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
 
-= 0.45.18 (23 May 2016) =
+= 0.45.19 (31 May 2016) =
+* **Bug fix:** Fixed bug introduced in 0.45.16 that prevented iframe embeds from being saved.
+
+= 0.45.18 (30 May 2016) =
 * **Bug fix:** Fixed bug that prevented shortcodes from working. 
 * **Enhancement:** No need to surround embedded videos with the [embed] shortcode. 
 * **Enhancement:** Added Italian translation (thanks to Manoah Cammarano)

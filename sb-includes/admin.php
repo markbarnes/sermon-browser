@@ -1414,7 +1414,9 @@ function sb_new_sermon() {
 		// embed code next
 		foreach ((array) $_POST['code'] as $code) {
 			if (!empty($code)) {
-				$code = base64_encode(wp_kses(stripslashes($code), $allowedposttags));
+                $embed_allowedposttags = $allowedposttags;
+                $embed_allowedposttags ['iframe'] = array ('width' => true, 'height' => true, 'src' => true, 'frameborder' => true, 'allowfullscreen' => true, 'style' => true, 'name' => true, 'id' => true, 'align' => true, 'sandbox' => true, 'srcdoc' => true);
+				$code = base64_encode(wp_kses(stripslashes($code), $embed_allowedposttags));
 				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'code', '$code', $id, 0, 0)");
 			}
 		}
