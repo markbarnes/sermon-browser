@@ -1,9 +1,9 @@
 === Sermon Browser ===
-Contributors: mark8barnes
+Contributors: mark8barnes, wpforchurch
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 3.6
-Tested up to: 4.6
+Tested up to: 4.8
 Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl.html
