@@ -1,5 +1,5 @@
 === Sermon Browser ===
-Contributors: mark8barnes, wpforchurch
+Contributors: mark8barnesm wp4church
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 3.6
@@ -260,6 +260,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.45.20 =
+Added nonces to enhance security protection.
+
 = 0.45.19 =
 Fixed bug that prevented iframe embeds from being saved.
 
@@ -332,6 +335,9 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.45.20 (27 June 2017) =
+* **Bug fix:** Added nonces to enhance security protection.
 
 = 0.45.19 (31 May 2016) =
 * **Bug fix:** Fixed bug introduced in 0.45.16 that prevented iframe embeds from being saved.
