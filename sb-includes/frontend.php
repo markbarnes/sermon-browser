@@ -9,7 +9,6 @@ function sb_display_sermons($options = array()) {
 		'display_preacher' => 1,
 		'display_passage' => 1,
 		'display_date' => 1,
-		'display_player' => 0,
 		'preacher' => 0,
 		'service' => 0,
 		'series' => 0,
@@ -48,8 +47,6 @@ function sb_display_sermons($options = array()) {
 			}
 			if ($display_date)
 				echo " <span class=\"sermon-date\">".__('on', 'sermon-browser')." ".sb_formatted_date ($sermon)."</span>";
-			if ($display_player)
-				sb_display_mini_player($sermon);
 			echo ".</li>\r";
 		}
 		echo "</ul>\r";
@@ -95,8 +92,6 @@ function sb_widget_sermon($args, $widget_args=1) {
 		}
 		if ($date)
 			echo " <span class=\"sermon-date\">".__(' on ', 'sermon-browser').sb_formatted_date ($sermon)."</span>";
-		if ($player)
-			sb_display_mini_player($sermon, $i);
 		echo ".</li>";
 	}
 	echo "</ul>";
@@ -330,33 +325,12 @@ function sb_page_title($title) {
 }
 
 //Downloads external webpage. Used to add Bible passages to sermon page.
-function sb_download_page ($page_url) {
-	if (function_exists('curl_init')) {
-		$curl = curl_init();
-		curl_setopt ($curl, CURLOPT_URL, $page_url);
-		curl_setopt ($curl, CURLOPT_TIMEOUT, 2);
-		curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($curl, CURLOPT_HTTPHEADER, array('Accept-Charset: utf-8;q=0.7,*;q=0.7'));
-		$contents = curl_exec ($curl);
-		$content_type = curl_getinfo( $curl, CURLINFO_CONTENT_TYPE );
-		curl_close ($curl);
+function sb_download_page ($page_url, $headers = array()) {
+	$response = wp_remote_get($page_url, array ('headers' => $headers));
+	if (is_array ($response)) {
+		return $response['body'];
 	}
-	else
-		{
-		$handle = @fopen ($page_url, 'r');
-		if ($handle) {
-			stream_set_blocking($handle, TRUE );
-			stream_set_timeout($handle, 2);
-			$info = socket_get_status($handle);
-			while (!feof($handle) && !$info['timed_out']) {
-				$contents .= fread($handle, 8192);
-				$info = socket_get_status($handle);
 			}
-		@fclose($handle);
-		}
-	}
-	return $contents;
-}
 
 // Returns human friendly Bible reference (e.g. John 3:1-16, not John 3:1-John 3:16)
 function sb_tidy_reference ($start, $end, $add_link = FALSE) {
@@ -412,11 +386,18 @@ function sb_add_bible_text ($start, $end, $version) {
 
 //Returns ESV text
 function sb_add_esv_text ($start, $end) {
-	// If you are experiencing errors, you should sign up for an ESV API key,
-	// and insert the name of your key in place of the letters IP in the URL
-	// below (.e.g. ...passageQuery?key=YOURAPIKEY&passage=...)
-	$esv_url = 'http://www.esvapi.org/v2/rest/passageQuery?key=IP&passage='.rawurlencode(sb_tidy_reference ($start, $end)).'&include-headings=false&include-footnotes=false';
-	return sb_download_page ($esv_url);
+	$api_key = sb_get_option('esv_api_key');
+	if ($api_key) {
+		$header = 'Authorization: Token '.$api_key;
+		$esv_url = 'https://api.esv.org/v3/passage/html?q='.rawurlencode(sb_tidy_reference ($start, $end)).'&include-headings=false&include-footnotes=false';
+		$api_body = sb_download_page ($esv_url, $header);
+		$decode = json_decode ($api_body);
+		if (is_object($decode) && isset($decode->passages) && is_array($decode->passages)) {
+			return implode ('', $decode->passages);
+}
+	} else {
+		return sb_add_bible_text($start, $end, 'kjv');
+	}
 }
 
 // Converts XML string to object
@@ -484,7 +465,7 @@ function sb_add_other_bibles ($start, $end, $version) {
 function sb_edit_link ($id) {
 	if (current_user_can('publish_posts')) {
 		$id = (int)$id;
-		echo '<div class="sb_edit_link"><a href="'.site_url().'/wp-admin/admin.php?page=sermon-browser/new_sermon.php&mid='.$id.'">'.__('Edit Sermon', 'sermon-browser').'</a></div>';
+		echo '<div class="sb_edit_link"><a href="'.admin_url('admin.php?page=sermon-browser/new_sermon.php&mid='.$id).'">Edit Sermon</a></div>';
 	}
 }
 
@@ -670,10 +651,7 @@ function sb_print_url($url) {
 	}
 	$uicon = isset($filetypes[$ext]['icon']) ? $filetypes[$ext]['icon'] : $uicon;
 	if (strtolower($ext) == 'mp3') {
-		if ((substr(sb_get_option('mp3_shortcode'), 0, 18) == '[audio:%SERMONURL%') && function_exists('ap_insert_player_widgets')) {
-			echo ap_insert_player_widgets(str_ireplace('%SERMONURL%', $url, sb_get_option('mp3_shortcode')));
-			return;
-		} elseif (do_shortcode(sb_get_option('mp3_shortcode')) != sb_get_option('mp3_shortcode')) {
+		if (do_shortcode(sb_get_option('mp3_shortcode')) != sb_get_option('mp3_shortcode')) {
 			echo do_shortcode(str_ireplace('%SERMONURL%', $url, sb_get_option('mp3_shortcode')));
 			return;
 		}
@@ -703,7 +681,7 @@ function sb_print_url_link($url) {
 
 //Decode base64 encoded data
 function sb_print_code($code) {
-	echo apply_filters('the_content',base64_decode($code));
+	echo do_shortcode(base64_decode($code));
 }
 
 //Prints preacher description
@@ -1115,55 +1093,3 @@ function sb_first_mp3($sermon, $stats= TRUE) {
 		}
 	}
 }
-
-//Gets colour for mini-flash player from the options of another flash player plugin.
-function sb_get_flash_player_colour ($type) {
-	if ($type == 'foreground') {
-		//AudioPlayer v2
-		$options = get_option('AudioPlayer_options');
-		if ($options)
-			return $options['colorScheme']['rightbg'];
-		//AudioPlayer v1
-		$options = get_option('audio_player_rightbgcolor');
-		if ($options)
-			return str_replace('0x', '', $options);
-		//Default
-		return '000000';
-	} elseif ($type == 'background') {
-		//AudioPlayer v2
-		$options = get_option('AudioPlayer_options');
-		if ($options)
-			if ($options['colorScheme']['transparentpagebg'] == 'true')
-				return 'transparent';
-			else
-				return $options['colorScheme']['rightbg'];
-		//AudioPlayer v1
-		$options = get_option('audio_player_transparentpagebgcolor');
-		if ($options)
-			return 'transparent';
-		else
-			return str_replace('0x', '', get_option('audio_player_pagebgcolor'));
-
-	}
-}
-
-// Displays the mini flash mp3 player
-function sb_display_mini_player ($sermon, $id=1, $flashvars="") {
-	$filename = sb_first_mp3($sermon, FALSE);
-	if ($filename !="") {
-		$flashvars .= "&foreColor=#".sb_get_flash_player_colour ('foreground');
-		$flashvars .= "&filename=".$filename;
-		if (substr($flashvars, 0, 1) == "&")
-			$flashvars = substr($flashvars, 1);
-		echo " <span class=\"sermon-player\"><embed id=\"oneBitInsert_{$id}\" width=\"10\" height=\"10\"";
-		if (sb_get_flash_player_colour ('background') == 'transparent')
-			echo " wmode=\"transparent\"";
-		else
-			echo " bgcolor=\"0x".sb_get_flash_player_colour ('background')."\"";
-		echo " quality=\"high\"";
-		echo " flashvars=\"".$flashvars."\"";
-		echo " src=\"".SB_PLUGIN_URL."/sb-includes/1bit.swf\"";
-		echo " type=\"application/x-shockwave-flash\"/></span>";
-	}
-}
-?>

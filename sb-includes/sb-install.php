@@ -347,7 +347,7 @@ table.podcast {
 
 .podcastall {
 	float:left;
-	background: #fff0c8 url(wp-content/plugins/sermon-browser/sb-includes/icons/podcast_background.png) repeat-x;
+	background: #fff0c8 url(**SB_PATH**/podcast_background.png) repeat-x;
 	padding: 0.5em;
 	font-size: 1em;
 	-moz-border-radius: 7px;
@@ -356,7 +356,7 @@ table.podcast {
 
 .podcastcustom {
 	float:right;
-	background: #fce4ff url(wp-content/plugins/sermon-browser/sb-includes/icons/podcast_custom_background.png) repeat-x;
+	background: #fce4ff url(**SB_PATH**/sb-includes/icons/podcast_custom_background.png) repeat-x;
 	padding: 0.5em;
 	font-size: 1em;
 	-moz-border-radius: 7px;
@@ -468,10 +468,6 @@ ul.sermon-widget li span.sermon-title {
 	font-weight:bold;
 }
 
-p.audioplayer_container {
-	display:inline !important;
-}
-
 div.sb_edit_link {
 	display:inline;
 }
@@ -483,7 +479,7 @@ h2 div.sb_edit_link {
 	clear:both;
 }
 HERE;
-   return $css;
+   return str_replace('**SB_PATH**', SB_PLUGIN_URL, $css);
 }
 
 function sb_default_excerpt_template () {

@@ -25,7 +25,6 @@ function sb_display_sermons($options = array()) {
 		'display_preacher' => 1,
 		'display_passage' => 1,
 		'display_date' => 1,
-		'display_player' => 0,
 		'preacher' => 0,
 		'service' => 0,
 		'series' => 0,
@@ -58,8 +57,6 @@ function sb_display_sermons($options = array()) {
 		}
 		if ($display_date)
 			echo " <span class=\"sermon-date\">".__('on', 'sermon-browser')." ".sb_formatted_date ($sermon)."</span>";
-		if ($display_player)
-			sb_display_mini_player($sermon);
 		echo ".</li>\r";
 	}
 	echo "</ul>\r";
@@ -136,37 +133,6 @@ function sb_first_mp3($sermon, $stats= TRUE) {
 }
 
 /**
-* Displays the mini flash mp3 player
-*
-* @param object $sermon
-* @param int $id - The id number of this player on this page
-* @param string $flashvars
-*/
-function sb_display_mini_player ($sermon, $id=1, $flashvars="") {
-	$filename = sb_first_mp3($sermon, FALSE);
-	if ($filename !="") {
-		$ap2_options = get_option('AudioPlayer_options');
-		if ($ap2_options != '') {
-			$color = '#'.$ap2_options['colorScheme']['rightbg'];
-		} else
-			$color = str_replace("0x", "#", get_option("audio_player_rightbgcolor"));
-		$flashvars .= "&foreColor=".$color;
-		$flashvars .= "&filename=".$filename;
-		if (substr($flashvars, 0, 1) == "&")
-			$flashvars = substr($flashvars, 1);
-		echo " <span class=\"sermon-player\"><embed id=\"oneBitInsert_{$id}\" width=\"10\" height=\"10\"";
-		if (get_option('audio_player_transparentpagebgcolor')=="true")
-			echo " wmode=\"transparent\"";
-		else
-			echo " bgcolor=\"".get_option('audio_player_pagebgcolor')."\"";
-		echo " quality=\"high\"";
-		echo " flashvars=\"".$flashvars."\"";
-		echo " src=\"".sb_get_value('plugin_url')."/sb-includes/"."1bit.swf\"";
-		echo " type=\"application/x-shockwave-flash\"/></span>";
-	}
-}
-
-/**
 * Displays the widget
 *
 * @param array $args
@@ -209,8 +175,6 @@ function sb_widget_sermon( $args, $widget_args = 1 ) {
 		}
 		if ($date)
 			echo " <span class=\"sermon-date\">".__(' on ', 'sermon-browser').sb_formatted_date ($sermon)."</span>";
-		if ($player)
-			sb_display_mini_player($sermon, $i);
 		echo ".</li>";
 	}
 	echo "</ul>";
@@ -240,7 +204,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 		$options = array();
 
 	if ( !$updated && !empty($_POST['sidebar']) ) {
-		$sidebar = (string) $_POST['sidebar'];
+		$sidebar = (string) sanitize_text_field($_POST['sidebar']);
 		$sidebars_widgets = wp_get_sidebars_widgets();
 		if ( isset($sidebars_widgets[$sidebar]) )
 			$this_sidebar =& $sidebars_widgets[$sidebar];
@@ -264,8 +228,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 			$book = (int) $widget_sermon_instance['book'];
 			$title = strip_tags(stripslashes($widget_sermon_instance['title']));
 			$date = (int) $widget_sermon_instance['date'];
-			$player = (int) $widget_sermon_instance['player'];
-			$options[$widget_number] = array( 'limit' => $limit, 'preacherz' => $preacherz, 'book' => $book, 'preacher' => $preacher, 'service' => $service, 'series' => $series, 'title' => $title, 'date' => $date, 'player' => $player);
+			$options[$widget_number] = array( 'limit' => $limit, 'preacherz' => $preacherz, 'book' => $book, 'preacher' => $preacher, 'service' => $service, 'series' => $series, 'title' => $title, 'date' => $date);
 		}
 		update_option('sb_widget_sermon', $options);
 		$updated = true;
@@ -282,7 +245,6 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 		$series = '';
 		$title ='';
 		$date = '';
-		$player = '';
 	} else {
 		$limit = esc_attr($options[$number]['limit']);
 		$preacher = esc_attr($options[$number]['preacher']);
@@ -292,7 +254,6 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 		$book = (int) $options[$number]['book'];
 		$title = esc_attr($options[$number]['title']);
 		$date = (int) $options[$number]['date'];
-		$player = esc_attr($options[$number]['player']);
 	}
 
 ?>
@@ -303,7 +264,6 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 			<input type="checkbox" id="widget-sermon-preacherz-<?php echo $number ?>" name="widget-sermon[<?php echo $number ?>][preacherz]" <?php echo $preacherz ? 'checked=checked' : '' ?> value="1"> <?php _e('Display preacher', 'sermon-browser') ?><br />
 			<input type="checkbox" id="widget-sermon-book-<?php echo $number ?>" name="widget-sermon[<?php echo $number ?>][book]" <?php echo $book ? 'checked=checked' : '' ?> value="1"> <?php _e('Display bible passage', 'sermon-browser') ?><br />
 			<input type="checkbox" id="widget-sermon-date-<?php echo $number ?>" name="widget-sermon[<?php echo $number ?>][date]" <?php echo $date ? 'checked=checked' : '' ?> value="1"> <?php _e('Display date', 'sermon-browser') ?><br />
-			<input type="checkbox" id="widget-sermon-player-<?php echo $number ?>" name="widget-sermon[<?php echo $number ?>][player]" <?php echo $player ? 'checked=checked' : '' ?> value="1"> <?php _e('Display mini-player', 'sermon-browser') ?>
 			<hr />
 			<table>
 				<tr>

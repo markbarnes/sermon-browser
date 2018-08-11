@@ -59,7 +59,7 @@ if (isset($_POST['pname'])) { // preacher
 		die();
 	}
 } elseif (isset($_POST['fname']) && validate_file (sb_get_option('upload_dir').$_POST['fname']) === 0) { // Files
-	$fname = $_POST['fname'];
+	$fname = sanitize_file_name($_POST['fname']);
 	if (isset($_POST['fid'])) {
 		$fid = (int) $_POST['fid'];
 		$oname = isset($_POST['oname']) ? $_POST['oname'] : '';
@@ -102,7 +102,7 @@ if (isset($_POST['pname'])) { // preacher
     wp_timezone_override_offset();
 	$st = (int) $_POST['fetch'] - 1;
 	if (!empty($_POST['title'])) {
-		$cond = $wpdb->prepare("and m.title LIKE '%%%s%%' ", $_POST['title']);
+		$cond = $wpdb->prepare("and m.title LIKE '%%%s%%' ", sanitize_text_field($_POST['title']));
 	} else
 		$cond = '';
 	if ($_POST['preacher'] != 0) {
@@ -155,7 +155,7 @@ if (isset($_POST['pname'])) { // preacher
 		$st = (int) $_POST['fetchL'] - 1;
 		$abc = $wpdb->get_results("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.sermon_id <> 0 AND f.type = 'file' ORDER BY f.name LIMIT {$st}, ".sb_get_option('sermons_per_page'));
 	} else {
-		$s = $_POST['search'];
+		$s = sanitize_text_field($_POST['search']);
 		$abc = $wpdb->get_results($wpdb->prepare("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.name LIKE '%%%s%%' AND f.type = 'file' ORDER BY f.name;", $s));
 	}
 ?>

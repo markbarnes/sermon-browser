@@ -5,10 +5,10 @@ Plugin URI: http://www.sermonbrowser.com/
 Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
 Text Domain: sermon-browser
-Version: 0.45.19
+Version: 0.45.21
 Author URI: https://www.markbarnes.net/
 
-Copyright (c) 2008-2015 Mark Barnes
+Copyright (c) 2008-2018 Mark Barnes
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ The frontend output is inserted by sb_shortcode
 * Sets version constants and basic Wordpress hooks.
 * @package common_functions
 */
-define('SB_CURRENT_VERSION', '0.45.19');
+define('SB_CURRENT_VERSION', '0.45.21');
 define('SB_DATABASE_VERSION', '1.7');
 sb_define_constants();
 add_action ('plugins_loaded', 'sb_hijack');
@@ -69,7 +69,7 @@ add_action ('widgets_init', 'sb_widget_sermon_init');
 function sb_hijack() {
 
 	global $filetypes, $wpdb;
-	
+
 	wp_timezone_override_offset();
 
 	if (isset($_POST['sermon']) && $_POST['sermon'] == 1)
@@ -95,7 +95,7 @@ function sb_hijack() {
 			$filesize = filesize($file_name);
 			if ($filesize != 0)
 				header("Content-Length: ".filesize($file_name));
-			output_file($file_name);
+			sb_output_file($file_name);
 			die();
 		} else
 			wp_die(htmlentities(rawurldecode($_GET['file_name'])).' '.__('not found', 'sermon-browser'), __('File not found', 'sermon-browser'), array('response' => 404));
@@ -141,7 +141,7 @@ function sb_hijack() {
 			sb_increase_download_count($url);
 			session_write_close();
 			while (@ob_end_clean());
-			output_file($url);
+			sb_output_file($url);
 			die();
 		} else {
 			sb_increase_download_count ($url);
@@ -185,8 +185,11 @@ function sb_sermon_init () {
 	} else {
 			load_plugin_textdomain('sermon-browser', '', 'sermon-browser/sb-includes');
 	}
-	if (WPLANG != '')
-		setlocale(LC_ALL, WPLANG.'.UTF-8');
+
+    if(defined('WPLANG')){
+		if (WPLANG != '')
+			setlocale(LC_ALL, WPLANG.'.UTF-8');
+    }
 
 	//Display the podcast if that's what's requested
 	if (isset($_GET['podcast']))
@@ -243,10 +246,10 @@ function sb_sermon_init () {
 	}
 
 	// Load shared (admin/frontend) features
-	add_action ('save_post', 'update_podcast_url');
-	
+	add_action ('save_post', 'sb_update_podcast_url');
+
 	// Check to see what functions are required, and only load what is needed
-	if (stripos($_SERVER['REQUEST_URI'], '/wp-admin/') === FALSE) {
+	if (!is_admin()) {
 		require (SB_INCLUDES_DIR.'/frontend.php');
 		add_action('wp_head', 'sb_add_headers', 0);
 		add_action('wp_head', 'wp_print_styles', 9);
@@ -324,7 +327,7 @@ function sb_sermon_stats($sermonid) {
 *
 * Function required if permalinks changed or [sermons] added to a different page
 */
- function update_podcast_url () {
+ function sb_update_podcast_url () {
 	global $wp_rewrite;
 	$existing_url = sb_get_option('podcast_url');
 	if (substr($existing_url, 0, strlen(site_url())) == site_url()) {
@@ -414,15 +417,6 @@ function sb_display_url() {
 			}
 	}
 	return $sb_display_url;
-}
-
-/**
-* Fix to ensure AudioPlayer v2 and AudioPlayer v1 both work
-*/
-if (!function_exists('ap_insert_player_widgets') && function_exists('insert_audio_player')) {
-	function ap_insert_player_widgets($params) {
-		return insert_audio_player($params);
-	}
 }
 
 /**
@@ -871,7 +865,7 @@ function sb_increase_download_count ($stuff_name) {
 * @param string $filename
 * @return bool success or failure
 */
-function output_file($filename) {
+function sb_output_file($filename) {
 	$handle = fopen($filename, 'rb');
 	if ($handle === false)
 		return false;

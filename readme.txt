@@ -3,7 +3,7 @@ Contributors: mark8barnes
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
 Requires at least: 3.6
-Tested up to: 4.5.2
+Tested up to: 4.9.8
 Stable tag: trunk
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl.html
@@ -64,8 +64,6 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 1. Download the plugin, and unzip it.
 2. Place the contents of the sermon-browser folder in your wp-content/mu-plugins folder and upload it to your website.
 3. The plugin will be automatically activated and available for each user.
-
-
 
 == Frequently Asked Questions ==
 
@@ -165,8 +163,6 @@ Yes.  There are additonal [FAQs on the Sermon Browser support forum](http://www.
 4. **The options page:** You can customise SermonBrowser through this option page. At the bottom of the screen are the settings that allow you to customise how MP3 ID3 tags will be imported.
 5. **Using the template facility:** The powerful templating facility means that with a little knowledge of HTML, CSS, and the Sermon Browser template tags, you can easily adapt Sermon Browser's output to suit your own requirements. SermonBrowser produces valid XHTML code, using semantically correct markup and is fully standards compliant.
 
-
-
 == Customisation ==
 
 Sermon Browser works out of the box, but if you wish, you can customise it to fit in with your own theme, and to display or hide whatever information you choose. If you want to create an extra page on your site that just shows a few sermons (for example, just the sermons preached at a recent conference), use **shortcodes**. If you want to customise how Sermon Browser appears throughout your site, use **template tags** (scroll down for more info), or the built-in CSS editor.
@@ -203,7 +199,7 @@ Sets the maximum number of sermons to be displayed.
 
 #### [sermons dir=asc|desc] ####
 Sets the sort order to ascending or descending.
-                                             
+
 ### Template Tags ###
 If you want to change the output of Sermon Browser, you'll need to edit the templates. You'll need to understand the basics of HTML and CSS, and to know the special SermonBrowser template tags. There are two templates, one (called the results page) is used to produce the search results on the main sermons page. The other template (called the sermon page) is used to produce the page for single sermon. Most tags can be used in both templates, but some are specific.
 #### Results Page Only ####
@@ -259,6 +255,12 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 
 == Upgrade Notice ==
+
+= 0.45.21 =
+Several security enhancements, and update to allow the the ESV Bible text to continue to be used.
+
+= 0.45.20 =
+Added nonces to enhance security protection.
 
 = 0.45.19 =
 Fixed bug that prevented iframe embeds from being saved.
@@ -333,22 +335,31 @@ Important security fixes. All users should upgrade to this version.
 
 == Changelog ==
 
+= 0.45.21 (11 August 2018) =
+* **Bug fix:** Several security enhancements.
+* **Enhancement:** Updated to v3 of the ESV Bible API (v2 was deprecated).
+* **Enhancement:** Removed support for flash audio players.
+
+= 0.45.20 (27 June 2017) =
+* **Bug fix:** Added nonces to enhance security protection.
+* See [changeset](https://plugins.trac.wordpress.org/changeset/1686060/sermon-browser/trunk)
+
 = 0.45.19 (31 May 2016) =
 * **Bug fix:** Fixed bug introduced in 0.45.16 that prevented iframe embeds from being saved.
 * See [changeset](https://plugins.trac.wordpress.org/changeset/1427807/sermon-browser/trunk)
 
 = 0.45.18 (30 May 2016) =
-* **Bug fix:** Fixed bug that prevented shortcodes from working. 
-* **Enhancement:** No need to surround embedded videos with the [embed] shortcode. 
+* **Bug fix:** Fixed bug that prevented shortcodes from working.
+* **Enhancement:** No need to surround embedded videos with the [embed] shortcode.
 * **Enhancement:** Added Italian translation (thanks to Manoah Cammarano)
 * See [changeset](https://plugins.trac.wordpress.org/changeset/1426889/sermon-browser/trunk)
 
 = 0.45.17 (23 May 2016) =
-* **Enhancement:** Minor, under-the-hood changes to translations. 
+* **Enhancement:** Minor, under-the-hood changes to translations.
 * See [changeset](https://plugins.trac.wordpress.org/changeset/1422176/sermon-browser/trunk)
 
 = 0.45.16 (21 April 2016) =
-* **Bug fix:** Fixed potential XSS vulnerabilities. 
+* **Bug fix:** Fixed potential XSS vulnerabilities.
 * See [changeset](https://plugins.trac.wordpress.org/changeset/1413162/sermon-browser/trunk)
 
 = 0.45.15 (10 November 2015) =
