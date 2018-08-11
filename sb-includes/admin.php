@@ -1,453 +1,351 @@
 <?php
 /**
- * Admin functions
- *
- * Functions required exclusively in the back end.
- *
- * @package admin_functions
- */
+* Admin functions
+*
+* Functions required exclusively in the back end.
+* @package admin_functions
+*/
 
 
 /**
- * Adds javascript and CSS where required in admin
- */
+* Adds javascript and CSS where required in admin
+*/
 function sb_add_admin_headers() {
-	if ( isset( $_REQUEST['page'] ) && substr( $_REQUEST['page'], 14 ) == 'sermon-browser' ) {
-		wp_enqueue_script( 'jquery' );
-	}
-	if ( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'sermon-browser/new_sermon.php' ) {
-		wp_enqueue_script( 'sb_datepicker' );
-		wp_enqueue_script( 'sb_64' );
-		wp_enqueue_style( 'sb_datepicker' );
-		wp_enqueue_style( 'sb_style' );
+	if (isset($_REQUEST['page']) && substr($_REQUEST['page'],14) == 'sermon-browser')
+		wp_enqueue_script('jquery');
+	if (isset($_REQUEST['page']) && $_REQUEST['page'] == 'sermon-browser/new_sermon.php') {
+		wp_enqueue_script('sb_datepicker');
+		wp_enqueue_script('sb_64');
+		wp_enqueue_style ('sb_datepicker');
+		wp_enqueue_style ('sb_style');
 	}
 }
 
 /**
- * Display the options page and handle changes
- */
+* Display the options page and handle changes
+*/
 function sb_options() {
 	global $wpdb;
 	//Security check
-	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( __( "You do not have the correct permissions to edit the SermonBrowser options", 'sermon-browser' ) );
-	}
+	if (!current_user_can('manage_options'))
+			wp_die(__("You do not have the correct permissions to edit the SermonBrowser options", 'sermon-browser'));
 	//Reset options to default
-	if ( isset( $_POST['resetdefault'] ) ) {
-
-		if ( ! isset( $_POST['sermon_options_save_reset_nounce'] ) || ! wp_verify_nonce( $_POST['sermon_options_save_reset_nounce'], 'sermon_options_save_reset' ) ) {
-			wp_die( __( "You do not have the correct permissions to edit the SermonBrowser options", 'sermon-browser' ) );
-		}
-
-		$dir = sb_get_default( 'sermon_path' );
-		if ( sb_display_url() == "#" ) {
-			sb_update_option( 'podcast_url', site_url() . sb_query_char( false ) . 'podcast' );
+	if (isset($_POST['resetdefault'])) {
+		$dir = sb_get_default('sermon_path');
+		if (sb_display_url()=="#") {
+			sb_update_option('podcast_url', site_url().sb_query_char(false).'podcast');
 		} else {
-			sb_update_option( 'podcast_url', sb_display_url() . sb_query_char( false ) . 'podcast' );
+			sb_update_option('podcast_url', sb_display_url().sb_query_char(false).'podcast');
 		}
-		sb_update_option( 'upload_dir', $dir );
-		sb_update_option( 'upload_url', sb_get_default( 'attachment_url' ) );
-		sb_update_option( 'display_method', 'dynamic' );
-		sb_update_option( 'sermons_per_page', '10' );
-		sb_update_option( 'filter_type', 'oneclick' );
-		sb_update_option( 'filter_hide', 'hide' );
-		sb_update_option( 'hide_no_attachments', false );
-		sb_update_option( 'mp3_shortcode', '[audio mp3="%SERMONURL%"]' );
-		if ( ! is_dir( SB_ABSPATH . $dir ) ) {
-			if ( sb_mkdir( SB_ABSPATH . $dir ) ) {
-				@chmod( SB_ABSPATH . $dir, 0777 );
-			}
-		}
-		if ( ! is_dir( SB_ABSPATH . $dir . 'images' ) && sb_mkdir( SB_ABSPATH . $dir . 'images' ) ) {
-			@chmod( SB_ABSPATH . $dir . 'images', 0777 );
-		}
-		$books     = sb_get_default( 'bible_books' );
-		$eng_books = sb_get_default( 'eng_bible_books' );
+		sb_update_option('upload_dir', $dir);
+		sb_update_option('upload_url', sb_get_default('attachment_url'));
+		sb_update_option('display_method', 'dynamic');
+		sb_update_option('sermons_per_page', '10');
+		sb_update_option('filter_type', 'oneclick');
+		sb_update_option('filter_hide', 'hide');
+		sb_update_option('hide_no_attachments', false);
+		sb_update_option('mp3_shortcode', '[audio mp3="%SERMONURL%"]');
+		   if (!is_dir(SB_ABSPATH.$dir))
+			if (sb_mkdir(SB_ABSPATH.$dir))
+				@chmod(SB_ABSPATH.$dir, 0777);
+		if(!is_dir(SB_ABSPATH.$dir.'images') && sb_mkdir(SB_ABSPATH.$dir.'images'))
+			@chmod(SB_ABSPATH.$dir.'images', 0777);
+		$books = sb_get_default('bible_books');
+		$eng_books = sb_get_default('eng_bible_books');
 		// Reset bible books database
-		$wpdb->query( "TRUNCATE TABLE {$wpdb->prefix}sb_books" );
-		for ( $i = 0; $i < count( $books ); $i ++ ) {
-			$wpdb->query( "INSERT INTO {$wpdb->prefix}sb_books VALUES (null, '$books[$i]')" );
-			$wpdb->query( "UPDATE {$wpdb->prefix}sb_books_sermons SET book_name='{$books[$i]}' WHERE book_name='{$eng_books[$i]}'" );
+		$wpdb->query("TRUNCATE TABLE {$wpdb->prefix}sb_books");
+		for ($i=0; $i < count($books); $i++) {
+			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, '$books[$i]')");
+			$wpdb->query("UPDATE {$wpdb->prefix}sb_books_sermons SET book_name='{$books[$i]}' WHERE book_name='{$eng_books[$i]}'");
 		}
 		// Rewrite booknames for non-English locales
-		if ( $books != $eng_books ) {
-			$sermon_books = $wpdb->get_results( "SELECT id, start, end FROM {$wpdb->prefix}sb_sermons" );
-			foreach ( $sermon_books as $sermon_book ) {
-				$start_verse = unserialize( $sermon_book->start );
-				$end_verse   = unserialize( $sermon_book->end );
-				$start_index = array_search( $start_verse[0]['book'], $eng_books, true );
-				$end_index   = array_search( $end_verse[0]['book'], $eng_books, true );
-				if ( $start_index !== false ) {
-					$start_verse[0]['book'] = $books[ $start_index ];
-				}
-				if ( $end_index !== false ) {
-					$end_verse[0]['book'] = $books[ $end_index ];
-				}
-				$sermon_book->start = serialize( $start_verse );
-				$sermon_book->end   = serialize( $end_verse );
-				$wpdb->query( "UPDATE {$wpdb->prefix}sb_sermons SET start='{$sermon_book->start}', end='{$sermon_book->end}' WHERE id={$sermon_book->id}" );
+		if ($books != $eng_books) {
+			$sermon_books = $wpdb->get_results("SELECT id, start, end FROM {$wpdb->prefix}sb_sermons");
+			 foreach ($sermon_books as $sermon_book) {
+				$start_verse = unserialize($sermon_book->start);
+				$end_verse = unserialize($sermon_book->end);
+				$start_index = array_search($start_verse[0]['book'], $eng_books, TRUE);
+				$end_index = array_search($end_verse[0]['book'], $eng_books, TRUE);
+				if ($start_index !== FALSE)
+					$start_verse[0]['book'] = $books[$start_index];
+				if ($end_index !== FALSE)
+					$end_verse[0]['book'] = $books[$end_index];
+				$sermon_book->start = serialize ($start_verse);
+				$sermon_book->end = serialize ($end_verse);
+				$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons SET start='{$sermon_book->start}', end='{$sermon_book->end}' WHERE id={$sermon_book->id}");
 			}
 		}
 
-		$checkSermonUpload = sb_checkSermonUploadable();
-		switch ( $checkSermonUpload ) {
+		   $checkSermonUpload = sb_checkSermonUploadable();
+		   switch ($checkSermonUpload) {
 			case "unwriteable":
 				echo '<div id="message" class="updated fade"><p><b>';
-				if ( IS_MU AND ! is_site_admin() ) {
-					_e( 'Upload is disabled. Please contact your administrator.', 'sermon-browser' );
+				if (IS_MU AND !is_site_admin()) {
+					_e('Upload is disabled. Please contact your administrator.', 'sermon-browser');
 				} else {
-					_e( 'Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777.', 'sermon-browser' );
+					_e('Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777.', 'sermon-browser');
 				}
 				echo '</b></div>';
 				break;
 			case "notexist":
 				echo '<div id="message" class="updated fade"><p><b>';
-				if ( IS_MU AND ! is_site_admin() ) {
-					_e( 'Upload is disabled. Please contact your administrator.', 'sermon-browser' );
+				if (IS_MU AND !is_site_admin()) {
+					_e('Upload is disabled. Please contact your administrator.', 'sermon-browser');
 				} else {
-					_e( 'Error: The upload folder you have specified does not exist.', 'sermon-browser' );
+					_e('Error: The upload folder you have specified does not exist.', 'sermon-browser');
 				}
 				echo '</b></div>';
 				break;
 			default:
 				echo '<div id="message" class="updated fade"><p><b>';
-				_e( 'Default loaded successfully.', 'sermon-browser' );
+				_e('Default loaded successfully.', 'sermon-browser');
 				echo '</b></div>';
 				break;
-		}
-	} // Save options
-	elseif ( isset( $_POST['save'] ) ) {
-		if ( ! isset( $_POST['sermon_options_save_reset_nounce'] ) || ! wp_verify_nonce( $_POST['sermon_options_save_reset_nounce'], 'sermon_options_save_reset' ) ) {
-			wp_die( __( "You do not have the correct permissions to edit the SermonBrowser options", 'sermon-browser' ) );
-		}
-		$dir = rtrim( str_replace( "\\", "/", $_POST['dir'] ), "/" ) . "/";
-		sb_update_option( 'podcast_url', stripslashes( $_POST['podcast'] ) );
-		if ( intval( $_POST['perpage'] ) > 0 ) {
-			sb_update_option( 'sermons_per_page', intval( $_POST['perpage'] ) );
-		}
-		if ( intval( $_POST['perpage'] ) == - 100 ) {
-			update_option( 'show_donate_reminder', 'off' );
-		}
-		sb_update_option( 'upload_dir', $dir );
-		sb_update_option( 'filter_type', $_POST['filtertype'] );
-		sb_update_option( 'filter_hide', isset( $_POST['filterhide'] ) );
-		sb_update_option( 'upload_url', trailingslashit( site_url() ) . $dir );
-		sb_update_option( 'import_prompt', isset( $_POST['import_prompt'] ) );
-		sb_update_option( 'import_title', isset( $_POST['import_title'] ) );
-		sb_update_option( 'import_artist', isset( $_POST['import_artist'] ) );
-		sb_update_option( 'import_album', isset( $_POST['import_album'] ) );
-		sb_update_option( 'import_comments', isset( $_POST['import_comments'] ) );
-		sb_update_option( 'import_filename', stripslashes( $_POST['import_filename'] ) );
-		sb_update_option( 'hide_no_attachments', isset( $_POST['hide_no_attachments'] ) );
-		sb_update_option( 'mp3_shortcode', stripslashes( $_POST['mp3_shortcode'] ) );
-		if ( ! is_dir( SB_ABSPATH . $dir ) ) {
-			if ( sb_mkdir( SB_ABSPATH . $dir ) ) {
-				@chmod( SB_ABSPATH . $dir, 0777 );
 			}
-		}
-		if ( ! is_dir( SB_ABSPATH . $dir . 'images' ) && sb_mkdir( SB_ABSPATH . $dir . 'images' ) ) {
-			@chmod( SB_ABSPATH . $dir . 'images', 0777 );
-		}
-		$checkSermonUpload = sb_checkSermonUploadable();
-		switch ( $checkSermonUpload ) {
-			case "unwriteable":
-				echo '<div id="message" class="updated fade"><p><b>';
-				_e( 'Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777.', 'sermon-browser' );
-				echo '</b></div>';
-				break;
-			case "notexist":
-				echo '<div id="message" class="updated fade"><p><b>';
-				_e( 'Error: The upload folder you have specified does not exist.', 'sermon-browser' );
-				echo '</b></div>';
-				break;
-			default:
-				echo '<div id="message" class="updated fade"><p><b>';
-				_e( 'Options saved successfully.', 'sermon-browser' );
-				echo '</b></div>';
-				break;
-		}
+	}
+	// Save options
+	elseif (isset($_POST['save'])) {
+		$dir = rtrim(str_replace("\\", "/", $_POST['dir']), "/")."/";
+		sb_update_option('podcast_url', stripslashes($_POST['podcast']));
+		if (intval($_POST['perpage']) > 0)
+			sb_update_option('sermons_per_page', intval($_POST['perpage']));
+		if (intval($_POST['perpage']) == -100)
+			update_option('show_donate_reminder', 'off');
+		sb_update_option('upload_dir', $dir);
+		sb_update_option('filter_type', $_POST['filtertype']);
+		sb_update_option('filter_hide', isset($_POST['filterhide']));
+		sb_update_option('upload_url', trailingslashit(site_url()).$dir);
+		sb_update_option ('import_prompt', isset($_POST['import_prompt']));
+		sb_update_option ('import_title', isset($_POST['import_title']));
+		sb_update_option ('import_artist', isset($_POST['import_artist']));
+		sb_update_option ('import_album', isset($_POST['import_album']));
+		sb_update_option ('import_comments', isset($_POST['import_comments']));
+		sb_update_option ('import_filename', stripslashes($_POST['import_filename']));
+		sb_update_option ('hide_no_attachments', isset($_POST['hide_no_attachments']));
+		sb_update_option('mp3_shortcode', stripslashes($_POST['mp3_shortcode']));
+		if (!is_dir(SB_ABSPATH.$dir))
+			if (sb_mkdir(SB_ABSPATH.$dir))
+				@chmod(SB_ABSPATH.$dir, 0777);
+		if(!is_dir(SB_ABSPATH.$dir.'images') && sb_mkdir(SB_ABSPATH.$dir.'images'))
+			@chmod(SB_ABSPATH.$dir.'images', 0777);
+		   $checkSermonUpload = sb_checkSermonUploadable();
+		   switch ($checkSermonUpload) {
+		   case "unwriteable":
+			echo '<div id="message" class="updated fade"><p><b>';
+			_e('Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777.', 'sermon-browser');
+			echo '</b></div>';
+			break;
+		case "notexist":
+			echo '<div id="message" class="updated fade"><p><b>';
+			_e('Error: The upload folder you have specified does not exist.', 'sermon-browser');
+			echo '</b></div>';
+			break;
+		default:
+			echo '<div id="message" class="updated fade"><p><b>';
+			_e('Options saved successfully.', 'sermon-browser');
+			echo '</b></div>';
+			break;
+	   }
 	}
 
 	//Display error messsages when problems in php.ini
-	function sb_display_error( $message ) {
-		return '<tr><td align="right" style="color:#AA0000; font-weight:bold">' . __( 'Error', 'sermon-browser' ) . ':</td>' .
-		       '<td style="color: #AA0000">' . $message . '</td></tr>';
+	function sb_display_error ($message) {
+		return	'<tr><td align="right" style="color:#AA0000; font-weight:bold">'.__('Error', 'sermon-browser').':</td>'.
+				'<td style="color: #AA0000">'.$message.'</td></tr>';
 	}
-
 	//Display warning messsages when problems in php.ini
-	function sb_display_warning( $message ) {
-		return '<tr><td align="right" style="color:#FFDC00; font-weight:bold">' . __( 'Warning', 'sermon-browser' ) . ':</td>' .
-		       '<td style="color: #FF8C00">' . $message . '</td></tr>';
+	function sb_display_warning ($message) {
+		return	'<tr><td align="right" style="color:#FFDC00; font-weight:bold">'.__('Warning', 'sermon-browser').':</td>'.
+				'<td style="color: #FF8C00">'.$message.'</td></tr>';
 	}
-
 	sb_do_alerts();
 	// HTML for options page
-	?>
-    <div class="wrap">
-        <a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png"
-                                                     width="191" height="35"
-                                                     style="margin: 1em 2em; float: right;"/></a>
-        <form method="post">
-            <h2><?php _e( 'Basic Options', 'sermon-browser' ) ?></h2>
-            <br style="clear:both"/>
-            <table border="0" class="widefat">
-				<?php
-				if ( ! IS_MU OR is_site_admin() ) {
-					?>
-                    <tr>
-                        <td align="right" style="vertical-align:middle"><?php _e( 'Upload folder', 'sermon-browser' ) ?>
-                            :
-                        </td>
-                        <td><input type="text" name="dir"
-                                   value="<?php echo htmlspecialchars( sb_get_option( 'upload_dir' ) ) ?>"
-                                   style="width:100%"/></td>
-                    </tr>
-					<?php
+?>
+	<div class="wrap">
+		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
+		<form method="post">
+		<h2><?php _e('Basic Options', 'sermon-browser') ?></h2>
+		<br style="clear:both"/>
+		<table border="0" class="widefat">
+			<?php
+				if (!IS_MU OR is_site_admin()) {
+			?>
+			<tr>
+				<td align="right" style="vertical-align:middle"><?php _e('Upload folder', 'sermon-browser') ?>: </td>
+				<td><input type="text" name="dir" value="<?php echo htmlspecialchars(sb_get_option('upload_dir')) ?>" style="width:100%" /></td>
+			</tr>
+			<?php
 				} else {
-					?>
-                    <input type="hidden" name="dir"
-                           value="<?php echo htmlspecialchars( sb_get_option( 'upload_dir' ) ) ?>">
-					<?php
+			?>
+				<input type="hidden" name="dir" value="<?php echo htmlspecialchars(sb_get_option('upload_dir')) ?>">
+			<?php
 				}
-				?>
-                <tr>
-                    <td align="right"
-                        style="vertical-align:middle"><?php _e( 'Public podcast feed', 'sermon-browser' ) ?>:
-                    </td>
-                    <td><input type="text" name="podcast"
-                               value="<?php echo htmlspecialchars( sb_get_option( 'podcast_url' ) ) ?>"
-                               style="width:100%"/></td>
-                </tr>
-                <tr>
-                    <td align="right"><?php _e( 'Private podcast feed', 'sermon-browser' ) ?>:</td>
-                    <td><?php if ( sb_display_url() == '' ) {
-							echo htmlspecialchars( site_url() );
-						} else {
-							echo htmlspecialchars( sb_display_url() );
-						}
-						echo sb_query_char(); ?>podcast
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right" style="vertical-align:middle"><?php _e( 'MP3 shortcode', 'sermon-browser' ) ?>:
-                        <br/><?php _e( 'Default: ', 'sermon-browser' ) ?>[audio mp3=&quot;%SERMONURL%&quot;]
-                    </td>
-                    <td><input type="text" name="mp3_shortcode"
-                               value="<?php echo htmlspecialchars( sb_get_option( 'mp3_shortcode' ) ) ?>"
-                               style="width:100%"/></td>
-                </tr>
-                <tr>
-                    <td align="right" style="vertical-align:middle"><?php _e( 'Sermons per page', 'sermon-browser' ) ?>
-                        :
-                    </td>
-                    <td><input type="text" name="perpage" value="<?php echo sb_get_option( 'sermons_per_page' ) ?>"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right" style="vertical-align:top"
-                        rowspan="2"><?php _e( 'Filter type', 'sermon-browser' ) ?>:
-                    </td>
-                    <td>
-						<?php
-						$ft             = sb_get_option( 'filter_type' );
-						$filter_options = array(
-							'dropdown' => __( 'Drop-down', 'sermon-browser' ),
-							'oneclick' => __( 'One-click', 'sermon-browser' ),
-							'none'     => __( 'None', 'sermon-browser' )
-						);
-						foreach ( $filter_options as $value => $filter_option ) {
-							echo "<input type=\"radio\" name=\"filtertype\" value=\"{$value}\" ";
-							if ( $ft == $value ) {
-								echo 'checked="checked" ';
-							}
-							echo "/> {$filter_option}<br/>\n";
-						}
-						?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="filterhide" <?php if ( sb_get_option( 'filter_hide' ) == 'hide' ) {
+			?>
+			<tr>
+				<td align="right" style="vertical-align:middle"><?php _e('Public podcast feed', 'sermon-browser') ?>: </td>
+				<td><input type="text" name="podcast" value="<?php echo htmlspecialchars(sb_get_option('podcast_url')) ?>" style="width:100%" /></td>
+			</tr>
+			<tr>
+				<td align="right"><?php _e('Private podcast feed', 'sermon-browser') ?>: </td>
+				<td><?php if (sb_display_url()=='') { echo htmlspecialchars(site_url()); } else { echo htmlspecialchars(sb_display_url()); } echo sb_query_char(); ?>podcast</td>
+			</tr>
+			<tr>
+				<td align="right" style="vertical-align:middle"><?php _e('MP3 shortcode', 'sermon-browser') ?>: <br/><?php _e('Default: ', 'sermon-browser') ?>[audio mp3=&quot;%SERMONURL%&quot;]</td>
+				<td><input type="text" name="mp3_shortcode" value="<?php echo htmlspecialchars(sb_get_option('mp3_shortcode')) ?>" style="width:100%" /></td>
+			</tr>
+			<tr>
+				<td align="right" style="vertical-align:middle"><?php _e('Sermons per page', 'sermon-browser') ?>: </td>
+				<td><input type="text" name="perpage" value="<?php echo sb_get_option('sermons_per_page') ?>" /></td>
+			</tr>
+			<tr>
+				<td align="right" style="vertical-align:top" rowspan="2"><?php _e('Filter type', 'sermon-browser') ?>: </td>
+				<td>
+				<?php
+					$ft = sb_get_option('filter_type');
+					$filter_options = array ('dropdown' => __('Drop-down', 'sermon-browser'), 'oneclick' => __('One-click', 'sermon-browser'), 'none' => __('None', 'sermon-browser'));
+					foreach ($filter_options as $value => $filter_option) {
+						echo "<input type=\"radio\" name=\"filtertype\" value=\"{$value}\" ";
+						if ($ft == $value)
 							echo 'checked="checked" ';
-						} ?> value="hide" \> <?php _e( 'Minimise filter', 'sermon-browser' ); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right"><?php _e( 'Hide sermons without attachments?', 'sermon-browser' ) ?></td>
-                    <td><input type="checkbox"
-                               name="hide_no_attachments" <?php if ( sb_get_option( 'hide_no_attachments' ) )
-							echo 'checked="checked" ' ?> value="1" \></td>
-                </tr>
-				<?php
-				$allow_uploads     = ini_get( 'file_uploads' );
-				$max_filesize      = sb_return_kbytes( ini_get( 'upload_max_filesize' ) );
-				$max_post          = sb_return_kbytes( ini_get( 'post_max_size' ) );
-				$max_execution     = ini_get( 'max_execution_time' );
-				$max_input         = ini_get( 'max_input_time' );
-				$max_memory        = sb_return_kbytes( ini_get( 'memory_limit' ) );
-				$checkSermonUpload = sb_checkSermonUploadable();
-				if ( IS_MU ) {
-					if ( $checkSermonUpload == "unwriteable" ) {
-						echo sb_display_error( __( 'The upload folder is not writeable. You need to specify a folder that you have permissions to write to.', 'sermon-browser' ) );
-					} elseif ( $checkSermonUpload == "notexist" ) {
-						sb_display_error( __( 'The upload folder you have specified does not exist.', 'sermon-browser' ) );
+						echo "/> {$filter_option}<br/>\n";
 					}
-					if ( $allow_uploads == '0' ) {
-						echo sb_display_error( __( 'Your administrator does not allow file uploads. You will need to upload via FTP.', 'sermon-browser' ) );
-					}
-					$max_filesize = ( $max_filesize < $max_post ) ? $max_filesize : $max_post;
-					if ( $max_filesize < 15360 ) {
-						echo sb_display_warning( __( 'The maximum file size you can upload is only ', 'sermon-browser' ) . $max_filesize . __( 'k. You may need to upload via FTP.', 'sermon-browser' ) );
-					}
-					$max_execution = ( ( $max_execution < $max_input ) || $max_input == - 1 ) ? $max_execution : $max_input;
-					if ( $max_execution < 600 ) {
-						echo sb_display_warning( __( 'The maximum time allowed for any script to run is only ', 'sermon-browser' ) . $max_execution . __( ' seconds. If your files take longer than this to upload, you will need to upload via FTP.', 'sermon-browser' ) );
-					}
-				} else {
-					if ( $checkSermonUpload == "unwriteable" ) {
-						echo sb_display_error( __( 'The upload folder is not writeable. You need to specify a folder that you have permissions to write to, or CHMOD this folder to 666 or 777.', 'sermon-browser' ) );
-					} elseif ( $checkSermonUpload == "notexist" ) {
-						sb_display_error( __( 'The upload folder you have specified does not exist.', 'sermon-browser' ) );
-					}
-					if ( $allow_uploads == '0' ) {
-						echo sb_display_error( __( 'Your php.ini file does not allow uploads. Please change file_uploads in php.ini.', 'sermon-browser' ) );
-					}
-					if ( $max_filesize < 15360 ) {
-						echo sb_display_warning( __( 'The maximum file size you can upload is only ', 'sermon-browser' ) . $max_filesize . __( 'k. Please change upload_max_filesize to at least 15M in php.ini.', 'sermon-browser' ) );
-					}
-					if ( $max_post < 15360 ) {
-						echo sb_display_warning( __( 'The maximum file size you send through the browser is only ', 'sermon-browser' ) . $max_post . __( 'k. Please change post_max_size to at least 15M in php.ini.', 'sermon-browser' ) );
-					}
-					if ( $max_execution < 600 ) {
-						echo sb_display_warning( __( 'The maximum time allowed for any script to run is only ', 'sermon-browser' ) . $max_execution . __( ' seconds. Please change max_execution_time to at least 600 in php.ini.', 'sermon-browser' ) );
-					}
-					if ( $max_input < 600 && $max_input != - 1 ) {
-						echo sb_display_warning( __( 'The maximum time allowed for an upload script to run is only ', 'sermon-browser' ) . $max_input . __( ' seconds. Please change max_input_time to at least 600 in php.ini.', 'sermon-browser' ) );
-					}
-					if ( $max_memory < 16384 ) {
-						echo sb_display_warning( __( 'The maximum amount of memory allowed is only ', 'sermon-browser' ) . $max_memory . __( 'k. Please change memory_limit to at least 16M in php.ini.', 'sermon-browser' ) );
-					}
-				}
 				?>
-            </table>
-            <h2><?php _e( 'Import Options', 'sermon-browser' ) ?></h2>
-            <p><?php printf( __( 'SermonBrowser can speed up the process of importing existing MP3s by reading the information stored in each MP3 file and pre-filling the SermonBrowser fields. Use this section to specify what information you want imported into SermonBrowser. Once you have selected the options, go to %s to import your files.', 'sermon-browser' ), '<a href="' . admin_url( 'admin.php?page=sermon-browser/files.php' ) . '">' . __( 'Files', 'sermon-browser' ) . '</a>' ) ?>
-            <table border="0" class="widefat">
-                <tr>
-                    <td align="right"><?php _e( 'Add files prompt to top of Add Sermon page?', 'sermon-browser' ) ?></td>
-                    <td><input type="checkbox" name="import_prompt" <?php if ( sb_get_option( 'import_prompt' ) )
-							echo 'checked="checked" ' ?> value="1" \></td>
-                </tr>
-                <tr>
-                    <td align="right"><?php _e( 'Use title tag for sermon title?', 'sermon-browser' ) ?></td>
-                    <td><input type="checkbox" name="import_title" <?php if ( sb_get_option( 'import_title' ) )
-							echo 'checked="checked" ' ?> value="1" \></td>
-                </tr>
-                <tr>
-                    <td align="right"><?php _e( 'Use artist tag for preacher?', 'sermon-browser' ) ?></td>
-                    <td><input type="checkbox" name="import_artist" <?php if ( sb_get_option( 'import_artist' ) )
-							echo 'checked="checked" ' ?> value="1" \></td>
-                </tr>
-                <tr>
-                    <td align="right"><?php _e( 'Use album tag for series?', 'sermon-browser' ) ?></td>
-                    <td><input type="checkbox" name="import_album" <?php if ( sb_get_option( 'import_album' ) )
-							echo 'checked="checked" ' ?> value="1" \></td>
-                </tr>
-                <tr>
-                    <td align="right"><?php _e( 'Use comments tag for sermon description?', 'sermon-browser' ) ?></td>
-                    <td><input type="checkbox" name="import_comments" <?php if ( sb_get_option( 'import_comments' ) )
-							echo 'checked="checked" ' ?> value="1" \></td>
-                </tr>
-                <tr>
-                    <td align="right"
-                        style="vertical-align: middle"><?php _e( 'Attempt to extract date from filename', 'sermon-browser' ) ?></td>
-                    <td style="vertical-align: middle"><select name="import_filename">
-							<?php
-							$filename_options = array(
-								'none' => __( 'Disabled', 'sermon-browser' ),
-								'uk'   => __( 'UK-formatted date (dd-mm-yyyy)', 'sermon-browser' ),
-								'us'   => __( 'US-formatted date (mm-dd-yyyy)', 'sermon-browser' ),
-								'int'  => __( 'International formatted date (yyyy-mm-dd)', 'sermon-browser' )
-							);
-							$saved_option     = sb_get_option( 'import_filename' );
-							foreach ( $filename_options as $option => $text ) {
-								$sel = $saved_option == $option ? ' selected = "selected"' : '';
-								echo "<option value=\"{$option}\"{$sel}>{$text}</option>\n";
-							}
-							echo "</select>\n<br/>";
-							_e( '(Use if you name your files something like 2008-11-06-eveningsermon.mp3)', 'sermon-browser' );
-							?>
-                    </td>
-                </tr>
-            </table>
-			<?php wp_nonce_field( 'sermon_options_save_reset', 'sermon_options_save_reset_nounce' ); ?>
-            <p class="submit"><input type="submit" name="resetdefault"
-                                     value="<?php _e( 'Reset to defaults', 'sermon-browser' ) ?>"/>&nbsp;<input
-                        type="submit" name="save" value="<?php _e( 'Save', 'sermon-browser' ) ?> &raquo;"/></p>
-    </div>
-    </form>
-	<?php
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox" name="filterhide" <?php if (sb_get_option('filter_hide') == 'hide') echo 'checked="checked" '; ?> value="hide" \> <?php _e('Minimise filter', 'sermon-browser'); ?>
+				</td>
+			</tr>
+			<tr>
+				<td align="right"><?php _e('Hide sermons without attachments?', 'sermon-browser') ?></td>
+				<td><input type="checkbox" name="hide_no_attachments" <?php if (sb_get_option('hide_no_attachments')) echo 'checked="checked" '?> value="1" \></td>
+			</tr>
+			<?php
+				$allow_uploads = ini_get('file_uploads');
+				$max_filesize = sb_return_kbytes(ini_get('upload_max_filesize'));
+				$max_post = sb_return_kbytes(ini_get('post_max_size'));
+				$max_execution = ini_get('max_execution_time');
+				$max_input = ini_get('max_input_time');
+				$max_memory = sb_return_kbytes(ini_get('memory_limit'));
+				$checkSermonUpload = sb_checkSermonUploadable();
+				if (IS_MU) {
+					if ($checkSermonUpload=="unwriteable")
+						echo sb_display_error (__('The upload folder is not writeable. You need to specify a folder that you have permissions to write to.', 'sermon-browser'));
+					elseif ($checkSermonUpload=="notexist")
+						sb_display_error (__('The upload folder you have specified does not exist.', 'sermon-browser'));
+					if ($allow_uploads == '0') echo sb_display_error(__('Your administrator does not allow file uploads. You will need to upload via FTP.', 'sermon-browser'));
+					$max_filesize = ($max_filesize < $max_post) ? $max_filesize : $max_post;
+					if ($max_filesize < 15360) echo sb_display_warning(__('The maximum file size you can upload is only ', 'sermon-browser').$max_filesize.__('k. You may need to upload via FTP.', 'sermon-browser'));
+					$max_execution = (($max_execution < $max_input) || $max_input == -1) ? $max_execution : $max_input;
+					if ($max_execution < 600) echo sb_display_warning(__('The maximum time allowed for any script to run is only ', 'sermon-browser').$max_execution.__(' seconds. If your files take longer than this to upload, you will need to upload via FTP.', 'sermon-browser'));
+				} else {
+					if ($checkSermonUpload=="unwriteable")
+						echo sb_display_error (__('The upload folder is not writeable. You need to specify a folder that you have permissions to write to, or CHMOD this folder to 666 or 777.', 'sermon-browser'));
+					elseif ($checkSermonUpload=="notexist")
+						sb_display_error (__('The upload folder you have specified does not exist.', 'sermon-browser'));
+					if ($allow_uploads == '0') echo sb_display_error(__('Your php.ini file does not allow uploads. Please change file_uploads in php.ini.', 'sermon-browser'));
+					if ($max_filesize < 15360) echo sb_display_warning(__('The maximum file size you can upload is only ', 'sermon-browser').$max_filesize.__('k. Please change upload_max_filesize to at least 15M in php.ini.', 'sermon-browser'));
+					if ($max_post < 15360) echo sb_display_warning(__('The maximum file size you send through the browser is only ', 'sermon-browser').$max_post.__('k. Please change post_max_size to at least 15M in php.ini.', 'sermon-browser'));
+					if ($max_execution < 600) echo sb_display_warning(__('The maximum time allowed for any script to run is only ', 'sermon-browser').$max_execution.__(' seconds. Please change max_execution_time to at least 600 in php.ini.', 'sermon-browser'));
+					if ($max_input < 600 && $max_input != -1) echo sb_display_warning(__('The maximum time allowed for an upload script to run is only ', 'sermon-browser').$max_input.__(' seconds. Please change max_input_time to at least 600 in php.ini.', 'sermon-browser'));
+					if ($max_memory < 16384) echo sb_display_warning(__('The maximum amount of memory allowed is only ', 'sermon-browser').$max_memory.__('k. Please change memory_limit to at least 16M in php.ini.', 'sermon-browser'));
+				}
+			?>
+		</table>
+		<h2><?php _e('Import Options', 'sermon-browser') ?></h2>
+		<p><?php printf(__('SermonBrowser can speed up the process of importing existing MP3s by reading the information stored in each MP3 file and pre-filling the SermonBrowser fields. Use this section to specify what information you want imported into SermonBrowser. Once you have selected the options, go to %s to import your files.', 'sermon-browser'), '<a href="'.admin_url('admin.php?page=sermon-browser/files.php').'">'.__('Files', 'sermon-browser').'</a>') ?>
+		<table border="0" class="widefat">
+			<tr>
+				<td align="right"><?php _e('Add files prompt to top of Add Sermon page?', 'sermon-browser') ?></td>
+				<td><input type="checkbox" name="import_prompt" <?php if (sb_get_option('import_prompt')) echo 'checked="checked" '?> value="1" \></td>
+			</tr>
+			<tr>
+				<td align="right"><?php _e('Use title tag for sermon title?', 'sermon-browser') ?></td>
+				<td><input type="checkbox" name="import_title" <?php if (sb_get_option('import_title')) echo 'checked="checked" '?> value="1" \></td>
+			</tr>
+			<tr>
+				<td align="right"><?php _e('Use artist tag for preacher?', 'sermon-browser') ?></td>
+				<td><input type="checkbox" name="import_artist" <?php if (sb_get_option('import_artist')) echo 'checked="checked" '?> value="1" \></td>
+			</tr>
+			<tr>
+				<td align="right"><?php _e('Use album tag for series?', 'sermon-browser') ?></td>
+				<td><input type="checkbox" name="import_album" <?php if (sb_get_option('import_album')) echo 'checked="checked" '?> value="1" \></td>
+			</tr>
+			<tr>
+				<td align="right"><?php _e('Use comments tag for sermon description?', 'sermon-browser') ?></td>
+				<td><input type="checkbox" name="import_comments" <?php if (sb_get_option('import_comments')) echo 'checked="checked" '?> value="1" \></td>
+			</tr>
+			<tr>
+				<td align="right" style="vertical-align: middle"><?php _e('Attempt to extract date from filename', 'sermon-browser') ?></td>
+				<td style="vertical-align: middle"><select name="import_filename">
+				<?php
+					$filename_options = array ('none' => __('Disabled', 'sermon-browser'),
+											   'uk' => __('UK-formatted date (dd-mm-yyyy)', 'sermon-browser'),
+											   'us' => __('US-formatted date (mm-dd-yyyy)', 'sermon-browser'),
+											   'int' => __('International formatted date (yyyy-mm-dd)', 'sermon-browser')
+										);
+					$saved_option = sb_get_option ('import_filename');
+					foreach ($filename_options as $option => $text) {
+						$sel = $saved_option == $option ? ' selected = "selected"' : '';
+						echo "<option value=\"{$option}\"{$sel}>{$text}</option>\n";
+					}
+					echo "</select>\n<br/>";
+					_e ('(Use if you name your files something like 2008-11-06-eveningsermon.mp3)', 'sermon-browser');
+					?>
+				</td>
+			</tr>
+		</table>
+		<p class="submit"><input type="submit" name="resetdefault" value="<?php _e('Reset to defaults', 'sermon-browser') ?>"  />&nbsp;<input type="submit" name="save" value="<?php _e('Save', 'sermon-browser') ?> &raquo;" /></p>
+	</div>
+	</form>
+<?php
 }
 
 /**
- * Display uninstall screen and perform uninstall if requested
- */
-function sb_uninstall() {
+* Display uninstall screen and perform uninstall if requested
+*/
+function sb_uninstall () {
 	//Security check
-	if ( ! ( current_user_can( 'edit_plugins' ) || ( IS_MU && current_user_can( 'manage_options' ) ) ) ) {
-		wp_die( __( "You do not have the correct permissions to Uninstall SermonBrowser", 'sermon-browser' ) );
-	}
-	if ( isset( $_POST['uninstall'] ) ) {
-		if ( ! isset( $_POST['sermon_browser_uninstall_nounce'] ) || ! wp_verify_nonce( $_POST['sermon_browser_uninstall_nounce'], 'sermon_browser_uninstall' ) ) {
-			wp_die( __( "You do not have the correct permissions to Uninstall SermonBrowser", 'sermon-browser' ) );
-		}
-		require( SB_INCLUDES_DIR . '/uninstall.php' );
-	}
-
-	?>
-    <form method="post">
-        <div class="wrap">
-			<?php if ( IS_MU ) { ?>
-                <h2> <?php _e( 'Reset SermonBrowser', 'sermon-browser' ); ?></h2>
-                <p><?php printf( __( 'Clicking the %s button below will remove ALL data (sermons, preachers, series, etc.) from SermonBrowser', 'sermon-browser' ), __( 'Delete all', 'sermon-browser' ) );
-					echo '. ';
-					_e( 'You will NOT be able to undo this action.', 'sermon-browser' ) ?>
-                </p>
-			<?php } else { ?>
-                <h2> <?php _e( 'Uninstall', 'sermon-browser' ); ?></h2>
-                <p><?php printf( __( 'Clicking the %s button below will remove ALL data (sermons, preachers, series, etc.) from SermonBrowser', 'sermon-browser' ), __( 'Uninstall', 'sermon-browser' ) );
-					echo ', ';
-					_e( 'and will deactivate the SermonBrowser plugin', 'sermon-browser' );
-					echo '. ';
-					_e( 'You will NOT be able to undo this action.', 'sermon-browser' );
-					echo ' ';
-					_e( 'If you only want to temporarily disable SermonBrowser, just deactivate it from the plugins page.', 'sermon-browser' ); ?>
-                </p>
-			<?php } ?>
-            <table border="0" class="widefat">
-                <tr>
-                    <td><input type="checkbox" name="wipe"
-                               value="1"> <?php _e( 'Also remove all uploaded files', 'sermon-browser' ) ?></td>
-                </tr>
-            </table>
-            <p class="submit"><input type="submit" name="uninstall" value="<?php if ( IS_MU ) {
-					_e( 'Delete all', 'sermon-browser' );
-				} else {
-					_e( 'Uninstall', 'sermon-browser' );
-				} ?>"
-                                     onclick="return confirm('<?php _e( 'Do you REALLY want to delete all data?', 'sermon-browser' ) ?>')"/>
-            </p>
-        </div>
-		<?php wp_nonce_field( 'sermon_browser_uninstall', 'sermon_browser_uninstall_nounce' ); ?>
-    </form>
-    <script>
-        jQuery( "form" ).submit( function ()
-        {
-            var yes = confirm( "<?php _e( 'Are you REALLY REALLY sure you want to remove SermonBrowser?', 'sermon-browser' )?>" );
-            if ( !yes ) return false;
-        } );
-    </script>
-	<?php
+	if (!(current_user_can('edit_plugins') | (IS_MU && current_user_can('manage_options'))))
+			wp_die(__("You do not have the correct permissions to Uninstall SermonBrowser", 'sermon-browser'));
+	if (isset($_POST['uninstall']))
+		require(SB_INCLUDES_DIR.'/uninstall.php');
+?>
+	<form method="post">
+	<div class="wrap">
+		<?php if (IS_MU) { ?>
+			<h2> <?php _e('Reset SermonBrowser', 'sermon-browser'); ?></h2>
+			<p><?php printf(__('Clicking the %s button below will remove ALL data (sermons, preachers, series, etc.) from SermonBrowser', 'sermon-browser'), __('Delete all', 'sermon-browser'));
+					 echo '. ';
+					 _e('You will NOT be able to undo this action.', 'sermon-browser') ?>
+			</p>
+		<?php } else {  ?>
+			<h2> <?php _e('Uninstall', 'sermon-browser'); ?></h2>
+			<p><?php printf(__('Clicking the %s button below will remove ALL data (sermons, preachers, series, etc.) from SermonBrowser', 'sermon-browser'), __('Uninstall', 'sermon-browser'));
+					 echo ', ';
+					 _e('and will deactivate the SermonBrowser plugin', 'sermon-browser');
+					 echo '. ';
+					 _e('You will NOT be able to undo this action.', 'sermon-browser');
+					 echo ' ';
+					 _e('If you only want to temporarily disable SermonBrowser, just deactivate it from the plugins page.', 'sermon-browser'); ?>
+			</p>
+		<?php } ?>
+		<table border="0" class="widefat">
+			<tr>
+				<td><input type="checkbox" name="wipe" value="1"> <?php _e('Also remove all uploaded files', 'sermon-browser') ?></td>
+			</tr>
+		</table>
+		<p class="submit"><input type="submit" name="uninstall" value="<?php if (IS_MU) { _e('Delete all', 'sermon-browser'); } else { _e('Uninstall', 'sermon-browser'); } ?>" onclick="return confirm('<?php _e('Do you REALLY want to delete all data?', 'sermon-browser')?>')" /></p>
+	</div>
+	</form>
+	<script>
+		jQuery("form").submit(function() {
+			var yes = confirm("<?php _e('Are you REALLY REALLY sure you want to remove SermonBrowser?', 'sermon-browser')?>");
+			if(!yes) return false;
+		});
+	</script>
+<?php
 }
 
 /**
@@ -456,12 +354,9 @@ function sb_uninstall() {
 function sb_templates () {
 	//Security check
 	if (!current_user_can('manage_options'))
-			{wp_die(__("You do not have the correct permissions to edit the SermonBrowser templates", 'sermon-browser'));}
+			wp_die(__("You do not have the correct permissions to edit the SermonBrowser templates", 'sermon-browser'));
 	//Save templates or reset to default
 	if (isset($_POST['save']) || isset($_POST['resetdefault'])) {
-        if (! isset($_POST['sermon_template_edit_nounce']) || ! wp_verify_nonce( $_POST['sermon_template_edit_nounce'], 'sermon_template_edit' )) {
-            wp_die(__("You do not have the correct permissions to edit the SermonBrowser templates", 'sermon-browser'));
-        }
 		require(SB_INCLUDES_DIR.'/dictionary.php');
 		$multi = $_POST['multi'];
 		$single = $_POST['single'];
@@ -512,7 +407,6 @@ function sb_templates () {
 		</table>
 		<p class="submit"><input type="submit" name="resetdefault" value="<?php _e('Reset to defaults', 'sermon-browser') ?>"  />&nbsp;<input type="submit" name="save" value="<?php _e('Save', 'sermon-browser') ?> &raquo;" /></p>
 	</div>
-	<?php  wp_nonce_field( 'sermon_template_edit', 'sermon_template_edit_nounce' ); ?>
 	</form>
 	<script>
 		jQuery("form").submit(function() {
@@ -530,17 +424,12 @@ function sb_manage_preachers() {
 	global $wpdb;
 	//Security check
 	if (!current_user_can('manage_categories'))
-			{wp_die(__("You do not have the correct permissions to manage the preachers' database", 'sermon-browser'));}
+			wp_die(__("You do not have the correct permissions to manage the preachers' database", 'sermon-browser'));
 	if (isset($_GET['saved']))
-		{echo '<div id="message" class="updated fade"><p><b>'.__('Preacher saved to database.', 'sermon-browser').'</b></div>';}
+		echo '<div id="message" class="updated fade"><p><b>'.__('Preacher saved to database.', 'sermon-browser').'</b></div>';
 	$sermonUploadDir = sb_get_option('upload_dir');
 	//Save changes
 	if (isset($_POST['save'])) {
-
-        if (!isset($_POST['sermon_manage_preachers_nounce']) || ! wp_verify_nonce( $_POST['sermon_manage_preachers_nounce'], 'sermon_manage_preachers' )) {
-            wp_die(__("You do not have the correct permissions to manage the preachers database", 'sermon-browser'));
-        }
-
 		$name = $_POST['name'];
 		$description = $_POST['description'];
 		$error = false;
@@ -553,10 +442,10 @@ function sb_manage_preachers() {
 			$filename = basename($_FILES['upload']['name']);
 			$prefix = '';
 			if(!is_dir(SB_ABSPATH.$sermonUploadDir.'images') && sb_mkdir(SB_ABSPATH.$sermonUploadDir.'images'))
-				{@chmod(SB_ABSPATH.$sermonUploadDir.'images', 0777);}
+				@chmod(SB_ABSPATH.$sermonUploadDir.'images', 0777);
 			$dest = SB_ABSPATH.$sermonUploadDir.'images/'.$filename;
 			if (@move_uploaded_file($_FILES['upload']['tmp_name'], $dest))
-				{$filename = $prefix.$filename;}
+				$filename = $prefix.$filename;
 			else {
 				$error = true;
 				echo '<div id="message" class="updated fade"><p><b>'.__('Could not save uploaded file. Please try again.', 'sermon-browser').'</b></div>';
@@ -572,20 +461,20 @@ function sb_manage_preachers() {
 		} else {
 			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s, description = %s, image = %s WHERE id = $pid", $name, $description, $filename));
 			if ($_POST['old'] != $filename)
-				{@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$_POST['old']);}
+				@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$_POST['old']);
 		}
 		if(isset($_POST['remove'])){
 			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s, description = %s, image = '' WHERE id = $pid", $name, $description));
 			@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$_POST['old']);
 		}
 		if(!$error)
-			{echo "<script>document.location = '".site_url()."/wp-admin/admin.php?page=sermon-browser/preachers.php&saved=true';</script>";}
+			echo "<script>document.location = '".site_url()."/wp-admin/admin.php?page=sermon-browser/preachers.php&saved=true';</script>";
 	}
 
 	if (isset($_GET['act']) && $_GET['act'] == 'kill') {
 		$die = (int) $_GET['pid'];
 		if($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_sermons WHERE preacher_id = $die") > 0)
-			{echo '<div id="message" class="updated fade"><p><b>'.__("You cannot delete this preacher until you first delete any sermons they have preached.", 'sermon-browser').'</b></div>';}
+			echo '<div id="message" class="updated fade"><p><b>'.__("You cannot delete this preacher until you first delete any sermons they have preached.", 'sermon-browser').'</b></div>';
 		else {
 			$p = $wpdb->get_row("SELECT image FROM {$wpdb->prefix}sb_preachers WHERE id = $die");
 			@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$p->image);
@@ -594,7 +483,7 @@ function sb_manage_preachers() {
 	}
 
 	if (isset($_GET['act']) && ($_GET['act'] == 'new' || $_GET['act'] == 'edit')) {
-		if ($_GET['act'] == 'edit') {$preacher = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}sb_preachers WHERE id = ".(int) $_GET['pid']);}
+		if ($_GET['act'] == 'edit') $preacher = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}sb_preachers WHERE id = ".(int) $_GET['pid']);
 	//Display HTML
 ?>
 	<div class="wrap">
@@ -606,11 +495,11 @@ function sb_manage_preachers() {
 			if ($checkSermonUpload == 'notexist') {
 				echo SB_ABSPATH.$sermonUploadDir.'images';
 				if (!is_dir(SB_ABSPATH.$sermonUploadDir.'images') && mkdir(SB_ABSPATH.$sermonUploadDir.'images'))
-					{chmod(SB_ABSPATH.$sermonUploadDir.'images', 0777);}
+					chmod(SB_ABSPATH.$sermonUploadDir.'images', 0777);
 				$checkSermonUpload = sb_checkSermonUploadable('images/');
 			}
 			if ($checkSermonUpload != 'writeable')
-				{echo '<div id="message" class="updated fade"><p><b>'.__("The images folder is not writeable. You won't be able to upload images.", 'sermon-browser').'</b></div>';}
+				echo '<div id="message" class="updated fade"><p><b>'.__("The images folder is not writeable. You won't be able to upload images.", 'sermon-browser').'</b></div>';
 		?>
 		<form method="post" enctype="multipart/form-data">
 		<input type="hidden" name="pid" value="<?php echo (int) $_GET['pid'] ?>">
@@ -647,7 +536,6 @@ function sb_manage_preachers() {
 				</tr>
 			</table>
 		</fieldset>
-            <?php wp_nonce_field( 'sermon_manage_preachers', 'sermon_manage_preachers_nounce' ); ?>
 		<p class="submit"><input type="submit" name="save" value="<?php _e('Save', 'sermon-browser') ?> &raquo;" /></p>
 		</form>
 	</div>
@@ -704,7 +592,7 @@ function sb_manage_everything() {
 	global $wpdb;
 	//Security check
 	if (!current_user_can('manage_categories'))
-			{wp_die(__("You do not have the correct permissions to manage the series and services database", 'sermon-browser'));}
+			wp_die(__("You do not have the correct permissions to manage the series and services database", 'sermon-browser'));
 
 	$series = $wpdb->get_results("SELECT {$wpdb->prefix}sb_series.*, COUNT({$wpdb->prefix}sb_sermons.id) AS sermon_count FROM {$wpdb->prefix}sb_series LEFT JOIN {$wpdb->prefix}sb_sermons ON series_id = {$wpdb->prefix}sb_series.id GROUP BY id ORDER BY name ASC");
 	$services = $wpdb->get_results("SELECT {$wpdb->prefix}sb_services.*, COUNT({$wpdb->prefix}sb_sermons.id) AS sermon_count FROM {$wpdb->prefix}sb_services LEFT JOIN {$wpdb->prefix}sb_sermons ON service_id = {$wpdb->prefix}sb_services.id GROUP BY id ORDER BY name ASC");
@@ -852,11 +740,11 @@ function sb_manage_everything() {
 							<?php echo $k == 'Services' ? '<td style="text-align:center" id="time'.$item->id.'">'.$item->time.'</td>' : '' ?>
 							<td style="text-align:center"><?php echo $item->sermon_count; ?></td>
 							<td style="text-align:center">
-								<a id="link<?php echo $k ?><?php echo $item->id ?>" href="javascript:rename<?php echo $k; ?>(<?php echo $item->id; ?>, '<?php echo $item->name; ?><?php echo $k == 'Services' ? ' @ '.$item->time : ''; ?>')"><?php echo $k == 'Services' ? __('Edit', 'sermon-browser') : __('Rename', 'sermon-browser'); ?></a>
+								<a id="link<?php echo $k ?><?php echo $item->id ?>" href="javascript:rename<?php echo $k ?>(<?php echo $item->id ?>, '<?php echo $item->name ?><?php echo $k == 'Services' ? ' @ '.$item->time : '' ?>')"><?php echo $k == 'Services' ? __('Edit', 'sermon-browser') : __('Rename', 'sermon-browser') ?></a>
 								<?php if (count($v['data']) < 2) { ?>
 									| <a href="javascript:alert('<?php printf(__('You cannot delete this %1$s as you must have at least one %1$s in the database', 'sermon-browser'), $k); ?>')"><?php _e('Delete', 'sermon-browser') ?></a>
 								<?php } elseif ($item->sermon_count == 0) { ?>
-									| <a href="javascript:if(confirm('<?php printf(__('Are you sure you want to delete %s?', 'sermon-browser'), $item->name); ?>')){delete<?php echo $k; ?>(<?php echo $item->id; ?>)}"><?php _e('Delete', 'sermon-browser'); ?></a>
+									| <a href="javascript:if(confirm('<?php printf(__('Are you sure you want to delete %s?', 'sermon-browser'), $item->name); ?>')){delete<?php echo $k ?>(<?php echo $item->id ?>)}"><?php _e('Delete', 'sermon-browser') ?></a>
 								<?php } else { ?>
 									| <a href="javascript:alert('<?php switch ($k) {
 										case "Services":
@@ -890,7 +778,7 @@ function sb_files() {
 	global $wpdb, $filetypes;
 	//Security check
 	if (!current_user_can('upload_files'))
-			{wp_die(__("You do not have the correct permissions to upload sermons", 'sermon-browser'));}
+			wp_die(__("You do not have the correct permissions to upload sermons", 'sermon-browser'));
 	// sync
 	sb_scan_dir();
 
@@ -906,13 +794,13 @@ function sb_files() {
 					$filename = substr($url, strrpos ($url, '/')+1);
 					$filename = substr($filename, 0, strrpos ($filename, '?'));
 					if (file_exists(SB_ABSPATH.sb_get_option('upload_dir').$filename))
-						{echo '<div id="message" class="updated fade"><p><b>'.sprintf(__('File %s already exists', 'sermon-browser'), $filename).'</b></div>';}
+						echo '<div id="message" class="updated fade"><p><b>'.sprintf(__('File %s already exists', 'sermon-browser'), $filename).'</b></div>';
 					else {
 						$file = @fopen(SB_ABSPATH.sb_get_option('upload_dir').$filename, 'wb');
 						$remote_file = @fopen($url, 'r');
 						$remote_contents = '';
 						while (!feof($remote_file))
-							{$remote_contents .= fread($remote_file, 8192);}
+							$remote_contents .= fread($remote_file, 8192);
 						fwrite($file, $remote_contents);
 						fclose($remote_file);
 						fclose($file);
@@ -925,23 +813,23 @@ function sb_files() {
 					die();
 				}
 			} else
-				{echo '<div id="message" class="updated fade"><p><b>'.__('Invalid URL.', 'sermon-browser').'</b></div>';}
+				echo '<div id="message" class="updated fade"><p><b>'.__('Invalid URL.', 'sermon-browser').'</b></div>';
 		} else
-			{echo '<div id="message" class="updated fade"><p><b>'.__('Your host does not allow remote downloading of files.', 'sermon-browser').'</b></div>';}
+			echo '<div id="message" class="updated fade"><p><b>'.__('Your host does not allow remote downloading of files.', 'sermon-browser').'</b></div>';
 	}
 	elseif (isset($_POST['save'])) {
 		if ($_FILES['upload']['error'] == UPLOAD_ERR_OK) {
 			$filename = basename($_FILES['upload']['name']);
 			if (IS_MU) {
-				$file_allowed = false;
+				$file_allowed = FALSE;
 				require_once(SB_ABSPATH . 'wp-includes/ms-functions.php');
 				$allowed_extensions = explode(" ", get_site_option("upload_filetypes"));
 				foreach ($allowed_extensions as $ext) {
 					if (substr(strtolower($filename), -(strlen($ext)+1)) == ".".strtolower($ext))
-						{$file_allowed = true;}
+						$file_allowed = TRUE;
 				}
 			} else {
-				$file_allowed = true;
+				$file_allowed = TRUE;
 			}
 			if ($file_allowed) {
 				$prefix = '';
@@ -951,9 +839,9 @@ function sb_files() {
 						$filename = $prefix.$filename;
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0)", $filename));
 						if (sb_import_options_set ())
-							{echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";}
+							echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";
 						else
-							{echo '<div id="message" class="updated fade"><p><b>'.__('Files saved to database.', 'sermon-browser').'</b></div>';}
+							echo '<div id="message" class="updated fade"><p><b>'.__('Files saved to database.', 'sermon-browser').'</b></div>';
 					}
 				} else {
 					echo '<div id="message" class="updated fade"><p><b>'.__($filename. ' already exists.', 'sermon-browser').'</b></div>';
@@ -964,10 +852,6 @@ function sb_files() {
 			}
 		}
 	} elseif(isset($_POST['clean'])) {
-	    if (!isset($_POST['sermon_browser_clean_nounce']) || !wp_verify_nonce($_POST['sermon_browser_clean_nounce'], 'sermon_browser_clean')){
-	        wp_die(__('Access denied.', 'sermon-browser'));
-	    }
-
 		$unlinked = $wpdb->get_results("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.sermon_id = 0 AND f.type = 'file' ORDER BY f.name;");
 		$linked = $wpdb->get_results("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.sermon_id <> 0 AND f.type = 'file' ORDER BY f.name;");
 		$wanted = array(-1);
@@ -1124,7 +1008,7 @@ function sb_files() {
 							<td style="text-align:center"><?php echo isset($filetypes[substr($file->name, strrpos($file->name, '.') + 1)]['name']) ? $filetypes[substr($file->name, strrpos($file->name, '.') + 1)]['name'] : strtoupper(substr($file->name, strrpos($file->name, '.') + 1)) ?></td>
 							<td style="text-align:center">
 								<a id="" href="<?php echo admin_url("admin.php?page=sermon-browser/new_sermon.php&amp;getid3={$file->id}"); ?>"><?php _e('Create sermon', 'sermon-browser') ?></a> |
-								<a id="link<?php echo $file->id; ?>" href="javascript:rename(<?php echo $file->id; ?>, '<?php echo $file->name; ?>')"><?php _e('Rename', 'sermon-browser'); ?></a> | <a onclick="return confirm('Do you really want to delete <?php echo str_replace("'", '', $file->name); ?>?');" href="javascript:kill(<?php echo $file->id; ?>, '<?php echo $file->name; ?>');"><?php _e('Delete', 'sermon-browser'); ?></a>
+								<a id="link<?php echo $file->id ?>" href="javascript:rename(<?php echo $file->id ?>, '<?php echo $file->name ?>')"><?php _e('Rename', 'sermon-browser') ?></a> | <a onclick="return confirm('Do you really want to delete <?php echo str_replace("'", '', $file->name) ?>?');" href="javascript:kill(<?php echo $file->id ?>, '<?php echo $file->name ?>');"><?php _e('Delete', 'sermon-browser') ?></a>
 							</td>
 						</tr>
 					<?php endforeach ?>
@@ -1168,7 +1052,7 @@ function sb_files() {
 								return false;
 							}
 							</script>
-								<a id="link<?php echo $file->id; ?>" href="javascript:rename(<?php echo $file->id; ?>, '<?php echo $file->name ?>')"><?php _e('Rename', 'sermon-browser') ?></a> | <a onclick="return deletelinked_<?php echo $file->id;?>('<?php echo str_replace("'", '', $file->name); ?>', '<?php echo str_replace("'", '', $file->title); ?>');" href="javascript:kill(<?php echo $file->id; ?>, '<?php echo $file->name; ?>');"><?php _e('Delete', 'sermon-browser'); ?></a>
+								<a id="link<?php echo $file->id ?>" href="javascript:rename(<?php echo $file->id ?>, '<?php echo $file->name ?>')"><?php _e('Rename', 'sermon-browser') ?></a> | <a onclick="return deletelinked_<?php echo $file->id;?>('<?php echo str_replace("'", '', $file->name) ?>', '<?php echo str_replace("'", '', $file->title) ?>');" href="javascript:kill(<?php echo $file->id ?>, '<?php echo $file->name ?>');"><?php _e('Delete', 'sermon-browser') ?></a>
 							</td>
 						</tr>
 					<?php endforeach ?>
@@ -1224,7 +1108,6 @@ function sb_files() {
 			<form method="post" >
 				<p><?php _e('Pressing the button below scans every sermon in the database, and removes missing attachments. Use with caution!', 'sermon-browser') ?></p>
 				<input type="submit" name="clean" value="<?php _e('Clean up missing files', 'sermon-browser') ?>" />
-				<?php wp_nonce_field( 'sermon_browser_clean', 'sermon_browser_clean_nounce' ); ?>
 			</form>
 		</div>
 		<?php
@@ -1273,24 +1156,21 @@ function sb_manage_sermons() {
 	global $wpdb;
 	//Security check
 	if (!(current_user_can('publish_posts') || current_user_can('publish_pages')))
-		{wp_die(__("You do not have the correct permissions to edit sermons", 'sermon-browser'));}
+		wp_die(__("You do not have the correct permissions to edit sermons", 'sermon-browser'));
 	sb_do_alerts();
 	if (isset($_GET['saved'])) {
 		echo '<div id="message" class="updated fade"><p><b>'.__('Sermon saved to database.', 'sermon-browser').'</b></div>';
         $show_msg = rand (1,5);
 		if ($show_msg == 1 && sb_get_option('show_donate_reminder') != 'off')
-			{echo '<div id="message" class="updated"><p><b>'.sprintf(__('If you find SermonBrowser useful, please consider %1$ssupporting%2$s the ministry of Nathanael and Anna Ayling in Japan.', 'sermon-browser'), '<a href="'.admin_url('admin.php?page=sermon-browser/japan.php').'">', '</a>').'</b></div>';}
+			echo '<div id="message" class="updated"><p><b>'.sprintf(__('If you find SermonBrowser useful, please consider %1$ssupporting%2$s the ministry of Nathanael and Anna Ayling in Japan.', 'sermon-browser'), '<a href="'.admin_url('admin.php?page=sermon-browser/japan.php').'">', '</a>').'</b></div>';
         elseif ($show_msg == 2)
-            {echo '<div id="message" class="updated"><p><b>'.__('Sermon Browser 2.0 is under development. If you\'re a coder, and would like to help, please check the <a href="https://www.assembla.com/spaces/sermon-browser-2/documents">SB2 development website</a>.', 'sermon-browser').'</b></div>';}
+            echo '<div id="message" class="updated"><p><b>'.__('Sermon Browser 2.0 is under development. If you\'re a coder, and would like to help, please check the <a href="https://www.assembla.com/spaces/sermon-browser-2/documents">SB2 development website</a>.', 'sermon-browser').'</b></div>';
 	}
 
 	if (isset($_GET['mid'])) {
-        if (! wp_verify_nonce( $_GET['sermon_manage_sermons_nounce'], 'sermon_manage_sermons' )) {
-            wp_die(__("You do not have the correct permissions to edit sermons", 'sermon-browser'));
-        }
 		//Security check
 		if (!current_user_can('publish_posts'))
-			{wp_die(__("You do not have the correct permissions to delete sermons", 'sermon-browser'));}
+			wp_die(__("You do not have the correct permissions to delete sermons", 'sermon-browser'));
 		$mid = (int) $_GET['mid'];
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_sermons WHERE id = $mid;");
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_sermons_tags WHERE sermon_id = $mid;");
@@ -1392,7 +1272,7 @@ function sb_manage_sermons() {
 						<td style="text-align:center">
 							<?php //Security check
 									if (current_user_can('publish_posts')) { ?>
-									<a href="<?php echo wp_nonce_url( admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}"), 'sermon_new_sermons', 'sermon_new_sermons_nounce' );  ?>"><?php _e('Edit', 'sermon-browser') ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo wp_nonce_url( admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"), 'sermon_manage_sermon', 'sermon_manage_sermons_nounce' );  ?>"><?php _e('Delete', 'sermon-browser'); ?></a> |
+									<a href="<?php echo admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}"); ?>"><?php _e('Edit', 'sermon-browser') ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"); ?>"><?php _e('Delete', 'sermon-browser'); ?></a> |
 							<?php } ?>
 							<a href="<?php echo sb_display_url().sb_query_char(true).'sermon_id='.$sermon->id;?>">View</a>
 						</td>
@@ -1422,16 +1302,13 @@ function sb_new_sermon() {
 	$getid3=false;
 	//Security check
 	if (!(current_user_can('publish_posts') || current_user_can('publish_pages')))
-		{wp_die(__("You do not have the correct permissions to edit or create sermons", 'sermon-browser'));}
+		wp_die(__("You do not have the correct permissions to edit or create sermons", 'sermon-browser'));
 	include_once (SB_ABSPATH.'/wp-includes/kses.php');
 	sb_scan_dir();
 	$translated_books = array_combine(sb_get_default('eng_bible_books'), sb_get_default('bible_books'));
 
 	if (isset($_POST['save']) && isset($_POST['title'])) {
 	// prepare
-        if (! wp_verify_nonce( $_REQUEST['sermon_browser_save_nounce'], 'sermon_browser_save' )) {
-            wp_die(__("You do not have the correct permissions to edit or create sermons", 'sermon-browser'));
-        }
 		$title = $_POST['title'];
 		$preacher_id = (int) $_POST['preacher'];
 		$service_id = (int) $_POST['service'];
@@ -1460,12 +1337,12 @@ function sb_new_sermon() {
 			if (!$override) {
 				$service_time = $wpdb->get_var("SELECT time FROM {$wpdb->prefix}sb_services WHERE id={$service_id}");
 				if ($service_time)
-					{$date = $date - strtotime('00:00') + strtotime($service_time);}
+					$date = $date - strtotime('00:00') + strtotime($service_time);
 			} else
-				{$date = $date - strtotime('00:00') + strtotime($_POST['time']);}
+				$date = $date - strtotime('00:00') + strtotime($_POST['time']);
 			$date = date('Y-m-d H:i:s', $date);
 		} else
-			{$date = '1970-01-01 00:00';}
+			$date = '1970-01-01 00:00';
 		if (!current_user_can('unfiltered_html')) {
 			$description = wp_kses($_POST['description'], $allowedposttags);
 		} else {
@@ -1475,13 +1352,13 @@ function sb_new_sermon() {
 		if ( !isset($_GET['mid']) or !$_GET['mid'] ) { // new
 			//Security check
 			if (!current_user_can('publish_pages'))
-				{wp_die(__("You do not have the correct permissions to create sermons", 'sermon-browser'));}
+				wp_die(__("You do not have the correct permissions to create sermons", 'sermon-browser'));
 			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_sermons VALUES (null, %s, '$preacher_id', '$date', '$service_id', '$series_id', %s, %s, %s, %s, '$override', 0)", $title, $start, $end, $description, $time));
 			$id = $wpdb->insert_id;
 		} else { // edit
 			//Security check
 			if (!current_user_can('publish_posts'))
-				{wp_die(__("You do not have the correct permissions to edit sermons", 'sermon-browser'));}
+				wp_die(__("You do not have the correct permissions to edit sermons", 'sermon-browser'));
 			$id = (int) $_GET['mid'];
 			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_sermons SET title = %s, preacher_id = '$preacher_id', datetime = '$date', series_id = '$series_id', start = %s, end = %s, description = %s, time = '$time', service_id = '$service_id', override = '$override' WHERE id = $id", $title, $start, $end, $description));
 			$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = 0 WHERE sermon_id = $id AND type = 'file'");
@@ -1489,27 +1366,27 @@ function sb_new_sermon() {
 		}
 		// deal with books
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_books_sermons WHERE sermon_id = $id;");
-		if (isset($startz)) {foreach ($startz as $i => $st) {
+		if (isset($startz)) foreach ($startz as $i => $st) {
 			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, %s, %s, %s, $i, 'start', $id);", $st['book'], $st['chapter'], $st['verse']));
-		}}
-		if (isset($endz)) {foreach ($endz as $i => $ed) {
+		}
+		if (isset($endz)) foreach ($endz as $i => $ed) {
 			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, %s, %s, %s, $i, 'end', $id);", $ed['book'], $ed['chapter'], $ed['verse']));
-		}}
+		}
 		// now previously uploaded files
 		foreach ($_POST['file'] as $uid => $file) {
 			if ($file != 0)
-				{$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = $id WHERE id = %s;", $file));}
+				$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = $id WHERE id = %s;", $file));
 			elseif ($_FILES['upload']['error'][$uid] == UPLOAD_ERR_OK) {
 				$filename = basename($_FILES['upload']['name'][$uid]);
 				if (IS_MU) {
-					$file_allowed = false;
+					$file_allowed = FALSE;
 					$allowed_extensions = explode(' ', get_site_option('upload_filetypes'));
 					foreach ($allowed_extensions as $ext) {
 						if (substr(strtolower($filename), -(strlen($ext)+1)) == '.'.strtolower($ext))
-							{$file_allowed = true;}
+							$file_allowed = TRUE;
 					}
 				} else {
-					$file_allowed = true;
+					$file_allowed = TRUE;
 				}
 				if ($file_allowed) {
 					$prefix = '';
@@ -1567,7 +1444,7 @@ function sb_new_sermon() {
 	$id3_tags = array();
 	if (isset($_GET['getid3'])) {
 		$file_data = $wpdb->get_row($wpdb->prepare("SELECT name, type FROM {$wpdb->prefix}sb_stuff WHERE id = %s", $_GET['getid3']));
-		if ($file_data !== null) {
+		if ($file_data !== NULL) {
 			if (!class_exists('getID3')) {
 			    require(ABSPATH.WPINC.'/ID3/getid3.php' );
 			}
@@ -1577,19 +1454,19 @@ function sb_new_sermon() {
 				$sermonUploadDir = SB_ABSPATH.sb_get_option('upload_dir');
 				$tempfilename = $sermonUploadDir.preg_replace('/([ ])/e', 'chr(rand(97,122))', '		').'.mp3';
 				if ($tempfile = @fopen($tempfilename, 'wb'))
-					{if ($remote_file = @fopen($file_data->name, 'r')) {
+					if ($remote_file = @fopen($file_data->name, 'r')) {
 						$remote_contents = '';
 						while (!feof($remote_file)) {
 							$remote_contents .= fread($remote_file, 8192);
 							if (strlen($remote_contents) > 65536)
-							   {break;}
+							   break;
 						}
 						fwrite($tempfile, $remote_contents);
 						fclose($remote_file);
 						fclose($tempfile);
 						$id3_raw_tags = $getID3->analyze(realpath($tempfilename));
 						unlink ($tempfilename);
-					}}
+					}
 			} else {
 				$filename = $file_data->name;
 				$id3_raw_tags = $getID3->analyze(realpath(SB_ABSPATH.sb_get_option('upload_dir').$filename));
@@ -1597,19 +1474,19 @@ function sb_new_sermon() {
 			if (!isset($id3_raw_tags['tags'])) {
 				echo '<div id="message" class="updated fade"><p><b>'.__('No ID3 tags found.', 'sermon-browser');
 				if ($file_data->type == 'url')
-					 {echo ' Remote files must have id3v2 tags.';}
+					 echo ' Remote files must have id3v2 tags.';
 				echo '</b></div>';
 			}
 			getid3_lib::CopyTagsToComments($id3_raw_tags);
 			if (sb_get_option ('import_title'))
-				{$id3_tags['title'] = @$id3_raw_tags['comments_html']['title'][0];}
+				$id3_tags['title'] = @$id3_raw_tags['comments_html']['title'][0];
 			if (sb_get_option ('import_comments'))
-				{$id3_tags['description'] = @$id3_raw_tags['comments_html']['comments'][0];}
+				$id3_tags['description'] = @$id3_raw_tags['comments_html']['comments'][0];
 			if (sb_get_option ('import_album')) {
 				$id3_tags['series'] = @$id3_raw_tags['comments_html']['album'][0];
 				if ($id3_tags['series'] != '') {
 					$series_id = $wpdb->get_var("SELECT id FROM {$wpdb->prefix}sb_series WHERE name LIKE '{$id3_tags['series']}'");
-					if ($series_id === null) {
+					if ($series_id === NULL) {
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_series VALUES (null, %s, '0')", $id3_tags['series']));
 						$series_id = $wpdb->insert_id;
 					}
@@ -1620,7 +1497,7 @@ function sb_new_sermon() {
 				$id3_tags['preacher'] = @$id3_raw_tags['comments_html']['artist'][0];
 				if ($id3_tags['preacher'] != '') {
 					$preacher_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}sb_preachers WHERE name LIKE %s", $id3_tags['preacher']));
-					if ($preacher_id === null) {
+					if ($preacher_id === NULL) {
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_preachers VALUES (null, %s, '', '')", $id3_tags['preacher']));
 						$preacher_id = $wpdb->insert_id;
 					}
@@ -1636,11 +1513,11 @@ function sb_new_sermon() {
 				$id3_tags['date'] = '';
 				if (count($date) >= 3) {
 					if ($date_format == 'uk')
-						{$id3_tags['date'] = date ('Y-m-d', mktime(0, 0, 0, $date[1], $date[0], $date[2]));}
+						$id3_tags['date'] = date ('Y-m-d', mktime(0, 0, 0, $date[1], $date[0], $date[2]));
 					elseif ($date_format == 'us')
-						{$id3_tags['date'] = date ('Y-m-d', mktime(0, 0, 0, $date[0], $date[1], $date[2]));}
+						$id3_tags['date'] = date ('Y-m-d', mktime(0, 0, 0, $date[0], $date[1], $date[2]));
 					elseif ($date_format == 'int')
-						{$id3_tags['date'] = date ('Y-m-d', mktime(0, 0, 0, $date[1], $date[2], $date[0]));}
+						$id3_tags['date'] = date ('Y-m-d', mktime(0, 0, 0, $date[1], $date[2], $date[0]));
 				}
 			}
 		}
@@ -1684,7 +1561,7 @@ function sb_new_sermon() {
 		}
 		$tags = implode(', ', (array) $tags);
 	} else
-		{$startArr = $endArr = array();}
+		$startArr = $endArr = array();
 	$books = sb_get_default('eng_bible_books');
 ?>
 	<script type="text/javascript">
@@ -1819,7 +1696,7 @@ function sb_new_sermon() {
 					<td>
 						<strong><?php _e('Title', 'sermon-browser') ?></strong>
 						<div>
-							<input type="text" value="<?php if (isset($id3_tags['title'])) {echo $id3_tags['title'];} elseif (isset($curSermon->title)) {echo htmlspecialchars(stripslashes($curSermon->title));} ?>" name="title" size="60" style="width:400px;" />
+							<input type="text" value="<?php if (isset($id3_tags['title'])) echo $id3_tags['title']; elseif (isset($curSermon->title)) echo htmlspecialchars(stripslashes($curSermon->title)); ?>" name="title" size="60" style="width:400px;" />
 						</div>
 					</td>
 					<td>
@@ -1838,11 +1715,11 @@ function sb_new_sermon() {
 								<?php else: ?>
 									<?php foreach ($preachers as $preacher):
 											if (isset($id3_tags['preacher']))
-												{$preacher_id = $id3_tags['preacher'];}
+												$preacher_id = $id3_tags['preacher'];
 											elseif (isset ($curSermon->preacher_id))
-												{$preacher_id = $curSermon->preacher_id;}
+												$preacher_id = $curSermon->preacher_id;
 											else
-												{$preacher_id = -1;} ?>
+												$preacher_id = -1; ?>
 									<option value="<?php echo $preacher->id ?>" <?php echo $preacher->id == $preacher_id ? 'selected="selected"' : ''?>><?php echo htmlspecialchars(stripslashes($preacher->name), ENT_QUOTES) ?></option>
 									<?php endforeach ?>
 								<?php endif ?>
@@ -1857,11 +1734,11 @@ function sb_new_sermon() {
 							<?php else: ?>
 								<?php foreach ($series as $item):
 										if (isset($id3_tags['series']))
-											{$series_id = $id3_tags['series'];}
+											$series_id = $id3_tags['series'];
 										elseif (isset($curSermon->series_id))
-											{$series_id = $curSermon->series_id;}
+											$series_id = $curSermon->series_id;
 										else
-											{$series_id = -1;} ?>
+											$series_id = -1; ?>
 									<option value="<?php echo $item->id ?>" <?php echo $item->id == $series_id ? 'selected="selected"' : '' ?>><?php echo htmlspecialchars(stripslashes($item->name), ENT_QUOTES) ?></option>
 								<?php endforeach ?>
 							<?php endif ?>
@@ -1880,11 +1757,11 @@ function sb_new_sermon() {
 						<strong><?php _e('Description', 'sermon-browser') ?></strong>
 						<div>
 							<?php	if (isset($id3_tags['description']))
-										{$desc = $id3_tags['description'];}
+										$desc = $id3_tags['description'];
 									elseif (isset($curSermon->description))
-										{$desc = stripslashes($curSermon->description);}
+										$desc = stripslashes($curSermon->description);
 									else
-										{$desc = '';} ?>
+										$desc = ''; ?>
 							<textarea name="description" cols="50" rows="7"><?php echo $desc; ?></textarea>
 						</div>
 					</td>
@@ -1991,7 +1868,6 @@ function sb_new_sermon() {
 			</table>
 		</fieldset>
 		<p class="submit"><input type="submit" name="save" value="<?php _e('Save', 'sermon-browser') ?> &raquo;" /></p>
-		<?php wp_nonce_field('sermon_browser_save', 'sermon_browser_save_nounce'); ?>
 		</form>
 	</div>
 	<script type="text/javascript">
@@ -2017,13 +1893,13 @@ function sb_new_sermon() {
 					$assocCode = $wpdb->get_results("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE sermon_id = {$mid} AND type = 'code' ORDER BY name asc;");
 				}
 				else
-					{$assocFiles = $assocURLs = $assocCode = array();}
+					$assocFiles = $assocURLs = $assocCode = array();
 				$r = false;
 				if (isset($filename) && $filename != '')
-					{if ($file_data->type == 'url')
-						{$assocURLs[]->name = $file_data->name;}
+					if ($file_data->type == 'url')
+						$assocURLs[]->name = $file_data->name;
 					else
-						{$assocFiles[]->id = esc_js($_GET['getid3']);}}
+						$assocFiles[]->id = esc_js($_GET['getid3']);
 			?>
 
 			<?php for ($lolz = 0; $lolz < count($assocFiles); $lolz++): ?>
@@ -2220,7 +2096,7 @@ sb_do_alerts();
 		<div style="margin-left:553px;">
 			<p>Since April 2011, all gifts donated to Sermon Browser have been given to support the work of <a href="http://www.bethel-clydach.co.uk/about/mission-partners/nathanael-and-anna-ayling/">Nathanael and Anna Ayling</a> in Japan.
 		 	Nathanael and Anna are members of a small church in the UK where the the author of Sermon Browser is a minister. Together with little Ethan, they have been in Japan since April 2010, and are based in Sappororo in the north,
-		 	undergoing intensive language training so that by God's grace they can work alongside Japanese Christians to make disciples of Jesus among Japanese students. They are being cared for by <a href="http://www.omf.org/omf/japan/about_us">OMF International</a> (formerly known as the China Inland Mission, and founded by
+		 	undergoing intensive language training so that by God's grace they can work alongside Japanese Christians to make disciples of Jesus among Japanese students. They are being cared for by <a href="http://www.omf.org/omf/japan/about_us">OMF International</a> (formerly known as the China Inland Mission, and founded by 
 		 	Hudson Taylor in 1865).</p>
 		 	<p>If you value Sermon Browser, please consider supporting Nathanael and Anna. You can do this by:</p>
 		 	<ul>
@@ -2230,7 +2106,7 @@ sb_do_alerts();
 		 	</ul>
 		</div>
 	</div>
-<?php
+<?php	
 }
 /***************************************
  ** Supplementary functions           **
@@ -2241,7 +2117,7 @@ sb_do_alerts();
 */
 function sb_do_alerts() {
 	global $wpdb;
-	if (stripos(sb_get_option('mp3_shortcode'), '%SERMONURL%') === false) {
+	if (stripos(sb_get_option('mp3_shortcode'), '%SERMONURL%') === FALSE) {
 		echo '<div id="message" class="updated fade"><p><b>';
 		_e('Error:</b> The MP3 shortcode must link to individual sermon files. You do this by including <span style="color:red">%SERMONURL%</span> in your shortcode (e.g. [audio mp3="%SERMONURL%"]). SermonBrowser will then replace %SERMONURL% with a link to each sermon.', 'sermon-browser');
 		echo '</div>';
@@ -2301,11 +2177,11 @@ function sb_rightnow () {
 			$output_string .= sprintf(__('%s series'), number_format($series_count))."</a> ";
 		}
 		if ($tag_count > 0)
-			{$output_string .= __("using")." ".sprintf(_n('%s tag', '%s tags', $tag_count), number_format($tag_count))." ";}
+			$output_string .= __("using")." ".sprintf(_n('%s tag', '%s tags', $tag_count), number_format($tag_count))." ";
 		if (substr($output_string, -1) == " ")
-			{$output_string = substr($output_string, 0, -1);}
+			$output_string = substr($output_string, 0, -1);
 		if ($download_count > 0)
-			{$output_string .= ". ".sprintf(_n('Only one file has been downloaded', 'They have been downloaded a total of %s times', $download_count), number_format($download_count));}
+			$output_string .= ". ".sprintf(_n('Only one file has been downloaded', 'They have been downloaded a total of %s times', $download_count), number_format($download_count));
 		if ($download_count > 1) {
 			$output_string .= ", ".sprintf(_n('an average of once per sermon', 'an average of %d times per sermon', $download_average), $download_average);
 			$most_popular_title = '<a href="'.sb_display_url().sb_query_char(true).'sermon_id='.$most_popular->sermon_id.'">'.stripslashes($most_popular->title).'</a>';
@@ -2375,8 +2251,8 @@ function sb_delete_unused_tags() {
 	global $wpdb;
 	$unused_tags = $wpdb->get_results("SELECT {$wpdb->prefix}sb_tags.id AS id, {$wpdb->prefix}sb_sermons_tags.id AS sid FROM {$wpdb->prefix}sb_tags LEFT JOIN {$wpdb->prefix}sb_sermons_tags ON {$wpdb->prefix}sb_tags.id = {$wpdb->prefix}sb_sermons_tags.tag_id WHERE {$wpdb->prefix}sb_sermons_tags.tag_id IS NULL");
 	if (is_array($unused_tags))
-		{foreach ($unused_tags AS $unused_tag)
-			{$wpdb->query("DELETE FROM {$wpdb->prefix}sb_tags WHERE id='{$unused_tag->id}'");}}
+		foreach ($unused_tags AS $unused_tag)
+			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_tags WHERE id='{$unused_tag->id}'");
 }
 
 /**
@@ -2391,31 +2267,31 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 	$dservices = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_services ORDER BY id;");
 
 	if ( is_numeric($widget_args) )
-		{$widget_args = array( 'number' => $widget_args );}
+		$widget_args = array( 'number' => $widget_args );
 	$widget_args = wp_parse_args( $widget_args, array( 'number' => -1 ) );
 	extract( $widget_args, EXTR_SKIP );
 
 	$options = sb_get_option('sermons_widget_options');
 	if ( !is_array($options) )
-		{$options = array();}
+		$options = array();
 
 	if ( !$updated && !empty($_POST['sidebar']) ) {
 		$sidebar = (string) $_POST['sidebar'];
 		$sidebars_widgets = wp_get_sidebars_widgets();
 		if ( isset($sidebars_widgets[$sidebar]) )
-			{$this_sidebar =& $sidebars_widgets[$sidebar];}
+			$this_sidebar =& $sidebars_widgets[$sidebar];
 		else
-			{$this_sidebar = array();}
+			$this_sidebar = array();
 		foreach ( $this_sidebar as $_widget_id ) {
 			if ( 'sb_widget_sermon' == $wp_registered_widgets[$_widget_id]['callback'] && isset($wp_registered_widgets[$_widget_id]['params'][0]['number']) ) {
 				$widget_number = $wp_registered_widgets[$_widget_id]['params'][0]['number'];
 				if ( !in_array( "sermon-$widget_number", $_POST['widget-id'] ) )
-					{unset($options[$widget_number]);}
+					unset($options[$widget_number]);
 			}
 		}
 		foreach ( (array) $_POST['widget-sermon'] as $widget_number => $widget_sermon_instance ) {
 			if ( !isset($widget_sermon_instance['limit']) && isset($options[$widget_number]) )
-				{continue;}
+				continue;
 			$limit = esc_html( $widget_sermon_instance['limit'] );
 			$preacherz = (int) $widget_sermon_instance['preacherz'];
 			$preacher = (int) $widget_sermon_instance['preacher'];
@@ -2511,7 +2387,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 function sb_widget_popular_control() {
 	$options = sb_get_option('popular_widget_options');
 	if ( !is_array($options) )
-		{$options = array('title' => '', 'limit' => 5, 'display_sermons' => true, 'display_series' => true, 'display_preachers' => true);}
+		$options = array('title' => '', 'limit' => 5, 'display_sermons' => true, 'display_series' => true, 'display_preachers' => true);
 
 	if (isset($_POST['widget-popular-sermons-submit'])) {
 		$title = sanitize_text_field(stripslashes($_POST['widget-popular-title']));
@@ -2551,15 +2427,15 @@ function sb_widget_popular_control() {
 */
 function sb_import_options_set () {
 	if (!sb_get_option('import_title') && !sb_get_option('import_artist') && !sb_get_option('import_album') && !sb_get_option('import_comments') && (!sb_get_option('import_filename') || sb_get_option('import_filename') == 'none'))
-		{return false;}
+		return false;
 	else
-		{return true;}
+		return true;
 }
 
 /**
 * Displays notice if ID3 import options have not been set
 */
-function sb_print_import_options_message($long = false) {
+function sb_print_import_options_message($long = FALSE) {
 	if (!sb_import_options_set()) {
 		if ($long) {
 			_e ('SermonBrowser can automatically pre-fill this form by reading ID3 tags from MP3 files.', 'sermon-browser');
@@ -2579,7 +2455,7 @@ function sb_print_upload_form () {
 		<form method="post" enctype="multipart/form-data" action ="<?php echo admin_url('admin.php?page=sermon-browser/files.php'); ?>" >
 		<thead>
 		<tr>
-			<th scope="col" colspan="3"><?php if (sb_import_options_set()) {printf(__("Select an MP3 file here to have the %s form pre-filled using ID3 tags.", 'sermon-browser'), "<a href=\"".admin_url('admin.php?page=sermon-browser/new_sermon.php')."\">".__('Add Sermons', 'sermon-browser').'</a>');} else {_e('Upload file', 'sermon-browser');}?></th>
+			<th scope="col" colspan="3"><?php if (sb_import_options_set()) printf(__("Select an MP3 file here to have the %s form pre-filled using ID3 tags.", 'sermon-browser'), "<a href=\"".admin_url('admin.php?page=sermon-browser/new_sermon.php')."\">".__('Add Sermons', 'sermon-browser').'</a>'); else _e('Upload file', 'sermon-browser');?></th>
 		</tr>
 		</thead>
 		<tbody>
@@ -2595,11 +2471,11 @@ function sb_print_upload_form () {
 	} else
 		if (IS_MU) {
 	?>
-			<td><?php _e('Upload is disabled. Please contact your systems administrator.', 'sermon-browser');?></td>
+			<td><?php _e('Upload is disabled. Please contact your systems administrator.', 'sermon-browser');?></p>
 	<?php
 		} else {
 	?>
-			<td><?php _e('Upload is disabled. Please check your folder setting in Options.', 'sermon-browser');?></td>
+			<td><?php _e('Upload is disabled. Please check your folder setting in Options.', 'sermon-browser');?></p>
 	<?php
 	}
 	?>
@@ -2640,7 +2516,7 @@ function sb_print_upload_form () {
 
 function sb_add_contextual_help($help) {
 	if (!isset($_GET['page']))
-		{return $help;}
+		return $help;
 	else {
 		$out = '<h5>'.__('SermonBrowser Help', 'sermon-browser')."</h5>\n";
 		$out .= '<div class="metabox-prefs"><p>';

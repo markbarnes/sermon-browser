@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sermon Browser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-27 10:15+0100\n"
+"POT-Creation-Date: 2016-05-31 21:59+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Lucian Mihailescu <intercer@gmail.com>\n"
 "Language-Team: InterCer.net <intercer@gmail.com>\n"
@@ -11,25 +11,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __;_e\n"
-"X-Generator: Poedit 1.8.13\n"
+"X-Generator: Poedit 1.8.8\n"
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
 "2:1));\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: sb-includes/admin.php:33 sb-includes/admin.php:39 sb-includes/admin.php:121
+#: sb-includes/admin.php:31
 msgid ""
 "You do not have the correct permissions to edit the SermonBrowser options"
 msgstr ""
 "Nu aveți permisiunea corectă pentru a edita opțiunile Listei de Predici"
 
-#: sb-includes/admin.php:97 sb-includes/admin.php:106
+#: sb-includes/admin.php:84 sb-includes/admin.php:93
 msgid "Upload is disabled. Please contact your administrator."
 msgstr ""
 "Încărcarea predicilor este inactivată. Vă rugăm sa contactați "
 "administratorul."
 
-#: sb-includes/admin.php:99 sb-includes/admin.php:155
+#: sb-includes/admin.php:86 sb-includes/admin.php:135
 msgid ""
 "Error: The upload folder is not writeable. You need to CHMOD the folder to "
 "666 or 777."
@@ -37,80 +37,80 @@ msgstr ""
 "Eroare: Nu se poate scrie în directorul pentru încărcarea fișierelor. "
 "Trebuie sa schimbati CHMOD pentru acest folder în 666 sau 777."
 
-#: sb-includes/admin.php:108 sb-includes/admin.php:160
+#: sb-includes/admin.php:95 sb-includes/admin.php:140
 msgid "Error: The upload folder you have specified does not exist."
 msgstr "Eroare: Directorul specificat pentru încărcarea fișierelor nu există."
 
-#: sb-includes/admin.php:114
+#: sb-includes/admin.php:101
 msgid "Default loaded successfully."
 msgstr "Încărcare cu succes."
 
-#: sb-includes/admin.php:165
+#: sb-includes/admin.php:145
 msgid "Options saved successfully."
 msgstr "Opțiunile au fost salvate cu succes."
 
-#: sb-includes/admin.php:173
+#: sb-includes/admin.php:153
 msgid "Error"
 msgstr "Eroare"
 
-#: sb-includes/admin.php:179
+#: sb-includes/admin.php:158
 msgid "Warning"
 msgstr "Atenționare"
 
-#: sb-includes/admin.php:191
+#: sb-includes/admin.php:167
 msgid "Basic Options"
 msgstr "Opțiuni de bază"
 
-#: sb-includes/admin.php:198
+#: sb-includes/admin.php:174
 msgid "Upload folder"
 msgstr "Director încărcare"
 
-#: sb-includes/admin.php:215
+#: sb-includes/admin.php:185
 msgid "Public podcast feed"
 msgstr "Feed podcast public"
 
-#: sb-includes/admin.php:222
+#: sb-includes/admin.php:189
 msgid "Private podcast feed"
 msgstr "Feed podcast privat"
 
-#: sb-includes/admin.php:232
+#: sb-includes/admin.php:193
 msgid "MP3 shortcode"
 msgstr "cod scurt MP3"
 
-#: sb-includes/admin.php:233
+#: sb-includes/admin.php:193
 #, fuzzy
 msgid "Default: "
 msgstr "Timp implicit"
 
-#: sb-includes/admin.php:240
+#: sb-includes/admin.php:197
 msgid "Sermons per page"
 msgstr "Predici pe pagină"
 
-#: sb-includes/admin.php:248
+#: sb-includes/admin.php:201
 msgid "Filter type"
 msgstr "Tip filtru"
 
-#: sb-includes/admin.php:254
+#: sb-includes/admin.php:205
 msgid "Drop-down"
 msgstr "Drop-down"
 
-#: sb-includes/admin.php:255
+#: sb-includes/admin.php:205
 msgid "One-click"
 msgstr "Un-click"
 
-#: sb-includes/admin.php:256 sb-includes/frontend.php:748
+#: sb-includes/admin.php:205 sb-includes/frontend.php:748
 msgid "None"
 msgstr "Niciunul"
 
-#: sb-includes/admin.php:272
+#: sb-includes/admin.php:217
 msgid "Minimise filter"
 msgstr "Minimizează filtru"
 
-#: sb-includes/admin.php:276
+#: sb-includes/admin.php:221
 msgid "Hide sermons without attachments?"
 msgstr "Ascunde predicile fără atașament?"
 
-#: sb-includes/admin.php:291
+#: sb-includes/admin.php:234
 msgid ""
 "The upload folder is not writeable. You need to specify a folder that you "
 "have permissions to write to."
@@ -118,11 +118,11 @@ msgstr ""
 "Nu se poate scrie în directorul pentru încărcarea fișierelor. Trebuie sa "
 "schimbati CHMOD pentru acest folder în 666 sau 777."
 
-#: sb-includes/admin.php:293 sb-includes/admin.php:310
+#: sb-includes/admin.php:236 sb-includes/admin.php:246
 msgid "The upload folder you have specified does not exist."
 msgstr "Directorul specificat pentru încărcarea fișierelor nu există."
 
-#: sb-includes/admin.php:296
+#: sb-includes/admin.php:237
 msgid ""
 "Your administrator does not allow file uploads. You will need to upload via "
 "FTP."
@@ -130,19 +130,19 @@ msgstr ""
 "Setările din php.ini nu vă permit să încărcați fisiere. Vă rugăm sa "
 "schimbați setarea file_uploads în php.ini."
 
-#: sb-includes/admin.php:300 sb-includes/admin.php:316
+#: sb-includes/admin.php:239 sb-includes/admin.php:248
 msgid "The maximum file size you can upload is only "
 msgstr "Mărimea maximă a fisierului de încărcat este doar"
 
-#: sb-includes/admin.php:300
+#: sb-includes/admin.php:239
 msgid "k. You may need to upload via FTP."
 msgstr "k. Va trebui să încarci prin FTP."
 
-#: sb-includes/admin.php:304 sb-includes/admin.php:322
+#: sb-includes/admin.php:241 sb-includes/admin.php:250
 msgid "The maximum time allowed for any script to run is only "
 msgstr "Timpul maxim permis pentru un script să ruleze este de doar"
 
-#: sb-includes/admin.php:304
+#: sb-includes/admin.php:241
 msgid ""
 " seconds. If your files take longer than this to upload, you will need to "
 "upload via FTP."
@@ -150,7 +150,7 @@ msgstr ""
 " secunde. Dacă durează mai mult de atât pentru ca fișierele tale să se "
 "încarce, atunci trebui să le încarci pe FTP."
 
-#: sb-includes/admin.php:308
+#: sb-includes/admin.php:244
 msgid ""
 "The upload folder is not writeable. You need to specify a folder that you "
 "have permissions to write to, or CHMOD this folder to 666 or 777."
@@ -158,7 +158,7 @@ msgstr ""
 "Nu se poate scrie în directorul pentru încărcarea fișierelor. Trebuie sa "
 "schimbati CHMOD pentru acest folder în 666 sau 777."
 
-#: sb-includes/admin.php:313
+#: sb-includes/admin.php:247
 msgid ""
 "Your php.ini file does not allow uploads. Please change file_uploads in php."
 "ini."
@@ -166,48 +166,48 @@ msgstr ""
 "Setările din php.ini nu vă permit să încărcați fisiere. Vă rugăm sa "
 "schimbați setarea file_uploads în php.ini."
 
-#: sb-includes/admin.php:316
+#: sb-includes/admin.php:248
 msgid "k. Please change upload_max_filesize to at least 15M in php.ini."
 msgstr ""
 "k. Vă rugăm să schimbați upload_max_filesize să fie cel puțin 15M în php.ini."
 
-#: sb-includes/admin.php:319
+#: sb-includes/admin.php:249
 msgid "The maximum file size you send through the browser is only "
 msgstr "Mărimea maximă a fișierului de încărcat prin browser este de doar"
 
-#: sb-includes/admin.php:319
+#: sb-includes/admin.php:249
 msgid "k. Please change post_max_size to at least 15M in php.ini."
 msgstr ""
 "k. Vă rugăm să schimbați upload_max_filesize să fie cel puțin 15M în php.ini."
 
-#: sb-includes/admin.php:322
+#: sb-includes/admin.php:250
 msgid " seconds. Please change max_execution_time to at least 600 in php.ini."
 msgstr ""
 "secunde. Vă rugăm schimbați max_execution_time să fie cel puțin 600 în php."
 "ini."
 
-#: sb-includes/admin.php:325
+#: sb-includes/admin.php:251
 msgid "The maximum time allowed for an upload script to run is only "
 msgstr "Timpul maxim permis pentru un script de încărcare este de doar"
 
-#: sb-includes/admin.php:325
+#: sb-includes/admin.php:251
 msgid " seconds. Please change max_input_time to at least 600 in php.ini."
 msgstr ""
 "secunde. Vă rugăm schimbațimax_input_time să fie cel puțin 600 în php.ini."
 
-#: sb-includes/admin.php:328
+#: sb-includes/admin.php:252
 msgid "The maximum amount of memory allowed is only "
 msgstr "Mărimea maximă a memoriei permise este de doar"
 
-#: sb-includes/admin.php:328
+#: sb-includes/admin.php:252
 msgid "k. Please change memory_limit to at least 16M in php.ini."
 msgstr "k. Vă rugăm să schimbați memory_limit să fie cel puțin 16M în php.ini."
 
-#: sb-includes/admin.php:333
+#: sb-includes/admin.php:256
 msgid "Import Options"
 msgstr "Opțiuni import"
 
-#: sb-includes/admin.php:334
+#: sb-includes/admin.php:257
 #, php-format
 msgid ""
 "SermonBrowser can speed up the process of importing existing MP3s by reading "
@@ -222,75 +222,75 @@ msgstr ""
 "specifica ce informații doriți să fie importate in SermonBrowser. Odată ce "
 "ați selectat aceste opțiuni, mergeți la %s pentru a importa fișierele dvs."
 
-#: sb-includes/admin.php:334 sb-includes/frontend.php:128 sermon.php:282
+#: sb-includes/admin.php:257 sb-includes/frontend.php:128 sermon.php:279
 msgid "Files"
 msgstr "Fișiere"
 
-#: sb-includes/admin.php:337
+#: sb-includes/admin.php:260
 msgid "Add files prompt to top of Add Sermon page?"
 msgstr "Prompter pentru adaugare fișiere la începutul paginii Adaugă Predică?"
 
-#: sb-includes/admin.php:342
+#: sb-includes/admin.php:264
 msgid "Use title tag for sermon title?"
 msgstr "Folosiți tag-ul titlu pentru titlul predicii?"
 
-#: sb-includes/admin.php:347
+#: sb-includes/admin.php:268
 msgid "Use artist tag for preacher?"
 msgstr "Folosiți tag-ul artist (autor) pentru predicator?"
 
-#: sb-includes/admin.php:352
+#: sb-includes/admin.php:272
 msgid "Use album tag for series?"
 msgstr "Folosiți tag-ul album pentru numele seriei?"
 
-#: sb-includes/admin.php:357
+#: sb-includes/admin.php:276
 msgid "Use comments tag for sermon description?"
 msgstr "Folosiți tag-ul comentarii pentru descrierea predicii?"
 
-#: sb-includes/admin.php:363
+#: sb-includes/admin.php:280
 msgid "Attempt to extract date from filename"
 msgstr "Încearcă să extragi data din numele fișierului"
 
-#: sb-includes/admin.php:367
+#: sb-includes/admin.php:283
 msgid "Disabled"
 msgstr "Dezactivat"
 
-#: sb-includes/admin.php:368
+#: sb-includes/admin.php:284
 msgid "UK-formatted date (dd-mm-yyyy)"
 msgstr "Data în format UK (zz-ll-aaaa)"
 
-#: sb-includes/admin.php:369
+#: sb-includes/admin.php:285
 msgid "US-formatted date (mm-dd-yyyy)"
 msgstr "Data în format US (ll-zz-aaaa)"
 
-#: sb-includes/admin.php:370
+#: sb-includes/admin.php:286
 msgid "International formatted date (yyyy-mm-dd)"
 msgstr "Data în format Internațional (aaaa-ll-zz)"
 
-#: sb-includes/admin.php:378
+#: sb-includes/admin.php:294
 msgid ""
 "(Use if you name your files something like 2008-11-06-eveningsermon.mp3)"
 msgstr ""
 "(Folosit dacă numele fișierelor sunt ceva de genul 2008-11-06-predica-seara."
 "mp3)"
 
-#: sb-includes/admin.php:385 sb-includes/admin.php:513
+#: sb-includes/admin.php:299 sb-includes/admin.php:408
 msgid "Reset to defaults"
 msgstr "Resetează la valorile implicite"
 
-#: sb-includes/admin.php:386 sb-includes/admin.php:513
-#: sb-includes/admin.php:651 sb-includes/admin.php:1993
+#: sb-includes/admin.php:299 sb-includes/admin.php:408
+#: sb-includes/admin.php:539 sb-includes/admin.php:1870
 msgid "Save"
 msgstr "Salvează"
 
-#: sb-includes/admin.php:398 sb-includes/admin.php:402
+#: sb-includes/admin.php:311
 msgid "You do not have the correct permissions to Uninstall SermonBrowser"
 msgstr "Nu aveți permisiunile corecte pentru a dezinstala SermonBrowser"
 
-#: sb-includes/admin.php:411
+#: sb-includes/admin.php:318
 msgid "Reset SermonBrowser"
 msgstr "Resetează SermonBrowser"
 
-#: sb-includes/admin.php:412 sb-includes/admin.php:418
+#: sb-includes/admin.php:319 sb-includes/admin.php:325
 #, php-format
 msgid ""
 "Clicking the %s button below will remove ALL data (sermons, preachers, "
@@ -299,24 +299,24 @@ msgstr ""
 "Dând click pe butonul %s de mai jos va șterge TOATE datele (predici, "
 "predicatori, serii, etc.) din SermonBrowser"
 
-#: sb-includes/admin.php:412 sb-includes/admin.php:434
+#: sb-includes/admin.php:319 sb-includes/admin.php:339
 msgid "Delete all"
 msgstr "Șterge tot"
 
-#: sb-includes/admin.php:414 sb-includes/admin.php:422
+#: sb-includes/admin.php:321 sb-includes/admin.php:329
 msgid "You will NOT be able to undo this action."
 msgstr "Nu veți putea să reversați această acțiune."
 
-#: sb-includes/admin.php:417 sb-includes/admin.php:418
-#: sb-includes/admin.php:436 sb-includes/frontend.php:138 sermon.php:287
+#: sb-includes/admin.php:324 sb-includes/admin.php:325
+#: sb-includes/admin.php:339 sb-includes/frontend.php:138 sermon.php:284
 msgid "Uninstall"
 msgstr "Dezinstalează"
 
-#: sb-includes/admin.php:420
+#: sb-includes/admin.php:327
 msgid "and will deactivate the SermonBrowser plugin"
 msgstr "și va dezactiva pluginul SermonBrowser"
 
-#: sb-includes/admin.php:424
+#: sb-includes/admin.php:331
 msgid ""
 "If you only want to temporarily disable SermonBrowser, just deactivate it "
 "from the plugins page."
@@ -324,64 +324,59 @@ msgstr ""
 "Dacă dorești doar să dezactivezi temporar SermonBrowser, atunci doar "
 "dezactiveaza-l din pagina pluginurilor."
 
-#: sb-includes/admin.php:430
+#: sb-includes/admin.php:336
 msgid "Also remove all uploaded files"
 msgstr "De asemenea, șterge toate fișierele încărcate"
 
-#: sb-includes/admin.php:438
+#: sb-includes/admin.php:339
 msgid "Do you REALLY want to delete all data?"
 msgstr "Doriți ÎNTR-ADEVĂR să ștergeți toate datele?"
 
-#: sb-includes/admin.php:446
+#: sb-includes/admin.php:344
 msgid "Are you REALLY REALLY sure you want to remove SermonBrowser?"
 msgstr "Sunteti ABSOLUT SIGUR că vreți să ștergeți SermonBrowser?"
 
-#: sb-includes/admin.php:459 sb-includes/admin.php:463
+#: sb-includes/admin.php:357
 msgid ""
 "You do not have the correct permissions to edit the SermonBrowser templates"
 msgstr ""
 "Nu aveți permisiunea corectă pentru a edita template-urile SermonBrowser"
 
-#: sb-includes/admin.php:482
+#: sb-includes/admin.php:377
 msgid "Templates saved successfully."
 msgstr "Template-urile au fost salvate cu succes."
 
-#: sb-includes/admin.php:491 sb-includes/frontend.php:135 sermon.php:286
+#: sb-includes/admin.php:386 sb-includes/frontend.php:135 sermon.php:283
 msgid "Templates"
 msgstr "Template-uri"
 
-#: sb-includes/admin.php:495
+#: sb-includes/admin.php:390
 msgid "Search results page"
 msgstr "Pagina cu rezultatele căutării"
 
-#: sb-includes/admin.php:501
+#: sb-includes/admin.php:396
 msgid "Sermon page"
 msgstr "Pagina predicilor"
 
-#: sb-includes/admin.php:507
+#: sb-includes/admin.php:402
 msgid "Style"
 msgstr "Stil"
 
-#: sb-includes/admin.php:533
+#: sb-includes/admin.php:427
 msgid ""
 "You do not have the correct permissions to manage the preachers' database"
 msgstr ""
 "Nu aveți permisiunea corectă pentru a administra baza de date cu predicatorii"
 
-#: sb-includes/admin.php:535
+#: sb-includes/admin.php:429
 msgid "Preacher saved to database."
 msgstr "Predicatorul a fost salvat în baza de date."
 
-#: sb-includes/admin.php:541
-msgid ""
-"You do not have the correct permissions to manage the preachers database"
-msgstr ""
-
-#: sb-includes/admin.php:562
+#: sb-includes/admin.php:451
 msgid "Could not save uploaded file. Please try again."
 msgstr "Fișierul încărcat nu poate fi salvat. Vă rugăm să încercați din nou."
 
-#: sb-includes/admin.php:567
+#: sb-includes/admin.php:456
 msgid ""
 "Could not upload file. Please check the Options page for any errors or "
 "warnings."
@@ -389,89 +384,89 @@ msgstr ""
 "Fișierul nu poate fi încărcat. Vă rugăm verificați pagina de Opțiuni pentru "
 "orice erori sau atenționări"
 
-#: sb-includes/admin.php:588 sb-includes/admin.php:687
+#: sb-includes/admin.php:477 sb-includes/admin.php:575
 msgid ""
 "You cannot delete this preacher until you first delete any sermons they have "
 "preached."
 msgstr "Nu poți șterge acest predicator până nu ștergi toate predicile sale."
 
-#: sb-includes/admin.php:602
+#: sb-includes/admin.php:491
 msgid "Add"
 msgstr "Adaugă"
 
-#: sb-includes/admin.php:602 sb-includes/admin.php:683
-#: sb-includes/admin.php:855 sb-includes/admin.php:1395
+#: sb-includes/admin.php:491 sb-includes/admin.php:571
+#: sb-includes/admin.php:743 sb-includes/admin.php:1275
 #: sb-includes/ajax.php:136
 msgid "Edit"
 msgstr "Editează"
 
-#: sb-includes/admin.php:602
+#: sb-includes/admin.php:491
 msgid "preacher"
 msgstr "predicator"
 
-#: sb-includes/admin.php:613
+#: sb-includes/admin.php:502
 msgid "The images folder is not writeable. You won't be able to upload images."
 msgstr ""
 "Directorul cu imagini nu are drepturi de scriere. Nu veți putea încărca "
 "imaginile."
 
-#: sb-includes/admin.php:621 sb-includes/admin.php:669
-#: sb-includes/admin.php:840
+#: sb-includes/admin.php:510 sb-includes/admin.php:557
+#: sb-includes/admin.php:728
 msgid "Name"
 msgstr "Nume"
 
-#: sb-includes/admin.php:629 sb-includes/admin.php:1880
+#: sb-includes/admin.php:518 sb-includes/admin.php:1757
 msgid "Description"
 msgstr "Descriere"
 
-#: sb-includes/admin.php:641 sb-includes/admin.php:670
+#: sb-includes/admin.php:530 sb-includes/admin.php:558
 msgid "Image"
 msgstr "Imagine"
 
-#: sb-includes/admin.php:663 sb-includes/frontend.php:130 sermon.php:283
+#: sb-includes/admin.php:551 sb-includes/frontend.php:130 sermon.php:280
 msgid "Preachers"
 msgstr "Predicatori"
 
-#: sb-includes/admin.php:663 sb-includes/admin.php:834
+#: sb-includes/admin.php:551 sb-includes/admin.php:722
 msgid "add new"
 msgstr "adaugă nou"
 
-#: sb-includes/admin.php:668 sb-includes/admin.php:839
-#: sb-includes/admin.php:1112 sb-includes/admin.php:1147
-#: sb-includes/admin.php:1196 sb-includes/admin.php:1371
+#: sb-includes/admin.php:556 sb-includes/admin.php:727
+#: sb-includes/admin.php:996 sb-includes/admin.php:1031
+#: sb-includes/admin.php:1080 sb-includes/admin.php:1251
 msgid "ID"
 msgstr "ID"
 
-#: sb-includes/admin.php:671 sb-includes/admin.php:842
-#: sb-includes/admin.php:1366 sb-includes/frontend.php:123
-#: sb-includes/widget.php:77 sermon.php:275 sermon.php:276 sermon.php:540
+#: sb-includes/admin.php:559 sb-includes/admin.php:730
+#: sb-includes/admin.php:1246 sb-includes/frontend.php:123
+#: sb-includes/widget.php:77 sermon.php:272 sermon.php:273 sermon.php:537
 msgid "Sermons"
 msgstr "Predici"
 
-#: sb-includes/admin.php:672 sb-includes/admin.php:843
-#: sb-includes/admin.php:1115 sb-includes/admin.php:1151
-#: sb-includes/admin.php:1200 sb-includes/admin.php:1378
+#: sb-includes/admin.php:560 sb-includes/admin.php:731
+#: sb-includes/admin.php:999 sb-includes/admin.php:1035
+#: sb-includes/admin.php:1084 sb-includes/admin.php:1258
 msgid "Actions"
 msgstr "Acțiuni"
 
-#: sb-includes/admin.php:685
+#: sb-includes/admin.php:573
 msgid "You must have at least one preacher in the database."
 msgstr "Trebuie să ai cel puțin un predicator în baza de date."
 
-#: sb-includes/admin.php:685 sb-includes/admin.php:687
-#: sb-includes/admin.php:689 sb-includes/admin.php:857
-#: sb-includes/admin.php:859 sb-includes/admin.php:871
-#: sb-includes/admin.php:1127 sb-includes/admin.php:1171
-#: sb-includes/admin.php:1395 sb-includes/ajax.php:136 sb-includes/ajax.php:182
+#: sb-includes/admin.php:573 sb-includes/admin.php:575
+#: sb-includes/admin.php:577 sb-includes/admin.php:745
+#: sb-includes/admin.php:747 sb-includes/admin.php:759
+#: sb-includes/admin.php:1011 sb-includes/admin.php:1055
+#: sb-includes/admin.php:1275 sb-includes/ajax.php:136 sb-includes/ajax.php:182
 msgid "Delete"
 msgstr "Șterge"
 
-#: sb-includes/admin.php:689 sb-includes/admin.php:859
+#: sb-includes/admin.php:577 sb-includes/admin.php:747
 #, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "Sunteti ABSOLUT SIGUR că vreți să ștergeți %s?"
 
-#: sb-includes/admin.php:707
+#: sb-includes/admin.php:595
 msgid ""
 "You do not have the correct permissions to manage the series and services "
 "database"
@@ -479,34 +474,34 @@ msgstr ""
 "Nu aveți permisiunea corectă pentru a administra baza de date cu serii si "
 "servicii religioase"
 
-#: sb-includes/admin.php:731 sb-includes/admin.php:809
-#: sb-includes/admin.php:1714
+#: sb-includes/admin.php:619 sb-includes/admin.php:697
+#: sb-includes/admin.php:1591
 msgid "New service's name @ default time?"
 msgstr "Serviciu nou @ ora și minute?"
 
-#: sb-includes/admin.php:731 sb-includes/admin.php:1714
+#: sb-includes/admin.php:619 sb-includes/admin.php:1591
 msgid "Service's name @ 18:00"
 msgstr "Numele serviciului la ora 18:00"
 
-#: sb-includes/admin.php:757 sb-includes/admin.php:796
-#: sb-includes/admin.php:1729
+#: sb-includes/admin.php:645 sb-includes/admin.php:684
+#: sb-includes/admin.php:1606
 msgid "New series' name?"
 msgstr "Nume nou serie?"
 
-#: sb-includes/admin.php:757 sb-includes/admin.php:1729
+#: sb-includes/admin.php:645 sb-includes/admin.php:1606
 msgid "Series' name"
 msgstr "Nume serie"
 
-#: sb-includes/admin.php:841
+#: sb-includes/admin.php:729
 msgid "Default time"
 msgstr "Timp implicit"
 
-#: sb-includes/admin.php:855 sb-includes/admin.php:1127
-#: sb-includes/admin.php:1171 sb-includes/ajax.php:182
+#: sb-includes/admin.php:743 sb-includes/admin.php:1011
+#: sb-includes/admin.php:1055 sb-includes/ajax.php:182
 msgid "Rename"
 msgstr "Redenumește"
 
-#: sb-includes/admin.php:857
+#: sb-includes/admin.php:745
 #, php-format
 msgid ""
 "You cannot delete this %1$s as you must have at least one %1$s in the "
@@ -515,7 +510,7 @@ msgstr ""
 "Nu poți șterge acest %1$s pentru că trebuie să ai cel puțin un %1$s în baza "
 "de date"
 
-#: sb-includes/admin.php:863
+#: sb-includes/admin.php:751
 msgid ""
 "Some sermons are currently assigned to that service. You can only delete "
 "services that are not used in the database."
@@ -523,7 +518,7 @@ msgstr ""
 "Unele predici sunt în mod curent asociate cu acest seriviu. Puteți șterge "
 "doar servicii care nu sunt folosite în baza de date."
 
-#: sb-includes/admin.php:866
+#: sb-includes/admin.php:754
 msgid ""
 "Some sermons are currently in that series. You can only delete series that "
 "are empty."
@@ -531,7 +526,7 @@ msgstr ""
 "Unele predici sunt în mod curent în acea serie. Puteți șterge doar seriile "
 "care nu au predici."
 
-#: sb-includes/admin.php:869
+#: sb-includes/admin.php:757
 msgid ""
 "That preacher has sermons in the database. You can only delete preachers who "
 "have no sermons in the database."
@@ -539,113 +534,109 @@ msgstr ""
 "Acest predicator are predici în baza de date. Puteți șterge doar "
 "predicatorii care nu au nici o predică în baza de date."
 
-#: sb-includes/admin.php:893
+#: sb-includes/admin.php:781
 msgid "You do not have the correct permissions to upload sermons"
 msgstr "Nu aveți permisiunea corectă pentru a încărca predici"
 
-#: sb-includes/admin.php:909
+#: sb-includes/admin.php:797
 #, php-format
 msgid "File %s already exists"
 msgstr "Fișierul %s deja există"
 
-#: sb-includes/admin.php:928
+#: sb-includes/admin.php:816
 msgid "Invalid URL."
 msgstr "Adresa URL incorectă"
 
-#: sb-includes/admin.php:930
+#: sb-includes/admin.php:818
 msgid "Your host does not allow remote downloading of files."
 msgstr ""
 "Gazda dvs. web nu permite să descărcați fișiere aflate la distanță pe "
 "serverul dvs."
 
-#: sb-includes/admin.php:956
+#: sb-includes/admin.php:844
 msgid "Files saved to database."
 msgstr "Fișierele au fost salvate în baza de date."
 
-#: sb-includes/admin.php:959 sb-includes/admin.php:1521
+#: sb-includes/admin.php:847 sb-includes/admin.php:1398
 msgid " already exists."
 msgstr " deja există."
 
-#: sb-includes/admin.php:963 sb-includes/admin.php:1526
+#: sb-includes/admin.php:851 sb-includes/admin.php:1403
 msgid "You are not permitted to upload files of that type."
 msgstr "Nu aveți permisiunea să încărcați fișiere de acest tip."
 
-#: sb-includes/admin.php:968
-msgid "Access denied."
-msgstr ""
-
-#: sb-includes/admin.php:1000
+#: sb-includes/admin.php:884
 msgid "New file name?"
 msgstr "Nume nou fișier?"
 
-#: sb-includes/admin.php:1011
+#: sb-includes/admin.php:895
 msgid "You are not permitted files with that extension."
 msgstr "Nu aveți permisiunea să folosiți fișiere cu această extensie."
 
-#: sb-includes/admin.php:1013
+#: sb-includes/admin.php:897
 msgid "The script is unable to rename your file."
 msgstr "Programul nu poate redenumi fișierul dvs."
 
-#: sb-includes/admin.php:1041
+#: sb-includes/admin.php:925
 msgid "The script is unable to delete your file."
 msgstr "Programul nu poate șterge fișierul dvs."
 
-#: sb-includes/admin.php:1052 sb-includes/admin.php:1071
+#: sb-includes/admin.php:936 sb-includes/admin.php:955
 msgid "Previous"
 msgstr "Anterior"
 
-#: sb-includes/admin.php:1058 sb-includes/admin.php:1077
+#: sb-includes/admin.php:942 sb-includes/admin.php:961
 msgid "Next"
 msgstr "Următor"
 
-#: sb-includes/admin.php:1095
+#: sb-includes/admin.php:979
 msgid "Upload Files"
 msgstr "Încarcă fișiere"
 
-#: sb-includes/admin.php:1107
+#: sb-includes/admin.php:991
 msgid "Unlinked files"
 msgstr "Fișiere neasociate"
 
-#: sb-includes/admin.php:1113 sb-includes/admin.php:1148
-#: sb-includes/admin.php:1197
+#: sb-includes/admin.php:997 sb-includes/admin.php:1032
+#: sb-includes/admin.php:1081
 msgid "File name"
 msgstr "Nume fișier"
 
-#: sb-includes/admin.php:1114 sb-includes/admin.php:1149
-#: sb-includes/admin.php:1198
+#: sb-includes/admin.php:998 sb-includes/admin.php:1033
+#: sb-includes/admin.php:1082
 msgid "File type"
 msgstr "Tip fișier"
 
-#: sb-includes/admin.php:1126 sb-includes/ajax.php:181
+#: sb-includes/admin.php:1010 sb-includes/ajax.php:181
 msgid "Create sermon"
 msgstr "Crează predică"
 
-#: sb-includes/admin.php:1142
+#: sb-includes/admin.php:1026
 msgid "Linked files"
 msgstr "Fișiere asociate"
 
-#: sb-includes/admin.php:1150 sb-includes/admin.php:1199
+#: sb-includes/admin.php:1034 sb-includes/admin.php:1083
 #: sb-includes/frontend.php:141 sb-includes/widget.php:75
 msgid "Sermon"
 msgstr "Predică"
 
-#: sb-includes/admin.php:1186
+#: sb-includes/admin.php:1070
 msgid "Search for files"
 msgstr "Caută fișiere"
 
-#: sb-includes/admin.php:1190
+#: sb-includes/admin.php:1074
 msgid "Search"
 msgstr "Caută"
 
-#: sb-includes/admin.php:1205
+#: sb-includes/admin.php:1089
 msgid "Search results will appear here."
 msgstr "Rezultatele căutării vor apare aici."
 
-#: sb-includes/admin.php:1223
+#: sb-includes/admin.php:1107
 msgid "Clean up"
 msgstr "Curățenie"
 
-#: sb-includes/admin.php:1225
+#: sb-includes/admin.php:1109
 msgid ""
 "Pressing the button below scans every sermon in the database, and removes "
 "missing attachments. Use with caution!"
@@ -653,20 +644,19 @@ msgstr ""
 "Apăsând butonul de mai jos veți scana toată baza de date cu predici si veți "
 "șterge orice atașament care lipsește. Folosiți cu grijă!"
 
-#: sb-includes/admin.php:1226
+#: sb-includes/admin.php:1110
 msgid "Clean up missing files"
 msgstr "Curățenie fișiere lipsă"
 
-#: sb-includes/admin.php:1276 sb-includes/admin.php:1289
-#: sb-includes/admin.php:1484
+#: sb-includes/admin.php:1159 sb-includes/admin.php:1361
 msgid "You do not have the correct permissions to edit sermons"
 msgstr "Nu aveți permisiunea corectă să editați predici"
 
-#: sb-includes/admin.php:1279
+#: sb-includes/admin.php:1162
 msgid "Sermon saved to database."
 msgstr "Predica a fost salvată în baza de date."
 
-#: sb-includes/admin.php:1282
+#: sb-includes/admin.php:1165
 #, php-format
 msgid ""
 "If you find SermonBrowser useful, please consider %1$ssupporting%2$s the "
@@ -675,155 +665,155 @@ msgstr ""
 "Dacă SermonBrowser v-a fost de folos, vă rugăm să considerați  %1$sajutarea"
 "%2$s misiunii lui Nathanael și Anna Ayling în Japonia."
 
-#: sb-includes/admin.php:1284
+#: sb-includes/admin.php:1167
 msgid ""
 "Sermon Browser 2.0 is under development. If you're a coder, and would like "
 "to help, please check the <a href=\"https://www.assembla.com/spaces/sermon-"
 "browser-2/documents\">SB2 development website</a>."
 msgstr ""
 
-#: sb-includes/admin.php:1293
+#: sb-includes/admin.php:1173
 msgid "You do not have the correct permissions to delete sermons"
 msgstr "Nu aveți permisiunea corectă pentru a șterge predici"
 
-#: sb-includes/admin.php:1301
+#: sb-includes/admin.php:1181
 msgid "Sermon removed from database."
 msgstr "Predica a fost ștearsă din baza de date."
 
-#: sb-includes/admin.php:1342 sb-includes/admin.php:1372
-#: sb-includes/admin.php:1820
+#: sb-includes/admin.php:1222 sb-includes/admin.php:1252
+#: sb-includes/admin.php:1697
 msgid "Title"
 msgstr "Titlu"
 
-#: sb-includes/admin.php:1346 sb-includes/admin.php:1373
-#: sb-includes/admin.php:1834 sb-includes/frontend.php:1011
+#: sb-includes/admin.php:1226 sb-includes/admin.php:1253
+#: sb-includes/admin.php:1711 sb-includes/frontend.php:1011
 msgid "Preacher"
 msgstr "Predicator"
 
-#: sb-includes/admin.php:1355 sb-includes/admin.php:1376
-#: sb-includes/admin.php:1853 sb-includes/frontend.php:1037
+#: sb-includes/admin.php:1235 sb-includes/admin.php:1256
+#: sb-includes/admin.php:1730 sb-includes/frontend.php:1037
 msgid "Series"
 msgstr "Serii"
 
-#: sb-includes/admin.php:1363
+#: sb-includes/admin.php:1243
 msgid "Filter"
 msgstr "Filtru"
 
-#: sb-includes/admin.php:1374 sb-includes/admin.php:1874
+#: sb-includes/admin.php:1254 sb-includes/admin.php:1751
 #: sb-includes/frontend.php:828 sb-includes/frontend.php:919
 msgid "Date"
 msgstr "Dată"
 
-#: sb-includes/admin.php:1375 sb-includes/admin.php:1894
+#: sb-includes/admin.php:1255 sb-includes/admin.php:1771
 msgid "Service"
 msgstr "Serviciu religios"
 
-#: sb-includes/admin.php:1377
+#: sb-includes/admin.php:1257
 msgid "Stats"
 msgstr "Statistici"
 
-#: sb-includes/admin.php:1388 sb-includes/ajax.php:129
+#: sb-includes/admin.php:1268 sb-includes/ajax.php:129
 msgid "Unknown"
 msgstr "Necunoscut"
 
-#: sb-includes/admin.php:1425 sb-includes/admin.php:1433
+#: sb-includes/admin.php:1305
 msgid "You do not have the correct permissions to edit or create sermons"
 msgstr "Nu aveți permisiunea corectă pentru editarea sau crearea predicilor"
 
-#: sb-includes/admin.php:1478
+#: sb-includes/admin.php:1355
 msgid "You do not have the correct permissions to create sermons"
 msgstr "Nu aveți permisiunea corectă pentru crearea predicilor"
 
-#: sb-includes/admin.php:1598
+#: sb-includes/admin.php:1475
 msgid "No ID3 tags found."
 msgstr "Nu a fost găsit nici un tag ID3."
 
-#: sb-includes/admin.php:1695
+#: sb-includes/admin.php:1572
 msgid "New preacher's name?"
 msgstr "Nume nou predicator?"
 
-#: sb-includes/admin.php:1695
+#: sb-includes/admin.php:1572
 msgid "Preacher's name"
 msgstr "Predicator"
 
-#: sb-includes/admin.php:1799 sb-includes/frontend.php:120
-#: sb-includes/frontend.php:487 sermon.php:278
+#: sb-includes/admin.php:1676 sb-includes/frontend.php:120
+#: sb-includes/frontend.php:487 sermon.php:275
 msgid "Edit Sermon"
 msgstr "Editează predică"
 
-#: sb-includes/admin.php:1799 sb-includes/frontend.php:125 sermon.php:280
+#: sb-includes/admin.php:1676 sb-includes/frontend.php:125 sermon.php:277
 msgid "Add Sermon"
 msgstr "Adaugă predică"
 
-#: sb-includes/admin.php:1815
+#: sb-includes/admin.php:1692
 msgid "Enter sermon details"
 msgstr "Introduceți detaliile predicii"
 
-#: sb-includes/admin.php:1826
+#: sb-includes/admin.php:1703
 msgid "Tags (comma separated)"
 msgstr "Tag-uri (separate de virgulă)"
 
-#: sb-includes/admin.php:1849
+#: sb-includes/admin.php:1726
 msgid "Create new preacher"
 msgstr "Adăugați un nou predicator"
 
-#: sb-includes/admin.php:1868
+#: sb-includes/admin.php:1745
 msgid "Create new series"
 msgstr "Adăugați o nouă serie"
 
-#: sb-includes/admin.php:1903
+#: sb-includes/admin.php:1780
 msgid "Create new service"
 msgstr "Adăugați un nou serviciu religios"
 
-#: sb-includes/admin.php:1909
+#: sb-includes/admin.php:1786
 msgid "Time"
 msgstr "Timp"
 
-#: sb-includes/admin.php:1912
+#: sb-includes/admin.php:1789
 msgid "Override default time"
 msgstr "Suprascrie timpul implicit"
 
-#: sb-includes/admin.php:1918
+#: sb-includes/admin.php:1795
 msgid "Bible passage"
 msgstr "Pasaj biblic"
 
-#: sb-includes/admin.php:1918 sb-includes/admin.php:1961
+#: sb-includes/admin.php:1795 sb-includes/admin.php:1838
 msgid "add more"
 msgstr "adaugă mai mult"
 
-#: sb-includes/admin.php:1922
+#: sb-includes/admin.php:1799
 msgid "From"
 msgstr "De la"
 
-#: sb-includes/admin.php:1923
+#: sb-includes/admin.php:1800
 msgid "To"
 msgstr "Pentru"
 
-#: sb-includes/admin.php:1961
+#: sb-includes/admin.php:1838
 msgid "Attachments"
 msgstr "Atașament"
 
-#: sb-includes/admin.php:1970
+#: sb-includes/admin.php:1847
 msgid "Choose existing file:"
 msgstr "Alege dintre fișierele existente:"
 
-#: sb-includes/admin.php:1971
+#: sb-includes/admin.php:1848
 msgid "Upload a new one:"
 msgstr "Încarcă un nou fișierȘ"
 
-#: sb-includes/admin.php:1972
+#: sb-includes/admin.php:1849
 msgid "Enter an URL:"
 msgstr "Introduceți adresa URL:"
 
-#: sb-includes/admin.php:1973
+#: sb-includes/admin.php:1850
 msgid "Enter embed or shortcode:"
 msgstr "Introduceți cod embed sau cod scurt:"
 
-#: sb-includes/admin.php:2185
+#: sb-includes/admin.php:2061
 msgid "Help page"
 msgstr "Pagina de help"
 
-#: sb-includes/admin.php:2246
+#: sb-includes/admin.php:2122
 #, fuzzy
 msgid ""
 "Error:</b> The MP3 shortcode must link to individual sermon files. You do "
@@ -836,7 +826,7 @@ msgstr ""
 "%SERMONURL%</span> in codul tau (exemplu [audio:%SERMONURL%]). SermonBrowser "
 "va înlocui apoi %SERMONURL% cu un link către noua predica."
 
-#: sb-includes/admin.php:2250
+#: sb-includes/admin.php:2126
 msgid ""
 "Error:</b> You have specified a custom MP3 shortcode, but Wordpress "
 "doesn&#146;t know how to interpret it. Make sure the shortcode is correct, "
@@ -846,11 +836,11 @@ msgstr ""
 "interpreteze. Fii sigur că ai introdus codul corect și că plugin-ul necesar "
 "este activat."
 
-#: sb-includes/admin.php:2254
+#: sb-includes/admin.php:2130
 msgid "Hint:"
 msgstr "Sugestie:"
 
-#: sb-includes/admin.php:2254
+#: sb-includes/admin.php:2130
 #, php-format
 msgid ""
 "%sCreate a page%s that includes the shortcode [sermons], so that "
@@ -859,91 +849,139 @@ msgstr ""
 "%sCreați o pagina%s care să includă codul scurt [sermons], pentru ca "
 "SermonBrowser să știe unde să afișeze predicile pe site-ul dvs."
 
-#: sb-includes/admin.php:2288
+#: sb-includes/admin.php:2164
 msgid "You have"
 msgstr "Aveți"
 
-#: sb-includes/admin.php:2292 sb-includes/admin.php:2300
+#: sb-includes/admin.php:2166 sb-includes/frontend.php:683
+#, fuzzy, php-format
+msgid "%s file"
+msgid_plural "%s files"
+msgstr[0] "%s fișier"
+msgstr[1] "%s fișier"
+msgstr[2] ""
+
+#: sb-includes/admin.php:2168 sb-includes/admin.php:2176
 msgid "in"
 msgstr "în"
 
-#: sb-includes/admin.php:2296
+#: sb-includes/admin.php:2169
+#, php-format
+msgid "%s sermon"
+msgid_plural "%s sermons"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: sb-includes/admin.php:2172
 msgid "from"
 msgstr "de la"
 
-#: sb-includes/admin.php:2301
+#: sb-includes/admin.php:2173
+#, php-format
+msgid "%s preacher"
+msgid_plural "%s preachers"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: sb-includes/admin.php:2177
 #, php-format
 msgid "%s series"
 msgstr "%s serii"
 
-#: sb-includes/admin.php:2304
+#: sb-includes/admin.php:2180
 msgid "using"
 msgstr "folosind"
 
-#: sb-includes/admin.php:2312
+#: sb-includes/admin.php:2180
+#, php-format
+msgid "%s tag"
+msgid_plural "%s tags"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: sb-includes/admin.php:2184
+#, php-format
+msgid "Only one file has been downloaded"
+msgid_plural "They have been downloaded a total of %s times"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: sb-includes/admin.php:2186
+#, php-format
+msgid "an average of once per sermon"
+msgid_plural "an average of %d times per sermon"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: sb-includes/admin.php:2188
 #, php-format
 msgid "The most popular sermon is %s, which has been downloaded %s times"
 msgstr "Cea mai populară predică este %s, și a fost descărcată de %s ori."
 
-#: sb-includes/admin.php:2459 sb-includes/admin.php:2534
+#: sb-includes/admin.php:2335 sb-includes/admin.php:2410
 #: sb-includes/widget.php:299
 msgid "Title:"
 msgstr "Titlu:"
 
-#: sb-includes/admin.php:2461 sb-includes/admin.php:2536
+#: sb-includes/admin.php:2337 sb-includes/admin.php:2412
 #: sb-includes/widget.php:301
 msgid "Number of sermons: "
 msgstr "Număr de predici:"
 
-#: sb-includes/admin.php:2463 sb-includes/widget.php:303
+#: sb-includes/admin.php:2339 sb-includes/widget.php:303
 msgid "Display preacher"
 msgstr "Arată predicator"
 
-#: sb-includes/admin.php:2464 sb-includes/widget.php:304
+#: sb-includes/admin.php:2340 sb-includes/widget.php:304
 msgid "Display bible passage"
 msgstr "Arată pasaj biblic"
 
-#: sb-includes/admin.php:2465 sb-includes/widget.php:305
+#: sb-includes/admin.php:2341 sb-includes/widget.php:305
 msgid "Display date"
 msgstr "Arată data"
 
-#: sb-includes/admin.php:2466 sb-includes/widget.php:306
+#: sb-includes/admin.php:2342 sb-includes/widget.php:306
 msgid "Display mini-player"
 msgstr "Arată mini-player"
 
-#: sb-includes/admin.php:2470 sb-includes/widget.php:310
+#: sb-includes/admin.php:2346 sb-includes/widget.php:310
 msgid "Preacher: "
 msgstr "Predicator:"
 
-#: sb-includes/admin.php:2473 sb-includes/admin.php:2484
-#: sb-includes/admin.php:2495 sb-includes/frontend.php:1013
+#: sb-includes/admin.php:2349 sb-includes/admin.php:2360
+#: sb-includes/admin.php:2371 sb-includes/frontend.php:1013
 #: sb-includes/frontend.php:1021 sb-includes/frontend.php:1031
 #: sb-includes/frontend.php:1039 sb-includes/widget.php:313
 #: sb-includes/widget.php:324 sb-includes/widget.php:335
 msgid "[All]"
 msgstr "[Toată lista]"
 
-#: sb-includes/admin.php:2481 sb-includes/widget.php:321
+#: sb-includes/admin.php:2357 sb-includes/widget.php:321
 msgid "Service: "
 msgstr "Serviciu religios:"
 
-#: sb-includes/admin.php:2492 sb-includes/widget.php:332
+#: sb-includes/admin.php:2368 sb-includes/widget.php:332
 msgid "Series: "
 msgstr "Serii:"
 
-#: sb-includes/admin.php:2538
+#: sb-includes/admin.php:2414
 msgid "Display popular sermons"
 msgstr "Arată predici populare"
 
-#: sb-includes/admin.php:2539
+#: sb-includes/admin.php:2415
 msgid "Display popular series"
 msgstr "Arată serii populare"
 
-#: sb-includes/admin.php:2540
+#: sb-includes/admin.php:2416
 msgid "Display popular preachers"
 msgstr "Arată predicatori populari"
 
-#: sb-includes/admin.php:2565
+#: sb-includes/admin.php:2441
 msgid ""
 "SermonBrowser can automatically pre-fill this form by reading ID3 tags from "
 "MP3 files."
@@ -951,7 +989,7 @@ msgstr ""
 "SermonBrowser poate completa automat acest formular citind tagurile ID3 ale "
 "fișierelor MP3."
 
-#: sb-includes/admin.php:2568
+#: sb-includes/admin.php:2444
 #, php-format
 msgid ""
 "You will need to set the %s before you can import MP3s and pre-fill the Add "
@@ -960,71 +998,71 @@ msgstr ""
 "Trebuie să setați %s înainte de a importa MP3-urile și de a completa "
 "formularul de adăugare predici."
 
-#: sb-includes/admin.php:2568
+#: sb-includes/admin.php:2444
 msgid "import options"
 msgstr "opțiuni import"
 
-#: sb-includes/admin.php:2582
+#: sb-includes/admin.php:2458
 #, php-format
 msgid "Select an MP3 file here to have the %s form pre-filled using ID3 tags."
 msgstr ""
 "Selecteaza un fișier MP3 aici pentru a avea %s formularul completat folosind "
 "tagurile ID3."
 
-#: sb-includes/admin.php:2582
+#: sb-includes/admin.php:2458
 msgid "Add Sermons"
 msgstr "Adaugă predici"
 
-#: sb-includes/admin.php:2582
+#: sb-includes/admin.php:2458
 msgid "Upload file"
 msgstr "Încarcă fișier"
 
-#: sb-includes/admin.php:2587
+#: sb-includes/admin.php:2463
 msgid "File to upload"
 msgstr "Fișier de încărcat"
 
-#: sb-includes/admin.php:2593
+#: sb-includes/admin.php:2469
 msgid "Upload"
 msgstr "Încarcă"
 
-#: sb-includes/admin.php:2598
+#: sb-includes/admin.php:2474
 msgid "Upload is disabled. Please contact your systems administrator."
 msgstr "Încărcarea este dezactivată. Vă rugăm să contactați administratorul."
 
-#: sb-includes/admin.php:2602
+#: sb-includes/admin.php:2478
 msgid "Upload is disabled. Please check your folder setting in Options."
 msgstr ""
 "Încărcarea este dezactivată. Vă rugăm să verificați setările din Opțiuni."
 
-#: sb-includes/admin.php:2609
+#: sb-includes/admin.php:2485
 msgid "URL to import"
 msgstr "Adresa URL de importat"
 
-#: sb-includes/admin.php:2612
+#: sb-includes/admin.php:2488
 msgid "Link to remote file"
 msgstr "Link către fișierul aflat la distanță"
 
-#: sb-includes/admin.php:2612
+#: sb-includes/admin.php:2488
 msgid "Copy remote file to server"
 msgstr "Copiază fișierul de la distanță pe server"
 
-#: sb-includes/admin.php:2614
+#: sb-includes/admin.php:2490
 msgid "Import"
 msgstr "Import"
 
-#: sb-includes/admin.php:2622
+#: sb-includes/admin.php:2498
 msgid "Choose existing file"
 msgstr "Alege fișier existent"
 
-#: sb-includes/admin.php:2633
+#: sb-includes/admin.php:2509
 msgid "Select"
 msgstr "Alege"
 
-#: sb-includes/admin.php:2645
+#: sb-includes/admin.php:2521
 msgid "SermonBrowser Help"
 msgstr "Ajutor SermonBrowser"
 
-#: sb-includes/admin.php:2649
+#: sb-includes/admin.php:2525
 msgid ""
 "From this page you can edit or delete any of your sermons. The most recent "
 "sermons are found at the top. Use the filter options to quickly find the one "
@@ -1034,7 +1072,7 @@ msgstr ""
 "recente predici le găsiți la începutul listei. Folositi opțiunile de "
 "filtrare pentru a găsi rapid pe cea căutată."
 
-#: sb-includes/admin.php:2656
+#: sb-includes/admin.php:2532
 msgid ""
 "It&#146;s important that these options are set correctly, as otherwise "
 "SermonBrowser won&#146;t behave as you expect."
@@ -1042,13 +1080,13 @@ msgstr ""
 "Este important ca aceste opțiuni să fie setate corect, altfel SermonBrowser "
 "nu se va comporta cum este de așteptat."
 
-#: sb-includes/admin.php:2657
+#: sb-includes/admin.php:2533
 msgid "The upload folder would normally be <b>wp-content/uploads/sermons</b>"
 msgstr ""
 "Folder-ul unde se vor încărca fișierele de obicei va fi <b>wp-content/"
 "uploads/sermons</b>"
 
-#: sb-includes/admin.php:2658
+#: sb-includes/admin.php:2534
 msgid ""
 "You should only change the public podcast feed if you re-direct your podcast "
 "using a service like Feedburner. Otherwise it should be the same as the "
@@ -1058,7 +1096,7 @@ msgstr ""
 "podcast-ul folosind un serviciu ca Feedburner. Altfel, acesta trebuie să fie "
 "același cu feed-ul privat al podcast-ului."
 
-#: sb-includes/admin.php:2659
+#: sb-includes/admin.php:2535
 msgid ""
 "The MP3 shortcode you need will be in the documation of your favourite MP3 "
 "plugin. Use the tag %SERMONURL% in place of the URL of the MP3 file (e.g. "
@@ -1068,7 +1106,7 @@ msgstr ""
 "favorit. Foloseste tag-ul %SERMONURL% în locul URL-ului fișierului MP3 "
 "(exemplu [haiku url=\"%SERMONURL%\"] sau [audio:%SERMONURL%])."
 
-#: sb-includes/admin.php:2662
+#: sb-includes/admin.php:2538
 #, php-format
 msgid ""
 "Template editing is one of the most powerful features of SermonBrowser. Be "
@@ -1078,23 +1116,23 @@ msgstr ""
 "SermonBrowser. Nu uitați să vă uitați la lista completă de %staguri pentru "
 "template%s."
 
-#: sb-includes/admin.php:2668
+#: sb-includes/admin.php:2544
 msgid "Tutorial Screencasts"
 msgstr "Tutoriale video"
 
-#: sb-includes/admin.php:2669
+#: sb-includes/admin.php:2545
 msgid "Frequently Asked Questions"
 msgstr "Întrebari frecvente"
 
-#: sb-includes/admin.php:2670
+#: sb-includes/admin.php:2546
 msgid "Support Forum"
 msgstr "Forum suport"
 
-#: sb-includes/admin.php:2671
+#: sb-includes/admin.php:2547
 msgid "Shortcode syntax"
 msgstr "Sintaxă cod scurt"
 
-#: sb-includes/admin.php:2672
+#: sb-includes/admin.php:2548
 msgid "Donate"
 msgstr "Donează"
 
@@ -1116,7 +1154,7 @@ msgid " on "
 msgstr " pe"
 
 #: sb-includes/frontend.php:110 sb-includes/widget.php:91
-#: sb-includes/widget.php:102 sermon.php:555
+#: sb-includes/widget.php:102 sermon.php:552
 msgid "Sermon Browser tags"
 msgstr "Taguri pentru SermonBrowse"
 
@@ -1124,23 +1162,23 @@ msgstr "Taguri pentru SermonBrowse"
 msgid "List Sermons"
 msgstr "Afișează predici"
 
-#: sb-includes/frontend.php:131 sermon.php:284
+#: sb-includes/frontend.php:131 sermon.php:281
 msgid "Series &amp; Services"
 msgstr "Serii si Servicii religioase"
 
-#: sb-includes/frontend.php:134 sermon.php:285
+#: sb-includes/frontend.php:134 sermon.php:282
 msgid "Options"
 msgstr "Opțiuni"
 
-#: sb-includes/frontend.php:139 sermon.php:288
+#: sb-includes/frontend.php:139 sermon.php:285
 msgid "Help"
 msgstr "Ajutor"
 
-#: sb-includes/frontend.php:140 sermon.php:289
+#: sb-includes/frontend.php:140 sermon.php:286
 msgid "Pray for Japan"
 msgstr "Rugați-vă pentru Japonia"
 
-#: sb-includes/frontend.php:326 sermon.php:502
+#: sb-includes/frontend.php:326 sermon.php:499
 msgid "No sermons found."
 msgstr "Nu s-a găsit nici o predică"
 
@@ -1163,11 +1201,6 @@ msgstr "Pagina următoare"
 #: sb-includes/frontend.php:648
 msgid "Previous page"
 msgstr "Pagina anterioară"
-
-#: sb-includes/frontend.php:683
-#, fuzzy, php-format
-msgid "%s file"
-msgstr "%s fișier"
 
 #: sb-includes/frontend.php:699
 msgid "Download"
@@ -1253,281 +1286,303 @@ msgstr "Fișier de încărcat"
 msgid "URL not found"
 msgstr "URL negăsit"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Genesis"
 msgstr "Geneza"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Exodus"
 msgstr "Exodul"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Leviticus"
 msgstr "Leviticul"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Numbers"
 msgstr "Numeri"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Deuteronomy"
 msgstr "Deuteronom"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Joshua"
 msgstr "Iosua"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Judges"
 msgstr "Judecători"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Ruth"
 msgstr "Rut"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "1 Samuel"
 msgstr "1 Samuel"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "2 Samuel"
 msgstr "2 Samuel"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "1 Kings"
 msgstr "1 Împărați"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "2 Kings"
 msgstr "2 Împărați"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "1 Chronicles"
 msgstr "1 Cronici"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "2 Chronicles"
 msgstr "2 Cronici"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Ezra"
 msgstr "Ezra"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Nehemiah"
 msgstr "Neemia"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Esther"
 msgstr "Estera"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Job"
 msgstr "Iov"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Psalm"
 msgstr "Psalmi"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Proverbs"
 msgstr "Proverbe"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Ecclesiastes"
 msgstr "Eclestiastul"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Song of Solomon"
 msgstr "Cantarea Cantarilor"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Isaiah"
 msgstr "Isaia"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Jeremiah"
 msgstr "Ieremia"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Lamentations"
 msgstr "Plângerile lui Ieremia"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Ezekiel"
 msgstr "Ezechiel"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Daniel"
 msgstr "Daniel"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Hosea"
 msgstr "Osea"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Joel"
 msgstr "Ioel"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Amos"
 msgstr "Amos"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Obadiah"
 msgstr "Obadia"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Jonah"
 msgstr "Iona"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Micah"
 msgstr "Mica"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Nahum"
 msgstr "Naum"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Habakkuk"
 msgstr "Habacuc"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Zephaniah"
 msgstr "Țefania"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Haggai"
 msgstr "Hagai"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Zechariah"
 msgstr "Zaharia"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Malachi"
 msgstr "Maleahi"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Matthew"
 msgstr "Matei"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Mark"
 msgstr "Marcu"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Luke"
 msgstr "Luca"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "John"
 msgstr "Ioan"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Acts"
 msgstr "Fapte"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Romans"
 msgstr "Romani"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "1 Corinthians"
 msgstr "1 Corinteni"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "2 Corinthians"
 msgstr "2 Corinteni"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Galatians"
 msgstr "Galateni"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Ephesians"
 msgstr "Efeseni"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Philippians"
 msgstr "Filipeni"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Colossians"
 msgstr "Coloseni"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "1 Thessalonians"
 msgstr "1 Tesaloniceni"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "2 Thessalonians"
 msgstr "2 Tesaloniceni"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "1 Timothy"
 msgstr "1 Timotei"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "2 Timothy"
 msgstr "2 Timotei"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Titus"
 msgstr "Tit"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Philemon"
 msgstr "Filimon"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Hebrews"
 msgstr "Evrei"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "James"
 msgstr "Iacov"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "1 Peter"
 msgstr "1 Petru"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "2 Peter"
 msgstr "2 Petru"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "1 John"
 msgstr "1 Ioan"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "2 John"
 msgstr "2 Ioan"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "3 John"
 msgstr "3 Ioan"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Jude"
 msgstr "Iuda"
 
-#: sermon.php:362
+#: sermon.php:359
 msgid "Revelation"
 msgstr "Apocalipsa"
 
-#: sermon.php:538
+#: sermon.php:535
 msgid "Display a list of recent sermons."
 msgstr "Arată predici populare"
 
-#: sermon.php:557
+#: sermon.php:554
 msgid "Most popular sermons"
 msgstr "Cele mai populare predici"
 
-#: sermon.php:558
+#: sermon.php:555
 msgid "Display a list of the most popular sermons, series or preachers."
 msgstr "Arată o listă a celor mai populare predici, serii sau predicatori."
+
+#. Plugin Name of the plugin/theme
+msgid "Sermon Browser"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.sermonbrowser.com/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Upload sermons to your website, where they can be searched, listened to, and "
+"downloaded. Easy to use with comprehensive help and tutorials."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Mark Barnes"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://www.markbarnes.net/"
+msgstr ""
 
 #~ msgid ""
 #~ "Tip: Installing the %1$sWordpress Audio Player%2$s, or another Wordpress "
