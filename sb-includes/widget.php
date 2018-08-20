@@ -220,7 +220,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 		foreach ( (array) $_POST['widget-sermon'] as $widget_number => $widget_sermon_instance ) {
 			if ( !isset($widget_sermon_instance['limit']) && isset($options[$widget_number]) )
 				continue;
-			$limit = esc_html( $widget_sermon_instance['limit'] );
+			$limit = (int) $widget_sermon_instance['limit'];
 			$preacherz = (int) $widget_sermon_instance['preacherz'];
 			$preacher = (int) $widget_sermon_instance['preacher'];
 			$service = (int) $widget_sermon_instance['service'];

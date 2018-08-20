@@ -62,7 +62,7 @@ if (isset($_POST['pname'])) { // preacher
 	$fname = sanitize_file_name($_POST['fname']);
 	if (isset($_POST['fid'])) {
 		$fid = (int) $_POST['fid'];
-		$oname = isset($_POST['oname']) ? $_POST['oname'] : '';
+		$oname = isset($_POST['oname']) ? sanitize_file_name($_POST['oname']) : '';
 		if (isset($_POST['del'])) {
 			if (!file_exists(SB_ABSPATH.sb_get_option('upload_dir').$fname) || unlink(SB_ABSPATH.sb_get_option('upload_dir').$fname)) {
 				$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE id = {$fid};");

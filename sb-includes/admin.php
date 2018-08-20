@@ -1240,41 +1240,6 @@ function sb_files() {
 }
 
 /**
-* Pings the sermon-browser gallery
-*/
-function sb_ping_gallery() {
-	global $wpdb;
-	if((ini_get('allow_url_fopen') || function_exists('curl_init')) & get_option('blog_public') == 1 & get_option('ping_sites') != "") {
-		$url = "http://ping.preachingcentral.com/?sg_ping";
-		$url .= "&name=".rawurlencode(get_option('blogname'));
-		$url .= "&tagline=".rawurlencode(get_option('blogdescription'));
-		$url .= "&site_url=".rawurlencode(site_url());
-		$url .= "&sermon_url=".rawurlencode(sb_display_url());
-		$url .= "&most_recent=".rawurlencode($wpdb->get_var("SELECT datetime FROM {$wpdb->prefix}sb_sermons ORDER BY datetime DESC LIMIT 1"));
-		$url .= "&num_sermons=".rawurlencode($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_sermons"));
-		$url .= "&ver=".constant("SB_CURRENT_VERSION");
-		 if (ini_get('allow_url_fopen')) {
-			$headers = @get_headers($url, 1);
-			if ($headers !="") {
-				$headers = array_change_key_case($headers,CASE_LOWER);
-			}
-		} else {
-			$curl = curl_init();
-			curl_setopt ($curl, CURLOPT_URL, $url);
-			curl_setopt ($curl, CURLOPT_HEADER, 1);
-			curl_setopt ($curl, CURLOPT_NOBODY, 1);
-			curl_setopt ($curl, CURLOPT_TIMEOUT, 2);
-			curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt ($curl, CURLOPT_FOLLOWLOCATION, 1);
-			curl_setopt ($curl, CURLOPT_MAXREDIRS, 10);
-			$execute = curl_exec ($curl);
-			$info = curl_getinfo ($curl);
-			curl_close ($curl);
-		}
-	}
-}
-
-/**
 * Displays Sermons page
 */
 function sb_manage_sermons() {
@@ -1566,7 +1531,6 @@ function sb_new_sermon() {
 		sb_delete_unused_tags();
 		// everything is fine, get out of here!
 		if(!isset($error)) {
-			sb_ping_gallery();
 			echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/sermon.php&saved=true')."';</script>";
 			die();
 		}
@@ -2421,7 +2385,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 		foreach ( (array) $_POST['widget-sermon'] as $widget_number => $widget_sermon_instance ) {
 			if ( !isset($widget_sermon_instance['limit']) && isset($options[$widget_number]) )
 				{continue;}
-			$limit = esc_html( $widget_sermon_instance['limit'] );
+			$limit = (int) $widget_sermon_instance['limit'];
 			$preacherz = (int) $widget_sermon_instance['preacherz'];
 			$preacher = (int) $widget_sermon_instance['preacher'];
 			$service = (int) $widget_sermon_instance['service'];
