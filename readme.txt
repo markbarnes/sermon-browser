@@ -336,9 +336,12 @@ Important security fixes. All users should upgrade to this version.
 == Changelog ==
 
 = 0.45.21 (11 August 2018) =
-* **Bug fix:** Several security enhancements.
+* **Bug fix:** Several security improvements.
+* **Bug fix:** Support sites that have renamed the wp-content folder
 * **Enhancement:** Updated to v3 of the ESV Bible API (v2 was deprecated).
 * **Enhancement:** Removed support for flash audio players.
+* **Enhancement:** External https media files can now be downloaded
+* See [changeset](https://plugins.trac.wordpress.org/changeset?new=1927443%40sermon-browser%2Ftrunk&old=1686060%40sermon-browser%2Ftrunk)
 
 = 0.45.20 (27 June 2017) =
 * **Bug fix:** Added nonces to enhance security protection.
