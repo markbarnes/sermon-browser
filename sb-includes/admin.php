@@ -35,7 +35,7 @@ function sb_options() {
 	//Reset options to default
 	if (isset($_POST['resetdefault'])) {
 
-		if ( ! isset( $_POST['sermon_options_save_reset_nounce'] ) || ! wp_verify_nonce( $_POST['sermon_options_save_reset_nounce'], 'sermon_options_save_reset' ) ) {
+		if ( ! isset( $_POST['sermon_options_save_reset_nonce'] ) || ! wp_verify_nonce( $_POST['sermon_options_save_reset_nonce'], 'sermon_options_save_reset' ) ) {
 			wp_die( __( "You do not have the correct permissions to edit the SermonBrowser options", 'sermon-browser' ) );
 		}
 
@@ -116,7 +116,7 @@ function sb_options() {
 			}
 	} // Save options
 	elseif ( isset( $_POST['save'] ) ) {
-		if ( ! isset( $_POST['sermon_options_save_reset_nounce'] ) || ! wp_verify_nonce( $_POST['sermon_options_save_reset_nounce'], 'sermon_options_save_reset' ) ) {
+		if ( ! isset( $_POST['sermon_options_save_reset_nonce'] ) || ! wp_verify_nonce( $_POST['sermon_options_save_reset_nonce'], 'sermon_options_save_reset' ) ) {
 			wp_die( __( "You do not have the correct permissions to edit the SermonBrowser options", 'sermon-browser' ) );
 	}
 		$dir = rtrim(str_replace("\\", "/", sanitize_text_field(stripslashes($_POST['dir']))), "/")."/";
@@ -392,7 +392,7 @@ function sb_options() {
 				</td>
 			</tr>
 		</table>
-			<?php wp_nonce_field( 'sermon_options_save_reset', 'sermon_options_save_reset_nounce' ); ?>
+			<?php wp_nonce_field( 'sermon_options_save_reset', 'sermon_options_save_reset_nonce' ); ?>
             <p class="submit"><input type="submit" name="save" value="<?php _e('Save', 'sermon-browser') ?> &raquo;" /> <input type="submit" name="resetdefault" value="<?php _e('Reset to defaults', 'sermon-browser') ?>"  /></p>
 	</div>
 	</form>
@@ -408,7 +408,7 @@ function sb_uninstall () {
 			wp_die(__("You do not have the correct permissions to Uninstall SermonBrowser", 'sermon-browser'));
 	}
 	if ( isset( $_POST['uninstall'] ) ) {
-		if ( ! isset( $_POST['sermon_browser_uninstall_nounce'] ) || ! wp_verify_nonce( $_POST['sermon_browser_uninstall_nounce'], 'sermon_browser_uninstall' ) ) {
+		if ( ! isset( $_POST['sermon_browser_uninstall_nonce'] ) || ! wp_verify_nonce( $_POST['sermon_browser_uninstall_nonce'], 'sermon_browser_uninstall' ) ) {
 			wp_die( __( "You do not have the correct permissions to Uninstall SermonBrowser", 'sermon-browser' ) );
 		}
 		require(SB_INCLUDES_DIR.'/uninstall.php');
@@ -448,7 +448,7 @@ function sb_uninstall () {
                                      onclick="return confirm('<?php _e( 'Do you REALLY want to delete all data?', 'sermon-browser' ) ?>')"/>
             </p>
 	</div>
-		<?php wp_nonce_field( 'sermon_browser_uninstall', 'sermon_browser_uninstall_nounce' ); ?>
+		<?php wp_nonce_field( 'sermon_browser_uninstall', 'sermon_browser_uninstall_nonce' ); ?>
 	</form>
 	<script>
         jQuery( "form" ).submit( function ()
@@ -469,7 +469,7 @@ function sb_templates () {
 			{wp_die(__("You do not have the correct permissions to edit the SermonBrowser templates", 'sermon-browser'));}
 	//Save templates or reset to default
 	if (isset($_POST['save']) || isset($_POST['resetdefault'])) {
-        if (! isset($_POST['sermon_template_edit_nounce']) || ! wp_verify_nonce( $_POST['sermon_template_edit_nounce'], 'sermon_template_edit' )) {
+        if (! isset($_POST['sermon_template_edit_nonce']) || ! wp_verify_nonce( $_POST['sermon_template_edit_nonce'], 'sermon_template_edit' )) {
             wp_die(__("You do not have the correct permissions to edit the SermonBrowser templates", 'sermon-browser'));
         }
 		require(SB_INCLUDES_DIR.'/dictionary.php');
@@ -522,7 +522,7 @@ function sb_templates () {
 		</table>
 		<p class="submit"><input type="submit" name="save" value="<?php _e('Save', 'sermon-browser') ?> &raquo;" /> <input type="submit" name="resetdefault" value="<?php _e('Reset to defaults', 'sermon-browser') ?>"  /></p>
 	</div>
-	<?php  wp_nonce_field( 'sermon_template_edit', 'sermon_template_edit_nounce' ); ?>
+	<?php  wp_nonce_field( 'sermon_template_edit', 'sermon_template_edit_nonce' ); ?>
 	</form>
 	<script>
 		jQuery("form").submit(function() {
@@ -546,7 +546,7 @@ function sb_manage_preachers() {
 	$sermonUploadDir = sb_get_option('upload_dir');
 	//Save changes
 	if (isset($_POST['save'])) {
-        if (!isset($_POST['sermon_manage_preachers_nounce']) || ! wp_verify_nonce( $_POST['sermon_manage_preachers_nounce'], 'sermon_manage_preachers' )) {
+        if (!isset($_POST['sermon_manage_preachers_nonce']) || ! wp_verify_nonce( $_POST['sermon_manage_preachers_nonce'], 'sermon_manage_preachers' )) {
             wp_die(__("You do not have the correct permissions to manage the preachers database", 'sermon-browser'));
         }
 		$name = sanitize_text_field($_POST['name']);
@@ -655,7 +655,7 @@ function sb_manage_preachers() {
 				</tr>
 			</table>
 		</fieldset>
-            <?php wp_nonce_field( 'sermon_manage_preachers', 'sermon_manage_preachers_nounce' ); ?>
+            <?php wp_nonce_field( 'sermon_manage_preachers', 'sermon_manage_preachers_nonce' ); ?>
 		<p class="submit"><input type="submit" name="save" value="<?php _e('Save', 'sermon-browser') ?> &raquo;" /></p>
 		</form>
 	</div>
@@ -972,7 +972,7 @@ function sb_files() {
 			}
 		}
 	} elseif(isset($_POST['clean'])) {
-	    if (!isset($_POST['sermon_browser_clean_nounce']) || !wp_verify_nonce($_POST['sermon_browser_clean_nounce'], 'sermon_browser_clean')){
+	    if (!isset($_POST['sermon_browser_clean_nonce']) || !wp_verify_nonce($_POST['sermon_browser_clean_nonce'], 'sermon_browser_clean')){
 	        wp_die(__('Access denied.', 'sermon-browser'));
 	    }
 
@@ -1232,7 +1232,7 @@ function sb_files() {
 			<form method="post" >
 				<p><?php _e('Pressing the button below scans every sermon in the database, and removes missing attachments. Use with caution!', 'sermon-browser') ?></p>
 				<input type="submit" name="clean" value="<?php _e('Clean up missing files', 'sermon-browser') ?>" />
-				<?php wp_nonce_field( 'sermon_browser_clean', 'sermon_browser_clean_nounce' ); ?>
+				<?php wp_nonce_field( 'sermon_browser_clean', 'sermon_browser_clean_nonce' ); ?>
 			</form>
 		</div>
 		<?php
@@ -1258,7 +1258,7 @@ function sb_manage_sermons() {
 	}
 
 	if (isset($_GET['mid'])) {
-        if (! wp_verify_nonce( $_GET['sermon_manage_sermons_nounce'], 'sermon_manage_sermons' )) {
+        if (! wp_verify_nonce( $_GET['sermon_manage_sermons_nonce'], 'sermon_manage_sermons' )) {
             wp_die(__("You do not have the correct permissions to edit sermons", 'sermon-browser'));
         }
 		//Security check
@@ -1365,7 +1365,7 @@ function sb_manage_sermons() {
 						<td style="text-align:center">
 							<?php //Security check
 									if (current_user_can('publish_posts')) { ?>
-									<a href="<?php echo wp_nonce_url( admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}"), 'sermon_new_sermons', 'sermon_new_sermons_nounce' );  ?>"><?php _e('Edit', 'sermon-browser') ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo wp_nonce_url( admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"), 'sermon_manage_sermon', 'sermon_manage_sermons_nounce' );  ?>"><?php _e('Delete', 'sermon-browser'); ?></a> |
+									<a href="<?php echo wp_nonce_url( admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}"), 'sermon_new_sermons', 'sermon_new_sermons_nonce' );  ?>"><?php _e('Edit', 'sermon-browser') ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo wp_nonce_url( admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"), 'sermon_manage_sermons', 'sermon_manage_sermons_nonce' );  ?>"><?php _e('Delete', 'sermon-browser'); ?></a> |
 							<?php } ?>
 							<a href="<?php echo sb_display_url().sb_query_char(true).'sermon_id='.$sermon->id;?>">View</a>
 						</td>
@@ -1402,7 +1402,7 @@ function sb_new_sermon() {
 
 	if (isset($_POST['save']) && isset($_POST['title'])) {
 	// prepare
-        if (! wp_verify_nonce( $_REQUEST['sermon_browser_save_nounce'], 'sermon_browser_save' )) {
+        if (! wp_verify_nonce( $_REQUEST['sermon_browser_save_nonce'], 'sermon_browser_save' )) {
             wp_die(__("You do not have the correct permissions to edit or create sermons", 'sermon-browser'));
         }
 		$title = sanitize_text_field($_POST['title']);
@@ -1963,7 +1963,7 @@ function sb_new_sermon() {
 			</table>
 		</fieldset>
 		<p class="submit"><input type="submit" name="save" value="<?php _e('Save', 'sermon-browser') ?> &raquo;" /></p>
-		<?php wp_nonce_field('sermon_browser_save', 'sermon_browser_save_nounce'); ?>
+		<?php wp_nonce_field('sermon_browser_save', 'sermon_browser_save_nonce'); ?>
 		</form>
 	</div>
 	<script type="text/javascript">

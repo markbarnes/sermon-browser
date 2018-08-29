@@ -54,7 +54,7 @@ function sb_xml_entity_encode ($string) {
 // Stats have to be turned off for iTunes compatibility
 function sb_podcast_file_url($media_name, $media_type) {
 	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-	if (stripos($user_agent, 'itunes') !== FALSE || stripos($user_agent, 'FeedBurner') !== FALSE)
+	if (stripos($user_agent, 'itunes') !== FALSE || stripos($user_agent, 'FeedBurner') !== FALSE || stripos($user_agent, 'AppleCoreMedia') !== FALSE)
 		$stats = FALSE;
 	else
 		$stats = TRUE;
