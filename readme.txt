@@ -341,6 +341,7 @@ Important security fixes. All users should upgrade to this version.
 = 0.45.22 (29 August 2018) =
 * **Bug fix:** Sermons couldn't be deleted. Now they can.
 * **Bug fix:** Sermons weren't downloading on Apple's Podcast app. Now they are.
+* See [changeset](https://plugins.trac.wordpress.org/changeset/1932341/sermon-browser/trunk)
 
 = 0.45.21 (11 August 2018) =
 * **Bug fix:** Several security improvements.
