@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AMA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-20 16:06+0100\n"
+"POT-Creation-Date: 2018-08-29 12:02+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: shivangi <shivangi@outshinesolutions.com>\n"
 "Language-Team: Outshine Solutions <ash.pr@outshinesolutions.com>\n"
@@ -211,7 +211,7 @@ msgstr ""
 "SermonBrowser में आयात करना चाहते हैं. एक बार जब आप विकल्प का चयन किया है,%s को जाने के लिए अपनी फ़ाइलें "
 "आयात."
 
-#: sb-includes/admin.php:346 sb-includes/frontend.php:123 sermon.php:245
+#: sb-includes/admin.php:346 sb-includes/frontend.php:123 sermon.php:244
 msgid "Files"
 msgstr "फ़ाइलें"
 
@@ -292,7 +292,7 @@ msgid "You will NOT be able to undo this action."
 msgstr "आपको इस क्रिया को पूर्ववत करने में सक्षम नहीं होगा."
 
 #: sb-includes/admin.php:427 sb-includes/admin.php:428 sb-includes/admin.php:446
-#: sb-includes/frontend.php:133 sermon.php:250
+#: sb-includes/frontend.php:133 sermon.php:249
 msgid "Uninstall"
 msgstr "स्थापना रद्द करें"
 
@@ -327,7 +327,7 @@ msgstr "आपको सही अनुमति SermonBrowser टेम्प�
 msgid "Templates saved successfully."
 msgstr "टेम्पलेट्स सफलतापूर्वक सहेजा गया."
 
-#: sb-includes/admin.php:501 sb-includes/frontend.php:130 sermon.php:249
+#: sb-includes/admin.php:501 sb-includes/frontend.php:130 sermon.php:248
 msgid "Templates"
 msgstr "टेम्पलेट्स"
 
@@ -396,7 +396,7 @@ msgstr "विवरण"
 msgid "Image"
 msgstr "छवि"
 
-#: sb-includes/admin.php:671 sb-includes/frontend.php:125 sermon.php:246
+#: sb-includes/admin.php:671 sb-includes/frontend.php:125 sermon.php:245
 msgid "Preachers"
 msgstr "प्रचारकों"
 
@@ -410,8 +410,8 @@ msgid "ID"
 msgstr "आईडी"
 
 #: sb-includes/admin.php:679 sb-includes/admin.php:850 sb-includes/admin.php:1339
-#: sb-includes/frontend.php:118 sb-includes/widget.php:74 sermon.php:238 sermon.php:239
-#: sermon.php:494
+#: sb-includes/frontend.php:118 sb-includes/widget.php:74 sermon.php:237 sermon.php:238
+#: sermon.php:493
 msgid "Sermons"
 msgstr "उपदेश"
 
@@ -687,11 +687,11 @@ msgstr "नए उपदेशक का नाम है?"
 msgid "Preacher's name"
 msgstr "उपदेशक नाम"
 
-#: sb-includes/admin.php:1771 sb-includes/frontend.php:115 sermon.php:241
+#: sb-includes/admin.php:1771 sb-includes/frontend.php:115 sermon.php:240
 msgid "Edit Sermon"
 msgstr "उपदेश संपादित करें"
 
-#: sb-includes/admin.php:1771 sb-includes/frontend.php:120 sermon.php:243
+#: sb-includes/admin.php:1771 sb-includes/frontend.php:120 sermon.php:242
 msgid "Add Sermon"
 msgstr "उपदेश में जोड़ें"
 
@@ -1029,7 +1029,7 @@ msgid " on "
 msgstr "पर"
 
 #: sb-includes/frontend.php:105 sb-includes/widget.php:88 sb-includes/widget.php:99
-#: sermon.php:509
+#: sermon.php:508
 msgid "Sermon Browser tags"
 msgstr "उपदेश ब्राउज़र टैग"
 
@@ -1037,23 +1037,23 @@ msgstr "उपदेश ब्राउज़र टैग"
 msgid "List Sermons"
 msgstr "सूची उपदेश"
 
-#: sb-includes/frontend.php:126 sermon.php:247
+#: sb-includes/frontend.php:126 sermon.php:246
 msgid "Series &amp; Services"
 msgstr "श्रृंखला &amp; सेवाएं"
 
-#: sb-includes/frontend.php:129 sermon.php:248
+#: sb-includes/frontend.php:129 sermon.php:247
 msgid "Options"
 msgstr "विकल्प"
 
-#: sb-includes/frontend.php:134 sermon.php:251
+#: sb-includes/frontend.php:134 sermon.php:250
 msgid "Help"
 msgstr "मदद"
 
-#: sb-includes/frontend.php:135 sermon.php:252
+#: sb-includes/frontend.php:135 sermon.php:251
 msgid "Pray for Japan"
 msgstr "जापान के लिए प्रार्थना करो"
 
-#: sb-includes/frontend.php:321 sermon.php:456
+#: sb-includes/frontend.php:321 sermon.php:455
 msgid "No sermons found."
 msgstr "उपदेश नहीं पाया."
 
@@ -1154,11 +1154,11 @@ msgstr "सभी उपदेश डेटा निकाल दिया ग�
 msgid "Uninstall completed. The SermonBrowser plugin has been deactivated."
 msgstr "स्थापना रद्द करें. SermonBrowser प्लगइन निष्क्रिय कर दिया गया."
 
-#: sermon.php:95 sermon.php:104 sermon.php:127
+#: sermon.php:95 sermon.php:104 sermon.php:126
 msgid "not found"
 msgstr "नहीं मिला है"
 
-#: sermon.php:95 sermon.php:127
+#: sermon.php:95 sermon.php:126
 msgid "File not found"
 msgstr "नहीं मिली फ़ाइल"
 
@@ -1166,279 +1166,279 @@ msgstr "नहीं मिली फ़ाइल"
 msgid "URL not found"
 msgstr "यूआरएल नहीं मिला"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Genesis"
 msgstr "उत्पत्ति"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Exodus"
 msgstr "निष्क्रमण"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Leviticus"
 msgstr "छिछोरापन"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Numbers"
 msgstr "नंबर"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Deuteronomy"
 msgstr "Deuteronomy"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Joshua"
 msgstr "जोशुआ"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Judges"
 msgstr "न्यायाधीश"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Ruth"
 msgstr "दया"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "1 Samuel"
 msgstr "1 शमूएल"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "2 Samuel"
 msgstr "2 शमूएल"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "1 Kings"
 msgstr "1 किंग्स"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "2 Kings"
 msgstr "2 किंग्स"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "1 Chronicles"
 msgstr "1 इतिहास"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "2 Chronicles"
 msgstr "2 इतिहास"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Ezra"
 msgstr "एज्रा"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Nehemiah"
 msgstr "नहेमायाह"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Esther"
 msgstr "एस्थर"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Job"
 msgstr "काम"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Psalm"
 msgstr "भजन"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Proverbs"
 msgstr "कहावत"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Ecclesiastes"
 msgstr "Ecclesiastes"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Song of Solomon"
 msgstr "सुलेमान के गीत या भजन"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Isaiah"
 msgstr "यशायाह"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Jeremiah"
 msgstr "कालनिंदक"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Lamentations"
 msgstr "विलाप"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Ezekiel"
 msgstr "ईजेकील"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Daniel"
 msgstr "सच्चा न्यायकर्ता"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Hosea"
 msgstr "Hosea"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Joel"
 msgstr "जोएल"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Amos"
 msgstr "अमोस"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Obadiah"
 msgstr "ओबद्याह"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Jonah"
 msgstr "जोनाह"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Micah"
 msgstr "मीका"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Nahum"
 msgstr "नहूम"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Habakkuk"
 msgstr "Habakkuk"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Zephaniah"
 msgstr "Zephaniah"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Haggai"
 msgstr "Haggai"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Zechariah"
 msgstr "Zechariah"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Malachi"
 msgstr "Malachi"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Matthew"
 msgstr "मैथ्यू"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Mark"
 msgstr "मार्क"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Luke"
 msgstr "ल्यूक"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "John"
 msgstr "जॉन"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Acts"
 msgstr "अधिनियमों"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Romans"
 msgstr "रोमन"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "1 Corinthians"
 msgstr "1 कुरिन्थियों"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "2 Corinthians"
 msgstr "2 कुरिन्थियों"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Galatians"
 msgstr "गलाटियन्स"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Ephesians"
 msgstr "Ephesians"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Philippians"
 msgstr "Philippians"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Colossians"
 msgstr "Colossians"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "1 Thessalonians"
 msgstr "1 Thessalonians"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "2 Thessalonians"
 msgstr "2 Thessalonians"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "1 Timothy"
 msgstr "1 टिमोथी"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "2 Timothy"
 msgstr "2 टिमोथी"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Titus"
 msgstr "Titus"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Philemon"
 msgstr "Philemon"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Hebrews"
 msgstr "Hebrews"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "James"
 msgstr "जेम्स"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "1 Peter"
 msgstr "1पीटर"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "2 Peter"
 msgstr "2 पीटर"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "1 John"
 msgstr "1 जॉन"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "2 John"
 msgstr "2 जॉन"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "3 John"
 msgstr "3 जॉन"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Jude"
 msgstr "Jude"
 
-#: sermon.php:325
+#: sermon.php:324
 msgid "Revelation"
 msgstr "रहस्योद्घाटन"
 
-#: sermon.php:492
+#: sermon.php:491
 msgid "Display a list of recent sermons."
 msgstr "हाल के उपदेश की एक सूची प्रदर्शित करें."
 
-#: sermon.php:511
+#: sermon.php:510
 msgid "Most popular sermons"
 msgstr "सबसे लोकप्रिय उपदेश"
 
-#: sermon.php:512
+#: sermon.php:511
 msgid "Display a list of the most popular sermons, series or preachers."
 msgstr "सबसे लोकप्रिय उपदेश, श्रृंखला या प्रचारकों की सूची प्रदर्शित करता है."
 
