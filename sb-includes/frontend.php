@@ -1052,7 +1052,7 @@ function sb_print_filters($filter) {
 							<td class="field"><input type="submit" class="filter" value="<?php _e('Filter &raquo;', 'sermon-browser') ?>">			</td>
 						</tr>
 					</table>
-					<input type="hidden" name="page" value="1">
+				
 				</div>
 			</form>
 		</div>
