@@ -112,27 +112,22 @@ function sb_hijack() {
 		die();
 	}
 
-	//Returns local file (doesn't force download)
-	if (isset($_GET['show']) AND isset($_GET['file_name'])) {
-		global $filetypes;
-		$file_name = esc_sql(rawurldecode($_GET['file_name']));
-		$file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
-		if (!is_null($file_name)) {
-			$url = sb_get_option('upload_url').$file_name;
-			sb_increase_download_count ($file_name);
-			header("Location: ".$url);
-			die();
-		} else
-			wp_die(htmlentities(rawurldecode($_GET['file_name'])).' '.__('not found', 'sermon-browser'), __('File not found', 'sermon-browser'), array('response' => 404));
-	}
+	// Returns local file (doesn't force download) — SAFE: internal only
+if (isset($_GET['show']) && isset($_GET['file_name'])) {
+    $file_name = esc_sql(rawurldecode($_GET['file_name']));
+    $file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
+    if (!is_null($file_name)) {
+        $url = sb_get_option('upload_url') . $file_name;
+        sb_increase_download_count($file_name);
+        wp_safe_redirect($url);
+        exit;
+    } else {
+        wp_die(htmlentities(rawurldecode($_GET['file_name'])) . ' ' . __('not found', 'sermon-browser'), __('File not found', 'sermon-browser'), array('response' => 404));
+    }
+}
 
-	//Returns contents of external URL(doesn't force download)
-	if (isset($_REQUEST['show']) AND isset($_REQUEST['url'])) {
-		$url = rawurldecode($_GET['url']);
-		sb_increase_download_count ($url);
-		header('Location: '.$url);
-		die();
-	}
+// REMOVED: Vulnerable open redirect via ?show=1&url=...
+// The block that allowed arbitrary external redirects has been completely removed for security.
 }
 
 /**
