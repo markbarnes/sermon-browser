@@ -1,7 +1,10 @@
 <?php
 // Outputs sermon-browser styles as a CSS file
+if (!defined('ABSPATH'))
+	exit;
 
 header('Content-Type: text/css');
+header('X-Content-Type-Options: nosniff');
 $lastModifiedDate = sb_get_option('style_date_modified');
 if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $lastModifiedDate) {
 	if (php_sapi_name()=='CGI') {

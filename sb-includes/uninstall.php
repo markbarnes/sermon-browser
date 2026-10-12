@@ -1,4 +1,6 @@
 <?php
+if (!defined('ABSPATH'))
+	exit;
 if (isset($_POST['wipe'])) {
 	$dir = SB_ABSPATH.sb_get_option('upload_dir');
 	if ($dh = @opendir($dir)) {

@@ -47,6 +47,9 @@ The frontend output is inserted by sb_shortcode
 
 */
 
+if (!defined('ABSPATH'))
+	exit;
+
 /**
 * Initialisation
 *
@@ -215,14 +218,15 @@ function sb_sermon_init () {
 			require_once (SB_INCLUDES_DIR.'/upgrade.php');
 			sb_database_upgrade ($db_version);
 		} elseif (!$db_version) {
-			require (SB_INCLUDES_DIR.'/sb-install.php');
+			require_once(SB_INCLUDES_DIR.'/sb-install.php');
 			sb_install();
 		}
-		$sb_version = sb_get_option('code_version');
-		if ($sb_version != SB_CURRENT_VERSION) {
-			require_once (SB_INCLUDES_DIR.'/upgrade.php');
-			sb_version_upgrade ($sb_version, SB_CURRENT_VERSION);
-		}
+	}
+	// Recompile templates after a code update, on any request, so fixes to the template tags apply straight away
+	$sb_version = sb_get_option('code_version');
+	if ($sb_version !== FALSE && $sb_version != SB_CURRENT_VERSION) {
+		require_once (SB_INCLUDES_DIR.'/upgrade.php');
+		sb_version_upgrade ($sb_version, SB_CURRENT_VERSION);
 	}
 
 	// Load shared (admin/frontend) features
@@ -586,7 +590,7 @@ function sb_get_option($type) {
 			$options = get_option('sermonbrowser_options');
 			if ($options === FALSE)
 				return FALSE;
-			$sermonbrowser_options = unserialize(base64_decode($options));
+			$sermonbrowser_options = sb_unserialize(base64_decode($options));
 			if ($sermonbrowser_options === FALSE)
 				wp_die ('Failed to get SermonBrowser options '.base64_decode(get_option('sermonbrowser_options')));
 		}
@@ -615,7 +619,7 @@ function sb_update_option($type, $val) {
 		if (!$sermonbrowser_options) {
 			$options = get_option('sermonbrowser_options');
 			if ($options !== FALSE) {
-				$sermonbrowser_options = unserialize(base64_decode($options));
+				$sermonbrowser_options = sb_unserialize(base64_decode($options));
 				if ($sermonbrowser_options === FALSE)
 					wp_die ('Failed to get SermonBrowser options '.base64_decode(get_option('sermonbrowser_options')));
 			}
@@ -895,6 +899,33 @@ function sb_output_file($filename) {
 		flush();
 	}
 	return fclose($handle);
+}
+
+/**
+* Unserializes data stored by this plugin, refusing objects
+*
+* @param string $data
+* @return mixed
+*/
+function sb_unserialize($data) {
+	if (!is_string($data))
+		return $data;
+	return @unserialize($data, array('allowed_classes' => false));
+}
+
+/**
+* Filters embed code attached to a sermon
+*
+* Allows the HTML allowed in posts, plus iframes for embedded players. srcdoc is not allowed,
+* because it would run arbitrary HTML in the site's own origin.
+* @param string $code
+* @return string
+*/
+function sb_kses_embed($code) {
+	global $allowedposttags;
+	$allowed_tags = $allowedposttags;
+	$allowed_tags['iframe'] = array('width' => true, 'height' => true, 'src' => true, 'frameborder' => true, 'allowfullscreen' => true, 'allow' => true, 'style' => true, 'name' => true, 'id' => true, 'class' => true, 'title' => true, 'align' => true, 'sandbox' => true, 'loading' => true, 'referrerpolicy' => true);
+	return wp_kses($code, $allowed_tags);
 }
 
 /**

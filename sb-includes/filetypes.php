@@ -1,4 +1,6 @@
 <?php
+if (!defined('ABSPATH'))
+	exit;
 
 // You can edit this file to include your own file types and icons. If you do, why not share it with other users?
 // Just add an additional file-type by adding the icon to the icons folder,

@@ -1,4 +1,6 @@
 <?php
+if (!defined('ABSPATH'))
+	exit;
 
 // Checks for old-style sermonbrowser options (prior to 0.43)
 function sb_upgrade_options () {
@@ -43,10 +45,10 @@ function sb_version_upgrade ($old_version, $new_version) {
 	require_once(SB_INCLUDES_DIR.'/dictionary.php');
 	$sbmf = sb_get_option('search_template');
 	if ($sbmf)
-		sb_update_option('search_output', strtr($sbmf, sb_search_results_dictionary()));
+		sb_update_option('search_output', sb_compile_template($sbmf, sb_search_results_dictionary()));
 	$sbsf = sb_get_option('single_template');
 	if ($sbsf)
-		sb_update_option('single_output', strtr($sbsf, sb_sermon_page_dictionary()));
+		sb_update_option('single_output', sb_compile_template($sbsf, sb_sermon_page_dictionary()));
 	sb_protect_upload_dir();
 	sb_update_option('code_version', $new_version);
 	if (sb_get_option('filter_type') == '')
@@ -88,8 +90,8 @@ function sb_database_upgrade ($old_version) {
 			$wpdb->query("ALTER TABLE {$wpdb->prefix}sb_sermons ADD page_id INT(10) NOT NULL");
 			add_option('sb_display_method', 'dynamic');
 			add_option('sb_sermons_per_page', '10');
-			add_option('sb_sermon_multi_output', base64_encode(strtr(base64_decode(get_option('sb_sermon_multi_form')), sb_search_results_dictionary())));
-			add_option('sb_sermon_single_output', base64_encode(strtr(base64_decode(get_option('sb_sermon_single_form')), sb_sermon_page_dictionary())));
+			add_option('sb_sermon_multi_output', base64_encode(sb_compile_template(base64_decode(get_option('sb_sermon_multi_form')), sb_search_results_dictionary())));
+			add_option('sb_sermon_single_output', base64_encode(sb_compile_template(base64_decode(get_option('sb_sermon_single_form')), sb_sermon_page_dictionary())));
 			add_option('sb_sermon_style_output', base64_encode(stripslashes(base64_decode(get_option('sb_sermon_style')))));
 			add_option('sb_sermon_style_date_modified', strtotime('now'));
 			update_option('sb_sermon_db_version', '1.4');

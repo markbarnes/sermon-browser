@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH'))
+	exit;
+
 //Prints ISO date for podcast
 function sb_print_iso_date($sermon) {
 	if (is_object($sermon)) {
@@ -10,14 +13,12 @@ function sb_print_iso_date($sermon) {
 //Prints size of file
 function sb_media_size($media_name, $media_type) {
 	if ($media_type == 'URLs') {
-		if(ini_get('allow_url_fopen')) {
-			$headers = array_change_key_case(@get_headers($media_name, 1),CASE_LOWER);
-			$filesize = $headers['content-length'];
-			if ($filesize)
-				return "length=\"{$filesize}\"";
-		}
+		$response = wp_safe_remote_head(wp_specialchars_decode($media_name, ENT_QUOTES), array('timeout' => 5, 'redirection' => 3));
+		$filesize = (int) wp_remote_retrieve_header($response, 'content-length');
+		if ($filesize)
+			return "length=\"{$filesize}\"";
 	} else
-		return 'length="'.@filesize(SB_ABSPATH.sb_get_option('upload_dir').$media_name).'"';
+		return 'length="'.(int) @filesize(SB_ABSPATH.sb_get_option('upload_dir').$media_name).'"';
 }
 
 //Returns duration of .mp3 file
@@ -38,6 +39,11 @@ function sb_mp3_duration($media_name, $media_type) {
 			return $duration;
 		}
 	}
+}
+
+// Puts text in a CDATA section, splitting any ]]> so it can't end the section early
+function sb_xml_cdata ($string) {
+	return '<![CDATA['.str_replace(']]>', ']]]]><![CDATA[>', $string).']]>';
 }
 
 //Replaces & with &amp;
@@ -80,14 +86,14 @@ function sb_mime_type($media_name) {
 
 $sermons = sb_get_sermons(
 	array(
-		'title' => isset($_REQUEST['title']) ? esc_sql($_REQUEST['title']) : '',
+		'title' => isset($_REQUEST['title']) ? sanitize_text_field(wp_unslash($_REQUEST['title'])) : '',
 		'preacher' => isset($_REQUEST['preacher']) ? (int)$_REQUEST['preacher'] : '',
-		'date' => isset($_REQUEST['date']) ? esc_sql($_REQUEST['date']) : '',
-		'enddate' => isset($_REQUEST['enddate']) ? esc_sql($_REQUEST['enddate']) : '',
+		'date' => isset($_REQUEST['date']) ? sanitize_text_field(wp_unslash($_REQUEST['date'])) : '',
+		'enddate' => isset($_REQUEST['enddate']) ? sanitize_text_field(wp_unslash($_REQUEST['enddate'])) : '',
 		'series' => isset($_REQUEST['series']) ? (int)$_REQUEST['series'] : '',
 		'service' => isset($_REQUEST['service']) ? (int)$_REQUEST['service'] : '',
-		'book' => isset($_REQUEST['book']) ? esc_sql($_REQUEST['book']) : '',
-		'tag' => isset($_REQUEST['stag']) ? esc_sql($_REQUEST['stag']) : '',
+		'book' => isset($_REQUEST['book']) ? sanitize_text_field(wp_unslash($_REQUEST['book'])) : '',
+		'tag' => isset($_REQUEST['stag']) ? sanitize_text_field(wp_unslash($_REQUEST['stag'])) : '',
 	),
 	array(
 		'by' => 'm.datetime',
@@ -140,16 +146,16 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 <item>
 		<guid><?php echo sb_podcast_file_url($media_name, $media_type) ?></guid>
 		<title><?php echo sb_xml_entity_encode(stripslashes($sermon->title)) ?></title>
-		<link><?php echo sb_display_url().sb_query_char().'sermon_id='.$sermon->id ?></link>
+		<link><?php echo sb_xml_entity_encode(sb_display_url().sb_query_char(false).'sermon_id='.(int) $sermon->id) ?></link>
 		<itunes:author><?php echo sb_xml_entity_encode(stripslashes($sermon->preacher)) ?></itunes:author>
 <?php if ($sermon->description) { ?>
-		<description><![CDATA[<?php echo stripslashes($sermon->description) ?>]]></description>
-		<itunes:summary><![CDATA[<?php echo stripslashes($sermon->description) ?>]]></itunes:summary>
+		<description><?php echo sb_xml_cdata(stripslashes($sermon->description)) ?></description>
+		<itunes:summary><?php echo sb_xml_cdata(stripslashes($sermon->description)) ?></itunes:summary>
 <?php } ?>
 		<enclosure url="<?php echo sb_podcast_file_url($media_name, $media_type).'" '.sb_media_size($media_name, $media_type).sb_mime_type($media_name); ?> />
 <?php   $duration = sb_mp3_duration($media_name, $media_type);
 		if ($duration) { ?>
-		<itunes:duration><?php echo $duration ?></itunes:duration>
+		<itunes:duration><?php echo sb_xml_entity_encode($duration) ?></itunes:duration>
 <?php } ?>
 		<category><?php echo sb_xml_entity_encode(stripslashes($sermon->service)) ?></category>
 		<pubDate><?php sb_print_iso_date($sermon) ?></pubDate>

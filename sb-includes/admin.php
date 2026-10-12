@@ -1,4 +1,6 @@
 <?php
+if (!defined('ABSPATH'))
+	exit;
 /**
 * Admin functions
 *
@@ -72,8 +74,8 @@ function sb_options() {
 		if ($books != $eng_books) {
 			$sermon_books = $wpdb->get_results("SELECT id, start, end FROM {$wpdb->prefix}sb_sermons");
 			 foreach ($sermon_books as $sermon_book) {
-				$start_verse = unserialize($sermon_book->start);
-				$end_verse = unserialize($sermon_book->end);
+				$start_verse = sb_unserialize($sermon_book->start);
+				$end_verse = sb_unserialize($sermon_book->end);
 				$start_index = array_search( $start_verse[0]['book'], $eng_books, true );
 				$end_index   = array_search( $end_verse[0]['book'], $eng_books, true );
 				if ( $start_index !== false ) {
@@ -144,7 +146,7 @@ function sb_options() {
 		sb_update_option ('import_filename', sanitize_key($_POST['import_filename']));
 		sb_update_option ('hide_no_attachments', isset($_POST['hide_no_attachments']));
 		sb_update_option('mp3_shortcode', sanitize_text_field(stripslashes($_POST['mp3_shortcode'])));
-		sb_update_option('esv_api_key', esc_html(stripslashes($_POST['esv_api_key'])));
+		sb_update_option('esv_api_key', sanitize_text_field(stripslashes($_POST['esv_api_key'])));
 		if ( ! is_dir( SB_ABSPATH . $dir ) ) {
 			if ( sb_mkdir( SB_ABSPATH . $dir ) ) {
 				sb_protect_upload_dir();
@@ -257,7 +259,7 @@ function sb_options() {
                     <td align="right" style="vertical-align:middle"><?php _e( 'Sermons per page', 'sermon-browser' ) ?>
                         :
                     </td>
-                    <td><input type="text" name="perpage" value="<?php echo sb_get_option( 'sermons_per_page' ) ?>"/>
+                    <td><input type="text" name="perpage" value="<?php echo (int) sb_get_option( 'sermons_per_page' ) ?>"/>
                     </td>
 			</tr>
 			<tr>
@@ -477,12 +479,12 @@ function sb_templates () {
         if (! isset($_POST['sermon_template_edit_nonce']) || ! wp_verify_nonce( $_POST['sermon_template_edit_nonce'], 'sermon_template_edit' )) {
             wp_die(__("You do not have the correct permissions to edit the SermonBrowser templates", 'sermon-browser'));
         }
-		require(SB_INCLUDES_DIR.'/dictionary.php');
+		require_once(SB_INCLUDES_DIR.'/dictionary.php');
 		$multi = wp_kses_post($_POST['multi']);
 		$single = wp_kses_post($_POST['single']);
 		$style = wp_kses_post($_POST['style']);
 		if(isset($_POST['resetdefault'])){
-			require(SB_INCLUDES_DIR.'/sb-install.php');
+			require_once(SB_INCLUDES_DIR.'/sb-install.php');
 			$multi = sb_default_multi_template();
 			$single = sb_default_single_template();
 			$style = sb_default_css();
@@ -490,8 +492,8 @@ function sb_templates () {
 		sb_update_option('search_template', $multi);
 		sb_update_option('single_template', $single);
 		sb_update_option('css_style', $style);
-		sb_update_option('search_output', strtr($multi, sb_search_results_dictionary()));
-		sb_update_option('single_output', strtr($single, sb_sermon_page_dictionary()));
+		sb_update_option('search_output', sb_compile_template($multi, sb_search_results_dictionary()));
+		sb_update_option('single_output', sb_compile_template($single, sb_sermon_page_dictionary()));
 		sb_update_option('style_date_modified', strtotime('now'));
 		echo '<div id="message" class="updated fade"><p><b>';
 		_e('Templates saved successfully.', 'sermon-browser');
@@ -642,7 +644,7 @@ function sb_manage_preachers() {
 					<td>
 						<strong><?php _e('Name', 'sermon-browser') ?></strong>
 						<div>
-							<input type="text" value="<?php echo isset($preacher->name) ? stripslashes($preacher->name) : '' ?>" name="name" size="60" style="width:400px;" />
+							<input type="text" value="<?php echo isset($preacher->name) ? esc_attr(stripslashes($preacher->name)) : '' ?>" name="name" size="60" style="width:400px;" />
 						</div>
 					</td>
 				</tr>
@@ -650,15 +652,14 @@ function sb_manage_preachers() {
 					<td>
 						<strong><?php _e('Description', 'sermon-browser') ?></strong>
 						<div>
-							<textarea name="description" cols="100" rows="5"><?php echo isset($preacher->description) ? stripslashes($preacher->description) : ''?></textarea>
+							<textarea name="description" cols="100" rows="5"><?php echo isset($preacher->description) ? esc_textarea(stripslashes($preacher->description)) : ''?></textarea>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<?php if ($_GET['act'] == 'edit'): ?>
-						<div><img src="<?php echo trailingslashit(site_url()).sb_get_option('upload_dir').'images/'.$preacher->image ?>"></div>
-						<input type="hidden" name="old" value="<?php echo $preacher->image ?>">
+						<?php if ($preacher->image != '') { ?><div><img alt="" src="<?php echo esc_url(trailingslashit(site_url()).sb_get_option('upload_dir').'images/'.rawurlencode($preacher->image)) ?>"></div><?php } ?>
 						<?php endif ?>
 						<strong><?php _e('Image', 'sermon-browser') ?></strong>
 						<div>
@@ -698,8 +699,8 @@ function sb_manage_preachers() {
 				<?php foreach ((array) $preachers as $preacher): ?>
 					<tr class="<?php $i=0; echo (++$i % 2 == 0) ? 'alternate' : '' ?>">
 						<td style="text-align:center"><?php echo $preacher->id ?></td>
-						<td><?php echo stripslashes($preacher->name) ?></td>
-						<td style="text-align:center"><?php echo ($preacher->image == '') ? '' : '<img src="'.trailingslashit(site_url()).sb_get_option('upload_dir').'images/'.$preacher->image.'">' ?></td>
+						<td><?php echo esc_html(stripslashes($preacher->name)) ?></td>
+						<td style="text-align:center"><?php echo ($preacher->image == '') ? '' : '<img alt="" src="'.esc_url(trailingslashit(site_url()).sb_get_option('upload_dir').'images/'.rawurlencode($preacher->image)).'">' ?></td>
 						<td style="text-align:center"><?php echo $preacher->sermon_count ?></td>
 						<td style="text-align:center">
 							<a href="<?php echo admin_url('admin.php?page=sermon-browser/preachers.php&act=edit&pid='.$preacher->id) ?>"><?php _e('Edit', 'sermon-browser') ?></a>
@@ -708,7 +709,7 @@ function sb_manage_preachers() {
 							<?php } elseif ($preacher->sermon_count != 0) { ?>
 							    | <a href="javascript:alert('<?php _e('You cannot delete this preacher until you first delete any sermons they have preached.', 'sermon-browser')?>')"><?php _e('Delete', 'sermon-browser') ?></a>
 							<?php } else { ?>
-								| <a onclick="return confirm('<?php printf(__('Are you sure you want to delete %s?', 'sermon-browser'), stripslashes($preacher->name)) ?>')" href="<?php echo esc_url(wp_nonce_url(admin_url("admin.php?page=sermon-browser/preachers.php&act=kill&pid={$preacher->id}"), 'sb_delete_preacher_'.$preacher->id))?>"><?php _e('Delete', 'sermon-browser') ?></a>
+								| <a onclick="return confirm('<?php echo esc_attr(esc_js(sprintf(__('Are you sure you want to delete %s?', 'sermon-browser'), stripslashes($preacher->name)))) ?>')" href="<?php echo esc_url(wp_nonce_url(admin_url("admin.php?page=sermon-browser/preachers.php&act=kill&pid={$preacher->id}"), 'sb_delete_preacher_'.$preacher->id))?>"><?php _e('Delete', 'sermon-browser') ?></a>
 							<?php } ?>
 						</td>
 					</tr>
@@ -761,13 +762,16 @@ function sb_manage_everything() {
 						jQuery('#Services-list').append('\
 							<tr style="display:none" class="Services" id="rowServices' + r + '">\
 								<th style="text-align:center" scope="row">' + r + '</th>\
-								<td id="Services' + r + '">' + sz + '</td>\
-								<td style="text-align:center">' + t + '</td>\
+								<td id="Services' + r + '"></td>\
+								<td style="text-align:center" id="time' + r + '"></td>\
 								<td style="text-align:center">\
-									<a id="linkServices' + r + '" href="javascript:renameServices(' + r + ', \'' + sz + '\')">Edit</a> | <a onclick="return confirm(\'Are you sure?\');" href="javascript:deleteServices(' + r + ')">Delete</a>\
+									<a id="linkServices' + r + '" href="#">Edit</a> | <a onclick="if (confirm(\'Are you sure?\')) { deleteServices(' + r + '); } return false;" href="#">Delete</a>\
 								</td>\
 							</tr>\
 						');
+						jQuery('#Services' + r).text(sz);
+						jQuery('#time' + r).text(t);
+						jQuery('#linkServices' + r).on('click', function() { renameServices(r, sz + ' @ ' + t); return false; });
 						jQuery('#rowServices' + r).fadeIn(function() {
 							updateClass('Services');
 						});
@@ -783,12 +787,14 @@ function sb_manage_everything() {
 						jQuery('#Series-list').append('\
 							<tr style="display:none" class="Series" id="rowSeries' + r + '">\
 								<th style="text-align:center" scope="row">' + r + '</th>\
-								<td id="Series' + r + '">' + ss + '</td>\
+								<td id="Series' + r + '"></td>\
 								<td style="text-align:center">\
-									<a id="linkSeries' + r + '" href="javascript:renameSeries(' + r + ', \'' + ss + '\')">Rename</a> | <a onclick="return confirm(\'Are you sure?\');" href="javascript:deleteSeries(' + r + ')">Delete</a>\
+									<a id="linkSeries' + r + '" href="#">Rename</a> | <a onclick="if (confirm(\'Are you sure?\')) { deleteSeries(' + r + '); } return false;" href="#">Delete</a>\
 								</td>\
 							</tr>\
 						');
+						jQuery('#Series' + r).text(ss);
+						jQuery('#linkSeries' + r).on('click', function() { renameSeries(r, ss); return false; });
 						jQuery('#rowSeries' + r).fadeIn(function() {
 							updateClass('Series');
 						});
@@ -820,7 +826,7 @@ function sb_manage_everything() {
 				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {ssid: id, ssname: ss, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
 						jQuery('#Series' + id).text(ss);
-						jQuery('#linkSeries' + id).attr('href', 'javascript:renameSeries(' + id + ', "' + ss + '")');
+						jQuery('#linkSeries' + id).attr('onclick', '').off('click').on('click', function() { renameSeries(id, ss); return false; });
 					};
 				});
 			}
@@ -838,7 +844,7 @@ function sb_manage_everything() {
 						t = s.match(/(.*?)@(.*)/)[2];
 						jQuery('#Services' + id).text(sz);
 						jQuery('#time' + id).text(t);
-						jQuery('#linkServices' + id).attr('href', 'javascript:renameServices(' + id + ', "' + s + '")');
+						jQuery('#linkServices' + id).attr('onclick', '').off('click').on('click', function() { renameServices(id, s); return false; });
 					};
 				});
 			}
@@ -869,16 +875,16 @@ function sb_manage_everything() {
 				<?php if (is_array($v['data'])): ?>
 					<?php foreach ($v['data'] as $item): ?>
 						<tr class="<?php echo $k ?> <?php echo (++$i % 2 == 0) ? 'alternate' : '' ?>" id="row<?php echo $k ?><?php echo $item->id ?>">
-							<th style="text-align:center" scope="row"><?php echo $item->id ?></th>
-							<td id="<?php echo $k ?><?php echo $item->id ?>"><?php echo stripslashes($item->name) ?></td>
-							<?php echo $k == 'Services' ? '<td style="text-align:center" id="time'.$item->id.'">'.$item->time.'</td>' : '' ?>
+							<th style="text-align:center" scope="row"><?php echo (int) $item->id ?></th>
+							<td id="<?php echo $k ?><?php echo (int) $item->id ?>"><?php echo esc_html(stripslashes($item->name)) ?></td>
+							<?php echo $k == 'Services' ? '<td style="text-align:center" id="time'.(int) $item->id.'">'.esc_html($item->time).'</td>' : '' ?>
 							<td style="text-align:center"><?php echo $item->sermon_count; ?></td>
 							<td style="text-align:center">
-								<a id="link<?php echo $k ?><?php echo $item->id ?>" href="javascript:rename<?php echo $k; ?>(<?php echo $item->id; ?>, '<?php echo $item->name; ?><?php echo $k == 'Services' ? ' @ '.$item->time : ''; ?>')"><?php echo $k == 'Services' ? __('Edit', 'sermon-browser') : __('Rename', 'sermon-browser'); ?></a>
+								<a id="link<?php echo $k ?><?php echo (int) $item->id ?>" href="#" onclick="<?php echo esc_attr('rename'.$k.'('.(int) $item->id.', '.wp_json_encode(stripslashes($item->name).($k == 'Services' ? ' @ '.$item->time : '')).'); return false;') ?>"><?php echo $k == 'Services' ? __('Edit', 'sermon-browser') : __('Rename', 'sermon-browser'); ?></a>
 								<?php if (count($v['data']) < 2) { ?>
 									| <a href="javascript:alert('<?php printf(__('You cannot delete this %1$s as you must have at least one %1$s in the database', 'sermon-browser'), $k); ?>')"><?php _e('Delete', 'sermon-browser') ?></a>
 								<?php } elseif ($item->sermon_count == 0) { ?>
-									| <a href="javascript:if(confirm('<?php printf(__('Are you sure you want to delete %s?', 'sermon-browser'), $item->name); ?>')){delete<?php echo $k; ?>(<?php echo $item->id; ?>)}"><?php _e('Delete', 'sermon-browser'); ?></a>
+									| <a href="#" onclick="<?php echo esc_attr('if (confirm('.wp_json_encode(sprintf(__('Are you sure you want to delete %s?', 'sermon-browser'), stripslashes($item->name))).')) { delete'.$k.'('.(int) $item->id.'); } return false;') ?>"><?php _e('Delete', 'sermon-browser'); ?></a>
 								<?php } else { ?>
 									| <a href="javascript:alert('<?php switch ($k) {
 										case "Services":
@@ -1261,7 +1267,7 @@ function sb_manage_sermons() {
 	}
 
 	if (isset($_GET['mid'])) {
-        if (! wp_verify_nonce( $_GET['sermon_manage_sermons_nonce'], 'sermon_manage_sermons' )) {
+        if (!isset($_GET['sermon_manage_sermons_nonce']) || ! wp_verify_nonce( $_GET['sermon_manage_sermons_nonce'], 'sermon_manage_sermons' )) {
             wp_die(__("You do not have the correct permissions to edit sermons", 'sermon-browser'));
         }
 		//Security check
@@ -1355,22 +1361,22 @@ function sb_manage_sermons() {
 			</tr>
 			</thead>
 			<tbody id="the-list">
-				<?php if (is_array($sermons)): ?>
+				<?php if (is_array($sermons)): $i = 0; ?>
 					<?php foreach ($sermons as $sermon): ?>
-					<tr class="<?php $i=0; echo ++$i % 2 == 0 ? 'alternate' : '' ?>">
-						<th style="text-align:center" scope="row"><?php echo $sermon->id ?></th>
-						<td><?php echo stripslashes($sermon->title) ?></td>
-						<td><?php echo stripslashes($sermon->pname) ?></td>
+					<tr class="<?php echo ++$i % 2 == 0 ? 'alternate' : '' ?>">
+						<th style="text-align:center" scope="row"><?php echo (int) $sermon->id ?></th>
+						<td><?php echo esc_html(stripslashes($sermon->title)) ?></td>
+						<td><?php echo esc_html(stripslashes($sermon->pname)) ?></td>
 						<td><?php echo ($sermon->datetime == '1970-01-01 00:00:00') ? __('Unknown', 'sermon-browser') : strftime('%d %b %y', strtotime($sermon->datetime)); ?></td>
-						<td><?php echo stripslashes($sermon->sname) ?></td>
-						<td><?php echo stripslashes($sermon->ssname) ?></td>
-						<td><?php echo sb_sermon_stats($sermon->id) ?></td>
+						<td><?php echo esc_html(stripslashes($sermon->sname)) ?></td>
+						<td><?php echo esc_html(stripslashes($sermon->ssname)) ?></td>
+						<td><?php echo (int) sb_sermon_stats($sermon->id) ?></td>
 						<td style="text-align:center">
 							<?php //Security check
 									if (current_user_can('publish_posts')) { ?>
 									<a href="<?php echo wp_nonce_url( admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}"), 'sermon_new_sermons', 'sermon_new_sermons_nonce' );  ?>"><?php _e('Edit', 'sermon-browser') ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo wp_nonce_url( admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"), 'sermon_manage_sermons', 'sermon_manage_sermons_nonce' );  ?>"><?php _e('Delete', 'sermon-browser'); ?></a> |
 							<?php } ?>
-							<a href="<?php echo sb_display_url().sb_query_char(true).'sermon_id='.$sermon->id;?>">View</a>
+							<a href="<?php echo esc_url(sb_display_url().sb_query_char(false).'sermon_id='.(int) $sermon->id);?>">View</a>
 						</td>
 					</tr>
 					<?php endforeach ?>
@@ -1405,7 +1411,7 @@ function sb_new_sermon() {
 
 	if (isset($_POST['save']) && isset($_POST['title'])) {
 	// prepare
-        if (! wp_verify_nonce( $_REQUEST['sermon_browser_save_nonce'], 'sermon_browser_save' )) {
+        if (!isset($_REQUEST['sermon_browser_save_nonce']) || ! wp_verify_nonce( $_REQUEST['sermon_browser_save_nonce'], 'sermon_browser_save' )) {
             wp_die(__("You do not have the correct permissions to edit or create sermons", 'sermon-browser'));
         }
 		$title = sanitize_text_field($_POST['title']);
@@ -1502,9 +1508,7 @@ function sb_new_sermon() {
 		// embed code next
 		foreach ((array) $_POST['code'] as $code) {
 			if (!empty($code)) {
-                $embed_allowedposttags = $allowedposttags;
-                $embed_allowedposttags ['iframe'] = array ('width' => true, 'height' => true, 'src' => true, 'frameborder' => true, 'allowfullscreen' => true, 'style' => true, 'name' => true, 'id' => true, 'align' => true, 'sandbox' => true, 'srcdoc' => true);
-				$code = base64_encode(wp_kses(stripslashes($code), $embed_allowedposttags));
+				$code = base64_encode(sb_kses_embed(stripslashes($code)));
 				$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'code', %s, %d, 0, 0)", $code, $id));
 			}
 		}
@@ -1632,15 +1636,15 @@ function sb_new_sermon() {
 
 	$timeArr = '';
 	for ($lol = 0; $lol < count($serviceId); $lol++) {
-		$timeArr .= "timeArr[{$serviceId[$lol]}] = '{$deftime[$lol]}';";
+		$timeArr .= 'timeArr['.(int) $serviceId[$lol].'] = '.wp_json_encode((string) $deftime[$lol]).';';
 	}
 
 	if (isset($_GET['mid'])) {
 		$mid = (int) $_GET['mid'];
 		$curSermon = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}sb_sermons WHERE id = $mid");
 		$files = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_stuff WHERE sermon_id IN (0, $mid) AND type = 'file' ORDER BY name asc");
-		$startArr = unserialize($curSermon->start);
-		$endArr = unserialize($curSermon->end);
+		$startArr = sb_unserialize($curSermon->start);
+		$endArr = sb_unserialize($curSermon->end);
 		$rawtags = $wpdb->get_results("SELECT t.name FROM {$wpdb->prefix}sb_sermons_tags as st LEFT JOIN {$wpdb->prefix}sb_tags as t ON st.tag_id = t.id WHERE st.sermon_id = $mid ORDER BY t.name asc");
 		$tags = array();
 		foreach ($rawtags as $tag) {
@@ -1660,7 +1664,7 @@ function sb_new_sermon() {
 			if (p != null) {
 				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {pname: p, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
-						jQuery('#preacher option:first').before('<option value="' + r + '">' + p + '</option>');
+						jQuery('#preacher option:first').before(jQuery('<option>').val(r).text(p));
 						jQuery("#preacher option[value='" + r + "']").attr('selected', 'selected');
 					};
 				});
@@ -1681,7 +1685,7 @@ function sb_new_sermon() {
 			if (s != null) {
 				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {sname: s, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
-						jQuery('#service option:first').before('<option value="' + r + '">' + s.match(/(.*?)@/)[1] + '</option>');
+						jQuery('#service option:first').before(jQuery('<option>').val(r).text(s.match(/(.*?)@/)[1]));
 						jQuery("#service option[value='" + r + "']").attr('selected', 'selected');
 						jQuery('#time').val(s.match(/(.*?)@\s*(.*)/)[2]);
 					};
@@ -1694,7 +1698,7 @@ function sb_new_sermon() {
 			if (ss != null) {
 				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {ssname: ss, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
-						jQuery('#series option:first').before('<option value="' + r + '">' + ss + '</option>');
+						jQuery('#series option:first').before(jQuery('<option>').val(r).text(ss));
 						jQuery("#series option[value='" + r + "']").attr('selected', 'selected');
 					};
 				});
@@ -1783,13 +1787,13 @@ function sb_new_sermon() {
 					<td>
 						<strong><?php _e('Title', 'sermon-browser') ?></strong>
 						<div>
-							<input type="text" value="<?php if (isset($id3_tags['title'])) {echo $id3_tags['title'];} elseif (isset($curSermon->title)) {echo htmlspecialchars(stripslashes($curSermon->title));} ?>" name="title" size="60" style="width:400px;" />
+							<input type="text" value="<?php if (isset($id3_tags['title'])) {echo esc_attr(wp_specialchars_decode($id3_tags['title'], ENT_QUOTES));} elseif (isset($curSermon->title)) {echo esc_attr(stripslashes($curSermon->title));} ?>" name="title" size="60" style="width:400px;" />
 						</div>
 					</td>
 					<td>
 						<strong><?php _e('Tags (comma separated)', 'sermon-browser') ?></strong>
 						<div>
-							<input type="text" name="tags" value="<?php echo isset($tags) ? stripslashes($tags) : ''?>" style="width:400px" />
+							<input type="text" name="tags" value="<?php echo isset($tags) ? esc_attr(stripslashes($tags)) : ''?>" style="width:400px" />
 						</div>
 					</td>
 				</tr>
@@ -1837,19 +1841,19 @@ function sb_new_sermon() {
 					<td style="overflow: visible">
 						<strong><?php _e('Date', 'sermon-browser') ?></strong> (yyyy-mm-dd)
 						<div>
-							<input type="text" id="date" name="date" value="<?php if ((isset($curSermon->datetime) && $curSermon->datetime != '1970-01-01 00:00:00') || isset($id3_tags['date'])) echo isset($id3_tags['date']) ? $id3_tags['date'] : substr(stripslashes($curSermon->datetime),0,10) ?>" />
+							<input type="text" id="date" name="date" value="<?php if ((isset($curSermon->datetime) && $curSermon->datetime != '1970-01-01 00:00:00') || isset($id3_tags['date'])) echo esc_attr(isset($id3_tags['date']) ? $id3_tags['date'] : substr(stripslashes($curSermon->datetime),0,10)) ?>" />
 						</div>
 					</td>
 					<td rowspan="3">
 						<strong><?php _e('Description', 'sermon-browser') ?></strong>
 						<div>
 							<?php	if (isset($id3_tags['description']))
-										{$desc = $id3_tags['description'];}
+										{$desc = wp_specialchars_decode($id3_tags['description'], ENT_QUOTES);}
 									elseif (isset($curSermon->description))
 										{$desc = stripslashes($curSermon->description);}
 									else
 										{$desc = '';} ?>
-							<textarea name="description" cols="50" rows="7"><?php echo $desc; ?></textarea>
+							<textarea name="description" cols="50" rows="7"><?php echo esc_textarea($desc); ?></textarea>
 						</div>
 					</td>
 				</tr>
@@ -1872,7 +1876,7 @@ function sb_new_sermon() {
 					<td>
 						<strong><?php _e('Time', 'sermon-browser') ?></strong>
 						<div>
-							<input type="text" name="time" value="<?php echo isset($curSermon->time) ? $curSermon->time : ''?>" id="time" <?php echo isset($curSermon->override) && $curSermon->override ? '' : 'disabled="disabled" class="gray"' ?> />
+							<input type="text" name="time" value="<?php echo isset($curSermon->time) ? esc_attr($curSermon->time) : ''?>" id="time" <?php echo isset($curSermon->override) && $curSermon->override ? '' : 'disabled="disabled" class="gray"' ?> />
 							<input type="checkbox" name="override" id="override" onchange="doOverride()" <?php echo isset($curSermon->override) && $curSermon->override ? 'checked="checked"' : ''?>> <?php _e('Override default time', 'sermon-browser') ?>
 						</div>
 					</td>
@@ -1941,7 +1945,7 @@ function sb_new_sermon() {
 									<select id="file" name="file[]">
 									<?php echo count($files) == 0 ? '<option value="0">No files found</option>' : '<option value="0"></option>' ?>
 									<?php foreach ($files as $file): ?>
-										<option value="<?php echo $file->id ?>"><?php echo $file->name ?></option>
+										<option value="<?php echo (int) $file->id ?>"><?php echo esc_html($file->name) ?></option>
 									<?php endforeach ?>
 									</select>
 								</td>
@@ -1985,29 +1989,29 @@ function sb_new_sermon() {
 				$r = false;
 				if (isset($filename) && $filename != '')
 					{if ($file_data->type == 'url')
-						{$assocURLs[]->name = $file_data->name;}
+						{$assocURLs[] = (object) array('name' => $file_data->name);}
 					else
-						{$assocFiles[]->id = esc_js($_GET['getid3']);}}
+						{$assocFiles[] = (object) array('id' => (int) $_GET['getid3']);}}
 			?>
 
 			<?php for ($lolz = 0; $lolz < count($assocFiles); $lolz++): ?>
 				<?php $r = true ?>
 				addFile();
-				stuff.push(<?php echo $assocFiles[$lolz]->id ?>);
+				stuff.push(<?php echo (int) $assocFiles[$lolz]->id ?>);
 				type.push('file');
 			<?php endfor ?>
 
 			<?php for ($lolz = 0; $lolz < count($assocURLs); $lolz++): ?>
 				<?php $r = true ?>
 				addFile();
-				stuff.push('<?php echo $assocURLs[$lolz]->name ?>');
+				stuff.push(<?php echo wp_json_encode(wp_specialchars_decode($assocURLs[$lolz]->name, ENT_QUOTES)) ?>);
 				type.push('url');
 			<?php endfor ?>
 
 			<?php for ($lolz = 0; $lolz < count($assocCode); $lolz++): ?>
 				<?php $r = true ?>
 				addFile();
-				stuff.push('<?php echo $assocCode[$lolz]->name ?>');
+				stuff.push(<?php echo wp_json_encode($assocCode[$lolz]->name) ?>);
 				type.push('code');
 			<?php endfor ?>
 
@@ -2019,12 +2023,12 @@ function sb_new_sermon() {
 				<?php if ($lolz != 0): ?>
 					addPassage();
 				<?php endif ?>
-				start1.push("<?php echo $startArr[$lolz]['book'] ?>");
-				start2.push("<?php echo $startArr[$lolz]['chapter'] ?>");
-				start3.push("<?php echo $startArr[$lolz]['verse'] ?>");
-				end1.push("<?php echo $endArr[$lolz]['book'] ?>");
-				end2.push("<?php echo $endArr[$lolz]['chapter'] ?>");
-				end3.push("<?php echo $endArr[$lolz]['verse'] ?>");
+				start1.push(<?php echo wp_json_encode((string) $startArr[$lolz]['book']) ?>);
+				start2.push(<?php echo (int) $startArr[$lolz]['chapter'] ?>);
+				start3.push(<?php echo (int) $startArr[$lolz]['verse'] ?>);
+				end1.push(<?php echo wp_json_encode((string) $endArr[$lolz]['book']) ?>);
+				end2.push(<?php echo (int) $endArr[$lolz]['chapter'] ?>);
+				end3.push(<?php echo (int) $endArr[$lolz]['verse'] ?>);
 			<?php endfor ?>
 
 			jQuery('.choose').each(function(i) {
@@ -2220,8 +2224,8 @@ function sb_do_alerts() {
 * Show the textarea input
 */
 function sb_build_textarea($name, $html) {
-	$out = '<textarea name="'.$name.'" cols="75" rows="20" style="width:100%">';
-	$out .= stripslashes(str_replace('\r\n', "\n", $html));
+	$out = '<textarea name="'.esc_attr($name).'" cols="75" rows="20" style="width:100%">';
+	$out .= esc_textarea(stripslashes(str_replace('\r\n', "\n", $html)));
 	$out .= '</textarea>';
 	echo $out;
 }
@@ -2269,7 +2273,7 @@ function sb_rightnow () {
 			{$output_string .= ". ".sprintf(_n('Only one file has been downloaded', 'They have been downloaded a total of %s times', $download_count), number_format($download_count));}
 		if ($download_count > 1) {
 			$output_string .= ", ".sprintf(_n('an average of once per sermon', 'an average of %d times per sermon', $download_average), $download_average);
-			$most_popular_title = '<a href="'.sb_display_url().sb_query_char(true).'sermon_id='.$most_popular->sermon_id.'">'.stripslashes($most_popular->title).'</a>';
+			$most_popular_title = '<a href="'.esc_url(sb_display_url().sb_query_char(false).'sermon_id='.(int) $most_popular->sermon_id).'">'.esc_html(stripslashes($most_popular->title)).'</a>';
 			$output_string .= ". ".sprintf(__('The most popular sermon is %s, which has been downloaded %s times'), $most_popular_title, number_format($most_popular->c));
 		}
 		$output_string .= '.</p>';
@@ -2429,7 +2433,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 						<select name="widget-sermon[<?php echo $number; ?>][preacher]" id="widget-sermon-preacher-<?php echo $number; ?>">
 							<option value="0" <?php echo $preacher ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
 							<?php foreach ($dpreachers as $cpreacher): ?>
-								<option value="<?php echo $cpreacher->id ?>" <?php echo $preacher == $cpreacher->id ? 'selected="selected"' : '' ?>><?php echo $cpreacher->name ?></option>
+								<option value="<?php echo $cpreacher->id ?>" <?php echo $preacher == $cpreacher->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($cpreacher->name)) ?></option>
 							<?php endforeach ?>
 						</select>
 					</td>
@@ -2440,7 +2444,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 						<select name="widget-sermon[<?php echo $number; ?>][service]" id="widget-sermon-service-<?php echo $number; ?>">
 							<option value="0" <?php echo $service ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
 							<?php foreach ($dservices as $cservice): ?>
-								<option value="<?php echo $cservice->id ?>" <?php echo $service == $cservice->id ? 'selected="selected"' : '' ?>><?php echo $cservice->name ?></option>
+								<option value="<?php echo $cservice->id ?>" <?php echo $service == $cservice->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($cservice->name)) ?></option>
 							<?php endforeach ?>
 						</select>
 					</td>
@@ -2451,7 +2455,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 						<select name="widget-sermon[<?php echo $number; ?>][series]" id="widget-sermon-series-<?php echo $number; ?>">
 							<option value="0" <?php echo $series ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
 							<?php foreach ($dseries as $cseries): ?>
-								<option value="<?php echo $cseries->id ?>" <?php echo $series == $cseries->id ? 'selected="selected"' : '' ?>><?php echo $cseries->name ?></option>
+								<option value="<?php echo $cseries->id ?>" <?php echo $series == $cseries->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($cseries->name)) ?></option>
 							<?php endforeach ?>
 						</select>
 					</td>
@@ -2584,7 +2588,7 @@ function sb_print_upload_form () {
 						$files = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_stuff WHERE sermon_id = 0 AND type = 'file' ORDER BY name asc");
 						echo count($files) == 0 ? '<option value="0">No files found</option>' : '<option value="0"></option>';
 						foreach ($files as $file) { ?>
-							<option value="<?php echo $file->id ?>"><?php echo $file->name ?></option>
+							<option value="<?php echo (int) $file->id ?>"><?php echo esc_html($file->name) ?></option>
 						<?php } ?>
 				</select>
 			</td>
