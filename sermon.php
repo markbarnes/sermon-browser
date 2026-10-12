@@ -247,7 +247,7 @@ function sb_sermon_init () {
 		add_action ('admin_head', 'sb_print_ajax_nonce');
 		add_action ('rightnow_end', 'sb_rightnow');
 		add_action('admin_init', 'sb_add_admin_headers');
-		add_filter('contextual_help', 'sb_add_contextual_help');
+		add_action('current_screen', 'sb_add_help_tab');
 		if (defined('SAVEQUERIES') && SAVEQUERIES)
 			add_action('admin_footer', 'sb_footer_stats');
 	}
@@ -281,15 +281,18 @@ function sb_add_pages() {
 * @return integer
 */
 function sb_return_kbytes($val) {
-	$val = trim($val);
+	$val = trim((string) $val);
+	if ($val === '')
+		return 0;
 	$last = strtolower($val[strlen($val)-1]);
+	$number = (int) $val;
 	switch($last) {
 		case 'g':
-			$val *= 1024;
+			$number *= 1024;
 		case 'm':
-			$val *= 1024;
+			$number *= 1024;
 	}
-   return intval($val);
+	return $number;
 }
 
 /**
@@ -777,7 +780,7 @@ function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0, $
 	if ($filter['title'] != '') {
 		$cond .= "AND (m.title LIKE '%" . esc_sql($filter['title']) . "%' OR m.description LIKE '%" . esc_sql($filter['title']). "%' OR t.name LIKE '%" . esc_sql($filter['title']) . "%') ";
 	}
-	if ($filter['preacher'] != 0) {
+	if ((int) $filter['preacher'] != 0) {
 		$cond .= 'AND m.preacher_id = ' . (int) $filter['preacher'] . ' ';
 	}
 	if ($filter['date'] != '') {
@@ -786,10 +789,10 @@ function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0, $
 	if ($filter['enddate'] != '') {
 		$cond .= 'AND m.datetime <= "' . esc_sql($filter['enddate']) . '" ';
 	}
-	if ($filter['series'] != 0) {
+	if ((int) $filter['series'] != 0) {
 		$cond .= 'AND m.series_id = ' . (int) $filter['series'] . ' ';
 	}
-	if ($filter['service'] != 0) {
+	if ((int) $filter['service'] != 0) {
 		$cond .= 'AND m.service_id = ' . (int) $filter['service'] . ' ';
 	}
 	if ($filter['book'] != '') {

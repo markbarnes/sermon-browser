@@ -94,7 +94,7 @@ function sb_options() {
 		   switch ($checkSermonUpload) {
 			case "unwriteable":
 				echo '<div id="message" class="updated fade"><p><b>';
-				if (IS_MU AND !is_site_admin()) {
+				if (IS_MU AND !is_super_admin()) {
 					_e('Upload is disabled. Please contact your administrator.', 'sermon-browser');
 				} else {
 					_e('Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777.', 'sermon-browser');
@@ -103,7 +103,7 @@ function sb_options() {
 				break;
 			case "notexist":
 				echo '<div id="message" class="updated fade"><p><b>';
-				if (IS_MU AND !is_site_admin()) {
+				if (IS_MU AND !is_super_admin()) {
 					_e('Upload is disabled. Please contact your administrator.', 'sermon-browser');
 				} else {
 					_e('Error: The upload folder you have specified does not exist.', 'sermon-browser');
@@ -199,7 +199,7 @@ function sb_options() {
 		<br style="clear:both"/>
 		<table border="0" class="widefat">
 			<?php
-				if (!IS_MU OR is_site_admin()) {
+				if (!IS_MU OR is_super_admin()) {
 			?>
 			<tr>
                         <td align="right" style="vertical-align:middle"><?php _e( 'Upload folder', 'sermon-browser' ) ?>
@@ -559,7 +559,7 @@ function sb_manage_preachers() {
 		$name = sanitize_text_field($_POST['name']);
 		$description = sanitize_textarea_field($_POST['description']);
 		$error = false;
-		$pid = (int) $_REQUEST['pid'];
+		$pid = isset($_REQUEST['pid']) ? (int) $_REQUEST['pid'] : 0;
 
 		if (empty($_FILES['upload']['name'])) {
 			$p = $wpdb->get_row("SELECT image FROM {$wpdb->prefix}sb_preachers WHERE id = $pid");
@@ -606,8 +606,8 @@ function sb_manage_preachers() {
 	}
 
 	if (isset($_GET['act']) && $_GET['act'] == 'kill') {
-		check_admin_referer('sb_delete_preacher_'.(int) $_GET['pid']);
-		$die = (int) $_GET['pid'];
+		check_admin_referer('sb_delete_preacher_'.(isset($_GET['pid']) ? (int) $_GET['pid'] : 0));
+		$die = (isset($_GET['pid']) ? (int) $_GET['pid'] : 0);
 		if($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_sermons WHERE preacher_id = $die") > 0)
 			{echo '<div id="message" class="updated fade"><p><b>'.__("You cannot delete this preacher until you first delete any sermons they have preached.", 'sermon-browser').'</b></div>';}
 		else {
@@ -619,7 +619,7 @@ function sb_manage_preachers() {
 	}
 
 	if (isset($_GET['act']) && ($_GET['act'] == 'new' || $_GET['act'] == 'edit')) {
-		if ($_GET['act'] == 'edit') {$preacher = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}sb_preachers WHERE id = ".(int) $_GET['pid']);}
+		if ($_GET['act'] == 'edit') {$preacher = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}sb_preachers WHERE id = ".(isset($_GET['pid']) ? (int) $_GET['pid'] : 0));}
 	//Display HTML
 ?>
 	<div class="wrap">
@@ -637,7 +637,7 @@ function sb_manage_preachers() {
 				{echo '<div id="message" class="updated fade"><p><b>'.__("The images folder is not writeable. You won't be able to upload images.", 'sermon-browser').'</b></div>';}
 		?>
 		<form method="post" enctype="multipart/form-data">
-		<input type="hidden" name="pid" value="<?php echo (int) $_GET['pid'] ?>">
+		<input type="hidden" name="pid" value="<?php echo (isset($_GET['pid']) ? (int) $_GET['pid'] : 0) ?>">
 		<fieldset>
 			<table class="widefat">
 				<tr>
@@ -1367,7 +1367,7 @@ function sb_manage_sermons() {
 						<th style="text-align:center" scope="row"><?php echo (int) $sermon->id ?></th>
 						<td><?php echo esc_html(stripslashes($sermon->title)) ?></td>
 						<td><?php echo esc_html(stripslashes($sermon->pname)) ?></td>
-						<td><?php echo ($sermon->datetime == '1970-01-01 00:00:00') ? __('Unknown', 'sermon-browser') : strftime('%d %b %y', strtotime($sermon->datetime)); ?></td>
+						<td><?php echo ($sermon->datetime == '1970-01-01 00:00:00') ? __('Unknown', 'sermon-browser') : esc_html(date_i18n('d M y', strtotime($sermon->datetime))); ?></td>
 						<td><?php echo esc_html(stripslashes($sermon->sname)) ?></td>
 						<td><?php echo esc_html(stripslashes($sermon->ssname)) ?></td>
 						<td><?php echo (int) sb_sermon_stats($sermon->id) ?></td>
@@ -1420,7 +1420,8 @@ function sb_new_sermon() {
 		$series_id = (int) $_POST['series'];
 		$time = isset($_POST['time']) ? sanitize_text_field($_POST['time']) : '';
 		$startz = $endz = array();
-		for ($foo = 0; $foo < count($_POST['start']['book']); $foo++) {
+		$passage_count = isset($_POST['start']['book']) && is_array($_POST['start']['book']) ? count($_POST['start']['book']) : 0;
+		for ($foo = 0; $foo < $passage_count; $foo++) {
 			if (!empty($_POST['start']['chapter'][$foo]) && !empty($_POST['end']['chapter'][$foo]) && !empty($_POST['start']['verse'][$foo]) && !empty($_POST['end']['verse'][$foo])) {
 				$startz[] = array(
 					'book' => sanitize_text_field($_POST['start']['book'][$foo]),
@@ -1478,7 +1479,7 @@ function sb_new_sermon() {
 			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, %s, %s, %s, $i, 'end', $id);", $ed['book'], $ed['chapter'], $ed['verse']));
 		}}
 		// now previously uploaded files
-		foreach ((array) $_POST['file'] as $uid => $file) {
+		foreach (isset($_POST['file']) ? (array) $_POST['file'] : array() as $uid => $file) {
 			if ((int) $file != 0)
 				$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = $id WHERE id = %d AND type = 'file';", $file));
 			elseif ($_FILES['upload']['error'][$uid] == UPLOAD_ERR_OK) {
@@ -1500,20 +1501,20 @@ function sb_new_sermon() {
 			}
 		}
 		// then URLs
-		foreach ((array) $_POST['url'] as $urlz) {
+		foreach (isset($_POST['url']) ? (array) $_POST['url'] : array() as $urlz) {
 			if (!empty($urlz)) {
 				$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'url', %s, $id, 0, 0);", esc_url($urlz)));
 			}
 		}
 		// embed code next
-		foreach ((array) $_POST['code'] as $code) {
+		foreach (isset($_POST['code']) ? (array) $_POST['code'] : array() as $code) {
 			if (!empty($code)) {
 				$code = base64_encode(sb_kses_embed(stripslashes($code)));
 				$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'code', %s, %d, 0, 0)", $code, $id));
 			}
 		}
 		// tags
-		$tags = explode(',', $_POST['tags']);
+		$tags = isset($_POST['tags']) ? explode(',', $_POST['tags']) : array();
 		$wpdb->query("DELETE FROM {$wpdb->prefix}sb_sermons_tags WHERE sermon_id = $id;");
 		foreach ($tags as $tag) {
 			$clean_tag = sanitize_text_field($tag);
@@ -1629,6 +1630,7 @@ function sb_new_sermon() {
 		}
 	}
 
+	$serviceId = $deftime = array();
 	foreach ($services as $service) {
 		$serviceId[] = $service->id;
 		$deftime[] = $service->time;
@@ -1643,8 +1645,8 @@ function sb_new_sermon() {
 		$mid = (int) $_GET['mid'];
 		$curSermon = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}sb_sermons WHERE id = $mid");
 		$files = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_stuff WHERE sermon_id IN (0, $mid) AND type = 'file' ORDER BY name asc");
-		$startArr = sb_unserialize($curSermon->start);
-		$endArr = sb_unserialize($curSermon->end);
+		$startArr = (array) sb_unserialize($curSermon->start);
+		$endArr = (array) sb_unserialize($curSermon->end);
 		$rawtags = $wpdb->get_results("SELECT t.name FROM {$wpdb->prefix}sb_sermons_tags as st LEFT JOIN {$wpdb->prefix}sb_tags as t ON st.tag_id = t.id WHERE st.sermon_id = $mid ORDER BY t.name asc");
 		$tags = array();
 		foreach ($rawtags as $tag) {
@@ -2634,6 +2636,21 @@ function sb_print_file_actions($file, $id_prefix = '') {
 	$title = wp_json_encode(isset($file->title) ? stripslashes((string) $file->title) : '');
 	echo '<a id="'.$id_prefix.'link'.$id.'" href="#" onclick="'.esc_attr("rename({$id}, {$name}); return false;").'">'.__('Rename', 'sermon-browser').'</a> | ';
 	echo '<a href="#" onclick="'.esc_attr("if (sbConfirmDelete({$name}, {$title})) { kill({$id}); } return false;").'">'.__('Delete', 'sermon-browser').'</a>';
+}
+
+/**
+* Adds the SermonBrowser help tab to the plugin's admin pages
+*
+* @param WP_Screen $screen
+*/
+function sb_add_help_tab($screen) {
+	if (!isset($_GET['page']) || strpos($_GET['page'], 'sermon-browser/') !== 0)
+		return;
+	$screen->add_help_tab(array(
+		'id' => 'sermon-browser-help',
+		'title' => __('SermonBrowser Help', 'sermon-browser'),
+		'content' => sb_add_contextual_help(''),
+	));
 }
 
 function sb_add_contextual_help($help) {

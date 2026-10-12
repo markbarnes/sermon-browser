@@ -199,6 +199,7 @@ function sb_widget_popular ($args) {
 		if ($series1) {
 			$i=1;
 			foreach ($series1 as $series) {
+				$series_final[$series->id] = new stdClass();
 				$series_final[$series->id]->name = $series->name;
 				$series_final[$series->id]->rank = $i;
 				$series_final[$series->id]->id = $series->id;
@@ -206,7 +207,8 @@ function sb_widget_popular ($args) {
 			}
 			$i=1;
 			foreach ($series2 as $series) {
-				$series_final[$series->id]->rank += $i;
+				if (isset($series_final[$series->id]))
+					$series_final[$series->id]->rank += $i;
 				$i++;
 			}
 			usort($series_final,'sb_sort_object');
@@ -245,6 +247,7 @@ function sb_widget_popular ($args) {
 		if ($preachers1) {
 			$i=1;
 			foreach ($preachers1 as $preacher) {
+				$preachers_final[$preacher->id] = new stdClass();
 				$preachers_final[$preacher->id]->name = $preacher->name;
 				$preachers_final[$preacher->id]->rank = $i;
 				$preachers_final[$preacher->id]->id = $preacher->id;
@@ -252,7 +255,8 @@ function sb_widget_popular ($args) {
 			}
 			$i=1;
 			foreach ($preachers2 as $preacher) {
-				$preachers_final[$preacher->id]->rank += $i;
+				if (isset($preachers_final[$preacher->id]))
+					$preachers_final[$preacher->id]->rank += $i;
 				$i++;
 			}
 			usort($preachers_final,'sb_sort_object');
@@ -278,7 +282,7 @@ function sb_widget_popular ($args) {
 	$jscript .= 'if (jQuery.getSbCookie() == "preachers") { jQuery("#popular_preachers_trigger'.$suffix.'").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper'.$suffix.'").html('.wp_json_encode(isset($output['preachers']) ? $output['preachers'] : '').')};';
 	$jscript .= 'if (jQuery.getSbCookie() == "series") { jQuery("#popular_series_trigger'.$suffix.'").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper'.$suffix.'").html('.wp_json_encode(isset($output['series']) ? $output['series'] : '').')};';
 	$jscript .= 'if (jQuery.getSbCookie() == "sermons") { jQuery("#popular_sermons_trigger'.$suffix.'").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper'.$suffix.'").html('.wp_json_encode(isset($output['sermons']) ? $output['sermons'] : '').')};';
-	echo '<p>'.implode ($trigger, ' | ').'</p>';
+	echo '<p>'.implode (' | ', $trigger).'</p>';
 	echo '<div id="sb_popular_wrapper'.$suffix.'">'.current($output).'</div>';
 	echo '<script type="text/javascript">jQuery.setSbCookie = function (value) {
 											document.cookie = "sb_popular="+encodeURIComponent(value);
@@ -744,7 +748,7 @@ function sb_print_sameday_sermon_link($sermon) {
 	$output = array();
 	foreach ($same as $cur)
 		$output[] = '<a href="'.sb_print_sermon_link($cur, false).'">'.esc_html(stripslashes($cur->title)).'</a>';
-	echo implode($output, ', ');
+	echo implode(', ', $output);
 }
 
 //Gets single sermon from the database
@@ -818,6 +822,8 @@ function sb_print_filter_line ($id, $results, $filter, $display, $max_num = 7) {
 //Prints the filter line for the date parameter
 function sb_print_date_filter_line ($dates) {
 	global $more_applied;
+	if (empty($dates))
+		return;
 	$date_output = "<div id = \"dates\" class=\"filter\">\r<span class=\"filter-heading\">".__('Date', 'sermon-browser').":</span> \r";
 	$first = $dates[0];
 	$last = end($dates);
@@ -831,7 +837,7 @@ function sb_print_date_filter_line ($dates) {
 				if ($date->month != $previous_month) {
 					if ($count != 0)
 						$date_output .= '('.$count.'), ';
-					$date_output .= '<a href="'.sb_build_url(Array ('date' => $date->year.'-'.$date->month.'-01', 'enddate' => $date->year.'-'.$date->month.'-31'), false).'">'.strftime('%B', strtotime("{$date->year}-{$date->month}-{$date->day}")).'</a> ';
+					$date_output .= '<a href="'.sb_build_url(Array ('date' => $date->year.'-'.$date->month.'-01', 'enddate' => $date->year.'-'.$date->month.'-31'), false).'">'.esc_html(date_i18n('F', strtotime("{$date->year}-{$date->month}-{$date->day}"))).'</a> ';
 					$previous_month = $date->month;
 					$count = 1;
 				} else
@@ -1005,7 +1011,7 @@ function sb_print_filters($filter) {
 						<tr>
 							<td class="fieldname"><?php _e('Preacher', 'sermon-browser') ?></td>
 							<td class="field"><select name="preacher" id="preacher">
-									<option value="0" <?php echo (isset($_REQUEST['preacher']) && $_REQUEST['preacher'] != 0) ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
+									<option value="0" <?php echo (isset($_REQUEST['preacher']) && (int) $_REQUEST['preacher'] != 0) ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
 									<?php foreach ($preachers as $preacher): ?>
 									<option value="<?php echo $preacher->id ?>" <?php echo isset($_REQUEST['preacher']) && $_REQUEST['preacher'] == $preacher->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($preacher->name)).' ('.(int) $preacher->count.')' ?></option>
 									<?php endforeach ?>
@@ -1013,7 +1019,7 @@ function sb_print_filters($filter) {
 							</td>
 							<td class="fieldname rightcolumn"><?php _e('Services', 'sermon-browser') ?></td>
 							<td class="field"><select name="service" id="service">
-									<option value="0" <?php echo isset($_REQUEST['service']) && $_REQUEST['service'] != 0 ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
+									<option value="0" <?php echo isset($_REQUEST['service']) && (int) $_REQUEST['service'] != 0 ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
 									<?php foreach ($services as $service): ?>
 									<option value="<?php echo $service->id ?>" <?php echo isset($_REQUEST['service']) && $_REQUEST['service'] == $service->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($service->name)).' ('.(int) $service->count.')' ?></option>
 									<?php endforeach ?>
@@ -1031,7 +1037,7 @@ function sb_print_filters($filter) {
 							</td>
 							<td class="fieldname rightcolumn"><?php _e('Series', 'sermon-browser') ?></td>
 							<td class="field"><select name="series" id="series">
-									<option value="0" <?php echo (isset($_REQUEST['series']) && $_REQUEST['series'] != 0) ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
+									<option value="0" <?php echo (isset($_REQUEST['series']) && (int) $_REQUEST['series'] != 0) ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
 									<?php foreach ($series as $item): ?>
 									<option value="<?php echo $item->id ?>" <?php echo isset($_REQUEST['series']) && $_REQUEST['series'] == $item->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($item->name)).' ('.(int) $item->count.')' ?></option>
 									<?php endforeach ?>
