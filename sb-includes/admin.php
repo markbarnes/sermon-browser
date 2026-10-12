@@ -740,7 +740,7 @@ function sb_manage_everything() {
 				if (s == null) { break;	}
 			}
 			if (s != null) {
-				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {sname: s, sermon: 1}, function(r) {
+				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {sname: s, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
 						sz = s.match(/(.*?)@(.*)/)[1];
 						t = s.match(/(.*?)@(.*)/)[2];
@@ -764,7 +764,7 @@ function sb_manage_everything() {
 		function createNewSeries(s) {
 			var ss = prompt("<?php _e("New series' name?", 'sermon-browser')?>", "<?php _e("Series' name", 'sermon-browser')?>");
 			if (ss != null) {
-				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {ssname: ss, sermon: 1}, function(r) {
+				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {ssname: ss, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
 						jQuery('#Series-list').append('\
 							<tr style="display:none" class="Series" id="rowSeries' + r + '">\
@@ -783,7 +783,7 @@ function sb_manage_everything() {
 			}
 		}
 		function deleteSeries(id) {
-			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {ssname: 'dummy', ssid: id, del: 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {ssname: 'dummy', ssid: id, del: 1, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 				if (r) {
 					jQuery('#rowSeries' + id).fadeOut(function() {
 						updateClass('Series');
@@ -792,7 +792,7 @@ function sb_manage_everything() {
 			});
 		}
 		function deleteServices(id) {
-			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {sname: 'dummy', sid: id, del: 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {sname: 'dummy', sid: id, del: 1, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 				if (r) {
 					jQuery('#rowServices' + id).fadeOut(function() {
 						updateClass('Services');
@@ -803,7 +803,7 @@ function sb_manage_everything() {
 		function renameSeries(id, old) {
 			var ss = prompt("<?php _e("New series' name?", 'sermon-browser')?>", old);
 			if (ss != null) {
-				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {ssid: id, ssname: ss, sermon: 1}, function(r) {
+				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {ssid: id, ssname: ss, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
 						jQuery('#Series' + id).text(ss);
 						jQuery('#linkSeries' + id).attr('href', 'javascript:renameSeries(' + id + ', "' + ss + '")');
@@ -818,7 +818,7 @@ function sb_manage_everything() {
 				if (s == null) { break;	}
 			}
 			if (s != null) {
-				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {sid: id, sname: s, sermon: 1}, function(r) {
+				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {sid: id, sname: s, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
 						sz = s.match(/(.*?)@(.*)/)[1];
 						t = s.match(/(.*?)@(.*)/)[2];
@@ -1004,29 +1004,36 @@ function sb_files() {
 	sb_do_alerts();
 ?>
 	<script>
+		function sbConfirmDelete(filename, filesermon) {
+			if (confirm('Do you really want to delete ' + filename + '?')) {
+				if (filesermon != '') {
+					return confirm('This file is linked to the sermon called [' + filesermon + ']. Are you sure you want to delete it?');
+				}
+				return true;
+			}
+			return false;
+		}
 		function rename(id, old) {
-			var f = prompt("<?php _e('New file name?', 'sermon-browser') ?>", old);
+			var f = prompt("<?php echo esc_js(__('New file name?', 'sermon-browser')) ?>", old);
 			if (f != null) {
-				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/uploads.php'); ?>', {fid: id, oname: old, fname: f, sermon: 1}, function(r) {
+				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/files.php'); ?>', {fid: id, fname: f, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
 						if (r == 'renamed') {
 							jQuery('#' + id).text(f.substring(0,f.lastIndexOf(".")));
-							jQuery('#link' + id).attr('href', 'javascript:rename(' + id + ', "' + f + '")');
 							jQuery('#s' + id).text(f.substring(0,f.lastIndexOf(".")));
-							jQuery('#slink' + id).attr('href', 'javascript:rename(' + id + ', "' + f + '")');
 						} else {
 							if (r == 'forbidden') {
-								alert('<?php _e('You are not permitted files with that extension.', 'sermon-browser') ?>');
+								alert('<?php echo esc_js(__('You are not permitted files with that extension.', 'sermon-browser')) ?>');
 							} else {
-								alert('<?php _e('The script is unable to rename your file.', 'sermon-browser') ?>');
+								alert('<?php echo esc_js(__('The script is unable to rename your file.', 'sermon-browser')) ?>');
 							}
 						}
 					};
 				});
 			}
 		}
-		function kill(id, f) {
-			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/files.php'); ?>', {fname: f, fid: id, del: 1, sermon: 1}, function(r) {
+		function kill(id) {
+			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/files.php'); ?>', {fid: id, del: 1, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 				if (r) {
 					if (r == 'deleted') {
 						jQuery('#file' + id).fadeOut(function() {
@@ -1052,7 +1059,7 @@ function sb_files() {
 			});
 		}
 		function fetchU(st) {
-			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/uploads.php'); ?>', {fetchU: st + 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/files.php'); ?>', {fetchU: st + 1, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 				if (r) {
 					jQuery('#the-list-u').html(r);
 					if (st >= <?php echo sb_get_option('sermons_per_page') ?>) {
@@ -1071,7 +1078,7 @@ function sb_files() {
 			});
 		}
 		function fetchL(st) {
-			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/files.php'); ?>', {fetchL: st + 1, sermon: 1}, function(r) {
+			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/files.php'); ?>', {fetchL: st + 1, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 				if (r) {
 					jQuery('#the-list-l').html(r);
 					if (st >= <?php echo sb_get_option('sermons_per_page') ?>) {
@@ -1090,7 +1097,7 @@ function sb_files() {
 			});
 		}
 		function findNow() {
-			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/files.php'); ?>', {search: jQuery('#search').val(), sermon: 1}, function(r) {
+			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/files.php'); ?>', {search: jQuery('#search').val(), sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 				if (r) {
 					jQuery('#the-list-s').html(r);
 				};
@@ -1125,14 +1132,14 @@ function sb_files() {
 			</thead>
 			<tbody id="the-list-u">
 				<?php if (is_array($unlinked)): ?>
-					<?php foreach ($unlinked as $file): ?>
-						<tr class="file <?php $i=0; echo (++$i % 2 == 0) ? 'alternate' : '' ?>" id="file<?php echo $file->id ?>">
-							<th style="text-align:center" scope="row"><?php echo $file->id ?></th>
-							<td id="<?php echo $file->id ?>"><?php echo substr($file->name, 0, strrpos($file->name, '.')) ?></td>
-							<td style="text-align:center"><?php echo isset($filetypes[substr($file->name, strrpos($file->name, '.') + 1)]['name']) ? $filetypes[substr($file->name, strrpos($file->name, '.') + 1)]['name'] : strtoupper(substr($file->name, strrpos($file->name, '.') + 1)) ?></td>
+					<?php $i = 0; foreach ($unlinked as $file): ?>
+						<tr class="file <?php echo (++$i % 2 == 0) ? 'alternate' : '' ?>" id="file<?php echo (int) $file->id ?>">
+							<th style="text-align:center" scope="row"><?php echo (int) $file->id ?></th>
+							<td id="<?php echo (int) $file->id ?>"><?php echo esc_html(substr($file->name, 0, strrpos($file->name, '.'))) ?></td>
+							<td style="text-align:center"><?php echo esc_html(sb_file_type_name($file->name, $filetypes)) ?></td>
 							<td style="text-align:center">
-								<a id="" href="<?php echo admin_url("admin.php?page=sermon-browser/new_sermon.php&amp;getid3={$file->id}"); ?>"><?php _e('Create sermon', 'sermon-browser') ?></a> |
-								<a id="link<?php echo $file->id; ?>" href="javascript:rename(<?php echo $file->id; ?>, '<?php echo $file->name; ?>')"><?php _e('Rename', 'sermon-browser'); ?></a> | <a onclick="return confirm('Do you really want to delete <?php echo str_replace("'", '', $file->name); ?>?');" href="javascript:kill(<?php echo $file->id; ?>, '<?php echo $file->name; ?>');"><?php _e('Delete', 'sermon-browser'); ?></a>
+								<a href="<?php echo esc_url(admin_url("admin.php?page=sermon-browser/new_sermon.php&getid3={$file->id}")); ?>"><?php _e('Create sermon', 'sermon-browser') ?></a> |
+								<?php sb_print_file_actions($file) ?>
 							</td>
 						</tr>
 					<?php endforeach ?>
@@ -1161,22 +1168,14 @@ function sb_files() {
 			</thead>
 			<tbody id="the-list-l">
 				<?php if (is_array($linked)): ?>
-					<?php foreach ($linked as $file): ?>
-						<tr class="file <?php echo (++$i % 2 == 0) ? 'alternate' : '' ?>" id="file<?php echo $file->id ?>">
-							<th style="text-align:center" scope="row"><?php echo $file->id ?></th>
-							<td id="<?php echo $file->id ?>"><?php echo substr($file->name, 0, strrpos($file->name, '.')) ?></td>
-							<td style="text-align:center"><?php echo isset($filetypes[substr($file->name, strrpos($file->name, '.') + 1)]['name']) ? $filetypes[substr($file->name, strrpos($file->name, '.') + 1)]['name'] : strtoupper(substr($file->name, strrpos($file->name, '.') + 1)) ?></td>
-							<td><?php echo stripslashes($file->title) ?></td>
+					<?php $i = 0; foreach ($linked as $file): ?>
+						<tr class="file <?php echo (++$i % 2 == 0) ? 'alternate' : '' ?>" id="file<?php echo (int) $file->id ?>">
+							<th style="text-align:center" scope="row"><?php echo (int) $file->id ?></th>
+							<td id="<?php echo (int) $file->id ?>"><?php echo esc_html(substr($file->name, 0, strrpos($file->name, '.'))) ?></td>
+							<td style="text-align:center"><?php echo esc_html(sb_file_type_name($file->name, $filetypes)) ?></td>
+							<td><?php echo esc_html(stripslashes($file->title)) ?></td>
 							<td style="text-align:center">
-							<script type="text/javascript" language="javascript">
-							function deletelinked_<?php echo $file->id;?>(filename, filesermon) {
-								if (confirm('Do you really want to delete '+filename+'?')) {
-									return confirm('This file is linked to the sermon called ['+filesermon+']. Are you sure you want to delete it?');
-								}
-								return false;
-							}
-							</script>
-								<a id="link<?php echo $file->id; ?>" href="javascript:rename(<?php echo $file->id; ?>, '<?php echo $file->name ?>')"><?php _e('Rename', 'sermon-browser') ?></a> | <a onclick="return deletelinked_<?php echo $file->id;?>('<?php echo str_replace("'", '', $file->name); ?>', '<?php echo str_replace("'", '', $file->title); ?>');" href="javascript:kill(<?php echo $file->id; ?>, '<?php echo $file->name; ?>');"><?php _e('Delete', 'sermon-browser'); ?></a>
+								<?php sb_print_file_actions($file) ?>
 							</td>
 						</tr>
 					<?php endforeach ?>
@@ -1288,7 +1287,7 @@ function sb_manage_sermons() {
 ?>
 	<script>
 		function fetch(st) {
-			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {fetch: st + 1, sermon: 1, title: jQuery('#search').val(), preacher: jQuery('#preacher').val(), series: jQuery('#series').val() }, function(r) {
+			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {fetch: st + 1, sermon: 1, _sbnonce: sbAjaxNonce, title: jQuery('#search').val(), preacher: jQuery('#preacher').val(), series: jQuery('#series').val() }, function(r) {
 				if (r) {
 					jQuery('#the-list').html(r);
 					if (st >= <?php echo sb_get_option('sermons_per_page') ?>) {
@@ -1666,7 +1665,7 @@ function sb_new_sermon() {
 			if (jQuery('#preacher')[0].value != 'newPreacher') return;
 			var p = prompt("<?php _e("New preacher's name?", 'sermon-browser')?>", "<?php _e("Preacher's name", 'sermon-browser')?>");
 			if (p != null) {
-				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {pname: p, sermon: 1}, function(r) {
+				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {pname: p, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
 						jQuery('#preacher option:first').before('<option value="' + r + '">' + p + '</option>');
 						jQuery("#preacher option[value='" + r + "']").attr('selected', 'selected');
@@ -1687,7 +1686,7 @@ function sb_new_sermon() {
 				if (s == null) { break;	}
 			}
 			if (s != null) {
-				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {sname: s, sermon: 1}, function(r) {
+				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {sname: s, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
 						jQuery('#service option:first').before('<option value="' + r + '">' + s.match(/(.*?)@/)[1] + '</option>');
 						jQuery("#service option[value='" + r + "']").attr('selected', 'selected');
@@ -1700,7 +1699,7 @@ function sb_new_sermon() {
 			if (jQuery('#series')[0].value != 'newSeries') return;
 			var ss = prompt("<?php _e("New series' name?", 'sermon-browser')?>", "<?php _e("Series' name", 'sermon-browser')?>");
 			if (ss != null) {
-				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {ssname: ss, sermon: 1}, function(r) {
+				jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {ssname: ss, sermon: 1, _sbnonce: sbAjaxNonce}, function(r) {
 					if (r) {
 						jQuery('#series option:first').before('<option value="' + r + '">' + ss + '</option>');
 						jQuery("#series option[value='" + r + "']").attr('selected', 'selected');
@@ -2602,6 +2601,42 @@ function sb_print_upload_form () {
 		</tbody>
 </table>
 <?php }
+
+/**
+* Prints the nonce used by the admin pages' AJAX requests
+*/
+function sb_print_ajax_nonce() {
+	if (isset($_GET['page']) && strpos($_GET['page'], 'sermon-browser/') === 0)
+		echo '<script type="text/javascript">var sbAjaxNonce = '.wp_json_encode(wp_create_nonce('sb_ajax')).";</script>\n";
+}
+
+/**
+* Returns a human-readable name for a file's type
+*
+* @param string $file_name
+* @param array $filetypes (from filetypes.php)
+* @return string
+*/
+function sb_file_type_name($file_name, $filetypes) {
+	$extension = substr($file_name, strrpos($file_name, '.') + 1);
+	if (isset($filetypes[$extension]['name']))
+		return $filetypes[$extension]['name'];
+	return strtoupper($extension);
+}
+
+/**
+* Prints the Rename and Delete links for a file on the Files page
+*
+* @param object $file (row from sb_stuff, with the linked sermon's title)
+* @param string $id_prefix (prefix for element ids, used by search results)
+*/
+function sb_print_file_actions($file, $id_prefix = '') {
+	$id = (int) $file->id;
+	$name = wp_json_encode($file->name);
+	$title = wp_json_encode(isset($file->title) ? stripslashes((string) $file->title) : '');
+	echo '<a id="'.$id_prefix.'link'.$id.'" href="#" onclick="'.esc_attr("rename({$id}, {$name}); return false;").'">'.__('Rename', 'sermon-browser').'</a> | ';
+	echo '<a href="#" onclick="'.esc_attr("if (sbConfirmDelete({$name}, {$title})) { kill({$id}); } return false;").'">'.__('Delete', 'sermon-browser').'</a>';
+}
 
 function sb_add_contextual_help($help) {
 	if (!isset($_GET['page']))

@@ -212,7 +212,7 @@ function sb_sermon_init () {
 
 	// Check to see what functions are required, and only load what is needed
 	if (!is_admin()) {
-		require (SB_INCLUDES_DIR.'/frontend.php');
+		require_once (SB_INCLUDES_DIR.'/frontend.php');
 		add_action('wp_head', 'sb_add_headers', 0);
 		add_action('wp_head', 'wp_print_styles', 9);
 		add_action('admin_bar_menu', 'sb_admin_bar_menu', 45);
@@ -220,8 +220,9 @@ function sb_sermon_init () {
 		if (defined('SAVEQUERIES') && SAVEQUERIES)
 			add_action ('wp_footer', 'sb_footer_stats');
 	} else {
-		require (SB_INCLUDES_DIR.'/admin.php');
+		require_once (SB_INCLUDES_DIR.'/admin.php');
 		add_action ('admin_menu', 'sb_add_pages');
+		add_action ('admin_head', 'sb_print_ajax_nonce');
 		add_action ('rightnow_end', 'sb_rightnow');
 		add_action('admin_init', 'sb_add_admin_headers');
 		add_filter('contextual_help', 'sb_add_contextual_help');
@@ -841,6 +842,52 @@ function sb_output_file($filename) {
 		flush();
 	}
 	return fclose($handle);
+}
+
+/**
+* Returns true if $file_name is a bare file name, with no directory part
+*
+* @param string $file_name
+* @return bool
+*/
+function sb_is_plain_file_name($file_name) {
+	return is_string($file_name) && $file_name !== '' && $file_name === basename($file_name) && validate_file($file_name) === 0 && strpos($file_name, '\\') === false;
+}
+
+/**
+* Returns true if $file_name is a bare file name whose extension WordPress allows the current user to upload
+*
+* Uses the site's allowed upload types (get_allowed_mime_types), so PHP and other executable files are never allowed.
+* @param string $file_name
+* @return bool
+*/
+function sb_is_allowed_file_name($file_name) {
+	if (!sb_is_plain_file_name($file_name))
+		return false;
+	$filetype = wp_check_filetype($file_name);
+	return !empty($filetype['ext']) && !empty($filetype['type']);
+}
+
+/**
+* Checks an uploaded file's name and contents against the file types WordPress allows
+*
+* @param string $tmp_name (path of the uploaded file)
+* @param string $file_name (name supplied by the browser)
+* @param bool $images_only
+* @return string|false the sanitized file name, or false if the file is not allowed
+*/
+function sb_check_uploaded_file($tmp_name, $file_name, $images_only = false) {
+	$file_name = sanitize_file_name(wp_unslash($file_name));
+	if (!sb_is_allowed_file_name($file_name))
+		return false;
+	$filetype = wp_check_filetype_and_ext($tmp_name, $file_name);
+	if (empty($filetype['ext']) || empty($filetype['type']))
+		return false;
+	if ($images_only && strpos($filetype['type'], 'image/') !== 0)
+		return false;
+	if (!empty($filetype['proper_filename']))
+		$file_name = $filetype['proper_filename'];
+	return $file_name;
 }
 
 /**
