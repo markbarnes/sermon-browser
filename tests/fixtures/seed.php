@@ -226,7 +226,8 @@ $wpdb->insert( "{$wpdb->prefix}sb_stuff", array( 'type' => 'file', 'name' => 'un
 // A 1x1 PNG for the preacher image.
 file_put_contents( $upload_dir . 'images/profile.jpg', base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==' ) );
 
-// Start each test file with an empty debug log.
+// Start each test file with an empty debug log and HTTP request log.
+delete_option( 'sb_test_http_log' );
 if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
 	file_put_contents( WP_CONTENT_DIR . '/debug.log', '' );
 }

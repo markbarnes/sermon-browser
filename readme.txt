@@ -345,7 +345,7 @@ Security release. The plugin was closed on WordPress.org in February 2022 for CV
 * **Security:** AJAX requests from the admin pages had no authentication, so anyone could add, rename or delete preachers, series and services, and rename or delete uploaded files. They now need a logged-in user, a nonce and the right capability.
 * **Security (CVE-2022-0499):** Uploads (Files page, URL import, Add Sermon, preacher images) had no nonce and no file type check, so a forged request could upload and run PHP. Uploads now need a nonce and only accept file types WordPress allows. The upload folder gets an .htaccess that refuses scripts, and must be inside the WordPress folder.
 * **Security:** ?download&url= and ?show&url= worked as an open proxy and open redirect for any URL. They now only serve URLs attached to a sermon.
-* **Security:** Fixed SQL injection through the sermon time field and MP3 ID3 tags.
+* **Hardening:** Queries that built SQL from request data or MP3 ID3 tags now use prepared statements. These weren't exploitable in 0.45.22, because the values were slashed, cast to integers or HTML-encoded first, but they relied on that.
 * **Security:** Output is escaped throughout (front end, widgets, podcast feed, admin), templates can no longer contain PHP, embed code can no longer use iframe srcdoc, and Bible text from remote APIs is filtered.
 * **Bug fix:** Works on PHP 8: the sermon list was always empty, and saving a sermon without a Bible passage or showing the popular sermons widget caused fatal errors.
 

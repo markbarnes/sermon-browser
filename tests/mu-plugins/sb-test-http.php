@@ -6,6 +6,10 @@
  *   remote attachments, URL imports and downloads don't need the internet.
  * - Every other outside request (Bible text APIs, WordPress.org update checks)
  *   fails immediately, so rendered output is the same on every run.
+ * - Requests made with reject_unsafe_urls (wp_safe_remote_*, download_url) are
+ *   validated first, as WordPress would, so tests can check that the plugin
+ *   refuses private addresses.
+ * - Every request is logged in the sb_test_http_log option, which the seed clears.
  *
  * Mapped into wp-content/mu-plugins of the wp-env test site by .wp-env.json.
  */
@@ -14,6 +18,12 @@ add_filter(
 	'pre_http_request',
 	function ( $response, $args, $url ) {
 		$host = wp_parse_url( $url, PHP_URL_HOST );
+		$log   = get_option( 'sb_test_http_log', array() );
+		$log[] = array( 'url' => $url, 'method' => $args['method'], 'safe' => ! empty( $args['reject_unsafe_urls'] ) );
+		update_option( 'sb_test_http_log', $log, false );
+		if ( ! empty( $args['reject_unsafe_urls'] ) && ! wp_http_validate_url( $url ) ) {
+			return new WP_Error( 'http_request_failed', 'A valid URL was not provided.' );
+		}
 		if ( in_array( $host, array( 'localhost', '127.0.0.1' ), true ) ) {
 			return $response;
 		}
