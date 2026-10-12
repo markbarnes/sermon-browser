@@ -1541,27 +1541,22 @@ function sb_new_sermon() {
 			    require(ABSPATH.WPINC.'/ID3/getid3.php' );
 			}
 			$getID3 = new getID3;
+			$id3_raw_tags = array();
 			if ($file_data->type == 'url') {
 				$filename = substr($file_data->name, strrpos ($file_data->name, '/')+1);
-				$sermonUploadDir = SB_ABSPATH.sb_get_option('upload_dir');
-				$tempfilename = $sermonUploadDir.preg_replace('/([ ])/e', 'chr(rand(97,122))', '		').'.mp3';
-				if ($tempfile = @fopen($tempfilename, 'wb'))
-					{if ($remote_file = @fopen($file_data->name, 'r')) {
-						$remote_contents = '';
-						while (!feof($remote_file)) {
-							$remote_contents .= fread($remote_file, 8192);
-							if (strlen($remote_contents) > 65536)
-							   {break;}
-						}
-						fwrite($tempfile, $remote_contents);
-						fclose($remote_file);
-						fclose($tempfile);
-						$id3_raw_tags = $getID3->analyze(realpath($tempfilename));
-						unlink ($tempfilename);
-					}}
+				// The ID3v2 tags are at the start of the file, so only the first 64KB is fetched
+				$response = wp_safe_remote_get(wp_specialchars_decode($file_data->name, ENT_QUOTES), array('timeout' => 15, 'limit_response_size' => 65536));
+				if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) == 200) {
+					require_once (ABSPATH.'wp-admin/includes/file.php');
+					$tempfilename = wp_tempnam('sermon-browser-id3');
+					if ($tempfilename && file_put_contents($tempfilename, wp_remote_retrieve_body($response)) !== false)
+						{$id3_raw_tags = $getID3->analyze($tempfilename);}
+					@unlink($tempfilename);
+				}
 			} else {
 				$filename = $file_data->name;
-				$id3_raw_tags = $getID3->analyze(realpath(SB_ABSPATH.sb_get_option('upload_dir').$filename));
+				if (sb_is_plain_file_name($filename) && file_exists(SB_ABSPATH.sb_get_option('upload_dir').$filename))
+					{$id3_raw_tags = $getID3->analyze(SB_ABSPATH.sb_get_option('upload_dir').$filename);}
 			}
 			if (!isset($id3_raw_tags['tags'])) {
 				echo '<div id="message" class="updated fade"><p><b>'.__('No ID3 tags found.', 'sermon-browser');
