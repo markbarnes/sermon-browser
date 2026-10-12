@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+	<atom:link href="{SITE}/sermons/?podcast" rel="self" type="application/rss+xml" />
+	<title>Sermon Browser tests Podcast</title>
+	<itunes:author></itunes:author>
+	<description></description>
+	<link>{SITE}</link>
+	<language>en-us</language>
+	<copyright></copyright>
+	<itunes:explicit>no</itunes:explicit>
+	<itunes:owner>
+		<itunes:name></itunes:name>
+		<itunes:email></itunes:email>
+	</itunes:owner>
+
+	<lastBuildDate>Sun, 15 Mar 2026 19:00:00 +0000</lastBuildDate>
+	<pubDate>Sun, 15 Mar 2026 19:00:00 +0000</pubDate>
+	<generator>Wordpress Sermon Browser plugin {VERSION} (http://www.sermonbrowser.com/)</generator>
+	<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+	<category>Religion &amp; Spirituality</category>
+	<itunes:category text="Religion &amp; Spirituality"></itunes:category>
+	<item>
+		<guid>{SITE}/sermons/?show&amp;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3</guid>
+		<title>&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</title>
+		<link>{SITE}/sermons/?sermon_id=4</link>
+		<itunes:author>&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</itunes:author>
+		<enclosure url="{SITE}/sermons/?show&amp;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3" length="0" type="audio/mpeg" />
+		<category>&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</category>
+		<pubDate>Sun, 15 Mar 2026 19:00:00 +0000</pubDate>
+	</item>
+	<item>
+		<guid>{SITE}/sermons/?show&amp;file_name=2026-03-08-peace-with-god.mp3</guid>
+		<title>Romans 5: peace with God</title>
+		<link>{SITE}/sermons/?sermon_id=3</link>
+		<itunes:author>Dylan Jones</itunes:author>
+		<enclosure url="{SITE}/sermons/?show&amp;file_name=2026-03-08-peace-with-god.mp3" length="8350" type="audio/mpeg" />
+		<itunes:duration>0:01</itunes:duration>
+		<category>Sunday Morning</category>
+		<pubDate>Sun, 08 Mar 2026 10:30:00 +0000</pubDate>
+	</item>
+	<item>
+		<guid>{SITE}/sermons/?show&amp;file_name=2026-03-01-faith-and-works.mp3</guid>
+		<title>Paul&apos;s letter: Faith &amp; Works</title>
+		<link>{SITE}/sermons/?sermon_id=1</link>
+		<itunes:author>Dylan Jones</itunes:author>
+		<description><![CDATA[<p>Justified by grace <em>alone</em>, through faith.</p>]]></description>
+		<itunes:summary><![CDATA[<p>Justified by grace <em>alone</em>, through faith.</p>]]></itunes:summary>
+		<enclosure url="{SITE}/sermons/?show&amp;file_name=2026-03-01-faith-and-works.mp3" length="8350" type="audio/mpeg" />
+		<itunes:duration>0:01</itunes:duration>
+		<category>Sunday Morning</category>
+		<pubDate>Sun, 01 Mar 2026 10:30:00 +0000</pubDate>
+	</item>
+	<item>
+		<guid>{SITE}/sermons/?show&amp;url=https%3A%2F%2Fexample.org%2Fsermons%2Ffaith-and-works-remote.mp3</guid>
+		<title>Paul&apos;s letter: Faith &amp; Works</title>
+		<link>{SITE}/sermons/?sermon_id=1</link>
+		<itunes:author>Dylan Jones</itunes:author>
+		<description><![CDATA[<p>Justified by grace <em>alone</em>, through faith.</p>]]></description>
+		<itunes:summary><![CDATA[<p>Justified by grace <em>alone</em>, through faith.</p>]]></itunes:summary>
+		<enclosure url="{SITE}/sermons/?show&amp;url=https%3A%2F%2Fexample.org%2Fsermons%2Ffaith-and-works-remote.mp3" length="8350" type="audio/mpeg" />
+		<category>Sunday Morning</category>
+		<pubDate>Sun, 01 Mar 2026 10:30:00 +0000</pubDate>
+	</item>
+	</channel>
+</rss>

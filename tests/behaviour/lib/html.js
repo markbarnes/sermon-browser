@@ -46,6 +46,8 @@ export function normalize( text ) {
 		.replaceAll( SITE, '{SITE}' )
 		.replaceAll( SITE.replace( /^https?:/, 'itpc:' ), '{SITE_ITPC}' )
 		.replace( /(nonce=)[0-9a-f]{10}/g, '$1{NONCE}' )
+		// WordPress's audio player ids include the page's post id, which changes when the seed recreates the page.
+		.replace( /\b(audio|mejs)-\d+-(\d+)/g, '$1-{POST}-$2' )
 		.replace( /(Sermon Browser plugin )[\d.]+/g, '$1{VERSION}' )
 		.replace( /\r\n?/g, '\n' );
 }
