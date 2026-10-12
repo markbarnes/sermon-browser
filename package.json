@@ -1,0 +1,13 @@
+{
+	"name": "sermon-browser",
+	"private": true,
+	"scripts": {
+		"start": "wp-env start",
+		"stop": "wp-env stop",
+		"destroy": "wp-env destroy",
+		"lint": "wp-env run cli bash -c 'find wp-content/plugins/sermon-browser -name \"*.php\" -not -path \"*/node_modules/*\" -print0 | xargs -0 -n1 php -l | grep -v \"^No syntax errors\" || true'"
+	},
+	"devDependencies": {
+		"@wordpress/env": "^11.17.0"
+	}
+}
