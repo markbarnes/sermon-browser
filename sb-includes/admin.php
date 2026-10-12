@@ -1296,19 +1296,19 @@ function sb_manage_sermons() {
 	$series = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_series ORDER BY name;");
 ?>
 	<script>
-		function fetch(st) {
+		function sbFetchSermons(st) {
 			jQuery.post('<?php echo admin_url('admin.php?page=sermon-browser/sermon.php'); ?>', {fetch: st + 1, sermon: 1, _sbnonce: sbAjaxNonce, title: jQuery('#search').val(), preacher: jQuery('#preacher').val(), series: jQuery('#series').val() }, function(r) {
 				if (r) {
 					jQuery('#the-list').html(r);
 					if (st >= <?php echo sb_get_option('sermons_per_page') ?>) {
 						x = st - <?php echo sb_get_option('sermons_per_page') ?>;
-						jQuery('#left').html('<a href="javascript:fetch(' + x + ')">&laquo; Previous</a>');
+						jQuery('#left').html('<a href="javascript:sbFetchSermons(' + x + ')">&laquo; Previous</a>');
 					} else {
 						jQuery('#left').html('');
 					}
 					if (st + <?php echo sb_get_option('sermons_per_page') ?> <= <?php echo $cnt ?>) {
 						y = st + <?php echo sb_get_option('sermons_per_page') ?>;
-						jQuery('#right').html('<a href="javascript:fetch(' + y + ')">Next &raquo;</a>');
+						jQuery('#right').html('<a href="javascript:sbFetchSermons(' + y + ')">Next &raquo;</a>');
 					} else {
 						jQuery('#right').html('');
 					}
@@ -1342,7 +1342,7 @@ function sb_manage_sermons() {
 					<?php endforeach ?>
 				</select>
 			</fieldset style="float:left; margin-right: 1em">
-			<input type="submit" class="button" value="<?php _e('Filter', 'sermon-browser') ?> &raquo;" style="float:left;margin:14px 0pt 1em; position:relative;top:0.35em;" onclick="javascript:fetch(0);return false;" />
+			<input type="submit" class="button" value="<?php _e('Filter', 'sermon-browser') ?> &raquo;" style="float:left;margin:14px 0pt 1em; position:relative;top:0.35em;" onclick="javascript:sbFetchSermons(0);return false;" />
 			</form>
 		<br style="clear:both">
 		<h2><?php _e('Sermons', 'sermon-browser') ?></h2>
@@ -1390,7 +1390,7 @@ function sb_manage_sermons() {
 	</div>
 	<script>
 		<?php if ($cnt > sb_get_option('sermons_per_page')): ?>
-			jQuery('#right').html('<a href="javascript:fetch(<?php echo sb_get_option('sermons_per_page') ?>)">Next &raquo;</a>');
+			jQuery('#right').html('<a href="javascript:sbFetchSermons(<?php echo sb_get_option('sermons_per_page') ?>)">Next &raquo;</a>');
 		<?php endif ?>
 	</script>
 <?php
