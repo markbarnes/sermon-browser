@@ -153,6 +153,8 @@ function sb_widget_popular ($args) {
 		$suffix = '_w';
 	if (!isset($options))
 		$options = sb_get_option('popular_widget_options');
+	if (!is_array($options))
+		$options = array('title' => '', 'limit' => 5, 'display_sermons' => true, 'display_series' => true, 'display_preachers' => true);
 	echo $before_widget;
 	if ($options['title'] != '')
 		echo $before_title.esc_html($options['title']).$after_title;
