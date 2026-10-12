@@ -2,9 +2,10 @@
 Contributors: mark8barnes
 Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, podcast, mp3, church, bible, audio, widget, embed, video, esv, wpmu, preach, iTunes, preacher, listen
-Requires at least: 3.6
-Tested up to: 4.9.8
-Stable tag: trunk
+Requires at least: 5.8
+Tested up to: 7.1
+Requires PHP: 7.4
+Stable tag: 0.46.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -337,6 +338,16 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.46.0 (12 October 2026) =
+Security release. The plugin was closed on WordPress.org in February 2022 for CVE-2022-0499; this version fixes that and the other problems found in a full review. Update from WordPress.org is disabled (Update URI), so install it by uploading a zip.
+
+* **Security:** AJAX requests from the admin pages had no authentication, so anyone could add, rename or delete preachers, series and services, and rename or delete uploaded files. They now need a logged-in user, a nonce and the right capability.
+* **Security (CVE-2022-0499):** Uploads (Files page, URL import, Add Sermon, preacher images) had no nonce and no file type check, so a forged request could upload and run PHP. Uploads now need a nonce and only accept file types WordPress allows. The upload folder gets an .htaccess that refuses scripts, and must be inside the WordPress folder.
+* **Security:** ?download&url= and ?show&url= worked as an open proxy and open redirect for any URL. They now only serve URLs attached to a sermon.
+* **Security:** Fixed SQL injection through the sermon time field and MP3 ID3 tags.
+* **Security:** Output is escaped throughout (front end, widgets, podcast feed, admin), templates can no longer contain PHP, embed code can no longer use iframe srcdoc, and Bible text from remote APIs is filtered.
+* **Bug fix:** Works on PHP 8: the sermon list was always empty, and saving a sermon without a Bible passage or showing the popular sermons widget caused fatal errors.
 
 = 0.45.22 (29 August 2018) =
 * **Bug fix:** Sermons couldn't be deleted. Now they can.
