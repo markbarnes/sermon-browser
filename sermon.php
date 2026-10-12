@@ -298,7 +298,7 @@ function sb_return_kbytes($val) {
 */
 function sb_sermon_stats($sermonid) {
 	global $wpdb;
-	$stats = $wpdb->get_var("SELECT SUM(count) FROM ".$wpdb->prefix."sb_stuff WHERE sermon_id=".$sermonid);
+	$stats = $wpdb->get_var("SELECT SUM(count) FROM ".$wpdb->prefix."sb_stuff WHERE sermon_id=".(int) $sermonid);
 	if ($stats > 0)
 		return $stats;
 }
@@ -802,7 +802,8 @@ function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0, $
 	if ($hide_empty) {
 		$cond .= "AND stuff.name != '' ";
 	}
-	$offset = $limit * ($page - 1);
+	$limit = max(1, (int) $limit);
+	$offset = $limit * max(0, $page - 1);
 	if ($order['by'] == 'b.id' ) {
 		$order['by'] = 'b.id '.esc_sql($order['dir']).', bs.chapter '.esc_sql($order['dir']).', bs.verse';
 	}
@@ -827,7 +828,7 @@ function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0, $
 */
 function sb_default_time($service) {
 	global $wpdb;
-	$sermon_time = $wpdb->get_var("SELECT time FROM {$wpdb->prefix}sb_services WHERE id='{$service}'");
+	$sermon_time = $wpdb->get_var($wpdb->prepare("SELECT time FROM {$wpdb->prefix}sb_services WHERE id = %d", $service));
 	if (isset($sermon_time)) {
 		return $sermon_time;
 	} else {
@@ -844,10 +845,11 @@ function sb_default_time($service) {
 */
 function sb_get_stuff($sermon, $mp3_only = FALSE) {
 	global $wpdb;
+	$sermon_id = (int) $sermon->id;
 	if ($mp3_only) {
-		$stuff = $wpdb->get_results("SELECT f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $sermon->id AND name LIKE '%.mp3' ORDER BY id desc");
+		$stuff = $wpdb->get_results("SELECT f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $sermon_id AND name LIKE '%.mp3' ORDER BY id desc");
 	} else {
-		$stuff = $wpdb->get_results("SELECT f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $sermon->id ORDER BY id desc");
+		$stuff = $wpdb->get_results("SELECT f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $sermon_id ORDER BY id desc");
 	}
 	$file = $url = $code = array();
 	foreach ($stuff as $cur)

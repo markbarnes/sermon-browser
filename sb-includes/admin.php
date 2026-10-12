@@ -65,8 +65,8 @@ function sb_options() {
 		// Reset bible books database
 		$wpdb->query("TRUNCATE TABLE {$wpdb->prefix}sb_books");
 		for ($i=0; $i < count($books); $i++) {
-			$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, '$books[$i]')");
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_books_sermons SET book_name='{$books[$i]}' WHERE book_name='{$eng_books[$i]}'");
+			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, %s)", $books[$i]));
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_books_sermons SET book_name = %s WHERE book_name = %s", $books[$i], $eng_books[$i]));
 		}
 		// Rewrite booknames for non-English locales
 		if ($books != $eng_books) {
@@ -84,7 +84,7 @@ function sb_options() {
 				}
 				$sermon_book->start = serialize ($start_verse);
 				$sermon_book->end = serialize ($end_verse);
-				$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons SET start='{$sermon_book->start}', end='{$sermon_book->end}' WHERE id={$sermon_book->id}");
+				$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_sermons SET start = %s, end = %s WHERE id = %d", $sermon_book->start, $sermon_book->end, $sermon_book->id));
 			}
 		}
 
@@ -1452,14 +1452,14 @@ function sb_new_sermon() {
 			//Security check
 			if (!current_user_can('publish_pages'))
 				{wp_die(__("You do not have the correct permissions to create sermons", 'sermon-browser'));}
-			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_sermons VALUES (null, %s, '$preacher_id', '$date', '$service_id', '$series_id', %s, %s, %s, %s, '$override', 0)", $title, $start, $end, $description, $time));
+			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_sermons VALUES (null, %s, %d, %s, %d, %d, %s, %s, %s, %s, %d, 0)", $title, $preacher_id, $date, $service_id, $series_id, $start, $end, $description, $time, $override));
 			$id = $wpdb->insert_id;
 		} else { // edit
 			//Security check
 			if (!current_user_can('publish_posts'))
 				{wp_die(__("You do not have the correct permissions to edit sermons", 'sermon-browser'));}
 			$id = (int) $_GET['mid'];
-			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_sermons SET title = %s, preacher_id = '$preacher_id', datetime = '$date', series_id = '$series_id', start = %s, end = %s, description = %s, time = '$time', service_id = '$service_id', override = '$override' WHERE id = $id", $title, $start, $end, $description));
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_sermons SET title = %s, preacher_id = %d, datetime = %s, series_id = %d, start = %s, end = %s, description = %s, time = %s, service_id = %d, override = %d WHERE id = %d", $title, $preacher_id, $date, $series_id, $start, $end, $description, $time, $service_id, $override, $id));
 			$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = 0 WHERE sermon_id = $id AND type = 'file'");
 			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE sermon_id = $id AND type <> 'file'");
 		}
@@ -1505,7 +1505,7 @@ function sb_new_sermon() {
                 $embed_allowedposttags = $allowedposttags;
                 $embed_allowedposttags ['iframe'] = array ('width' => true, 'height' => true, 'src' => true, 'frameborder' => true, 'allowfullscreen' => true, 'style' => true, 'name' => true, 'id' => true, 'align' => true, 'sandbox' => true, 'srcdoc' => true);
 				$code = base64_encode(wp_kses(stripslashes($code), $embed_allowedposttags));
-				$wpdb->query("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'code', '$code', $id, 0, 0)");
+				$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES(null, 'code', %s, %d, 0, 0)", $code, $id));
 			}
 		}
 		// tags
@@ -1572,7 +1572,7 @@ function sb_new_sermon() {
 			if (sb_get_option ('import_album')) {
 				$id3_tags['series'] = @$id3_raw_tags['comments_html']['album'][0];
 				if ($id3_tags['series'] != '') {
-					$series_id = $wpdb->get_var("SELECT id FROM {$wpdb->prefix}sb_series WHERE name LIKE '{$id3_tags['series']}'");
+					$series_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}sb_series WHERE name = %s", $id3_tags['series']));
 					if ($series_id === null) {
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_series VALUES (null, %s, '0')", $id3_tags['series']));
 						$series_id = $wpdb->insert_id;

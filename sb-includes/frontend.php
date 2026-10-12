@@ -163,7 +163,7 @@ function sb_widget_popular ($args) {
 		$sermons = $wpdb->get_results("SELECT sermons.id, sermons.title, sum(stuff.count) AS total
 									   FROM {$wpdb->prefix}sb_stuff AS stuff
 									   LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-									   GROUP BY sermons.id ORDER BY total DESC LIMIT 0, {$options['limit']}");
+									   GROUP BY sermons.id ORDER BY total DESC LIMIT 0, ".(int) $options['limit']);
 		if ($sermons) {
 			$output['sermons'] = '<div class="popular-sermons'.$suffix.'"><ul>';
 			foreach ($sermons as $sermon)
@@ -701,7 +701,7 @@ function sb_print_preacher_image($sermon) {
 //Prints link to sermon preached next (but not today)
 function sb_print_next_sermon_link($sermon) {
 	global $wpdb;
-	$next = $wpdb->get_row("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) > DATE('{$sermon->datetime}') AND id <> {$sermon->id} ORDER BY datetime asc LIMIT 1");
+	$next = $wpdb->get_row($wpdb->prepare("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) > DATE(%s) AND id <> %d ORDER BY datetime asc LIMIT 1", $sermon->datetime, $sermon->id));
 	if (!$next) return;
 	echo '<a href="';
 	sb_print_sermon_link($next);
@@ -711,7 +711,7 @@ function sb_print_next_sermon_link($sermon) {
 //Prints link to sermon preached on previous days
 function sb_print_prev_sermon_link($sermon) {
 	global $wpdb;
-	$prev = $wpdb->get_row("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) < DATE('{$sermon->datetime}') AND id <> {$sermon->id} ORDER BY datetime desc LIMIT 1");
+	$prev = $wpdb->get_row($wpdb->prepare("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) < DATE(%s) AND id <> %d ORDER BY datetime desc LIMIT 1", $sermon->datetime, $sermon->id));
 	if (!$prev) return;
 	echo '<a href="';
 	sb_print_sermon_link($prev);
@@ -721,7 +721,7 @@ function sb_print_prev_sermon_link($sermon) {
 //Prints links to other sermons preached on the same day
 function sb_print_sameday_sermon_link($sermon) {
 	global $wpdb;
-	$same = $wpdb->get_results("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) = DATE('{$sermon->datetime}') AND id <> {$sermon->id}");
+	$same = $wpdb->get_results($wpdb->prepare("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) = DATE(%s) AND id <> %d", $sermon->datetime, $sermon->id));
 	if (!$same) {
 		_e('None', 'sermon-browser');
 		return;
