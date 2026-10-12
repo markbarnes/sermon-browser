@@ -47,6 +47,7 @@ function sb_version_upgrade ($old_version, $new_version) {
 	$sbsf = sb_get_option('single_template');
 	if ($sbsf)
 		sb_update_option('single_output', strtr($sbsf, sb_sermon_page_dictionary()));
+	sb_protect_upload_dir();
 	sb_update_option('code_version', $new_version);
 	if (sb_get_option('filter_type') == '')
 		sb_update_option('filter_type', 'dropdown');
@@ -64,7 +65,6 @@ function sb_database_upgrade ($old_version) {
 			$oldSermonPath = dirname(__FILE__)."/files/";
 			$files = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' ORDER BY name ASC");
 			foreach ((array)$files as $file) {
-				@chmod(SB_ABSPATH.$oldSermonPath.$file->name, 0777);
 				@rename(SB_ABSPATH.$oldSermonPath.$file->name, SB_ABSPATH.$sermonUploadDir.$file->name);
 			}
 			$table_name = $wpdb->prefix . "sb_preachers";
@@ -75,7 +75,7 @@ function sb_database_upgrade ($old_version) {
 		case '1.1':
 			add_option('sb_sermon_style', base64_encode($defaultStyle));
 			if(!is_dir(SB_ABSPATH.$sermonUploadDir.'images') && sb_mkdir(SB_ABSPATH.$sermonUploadDir.'images')){
-				@chmod(SB_ABSPATH.$sermonUploadDir.'images', 0777);
+				sb_protect_upload_dir();
 			}
 			update_option('sb_sermon_db_version', '1.2');
 		case '1.2':

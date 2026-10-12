@@ -55,10 +55,10 @@ function sb_options() {
 		sb_update_option('mp3_shortcode', '[audio mp3="%SERMONURL%"]');
 		sb_update_option('esv_api_key', '');
 		if (!is_dir (SB_ABSPATH.$dir) && sb_mkdir (SB_ABSPATH.$dir)) {
-			@chmod(SB_ABSPATH.$dir, 0777);
+			sb_protect_upload_dir();
 		}
 		if (!is_dir (SB_ABSPATH.$dir.'images') && sb_mkdir(SB_ABSPATH.$dir.'images')) {
-			@chmod(SB_ABSPATH.$dir.'images', 0777);
+			sb_protect_upload_dir();
 		}
 		$books = sb_get_default('bible_books');
 		$eng_books = sb_get_default('eng_bible_books');
@@ -120,6 +120,11 @@ function sb_options() {
 			wp_die( __( "You do not have the correct permissions to edit the SermonBrowser options", 'sermon-browser' ) );
 	}
 		$dir = rtrim(str_replace("\\", "/", sanitize_text_field(stripslashes($_POST['dir']))), "/")."/";
+		if ((IS_MU && !is_super_admin()) || !sb_is_valid_upload_dir($dir)) {
+			if ($dir != sb_get_option('upload_dir'))
+				{echo '<div id="message" class="updated fade"><p><b>'.__('The upload folder must be a folder inside your WordPress folder, such as wp-content/uploads/sermons/. It has not been changed.', 'sermon-browser').'</b></div>';}
+			$dir = sb_get_option('upload_dir');
+		}
 		sb_update_option('podcast_url', esc_url($_POST['podcast']));
 		if ( intval( $_POST['perpage'] ) > 0 ) {
 			sb_update_option('sermons_per_page', intval($_POST['perpage']));
@@ -142,11 +147,11 @@ function sb_options() {
 		sb_update_option('esv_api_key', esc_html(stripslashes($_POST['esv_api_key'])));
 		if ( ! is_dir( SB_ABSPATH . $dir ) ) {
 			if ( sb_mkdir( SB_ABSPATH . $dir ) ) {
-				@chmod(SB_ABSPATH.$dir, 0777);
+				sb_protect_upload_dir();
 			}
 		}
 		if ( ! is_dir( SB_ABSPATH . $dir . 'images' ) && sb_mkdir( SB_ABSPATH . $dir . 'images' ) ) {
-			@chmod(SB_ABSPATH.$dir.'images', 0777);
+			sb_protect_upload_dir();
 		}
 		   $checkSermonUpload = sb_checkSermonUploadable();
 		   switch ($checkSermonUpload) {
@@ -558,45 +563,55 @@ function sb_manage_preachers() {
 			$p = $wpdb->get_row("SELECT image FROM {$wpdb->prefix}sb_preachers WHERE id = $pid");
 			$filename = $p ? $p->image : '';
 		} elseif ($_FILES['upload']['error'] == UPLOAD_ERR_OK) {
-			$filename = basename($_FILES['upload']['name']);
-			$prefix = '';
-			if(!is_dir(SB_ABSPATH.$sermonUploadDir.'images') && sb_mkdir(SB_ABSPATH.$sermonUploadDir.'images'))
-				{@chmod(SB_ABSPATH.$sermonUploadDir.'images', 0777);}
-			$dest = SB_ABSPATH.$sermonUploadDir.'images/'.$filename;
-			if (@move_uploaded_file($_FILES['upload']['tmp_name'], $dest))
-				{$filename = $prefix.$filename;}
-			else {
+			$filename = sb_check_uploaded_file($_FILES['upload']['tmp_name'], $_FILES['upload']['name'], true);
+			if (!is_dir(SB_ABSPATH.$sermonUploadDir.'images'))
+				{sb_mkdir(SB_ABSPATH.$sermonUploadDir.'images');}
+			sb_protect_upload_dir();
+			if ($filename)
+				{$filename = wp_unique_filename(SB_ABSPATH.$sermonUploadDir.'images', $filename);}
+			if (!$filename) {
 				$error = true;
+				$filename = '';
+				@unlink($_FILES['upload']['tmp_name']);
+				echo '<div id="message" class="updated fade"><p><b>'.__('Preacher images must be JPEG, PNG, GIF or WebP files.', 'sermon-browser').'</b></div>';
+			} elseif (!@move_uploaded_file($_FILES['upload']['tmp_name'], SB_ABSPATH.$sermonUploadDir.'images/'.$filename)) {
+				$error = true;
+				$filename = '';
 				echo '<div id="message" class="updated fade"><p><b>'.__('Could not save uploaded file. Please try again.', 'sermon-browser').'</b></div>';
-				@chmod(SB_ABSPATH.$sermonUploadDir.'images', 0777);
 			}
 		} else {
 				$error = true;
 				echo '<div id="message" class="updated fade"><p><b>'.__('Could not upload file. Please check the Options page for any errors or warnings.', 'sermon-browser').'</b></div>';
 		}
 
+		$old_image = $pid ? (string) $wpdb->get_var("SELECT image FROM {$wpdb->prefix}sb_preachers WHERE id = $pid") : '';
+		if ($error)
+			{$filename = $old_image;}
 		if ($pid == 0) {
 			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_preachers VALUES (null, %s, %s, %s)", $name, $description, $filename));
 		} else {
 			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s, description = %s, image = %s WHERE id = $pid", $name, $description, $filename));
-			if ($_POST['old'] != $filename)
-				@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.sanitize_file_name($_POST['old']));
+			if ($old_image != $filename && sb_is_plain_file_name($old_image))
+				@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$old_image);
 		}
 		if(isset($_POST['remove'])){
 			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s, description = %s, image = '' WHERE id = $pid", $name, $description));
-			@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.sanitize_file_name($_POST['old']));
+			if (sb_is_plain_file_name($filename))
+				{@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$filename);}
 		}
 		if(!$error)
 			echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/preachers.php&saved=true')."';</script>";
 	}
 
 	if (isset($_GET['act']) && $_GET['act'] == 'kill') {
+		check_admin_referer('sb_delete_preacher_'.(int) $_GET['pid']);
 		$die = (int) $_GET['pid'];
 		if($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_sermons WHERE preacher_id = $die") > 0)
 			{echo '<div id="message" class="updated fade"><p><b>'.__("You cannot delete this preacher until you first delete any sermons they have preached.", 'sermon-browser').'</b></div>';}
 		else {
 			$p = $wpdb->get_row("SELECT image FROM {$wpdb->prefix}sb_preachers WHERE id = $die");
-			@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$p->image);
+			if ($p && sb_is_plain_file_name($p->image))
+				{@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$p->image);}
 			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_preachers WHERE id = $die");
 		}
 	}
@@ -612,9 +627,8 @@ function sb_manage_preachers() {
 		<?php
 			$checkSermonUpload = sb_checkSermonUploadable('images/');
 			if ($checkSermonUpload == 'notexist') {
-				echo SB_ABSPATH.$sermonUploadDir.'images';
-				if (!is_dir(SB_ABSPATH.$sermonUploadDir.'images') && mkdir(SB_ABSPATH.$sermonUploadDir.'images'))
-					{chmod(SB_ABSPATH.$sermonUploadDir.'images', 0777);}
+				if (!is_dir(SB_ABSPATH.$sermonUploadDir.'images') && sb_mkdir(SB_ABSPATH.$sermonUploadDir.'images'))
+					sb_protect_upload_dir();
 				$checkSermonUpload = sb_checkSermonUploadable('images/');
 			}
 			if ($checkSermonUpload != 'writeable')
@@ -694,7 +708,7 @@ function sb_manage_preachers() {
 							<?php } elseif ($preacher->sermon_count != 0) { ?>
 							    | <a href="javascript:alert('<?php _e('You cannot delete this preacher until you first delete any sermons they have preached.', 'sermon-browser')?>')"><?php _e('Delete', 'sermon-browser') ?></a>
 							<?php } else { ?>
-								| <a onclick="return confirm('<?php printf(__('Are you sure you want to delete %s?', 'sermon-browser'), stripslashes($preacher->name)) ?>')" href="<?php echo admin_url("admin.php?page=sermon-browser/preachers.php&act=kill&pid={$preacher->id}")?>"><?php _e('Delete', 'sermon-browser') ?></a>
+								| <a onclick="return confirm('<?php printf(__('Are you sure you want to delete %s?', 'sermon-browser'), stripslashes($preacher->name)) ?>')" href="<?php echo esc_url(wp_nonce_url(admin_url("admin.php?page=sermon-browser/preachers.php&act=kill&pid={$preacher->id}"), 'sb_delete_preacher_'.$preacher->id))?>"><?php _e('Delete', 'sermon-browser') ?></a>
 							<?php } ?>
 						</td>
 					</tr>
@@ -902,69 +916,59 @@ function sb_files() {
 	// sync
 	sb_scan_dir();
 
+	if (isset($_POST['import_url']) || isset($_POST['save'])) {
+		check_admin_referer('sb_upload', 'sb_upload_nonce');
+	}
 	if (isset($_POST['import_url'])) {
-		$url = esc_url($_POST['url']);
-		$valid_url = false;
-		if(ini_get('allow_url_fopen')) {
-			$headers = array_change_key_case(get_headers($url, 1),CASE_LOWER);
-			$matches = array();
-			$matched = preg_match('#HTTP/\d+\.\d+ (\d+)#', $headers[0], $matches);
-			if ($matched && $matches[1] == '200') {
-				if ($_POST['import_type'] == 'download') {
-					$filename = substr($url, strrpos ($url, '/')+1);
-					$filename = substr($filename, 0, strrpos ($filename, '?'));
-					if (file_exists(SB_ABSPATH.sb_get_option('upload_dir').$filename))
-						{echo '<div id="message" class="updated fade"><p><b>'.sprintf(__('File %s already exists', 'sermon-browser'), $filename).'</b></div>';}
-					else {
-						$file = @fopen(SB_ABSPATH.sb_get_option('upload_dir').$filename, 'wb');
-						$remote_file = @fopen($url, 'r');
-						$remote_contents = '';
-						while (!feof($remote_file))
-							{$remote_contents .= fread($remote_file, 8192);}
-						fwrite($file, $remote_contents);
-						fclose($remote_file);
-						fclose($file);
+		$url = esc_url_raw(wp_unslash($_POST['url']), array('http', 'https'));
+		$response = $url ? wp_safe_remote_head($url, array('redirection' => 5)) : false;
+		if ($url && !is_wp_error($response) && wp_remote_retrieve_response_code($response) == 200) {
+			if ($_POST['import_type'] == 'download') {
+				$filename = sanitize_file_name(rawurldecode(basename((string) wp_parse_url($url, PHP_URL_PATH))));
+				if (!sb_is_allowed_file_name($filename))
+					{echo '<div id="message" class="updated fade"><p><b>'.__('You are not permitted to upload files of that type.', 'sermon-browser').'</b></div>';}
+				elseif (file_exists(SB_ABSPATH.sb_get_option('upload_dir').$filename))
+					{echo '<div id="message" class="updated fade"><p><b>'.sprintf(__('File %s already exists', 'sermon-browser'), esc_html($filename)).'</b></div>';}
+				else {
+					require_once (ABSPATH.'wp-admin/includes/file.php');
+					$downloaded_file = download_url($url);
+					if (is_wp_error($downloaded_file))
+						{echo '<div id="message" class="updated fade"><p><b>'.__('Invalid URL.', 'sermon-browser').'</b></div>';}
+					elseif (!sb_check_uploaded_file($downloaded_file, $filename)) {
+						@unlink($downloaded_file);
+						echo '<div id="message" class="updated fade"><p><b>'.__('You are not permitted to upload files of that type.', 'sermon-browser').'</b></div>';
+					} else {
+						sb_protect_upload_dir();
+						copy($downloaded_file, SB_ABSPATH.sb_get_option('upload_dir').$filename);
+						@unlink($downloaded_file);
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0)", $filename));
-						echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";
+						echo "<script>document.location = '".esc_js(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id))."';</script>";
 					}
-				} else {
-					$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'url', %s, 0, 0, 0)", $url));
-					echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";
-					die();
 				}
-			} else
-				{echo '<div id="message" class="updated fade"><p><b>'.__('Invalid URL.', 'sermon-browser').'</b></div>';}
+			} else {
+				$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'url', %s, 0, 0, 0)", $url));
+				echo "<script>document.location = '".esc_js(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id))."';</script>";
+				die();
+			}
 		} else
-			{echo '<div id="message" class="updated fade"><p><b>'.__('Your host does not allow remote downloading of files.', 'sermon-browser').'</b></div>';}
+			{echo '<div id="message" class="updated fade"><p><b>'.__('Invalid URL.', 'sermon-browser').'</b></div>';}
 	}
 	elseif (isset($_POST['save'])) {
 		if ($_FILES['upload']['error'] == UPLOAD_ERR_OK) {
-			$filename = basename($_FILES['upload']['name']);
-			if (IS_MU) {
-				$file_allowed = false;
-				require_once(SB_ABSPATH . 'wp-includes/ms-functions.php');
-				$allowed_extensions = explode(" ", get_site_option("upload_filetypes"));
-				foreach ($allowed_extensions as $ext) {
-					if (substr(strtolower($filename), -(strlen($ext)+1)) == ".".strtolower($ext))
-						{$file_allowed = true;}
-				}
-			} else {
-				$file_allowed = true;
-			}
-			if ($file_allowed) {
-				$prefix = '';
-				$dest = SB_ABSPATH.sb_get_option('upload_dir').$prefix.$filename;
-				if($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = %s", $filename)) == 0) {
+			$filename = sb_check_uploaded_file($_FILES['upload']['tmp_name'], $_FILES['upload']['name']);
+			if ($filename) {
+				$dest = SB_ABSPATH.sb_get_option('upload_dir').$filename;
+				if($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = %s", $filename)) == 0 && !file_exists($dest)) {
+					sb_protect_upload_dir();
 					if (move_uploaded_file($_FILES['upload']['tmp_name'], $dest)) {
-						$filename = $prefix.$filename;
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0)", $filename));
 						if (sb_import_options_set ())
-							{echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id)."';</script>";}
+							{echo "<script>document.location = '".esc_js(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id))."';</script>";}
 						else
 							{echo '<div id="message" class="updated fade"><p><b>'.__('Files saved to database.', 'sermon-browser').'</b></div>';}
 					}
 				} else {
-					echo '<div id="message" class="updated fade"><p><b>'.__($filename. ' already exists.', 'sermon-browser').'</b></div>';
+					echo '<div id="message" class="updated fade"><p><b>'.esc_html($filename).__(' already exists.', 'sermon-browser').'</b></div>';
 				}
 			} else {
 				@unlink($_FILES['upload']['tmp_name']);
@@ -1468,33 +1472,22 @@ function sb_new_sermon() {
 			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_books_sermons VALUES(null, %s, %s, %s, $i, 'end', $id);", $ed['book'], $ed['chapter'], $ed['verse']));
 		}}
 		// now previously uploaded files
-		foreach ($_POST['file'] as $uid => $file) {
-			if ($file != 0)
-				$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = $id WHERE id = %s;", sanitize_file_name($file)));
+		foreach ((array) $_POST['file'] as $uid => $file) {
+			if ((int) $file != 0)
+				$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = $id WHERE id = %d AND type = 'file';", $file));
 			elseif ($_FILES['upload']['error'][$uid] == UPLOAD_ERR_OK) {
-				$filename = basename($_FILES['upload']['name'][$uid]);
-				if (IS_MU) {
-					$file_allowed = false;
-					$allowed_extensions = explode(' ', get_site_option('upload_filetypes'));
-					foreach ($allowed_extensions as $ext) {
-						if (substr(strtolower($filename), -(strlen($ext)+1)) == '.'.strtolower($ext))
-							{$file_allowed = true;}
-					}
-				} else {
-					$file_allowed = true;
-				}
-				if ($file_allowed) {
-					$prefix = '';
-					$dest = SB_ABSPATH.sb_get_option('upload_dir').$prefix.$filename;
-					if ($wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = '".esc_sql($filename)."'") == 0 && move_uploaded_file($_FILES['upload']['tmp_name'][$uid], $dest)) {
-						$filename = $prefix.$filename;
+				$filename = sb_check_uploaded_file($_FILES['upload']['tmp_name'][$uid], $_FILES['upload']['name'][$uid]);
+				if ($filename) {
+					$dest = SB_ABSPATH.sb_get_option('upload_dir').$filename;
+					sb_protect_upload_dir();
+					if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = %s", $filename)) == 0 && !file_exists($dest) && move_uploaded_file($_FILES['upload']['tmp_name'][$uid], $dest)) {
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, $id, 0, 0)", $filename));
 					} else {
-						echo '<div id="message" class="updated fade"><p><b>'.$filename.__(' already exists.', 'sermon-browser').'</b></div>';
+						echo '<div id="message" class="updated fade"><p><b>'.esc_html($filename).__(' already exists.', 'sermon-browser').'</b></div>';
 						$error = true;
 					}
 				} else {
-					@unlink($_FILES['upload']['tmp_name']);
+					@unlink($_FILES['upload']['tmp_name'][$uid]);
 					echo '<div id="message" class="updated fade"><p><b>'.__('You are not permitted to upload files of that type.', 'sermon-browser').'</b></div>';
 					$error = true;
 				}
@@ -2302,7 +2295,7 @@ function sb_scan_dir() {
 
 	if ($dh = @opendir($dir)) {
 		while (false !== ($file = readdir($dh))) {
-			if ($file != "." && $file != ".." && !is_dir($dir.$file) && !in_array($file, $bnn)) {
+			if (!is_dir($dir.$file) && !in_array($file, $bnn) && sb_is_allowed_file_name($file)) {
 				$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0);", $file));
 			   }
 		}
@@ -2540,7 +2533,8 @@ function sb_print_upload_form () {
 	global $wpdb;
 ?>
 	<table width="100%" cellspacing="2" cellpadding="5" class="widefat">
-		<form method="post" enctype="multipart/form-data" action ="<?php echo admin_url('admin.php?page=sermon-browser/files.php'); ?>" >
+		<form method="post" enctype="multipart/form-data" action ="<?php echo esc_url(admin_url('admin.php?page=sermon-browser/files.php')); ?>" >
+		<?php wp_nonce_field('sb_upload', 'sb_upload_nonce'); ?>
 		<thead>
 		<tr>
 			<th scope="col" colspan="3"><?php if (sb_import_options_set()) {printf(__("Select an MP3 file here to have the %s form pre-filled using ID3 tags.", 'sermon-browser'), "<a href=\"".admin_url('admin.php?page=sermon-browser/new_sermon.php')."\">".__('Add Sermons', 'sermon-browser').'</a>');} else {_e('Upload file', 'sermon-browser');}?></th>

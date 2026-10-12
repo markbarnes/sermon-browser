@@ -644,10 +644,43 @@ function sb_special_option_names() {
 * @param string $mode
 * return bool
 */
-function sb_mkdir($pathname, $mode=0777) {
-	is_dir(dirname($pathname)) || sb_mkdir(dirname($pathname), $mode);
-	@mkdir($pathname, $mode);
-	return @chmod($pathname, $mode);
+function sb_mkdir($pathname) {
+	$created = wp_mkdir_p($pathname);
+	sb_protect_upload_dir(trailingslashit($pathname));
+	return $created;
+}
+
+/**
+* Returns true if $dir is a folder inside the WordPress folder that sermons may be uploaded to
+*
+* The folder must be relative to ABSPATH, must not climb out of it, and must not be part of WordPress itself.
+* @param string $dir (with trailing slash)
+* @return bool
+*/
+function sb_is_valid_upload_dir($dir) {
+	if ($dir == '/' || $dir[0] == '/' || strpos($dir, ':') !== false || strpos($dir, '\\') !== false || validate_file($dir) !== 0)
+		return false;
+	foreach (array('wp-admin/', 'wp-includes/', 'wp-content/plugins/', 'wp-content/themes/', 'wp-content/mu-plugins/') as $forbidden)
+		if (stripos($dir, $forbidden) === 0)
+			return false;
+	return true;
+}
+
+/**
+* Stops web servers running scripts from the upload folder
+*
+* Writes an .htaccess file (Apache) that refuses requests for script files.
+* Other web servers need equivalent rules in their own configuration.
+* @param string $dir (full path with trailing slash; defaults to the upload folder)
+*/
+function sb_protect_upload_dir($dir = '') {
+	if ($dir == '')
+		$dir = SB_ABSPATH.sb_get_option('upload_dir');
+	if (!is_dir($dir) || file_exists($dir.'.htaccess'))
+		return;
+	$rules = "# Added by Sermon Browser: never run scripts from the sermon upload folder\n";
+	$rules .= "<FilesMatch \"\\.(?i:php[0-9]?|phtml|phar|pht|shtml|cgi|pl|py|sh)$\">\n\tRequire all denied\n</FilesMatch>\n";
+	@file_put_contents($dir.'.htaccess', $rules);
 }
 
 /**
