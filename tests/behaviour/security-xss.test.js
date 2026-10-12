@@ -25,7 +25,6 @@ const sermonBrowser = ( html ) => element( html, '<div class="sermon-browser' );
 describe( 'stored payloads on the front end', () => {
 	const views = {
 		'the sermon list': '',
-		'the hostile sermon': 'sermon_id=4',
 		'the hostile preacher': 'preacher=3',
 		'the hostile series': 'series=3',
 		'the hostile service': 'service=3',
@@ -36,13 +35,15 @@ describe( 'stored payloads on the front end', () => {
 	for ( const [ name, query ] of Object.entries( views ) ) {
 		it( `shows them as text on ${ name }`, async () => {
 			const html = await visitor.html( `/sermons/?${ query }` );
+			// The check is only meaningful if the hostile sermon is on the page.
+			assert.match( html, /sermon_id=4/, `the hostile sermon should be shown on ${ name }` );
 			assertNoLiveScript( html, name );
-			assert.match( html, /class="sermon-browser/ );
 		} );
 	}
 
 	it( 'shows them as text on the hostile sermon page, where they are displayed', async () => {
 		const html = sermonBrowser( await visitor.html( '/sermons/?sermon_id=4' ) );
+		assertNoLiveScript( html, 'the hostile sermon page' );
 		assert.match( html, /&lt;script&gt;alert\(&quot;xss&quot;\)&lt;\/script&gt;/, 'the title should be visible as text' );
 		assert.match( html, /&lt;img src=x onerror=alert\(&quot;tag&quot;\)&gt;/, 'the tag should be visible as text' );
 	} );

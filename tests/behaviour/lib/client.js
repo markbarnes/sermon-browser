@@ -89,7 +89,11 @@ export class Client {
 	}
 
 	/**
-	 * Returns the value of a hidden nonce field on an admin page.
+	 * Returns the value of a hidden nonce field on an admin page, or '' if there is none.
+	 *
+	 * A missing nonce doesn't throw, so the security tests also run against versions
+	 * without nonces (and fail there for the right reason). On versions with nonces,
+	 * an empty one is refused, so tests that need a real one still fail visibly.
 	 *
 	 * @param {string} page
 	 * @param {string} field
@@ -98,23 +102,17 @@ export class Client {
 	async nonce( page, field ) {
 		const html = await this.adminPage( page );
 		const match = html.match( new RegExp( `name="${ field }" value="([^"]+)"` ) );
-		if ( ! match ) {
-			throw new Error( `No ${ field } on ${ page }` );
-		}
-		return match[ 1 ];
+		return match ? match[ 1 ] : '';
 	}
 
 	/**
-	 * Returns the nonce the admin pages use for AJAX requests.
+	 * Returns the nonce the admin pages use for AJAX requests, or '' if there is none (see nonce()).
 	 *
 	 * @return {Promise<string>}
 	 */
 	async ajaxNonce() {
 		const match = ( await this.adminPage( 'sermon.php' ) ).match( /sbAjaxNonce = "([^"]+)"/ );
-		if ( ! match ) {
-			throw new Error( 'No sbAjaxNonce on the Sermons page' );
-		}
-		return match[ 1 ];
+		return match ? match[ 1 ] : '';
 	}
 
 	/**
