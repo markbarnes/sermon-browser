@@ -77,62 +77,80 @@ function sb_hijack() {
 	if (stripos($_SERVER['REQUEST_URI'], 'sb-style.css') !== FALSE || isset($_GET['sb-style']))
 		require(SB_INCLUDES_DIR.'/style.php');
 
-	//Forces sermon download of local file
-	if (isset($_GET['download']) AND isset($_GET['file_name'])) {
-		$file_name = esc_sql(rawurldecode($_GET['file_name']));
-		$file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
-		if (!is_null($file_name)) {
-			header("Content-Type: application/octet-stream");
-			header('Content-Disposition: attachment; filename="'.$file_name.'"');
-			sb_increase_download_count ($file_name);
-			$file_name = SB_ABSPATH.sb_get_option('upload_dir').$file_name;
-			$filesize = filesize($file_name);
-			if ($filesize != 0)
-				header("Content-Length: ".filesize($file_name));
-			sb_output_file($file_name);
-			die();
-		} else
-			wp_die(htmlentities(rawurldecode($_GET['file_name'])).' '.__('not found', 'sermon-browser'), __('File not found', 'sermon-browser'), array('response' => 404));
-	}
+	if (!isset($_GET['download']) && !isset($_GET['show']))
+		return;
 
-	//Forces sermon download of external URL
-	if (isset($_REQUEST['download']) AND isset($_REQUEST['url'])) {
-		$url = rawurldecode($_GET['url']);
-		require_once (ABSPATH.'wp-admin/includes/file.php');
-		$downloaded_file = download_url($url);
-		if (is_wp_error ($downloaded_file)) {
-			wp_die(htmlentities(rawurldecode($_GET['url'])).' '.__('not found', 'sermon-browser'), __('URL not found', 'sermon-browser'), array('response' => 404));
+	// Local files: only names listed in the database are served, and only from the upload folder
+	if (isset($_GET['file_name'])) {
+		$file_name = sb_get_attachment_name(rawurldecode(wp_unslash($_GET['file_name'])), 'file');
+		if ($file_name === null || !sb_is_plain_file_name($file_name))
+			wp_die(esc_html(rawurldecode(wp_unslash($_GET['file_name']))).' '.__('not found', 'sermon-browser'), __('File not found', 'sermon-browser'), array('response' => 404));
+		sb_increase_download_count ($file_name);
+		if (isset($_GET['download'])) {
+			//Forces sermon download of local file
+			$file_path = SB_ABSPATH.sb_get_option('upload_dir').$file_name;
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename="'.sb_header_file_name($file_name).'"');
+			header('X-Content-Type-Options: nosniff');
+			$filesize = @filesize($file_path);
+			if ($filesize)
+				header('Content-Length: '.$filesize);
+			sb_output_file($file_path);
+		} else {
+			//Returns local file (doesn't force download)
+			wp_redirect(sb_get_option('upload_url').rawurlencode($file_name));
 		}
-		header ('Content-Type: '.mime_content_type($downloaded_file));
-		header ('Content-Disposition: attachment; filename="'.basename($url).'"');
-		header ('Content-Length: '.filesize($downloaded_file));
-		sb_increase_download_count($url);
-		sb_output_file($downloaded_file);
-		unset($downloaded_file);
 		die();
 	}
 
-	//Returns local file (doesn't force download)
-	if (isset($_GET['show']) AND isset($_GET['file_name'])) {
-		global $filetypes;
-		$file_name = esc_sql(rawurldecode($_GET['file_name']));
-		$file_name = $wpdb->get_var("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name='{$file_name}'");
-		if (!is_null($file_name)) {
-			$url = sb_get_option('upload_url').$file_name;
-			sb_increase_download_count ($file_name);
-			header("Location: ".$url);
-			die();
-		} else
-			wp_die(htmlentities(rawurldecode($_GET['file_name'])).' '.__('not found', 'sermon-browser'), __('File not found', 'sermon-browser'), array('response' => 404));
-	}
-
-	//Returns contents of external URL(doesn't force download)
-	if (isset($_REQUEST['show']) AND isset($_REQUEST['url'])) {
-		$url = rawurldecode($_GET['url']);
-		sb_increase_download_count ($url);
-		header('Location: '.$url);
+	// External URLs: only URLs attached to a sermon, so the site can't be used as an open redirect or proxy
+	if (isset($_GET['url'])) {
+		$stored_url = sb_get_attachment_name(rawurldecode(wp_unslash($_GET['url'])), 'url');
+		$url = is_null($stored_url) ? '' : esc_url_raw(wp_specialchars_decode($stored_url, ENT_QUOTES), array('http', 'https'));
+		if ($url == '')
+			wp_die(esc_html(rawurldecode(wp_unslash($_GET['url']))).' '.__('not found', 'sermon-browser'), __('URL not found', 'sermon-browser'), array('response' => 404));
+		if (isset($_GET['download'])) {
+			//Forces sermon download of external URL
+			require_once (ABSPATH.'wp-admin/includes/file.php');
+			$downloaded_file = download_url($url);
+			if (is_wp_error ($downloaded_file))
+				wp_die(esc_html($url).' '.__('not found', 'sermon-browser'), __('URL not found', 'sermon-browser'), array('response' => 404));
+			sb_increase_download_count($stored_url);
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename="'.sb_header_file_name(basename(wp_parse_url($url, PHP_URL_PATH))).'"');
+			header('X-Content-Type-Options: nosniff');
+			header('Content-Length: '.filesize($downloaded_file));
+			sb_output_file($downloaded_file);
+			@unlink($downloaded_file);
+		} else {
+			//Returns contents of external URL (doesn't force download)
+			sb_increase_download_count ($stored_url);
+			wp_redirect($url);
+		}
 		die();
 	}
+}
+
+/**
+* Returns the name of an attachment exactly as stored in the database, or null if there is none
+*
+* @param string $name
+* @param string $type ('file' or 'url')
+* @return string|null
+*/
+function sb_get_attachment_name($name, $type) {
+	global $wpdb;
+	return $wpdb->get_var($wpdb->prepare("SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name = %s AND type = %s LIMIT 1", $name, $type));
+}
+
+/**
+* Makes a file name safe to use in a quoted Content-Disposition header
+*
+* @param string $file_name
+* @return string
+*/
+function sb_header_file_name($file_name) {
+	return str_replace(array('"', '\\', "\r", "\n"), '', (string) $file_name);
 }
 
 /**
