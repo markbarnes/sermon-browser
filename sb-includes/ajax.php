@@ -129,7 +129,9 @@ if (isset($_POST['pname'])) { // preacher
 	$st = max(0, (int) $_POST['fetch'] - 1);
 	$per_page = (int) sb_get_option('sermons_per_page');
 	if (!empty($_POST['title'])) {
-		$cond = $wpdb->prepare("and m.title LIKE %s ", '%'.$wpdb->esc_like(sanitize_text_field(wp_unslash($_POST['title']))).'%');
+		// Titles saved by the Add Sermon page are stored with quotes escaped (God\'s), so match both forms
+		$title = sanitize_text_field(wp_unslash($_POST['title']));
+		$cond = $wpdb->prepare("and (m.title LIKE %s OR m.title LIKE %s) ", '%'.$wpdb->esc_like($title).'%', '%'.$wpdb->esc_like(addslashes($title)).'%');
 	} else
 		$cond = '';
 	if (!empty($_POST['preacher'])) {
