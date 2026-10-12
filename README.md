@@ -22,6 +22,36 @@ Requires Docker and Node.
 - `npm run lint` checks every PHP file's syntax.
 - Run WP-CLI with `npx wp-env run cli wp <command>`.
 
+## Tests
+
+`npm test` runs the behaviour tests (about 15 seconds) against the wp-env test site at http://localhost:8891, which has its own database, so it never touches the development site. Run `npm start` first.
+
+The tests work from the outside: they make HTTP requests as visitors and as logged-in users of each role, and check responses, rendered output and database state. That way they keep passing through restructuring, as long as behaviour is unchanged.
+
+| File | Covers |
+|---|---|
+| `security-ajax.test.js` | Every admin AJAX action by role and nonce |
+| `security-uploads.test.js` | File types, nonces and folders for every upload path (CVE-2022-0499) |
+| `security-downloads.test.js` | `?download` and `?show`: no open redirect, open proxy or path traversal |
+| `security-sql.test.js` | Hostile values in ID3 tags, sermon fields, filters and the feed |
+| `security-xss.test.js` | Script payloads in every field and request parameter, on every view; PHP in templates |
+| `frontend.test.js` | The sermon list, filters, sermon pages, widgets, feed and stylesheet, with output snapshots |
+
+How it fits together:
+
+- `tests/fixtures/seed.php` resets the plugin's tables, options and upload folder before each test file. Its data copies awkward shapes found in the live site's data (escaped apostrophes, typographic punctuation, entities, sermons without passages), plus a sermon with script payloads in every field. Test users' passwords are in the seed; they exist only on the test site.
+- `tests/mu-plugins/` is mapped into the test site only. It blocks outside HTTP requests (stubbing `example.org`) so output is the same on every run, and provides a test-only endpoint for seeding, queries and PHP.
+- `tests/snapshots/` holds the plugin's output for the main views. If a change to output is intended, run `npm run test:update-snapshots` and review the diff in git before committing.
+- The tests also check that the debug log stays free of PHP errors, warnings and notices.
+
+To check that the security tests catch what they should, run them against the original code. In a clean working tree:
+
+```bash
+git checkout 297ef9f -- sermon.php sb-includes && node --test --test-concurrency=1 'tests/behaviour/security-*.test.js'; git checkout HEAD -- sermon.php sb-includes && git rm -q --cached sb-includes/widget.php && rm sb-includes/widget.php
+```
+
+Against 0.45.22, 90 of the 123 security tests fail. Those that pass cover behaviour that was already correct, including the SQL cases, which were hardening rather than exploitable.
+
 ## Security model
 
 - Admin AJAX requests (`ajax.php`, any POST with `sermon=1`) need a logged-in user, the `sb_ajax` nonce (`sbAjaxNonce` in the page) and the capability of the matching admin page.
