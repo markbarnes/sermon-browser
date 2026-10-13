@@ -53,7 +53,7 @@ Sermon Browser connects to these services only when you use the features that ne
 If a template includes `[esvtext]` and you enter an ESV API key on the Options page, each sermon page fetches the ESV text of the sermon's Bible passages from api.esv.org when it is viewed. The request sends the passage reference and your API key. [Terms (on the API's home page)](https://api.esv.org/), [privacy policy](https://www.crossway.org/policy/).
 
 = NET Bible Web Service (Bible.org) =
-If a template includes `[nettext]`, each sermon page fetches the NET Bible text of the sermon's passages from labs.bible.org when it is viewed. The request sends the passage reference. [About the service](https://labs.bible.org/api_web_service), [copyright and terms](https://bible.org/article/trademark-and-copyright-information).
+If a template includes `[nettext]`, each sermon page fetches the NET Bible text of the sermon's passages from labs.bible.org when it is viewed. The request sends the passage reference. [API documentation](https://labs.bible.org/api_web_service); use of the API must comply with the [NET Bible copyright](https://bible.org/copyright#cpyrt).
 
 = Files and links you add =
 When you attach a URL to a sermon or import a file from a URL, the site requests that URL to check it, to copy the file (if you choose to) and to read its ID3 tags. The podcast feed asks for the size of each attached URL, and the download link for an attached URL fetches it to send to the visitor. These requests go only to the addresses you entered. Embedded media (such as Vimeo or YouTube players) is loaded by visitors' browsers from the service you embedded.
