@@ -73,7 +73,9 @@ foreach ( $users as $key => $user ) {
 foreach ( get_posts( array( 'post_type' => 'page', 'name' => 'sermons', 'post_status' => 'any', 'numberposts' => -1 ) ) as $page ) {
 	wp_delete_post( $page->ID, true );
 }
-$page_id = wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'publish', 'post_title' => 'Sermons', 'post_name' => 'sermons', 'post_content' => '[sermons]' ) );
+// Dated in the past: sb_add_headers() only treats a page as the sermons page if post_date
+// (local time) is before the database's NOW(), which a page created this hour may not be.
+$page_id = wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'publish', 'post_title' => 'Sermons', 'post_name' => 'sermons', 'post_content' => '[sermons]', 'post_date' => '2026-01-01 00:00:00' ) );
 sb_update_option( 'podcast_url', get_permalink( $page_id ) . '?podcast' );
 
 // The widgets, in the test widget area (tests/mu-plugins/sb-test-widgets.php) and on a page
@@ -89,6 +91,7 @@ wp_insert_post(
 		'post_status'  => 'publish',
 		'post_title'   => 'Sermon widgets',
 		'post_name'    => 'sermon-widgets',
+		'post_date'    => '2026-01-01 00:00:00',
 		'post_content' => implode( "\n", array_map( function ( $id ) { return '<!-- wp:legacy-widget {"id":"' . $id . '"} /-->'; }, $widgets ) ),
 	)
 );

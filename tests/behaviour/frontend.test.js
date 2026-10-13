@@ -270,6 +270,14 @@ describe( 'the stylesheet', () => {
 		assert.match( response.headers.get( 'content-type' ), /^text\/css\b/ );
 		assert.match( response.text, /\.sermon-browser/ );
 	} );
+
+	it( 'answers 304 Not Modified when the browser has the current version', async () => {
+		const cached = await fetch( `${ SITE }/sb-style.css`, { headers: { 'If-Modified-Since': 'Wed, 01 Jan 2099 00:00:00 GMT' } } );
+		assert.equal( cached.status, 304 );
+		const stale = await fetch( `${ SITE }/sb-style.css`, { headers: { 'If-Modified-Since': 'Thu, 01 Jan 2015 00:00:00 GMT' } } );
+		assert.equal( stale.status, 200 );
+		assert.match( await stale.text(), /\.sermon-browser/ );
+	} );
 } );
 
 describe( 'download counts', () => {
