@@ -1,0 +1,46 @@
+<section id="sermon-2" class="widget sermon"><h2 class="widget-title">Recent sermons</h2><ul class="sermon-widget"><li><span class="sermon-title"><a href="{SITE}/sermons/?sermon_id=4">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a></span> <span class="sermon-date"> on 15 March 2026</span>.</li><li><span class="sermon-title"><a href="{SITE}/sermons/?sermon_id=3">Romans 5: peace with God</a></span> <span class="sermon-date"> on 8 March 2026</span>.</li><li><span class="sermon-title"><a href="{SITE}/sermons/?sermon_id=2">Gŵyl Dewi — the Lord’s my shepherd…</a></span> <span class="sermon-date"> on 1 March 2026</span>.</li><li><span class="sermon-title"><a href="{SITE}/sermons/?sermon_id=1">Paul&#039;s letter: Faith &amp; Works</a></span> <span class="sermon-date"> on 1 March 2026</span>.</li><li><span class="sermon-title"><a href="{SITE}/sermons/?sermon_id=5">Christmas morning: Unto us a child is born</a></span> <span class="sermon-date"> on 25 December 2025</span>.</li></ul></section>
+<section id="sermon-browser-tags" class="widget sb_widget_tag_cloud_wrapper"><h2 class="widget-title">Sermon Browser tags</h2><a style="font-size:150%" href="{SITE}/sermons/?stag=grace">grace</a> <a style="font-size:80%" href="{SITE}/sermons/?stag=faith">faith</a> <a style="font-size:80%" href="{SITE}/sermons/?stag=psalms">psalms</a> <a style="font-size:80%" href="{SITE}/sermons/?stag=%3Cimg%20src%3Dx%20onerror%3Dalert%28%22tag%22%29%3E">&lt;img src=x onerror=alert(&quot;tag&quot;)&gt;</a></section>
+<section id="sermon-browser-popular" class="widget sermon-browser-popular"><p><a id="popular_sermons_trigger_w" href="#">Sermons</a> | <a id="popular_series_trigger_w" href="#">Series</a> | <a id="popular_preachers_trigger_w" href="#">Preachers</a></p><div id="sb_popular_wrapper_w"><div class="popular-sermons_w"><ul><li><a href="{SITE}/sermons/?sermon_id=3">Romans 5: peace with God</a></li><li><a href="{SITE}/sermons/?sermon_id=1">Paul&#039;s letter: Faith &amp; Works</a></li><li><a href="{SITE}/sermons/?sermon_id=4">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a></li></ul></div></div><script type="text/javascript">jQuery.setSbCookie = function (value) {
+											document.cookie = "sb_popular="+encodeURIComponent(value);
+										 };</script><script type="text/javascript">jQuery.getSbCookie = function () {
+											var cookieValue = null;
+											if (document.cookie && document.cookie != "") {
+												var cookies = document.cookie.split(";");
+												for (var i = 0; i < cookies.length; i++) {
+													var cookie = jQuery.trim(cookies[i]);
+													var name = "sb_popular";
+													if (cookie.substring(0, name.length + 1) == (name + "=")) {
+														cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+														break;
+													}
+												}
+											}
+										 return cookieValue;
+										 }</script><script type="text/javascript">jQuery(document).ready(function() {jQuery("#popular_sermons_trigger_w").click(function() {
+							jQuery(this).attr("style", "font-weight:bold");
+							jQuery("#popular_series_trigger_w").removeAttr("style");
+							jQuery("#popular_preachers_trigger_w").removeAttr("style");
+							jQuery.setSbCookie ("sermons");
+							jQuery("#sb_popular_wrapper_w").fadeOut("slow", function() {
+								jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-sermons_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=3\">Romans 5: peace with God<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=1\">Paul&#039;s letter: Faith &amp; Works<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=4\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
+							});
+							return false;
+						});jQuery("#popular_series_trigger_w").click(function() {
+							jQuery(this).attr("style", "font-weight:bold");
+							jQuery("#popular_sermons_trigger_w").removeAttr("style");
+							jQuery("#popular_preachers_trigger_w").removeAttr("style");
+							jQuery.setSbCookie ("series");
+							jQuery("#sb_popular_wrapper_w").fadeOut("slow", function() {
+								jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-series_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?series=1\">Romans<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?series=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
+							});
+							return false;
+						});jQuery("#popular_preachers_trigger_w").click(function() {
+								jQuery(this).attr("style", "font-weight:bold");
+								jQuery("#popular_series_trigger_w").removeAttr("style");
+								jQuery("#popular_sermons_trigger_w").removeAttr("style");
+								jQuery.setSbCookie("preachers");
+								jQuery("#sb_popular_wrapper_w").fadeOut("slow", function() {
+									jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-preachers_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?preacher=1\">Dylan Jones<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?preacher=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
+								});
+								return false;
+							 });if (jQuery.getSbCookie() == "preachers") { jQuery("#popular_preachers_trigger_w").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-preachers_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?preacher=1\">Dylan Jones<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?preacher=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};if (jQuery.getSbCookie() == "series") { jQuery("#popular_series_trigger_w").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-series_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?series=1\">Romans<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?series=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};if (jQuery.getSbCookie() == "sermons") { jQuery("#popular_sermons_trigger_w").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-sermons_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=3\">Romans 5: peace with God<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=1\">Paul&#039;s letter: Faith &amp; Works<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=4\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};});</script></section>
