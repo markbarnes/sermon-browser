@@ -131,9 +131,6 @@ function sb_options() {
 		if ( intval( $_POST['perpage'] ) > 0 ) {
 			sb_update_option('sermons_per_page', intval($_POST['perpage']));
 		}
-		if ( intval( $_POST['perpage'] ) == - 100 ) {
-			update_option('show_donate_reminder', 'off');
-		}
 		sb_update_option('upload_dir', $dir);
 		sb_update_option('filter_type', sanitize_key($_POST['filtertype']));
 		sb_update_option('filter_hide', isset($_POST['filterhide']));
@@ -1259,11 +1256,6 @@ function sb_manage_sermons() {
 	sb_do_alerts();
 	if (isset($_GET['saved'])) {
 		echo '<div id="message" class="updated fade"><p><b>'.__('Sermon saved to database.', 'sermon-browser').'</b></div>';
-        $show_msg = rand (1,5);
-		if ($show_msg == 1 && sb_get_option('show_donate_reminder') != 'off')
-			{echo '<div id="message" class="updated"><p><b>'.sprintf(__('If you find SermonBrowser useful, please consider %1$ssupporting%2$s the ministry of Nathanael and Anna Ayling in Japan.', 'sermon-browser'), '<a href="'.admin_url('admin.php?page=sermon-browser/japan.php').'">', '</a>').'</b></div>';}
-        elseif ($show_msg == 2)
-            {echo '<div id="message" class="updated"><p><b>'.__('Sermon Browser 2.0 is under development. If you\'re a coder, and would like to help, please check the <a href="https://www.assembla.com/spaces/sermon-browser-2/documents">SB2 development website</a>.', 'sermon-browser').'</b></div>';}
 	}
 
 	if (isset($_GET['mid'])) {
@@ -2168,30 +2160,6 @@ sb_do_alerts();
 <?php
 }
 
-function sb_japan() {
-sb_do_alerts();
-?>
-	<div class="wrap">
-		<a href="hthttp://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
-		<h2 style=>Help support Christian ministry in Japan</h2>
-		<div style="width:533px; float:left">
-			<iframe src="http://player.vimeo.com/video/19995544?title=0&amp;byline=0&amp;portrait=0" width="533" height="300" frameborder="0"></iframe>
-		</div>
-		<div style="margin-left:553px;">
-			<p>Since April 2011, all gifts donated to Sermon Browser have been given to support the work of <a href="https://www.bethel-clydach.co.uk/about/mission-partners/nathanael-and-anna-ayling/">Nathanael and Anna Ayling</a> in Japan.
-		 	Nathanael and Anna are members of a small church in the UK where the the author of Sermon Browser is a minister. Together with little Ethan, they have been in Japan since April 2010, and are based in Sappororo in the north,
-		 	undergoing intensive language training so that by God's grace they can work alongside Japanese Christians to make disciples of Jesus among Japanese students. They are being cared for by <a href="http://www.omf.org/omf/japan/about_us">OMF International</a> (formerly known as the China Inland Mission, and founded by
-		 	Hudson Taylor in 1865).</p>
-		 	<p>If you value Sermon Browser, please consider supporting Nathanael and Anna. You can do this by:</p>
-		 	<ul>
-		 		<li><a href="http://ateamjapan.wordpress.com/">Looking at their blog</a>, and praying about their latest news.</li>
-		 		<li><a href="http://www.omf.org/omf/uk/omf_at_work/pray_for_omf_workers">Signing up</a> to receiving their regular prayer news.</li>
-		 		<li><form style="float:left" action="https://www.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd" value="_s-xclick" /><input type="hidden" name="hosted_button_id" value="YTB9ZW4P5F536" /><input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110429-1/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" /><img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110429-1/en_GB/i/scr/pixel.gif" width="1" height="1" /></form> towards their ongoing support.</li>
-		 	</ul>
-		</div>
-	</div>
-<?php
-}
 /***************************************
  ** Supplementary functions           **
  **************************************/

@@ -134,7 +134,6 @@ function sb_admin_bar_menu () {
 	if (current_user_can('edit_plugins'))
 		$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-uninstall', 'title' => __('Uninstall', 'sermon-browser'), 'href' => admin_url('admin.php?page=sermon-browser/uninstall.php')));
 	$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-help', 'title' => __('Help', 'sermon-browser'), 'href' => admin_url('admin.php?page=sermon-browser/help.php')));
-	$wp_admin_bar->add_menu(array('parent' => 'sermon-browser-menu', 'id' => 'sermon-browser-japan', 'title' => __('Pray for Japan', 'sermon-browser'), 'href' => admin_url('admin.php?page=sermon-browser/japan.php')));
 	$wp_admin_bar->add_menu(array('parent' => 'new-content', 'id' => 'sermon-browser-add2', 'title' => __('Sermon', 'sermon-browser'), 'href' => admin_url('admin.php?page=sermon-browser/new_sermon.php')));
 }
 

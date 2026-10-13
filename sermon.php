@@ -275,7 +275,6 @@ function sb_add_pages() {
 	add_submenu_page(__FILE__, __('Templates', 'sermon-browser'), __('Templates', 'sermon-browser'), 'manage_options', 'sermon-browser/templates.php', 'sb_templates');
 	add_submenu_page(__FILE__, __('Uninstall', 'sermon-browser'), __('Uninstall', 'sermon-browser'), 'edit_plugins', 'sermon-browser/uninstall.php', 'sb_uninstall');
 	add_submenu_page(__FILE__, __('Help', 'sermon-browser'), __('Help', 'sermon-browser'), 'publish_posts', 'sermon-browser/help.php', 'sb_help');
-	add_submenu_page(__FILE__, __('Pray for Japan', 'sermon-browser'), __('Pray for Japan', 'sermon-browser'), 'publish_posts', 'sermon-browser/japan.php', 'sb_japan');
 }
 
 /**
