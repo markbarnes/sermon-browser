@@ -205,14 +205,14 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @param string $by BY_SERIES or BY_PREACHER.
+	 * @param string $by GROUP_BY_SERIES or GROUP_BY_PREACHER.
 	 * @return Download_Count[]
 	 */
 	public function download_counts( $by ) {
 		global $wpdb;
-		if ( self::BY_SERIES === $by ) {
+		if ( self::GROUP_BY_SERIES === $by ) {
 			$join = "JOIN {$wpdb->prefix}sb_series AS g ON g.id = m.series_id";
-		} elseif ( self::BY_PREACHER === $by ) {
+		} elseif ( self::GROUP_BY_PREACHER === $by ) {
 			$join = "JOIN {$wpdb->prefix}sb_preachers AS g ON g.id = m.preacher_id";
 		} else {
 			return array();

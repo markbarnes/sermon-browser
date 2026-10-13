@@ -17,8 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 interface Sermon_Repository {
 
-	const BY_SERIES   = 'series';
-	const BY_PREACHER = 'preacher';
+	const GROUP_BY_SERIES   = 'series';
+	const GROUP_BY_PREACHER = 'preacher';
 
 	/**
 	 * Returns one page of the sermons a query matches.
@@ -87,7 +87,7 @@ interface Sermon_Repository {
 	 * Returns the downloads of each series' or preacher's attachments: those with attachments only,
 	 * the one with the latest sermon first, then by name.
 	 *
-	 * @param string $by BY_SERIES or BY_PREACHER.
+	 * @param string $by GROUP_BY_SERIES or GROUP_BY_PREACHER.
 	 * @return Download_Count[]
 	 */
 	public function download_counts( $by );

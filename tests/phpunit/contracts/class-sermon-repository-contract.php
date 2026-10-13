@@ -354,7 +354,7 @@ abstract class Sermon_Repository_Contract extends WP_UnitTestCase {
 		};
 
 		// The one with the latest sermon first; only those with attachments.
-		$this->assertSame( array( array( 1, 'Romans', 7, 4, '2026-03-08' ), array( 2, 'The Psalms &#8211; songs for every season', 3, 1, '2026-03-01' ) ), $counts( SermonBrowser\Sermon_Repository::BY_SERIES ) );
-		$this->assertSame( array( array( 1, 'Dylan Jones', 7, 4, '2026-03-08' ), array( 2, 'Rhiannon Llŷr', 4, 3, '2026-03-01' ) ), $counts( SermonBrowser\Sermon_Repository::BY_PREACHER ) );
+		$this->assertSame( array( array( 1, 'Romans', 7, 4, '2026-03-08' ), array( 2, 'The Psalms &#8211; songs for every season', 3, 1, '2026-03-01' ) ), $counts( SermonBrowser\Sermon_Repository::GROUP_BY_SERIES ) );
+		$this->assertSame( array( array( 1, 'Dylan Jones', 7, 4, '2026-03-08' ), array( 2, 'Rhiannon Llŷr', 4, 3, '2026-03-01' ) ), $counts( SermonBrowser\Sermon_Repository::GROUP_BY_PREACHER ) );
 	}
 }

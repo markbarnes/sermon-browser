@@ -92,7 +92,7 @@ class Popular {
 		}
 
 		if ( $options['display_series'] ) {
-			$series_final = self::rank( Storage::sermons()->download_counts( Sermon_Repository::BY_SERIES ) );
+			$series_final = self::rank( Storage::sermons()->download_counts( Sermon_Repository::GROUP_BY_SERIES ) );
 			if ( $series_final ) {
 				$series_final     = array_slice( $series_final, 0, $options['limit'] );
 				$output['series'] = '<div class="popular-series' . $suffix . '"><ul>';
@@ -115,7 +115,7 @@ class Popular {
 		}
 
 		if ( $options['display_preachers'] ) {
-			$preachers_final = self::rank( Storage::sermons()->download_counts( Sermon_Repository::BY_PREACHER ) );
+			$preachers_final = self::rank( Storage::sermons()->download_counts( Sermon_Repository::GROUP_BY_PREACHER ) );
 			if ( $preachers_final ) {
 				$preachers_final     = array_slice( $preachers_final, 0, $options['limit'] );
 				$output['preachers'] = '<div class="popular-preachers' . $suffix . '"><ul>';
