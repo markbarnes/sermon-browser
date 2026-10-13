@@ -11,6 +11,8 @@ defined( 'ABSPATH' ) || exit;
  * then adds:
  * - users for each role (passwords below are test values for this site only);
  * - a published "Sermons" page at /sermons/ with the [sermons] shortcode;
+ * - the plugin's widgets in the test widget area, and a "Sermon widgets" page at
+ *   /sermon-widgets/ that shows them;
  * - genuine sermons with the awkward content the live site's data has:
  *   apostrophes stored with slashes as the plugin saves them, unescaped
  *   ampersands, typographic punctuation, an HTML entity in a series name,
@@ -73,6 +75,23 @@ foreach ( get_posts( array( 'post_type' => 'page', 'name' => 'sermons', 'post_st
 }
 $page_id = wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'publish', 'post_title' => 'Sermons', 'post_name' => 'sermons', 'post_content' => '[sermons]' ) );
 sb_update_option( 'podcast_url', get_permalink( $page_id ) . '?podcast' );
+
+// The widgets, in the test widget area (tests/mu-plugins/sb-test-widgets.php) and on a page
+// of their own. The sermons widget only exists once sermons_widget_options has an instance 2.
+$widgets = array( 'sermon-2', 'sermon-browser-tags', 'sermon-browser-popular' );
+update_option( 'sidebars_widgets', array( 'wp_inactive_widgets' => array(), 'sb-tests' => $widgets, 'array_version' => 3 ) );
+foreach ( get_posts( array( 'post_type' => 'page', 'name' => 'sermon-widgets', 'post_status' => 'any', 'numberposts' => -1 ) ) as $page ) {
+	wp_delete_post( $page->ID, true );
+}
+wp_insert_post(
+	array(
+		'post_type'    => 'page',
+		'post_status'  => 'publish',
+		'post_title'   => 'Sermon widgets',
+		'post_name'    => 'sermon-widgets',
+		'post_content' => implode( "\n", array_map( function ( $id ) { return '<!-- wp:legacy-widget {"id":"' . $id . '"} /-->'; }, $widgets ) ),
+	)
+);
 
 // Lookup tables: replace the install's sample rows with known ones.
 foreach ( array( 'sb_preachers', 'sb_series', 'sb_services' ) as $table ) {

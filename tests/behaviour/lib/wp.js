@@ -136,3 +136,39 @@ export function phpString( value ) {
 export function uploadExists( path ) {
 	return php( `return file_exists( SB_ABSPATH . sb_get_option( 'upload_dir' ) . ${ phpString( path ) } );` );
 }
+
+/**
+ * Sets the plugin's options (as the Options and Templates pages would save them).
+ *
+ * @param {object} options Option names and values; arrays and objects are stored as PHP arrays.
+ * @return {Promise<true>}
+ */
+export function setOptions( options ) {
+	return php( `foreach ( json_decode( ${ phpString( JSON.stringify( options ) ) }, true ) as $name => $value ) { sb_update_option( $name, $value ); } return true;` );
+}
+
+/**
+ * Sets the search results and single sermon templates and compiles them, as saving the Templates page does.
+ *
+ * @param {{search?: string, single?: string}} templates
+ * @return {Promise<true>}
+ */
+export function useTemplates( { search, single } ) {
+	const code = [ "require_once SB_INCLUDES_DIR . '/dictionary.php';" ];
+	if ( search !== undefined ) {
+		code.push( `sb_update_option( 'search_template', ${ phpString( search ) } ); sb_update_option( 'search_output', sb_compile_template( ${ phpString( search ) }, sb_search_results_dictionary() ) );` );
+	}
+	if ( single !== undefined ) {
+		code.push( `sb_update_option( 'single_template', ${ phpString( single ) } ); sb_update_option( 'single_output', sb_compile_template( ${ phpString( single ) }, sb_sermon_page_dictionary() ) );` );
+	}
+	return php( code.join( ' ' ) + ' return true;' );
+}
+
+/**
+ * Returns the plugin's default templates and stylesheet, as a fresh install stores them.
+ *
+ * @return {Promise<{search: string, single: string, css: string}>}
+ */
+export function defaultTemplates() {
+	return php( "require_once SB_INCLUDES_DIR . '/sb-install.php'; return array( 'search' => sb_default_multi_template(), 'single' => sb_default_single_template(), 'css' => sb_default_css() );" );
+}

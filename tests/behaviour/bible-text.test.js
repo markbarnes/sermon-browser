@@ -8,7 +8,7 @@
  */
 import { before, beforeEach, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { debugLog, php, phpString, seed } from './lib/wp.js';
+import { debugLog, php, seed, useTemplates } from './lib/wp.js';
 import { Client } from './lib/client.js';
 import { assertNoLiveScript } from './lib/html.js';
 
@@ -22,8 +22,7 @@ beforeEach( async () => {
 	await php( "delete_option( 'sb_test_http_log' ); sb_update_option( 'esv_api_key', '' ); return true;" );
 } );
 
-const useSingleTemplate = ( template ) =>
-	php( `require_once SB_INCLUDES_DIR . '/dictionary.php'; sb_update_option( 'single_template', ${ phpString( template ) } ); sb_update_option( 'single_output', sb_compile_template( ${ phpString( template ) }, sb_sermon_page_dictionary() ) ); return true;` );
+const useSingleTemplate = ( template ) => useTemplates( { single: template } );
 const requests = async () => ( await php( "return get_option( 'sb_test_http_log', array() );" ) ).map( ( request ) => request.url );
 const sermonPage = async ( id ) => visitor.html( `/sermons/?sermon_id=${ id }` );
 

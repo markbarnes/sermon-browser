@@ -50,7 +50,7 @@ The tests work from the outside: they make HTTP requests as visitors and as logg
 How it fits together:
 
 - `tests/fixtures/seed.php` resets the plugin's tables, options and upload folder before each test file. Its data copies awkward shapes found in the live site's data (escaped apostrophes, typographic punctuation, entities, sermons without passages), plus a sermon with script payloads in every field. Test users' passwords are in the seed; they exist only on the test site.
-- `tests/mu-plugins/` is mapped into the test site only. It blocks outside HTTP requests (stubbing `example.org`) so output is the same on every run, and provides a test-only endpoint for seeding, queries and PHP.
+- `tests/mu-plugins/` is mapped into the test site only. It blocks outside HTTP requests (stubbing `example.org`) so output is the same on every run, provides a test-only endpoint for seeding, queries and PHP, and registers a widget area, so the widgets are tested the way a theme shows them (the seed's `/sermon-widgets/` page renders each with the Legacy Widget block).
 - `tests/snapshots/` holds the plugin's output for the main views. If a change to output is intended, run `npm run test:update-snapshots` and review the diff in git before committing.
 - Each test file ends by checking that the debug log is free of PHP errors, warnings, notices and deprecations. `.wp-env.json` turns on `WP_DEBUG` for the test site; wp-env turns it off there otherwise, and WordPress then writes nothing to the log.
 - To test another PHP version, put `{ "phpVersion": "8.5" }` in `.wp-env.override.json` (git-ignored) and run `npm start` again. The tests pass on PHP 7.4 to 8.5. With older PHP versions (at least 7.4 to 8.1), wp-env can't build its images if your user or group id is above 256000 (common on Macs managed by an organisation), because their Alpine Linux rejects such ids.
@@ -69,7 +69,7 @@ To check that the security tests catch what they should, run them against the or
 git checkout 297ef9f -- sermon.php sb-includes && node --test --test-concurrency=1 'tests/behaviour/security-*.test.js'; git checkout HEAD -- sermon.php sb-includes && git rm -q --cached sb-includes/widget.php && rm sb-includes/widget.php
 ```
 
-Against 0.45.22, 95 of the 127 security tests fail (including the debug log check at the end of each file). Those that pass cover behaviour that was already correct, including the SQL cases, which were hardening rather than exploitable.
+Against 0.45.22, 96 of the 128 security tests fail (including the debug log check at the end of each file). Those that pass cover behaviour that was already correct, including the SQL cases, which were hardening rather than exploitable.
 
 ## Security model
 

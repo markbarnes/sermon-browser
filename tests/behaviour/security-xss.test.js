@@ -7,7 +7,7 @@
  */
 import { before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { debugLog, php, phpString, seed } from './lib/wp.js';
+import { debugLog, php, phpString, seed, setOptions } from './lib/wp.js';
 import { Client } from './lib/client.js';
 import { assertNoLiveScript, element } from './lib/html.js';
 
@@ -83,20 +83,28 @@ describe( 'reflected payloads on the front end', () => {
 } );
 
 describe( 'stored payloads in widgets and the feed', () => {
+	// The seed shows the widgets on this page (see tests/mu-plugins/sb-test-widgets.php).
+	const widgetPage = () => visitor.html( '/sermon-widgets/' );
+
 	it( 'shows them as text in the popular sermons widget', async () => {
-		const html = await php( "ob_start(); sb_print_most_popular(); return ob_get_clean();" );
-		assertNoLiveScript( html, 'the popular sermons widget' );
+		assertNoLiveScript( element( await widgetPage(), '<section id="sermon-browser-popular"' ), 'the popular sermons widget' );
 	} );
 
 	it( 'shows them as text in the sermons widget', async () => {
-		const html = await php( "ob_start(); sb_display_sermons( array( 'limit' => 10 ) ); return ob_get_clean();" );
+		await setOptions( { sermons_widget_options: { 2: { limit: 10, preacherz: 1, book: 1, preacher: 0, service: 0, series: 0, title: '<script>alert("xss")</script>', date: 1, player: 0 } } } );
+		const html = element( await widgetPage(), '<section id="sermon-2"' );
 		assertNoLiveScript( html, 'the sermons widget' );
+		assert.match( html, /<h2 class="widget-title">&lt;script&gt;alert/ );
+	} );
+
+	it( 'shows them as text in sb_display_sermons(), for themes', async () => {
+		const html = await php( "ob_start(); sb_display_sermons( array( 'limit' => 10 ) ); return ob_get_clean();" );
+		assertNoLiveScript( html, 'sb_display_sermons()' );
 		assert.match( html, /&lt;script&gt;alert/ );
 	} );
 
 	it( 'shows them as text in the tag cloud', async () => {
-		const html = await php( "ob_start(); sb_print_tag_clouds(); return ob_get_clean();" );
-		assertNoLiveScript( html, 'the tag cloud' );
+		assertNoLiveScript( element( await widgetPage(), '<section id="sermon-browser-tags"' ), 'the tag cloud' );
 	} );
 
 	it( 'keeps the podcast feed well-formed', async () => {
