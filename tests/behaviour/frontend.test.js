@@ -383,6 +383,29 @@ describe( 'the podcast feed', () => {
 		}
 	} );
 
+	it( 'stops after the sermon that brings it to 16 episodes, dated by the newest sermon', async () => {
+		// Sermons 101 to 120, one a day from 1 April, each with one MP3 (105 has two and 110 a PDF too);
+		// 121, the newest, has no attachments.
+		await php( `global $wpdb;
+			for ( $id = 101; $id <= 121; $id++ ) {
+				$wpdb->insert( "{$wpdb->prefix}sb_sermons", array( 'id' => $id, 'title' => "Episode $id", 'preacher_id' => 1, 'datetime' => gmdate( 'Y-m-d 10:30:00', strtotime( '2026-04-01 +' . ( $id - 101 ) . ' days' ) ), 'service_id' => 1, 'series_id' => 1, 'start' => 'a:0:{}', 'end' => 'a:0:{}', 'description' => '', 'time' => '', 'override' => 0, 'page_id' => 0 ) );
+				$files = 121 === $id ? array() : ( 105 === $id ? array( "episode-$id.mp3", "episode-$id-b.mp3" ) : ( 110 === $id ? array( "episode-$id.mp3", "notes-$id.pdf" ) : array( "episode-$id.mp3" ) ) );
+				foreach ( $files as $file ) {
+					$wpdb->insert( "{$wpdb->prefix}sb_stuff", array( 'type' => 'file', 'name' => $file, 'sermon_id' => $id, 'count' => 0, 'duration' => '' ) );
+				}
+			}
+			return true;` );
+		try {
+			const xml = ( await visitor.request( '/sermons/?podcast' ) ).text;
+			const titles = [ ...xml.matchAll( /<item>[\s\S]*?<title>([^<]*)<\/title>/g ) ].map( ( match ) => match[ 1 ] );
+			assert.deepEqual( titles, [ 120, 119, 118, 117, 116, 115, 114, 113, 112, 111, 110, 109, 108, 107, 106, 105, 105 ].map( ( id ) => `Episode ${ id }` ) );
+			assert.match( xml, /<lastBuildDate>Tue, 21 Apr 2026 10:30:00 \+0000<\/lastBuildDate>/ );
+		} finally {
+			await query( 'DELETE FROM wp_sb_sermons WHERE id > 100' );
+			await query( 'DELETE FROM wp_sb_stuff WHERE sermon_id > 100' );
+		}
+	} );
+
 	it( 'filters the feed', async () => {
 		const xml = ( await visitor.request( '/sermons/?podcast&preacher=2' ) ).text;
 		assert.doesNotMatch( xml, /<item>/ );

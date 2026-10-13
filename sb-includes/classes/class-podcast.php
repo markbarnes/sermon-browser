@@ -21,10 +21,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Podcast {
 
 	/**
+	 * How many sermons the feed reads at a time, until it has enough episodes.
+	 */
+	const BATCH = 20;
+
+	/**
 	 * Sends the feed and ends the request.
 	 */
 	public static function serve() {
-		$sermons = sb_get_sermons(
+		$query           = sb_sermon_query(
 			array(
 				'title'    => isset( $_REQUEST['title'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['title'] ) ) : '',
 				'preacher' => isset( $_REQUEST['preacher'] ) ? (int) $_REQUEST['preacher'] : '',
@@ -40,8 +45,12 @@ class Podcast {
 				'dir' => 'desc',
 			),
 			1,
-			1000000
+			self::BATCH
 		);
+		$episodes        = self::episodes( $query );
+		$query->per_page = 1;
+		$newest          = Storage::sermons()->find( $query )->sermons;
+		$newest          = $newest ? $newest[0] : time();
 
 		wp_timezone_override_offset();
 
@@ -63,46 +72,34 @@ class Podcast {
 		<itunes:email></itunes:email>
 	</itunes:owner>
 
-	<lastBuildDate><?php self::print_date(isset($sermons[0]) ? $sermons[0]: time()) ?></lastBuildDate>
-	<pubDate><?php self::print_date(isset($sermons[0]) ? $sermons[0]: time()) ?></pubDate>
+	<lastBuildDate><?php self::print_date($newest) ?></lastBuildDate>
+	<pubDate><?php self::print_date($newest) ?></pubDate>
 	<generator>Wordpress Sermon Browser plugin <?php echo esc_xml(SB_CURRENT_VERSION) ?> (<?php echo esc_xml(Plugin::HOME_URL) ?>)</generator>
 	<docs>http://blogs.law.harvard.edu/tech/rss</docs>
 	<category>Religion &amp; Spirituality</category>
 	<itunes:category text="Religion &amp; Spirituality"></itunes:category>
 	<?php
-		$mp3count = 0;
-		$accepted_extensions = array ('mp3', 'm4a', 'mp4', 'm4v','mov', 'wma', 'wmv');
-		foreach ($sermons as $sermon) {
-			if ($mp3count > 15)
-				break;
-			$media = sb_get_stuff($sermon);
-			if (is_array($media['Files']) || is_array($media['URLs'])) {
-				foreach ($media as $media_type => $media_names)
-					if (is_array($media_names) && $media_type != 'Code')
-						foreach ((array)$media_names as $media_name)
-							if (in_array(strtolower(substr($media_name, -3)), $accepted_extensions)) {
-								$mp3count++;
+		foreach ($episodes as $episode) {
+			list($sermon, $attachment) = $episode;
 ?>
 <item>
-		<guid><?php echo self::file_url($media_name, $media_type) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by xml_encode() ?></guid>
-		<title><?php echo self::xml_encode(stripslashes($sermon->title)) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by xml_encode() ?></title>
+		<guid><?php echo self::file_url($attachment) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by xml_encode() ?></guid>
+		<title><?php echo self::xml_encode($sermon->title) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by xml_encode() ?></title>
 		<link><?php echo self::xml_encode(sb_display_url().sb_query_char(false).'sermon_id='.(int) $sermon->id) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by xml_encode() ?></link>
-		<itunes:author><?php echo self::xml_encode(stripslashes($sermon->preacher)) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by xml_encode() ?></itunes:author>
+		<itunes:author><?php echo self::xml_encode($sermon->preacher ? $sermon->preacher->name : '') // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by xml_encode() ?></itunes:author>
 <?php if ($sermon->description) { ?>
-		<description><?php echo self::cdata(stripslashes($sermon->description)) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the sermon description, in a CDATA section ?></description>
-		<itunes:summary><?php echo self::cdata(stripslashes($sermon->description)) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the sermon description, in a CDATA section ?></itunes:summary>
+		<description><?php echo self::cdata($sermon->description) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the sermon description, in a CDATA section ?></description>
+		<itunes:summary><?php echo self::cdata($sermon->description) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the sermon description, in a CDATA section ?></itunes:summary>
 <?php } ?>
-		<enclosure url="<?php echo self::file_url($media_name, $media_type).'" '.self::media_size($media_name, $media_type).self::mime_type($media_name); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by xml_encode(), (int) and esc_attr() ?> />
-<?php   $duration = self::duration($media_name, $media_type);
+		<enclosure url="<?php echo self::file_url($attachment).'" '.self::media_size($attachment).self::mime_type($attachment->content); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by xml_encode(), (int) and esc_attr() ?> />
+<?php   $duration = self::duration($attachment);
 		if ($duration) { ?>
 		<itunes:duration><?php echo self::xml_encode($duration) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by xml_encode() ?></itunes:duration>
 <?php } ?>
-		<category><?php echo self::xml_encode(stripslashes($sermon->service)) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by xml_encode() ?></category>
+		<category><?php echo self::xml_encode($sermon->service ? $sermon->service->name : '') // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by xml_encode() ?></category>
 		<pubDate><?php self::print_date($sermon) ?></pubDate>
 	</item>
 	<?php
-				}
-			}
 		}
 	?>
 </channel>
@@ -112,13 +109,51 @@ class Podcast {
 	}
 
 	/**
+	 * Returns the episodes for a query: each audio or video file or URL of its sermons, newest sermon
+	 * first, files before URLs. Stops after the sermon that brings it to 16, reading sermons a batch at a time.
+	 *
+	 * @param Sermon_Query $query The filters, newest first, with the batch size as its page size.
+	 * @return array[] Each a Sermon and an Attachment.
+	 */
+	private static function episodes( Sermon_Query $query ) {
+		$extensions = array( 'mp3', 'm4a', 'mp4', 'm4v', 'mov', 'wma', 'wmv' );
+		$episodes   = array();
+		$batch      = clone $query;
+		do {
+			$sermons = Storage::sermons()->find( $batch )->sermons;
+			foreach ( $sermons as $sermon ) {
+				if ( count( $episodes ) > 15 ) {
+					return $episodes;
+				}
+				$files = array();
+				$urls  = array();
+				foreach ( $sermon->attachments as $attachment ) {
+					if ( Attachment::FILE === $attachment->type ) {
+						$files[] = $attachment;
+					} elseif ( Attachment::URL === $attachment->type ) {
+						$urls[] = $attachment;
+					}
+				}
+				foreach ( array_merge( $files, $urls ) as $attachment ) {
+					if ( in_array( strtolower( substr( $attachment->content, -3 ) ), $extensions, true ) ) {
+						$episodes[] = array( $sermon, $attachment );
+					}
+				}
+			}
+			++$batch->page;
+		} while ( count( $sermons ) === $batch->per_page );
+		return $episodes;
+	}
+
+	/**
 	 * Prints a date in the feed's format (RFC 822).
 	 *
-	 * @param object|int $sermon A sermon, or a timestamp.
+	 * @param Sermon|int $sermon A sermon, or a timestamp.
 	 */
 	private static function print_date( $sermon ) {
 		if ( is_object( $sermon ) ) {
-			echo esc_xml( gmdate( 'D, d M Y H:i:s O', strtotime( $sermon->datetime ) ) );
+			// The date is the site's local time, printed as if it were UTC, as the feed always has.
+			echo esc_xml( gmdate( 'D, d M Y H:i:s O', strtotime( $sermon->date ? $sermon->date->format( 'Y-m-d H:i:s' ) : '1970-01-01 00:00:00' ) ) );
 		} else {
 			echo esc_xml( gmdate( 'D, d M Y H:i:s O', strtotime( $sermon ) ) );
 		}
@@ -127,44 +162,39 @@ class Podcast {
 	/**
 	 * Returns an enclosure's length attribute.
 	 *
-	 * @param string $media_name File name or URL.
-	 * @param string $media_type 'Files' or 'URLs'.
+	 * @param Attachment $attachment A file or URL.
 	 * @return string|null
 	 */
-	private static function media_size( $media_name, $media_type ) {
-		if ( 'URLs' === $media_type ) {
-			$response = wp_safe_remote_head( wp_specialchars_decode( $media_name, ENT_QUOTES ), array( 'timeout' => 5, 'redirection' => 3 ) );
+	private static function media_size( Attachment $attachment ) {
+		if ( Attachment::URL === $attachment->type ) {
+			$response = wp_safe_remote_head( wp_specialchars_decode( $attachment->content, ENT_QUOTES ), array( 'timeout' => 5, 'redirection' => 3 ) );
 			$filesize = (int) wp_remote_retrieve_header( $response, 'content-length' );
 			if ( $filesize ) {
 				return "length=\"{$filesize}\"";
 			}
 		} else {
-			return 'length="' . (int) @filesize( SB_ABSPATH . sb_get_option( 'upload_dir' ) . $media_name ) . '"'; // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- a missing file has length 0
+			return 'length="' . (int) @filesize( SB_ABSPATH . sb_get_option( 'upload_dir' ) . $attachment->content ) . '"'; // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- a missing file has length 0
 		}
 	}
 
 	/**
 	 * Returns the duration of an uploaded MP3 file, reading it from the file the first time.
 	 *
-	 * @param string $media_name File name or URL.
-	 * @param string $media_type 'Files' or 'URLs'.
+	 * @param Attachment $attachment A file or URL.
 	 * @return string|null
 	 */
-	private static function duration( $media_name, $media_type ) {
-		if ( strtolower( substr( $media_name, -3 ) ) == 'mp3' && 'Files' === $media_type ) {
-			$attachment = Storage::attachments()->find( Attachment::FILE, $media_name );
-			if ( $attachment && $attachment->duration ) {
+	private static function duration( Attachment $attachment ) {
+		if ( strtolower( substr( $attachment->content, -3 ) ) == 'mp3' && Attachment::FILE === $attachment->type ) {
+			if ( $attachment->duration ) {
 				return $attachment->duration;
 			}
 			if ( ! class_exists( 'getID3' ) ) {
 				require ABSPATH . WPINC . '/ID3/getid3.php';
 			}
 			$getid3     = new \getID3();
-			$media_info = $getid3->analyze( SB_ABSPATH . sb_get_option( 'upload_dir' ) . $media_name );
+			$media_info = $getid3->analyze( SB_ABSPATH . sb_get_option( 'upload_dir' ) . $attachment->content );
 			$duration   = isset( $media_info['playtime_string'] ) ? $media_info['playtime_string'] : '';
-			if ( $attachment ) {
-				Storage::attachments()->set_duration( $attachment, $duration );
-			}
+			Storage::attachments()->set_duration( $attachment, $duration );
 			return $duration;
 		}
 	}
@@ -199,14 +229,14 @@ class Podcast {
 	 *
 	 * Download counting has to be off for iTunes.
 	 *
-	 * @param string $media_name File name or URL.
-	 * @param string $media_type 'Files' or 'URLs'.
+	 * @param Attachment $attachment A file or URL.
 	 * @return string Escaped for XML.
 	 */
-	private static function file_url( $media_name, $media_type ) {
+	private static function file_url( Attachment $attachment ) {
 		$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
 		$stats      = ! ( stripos( $user_agent, 'itunes' ) !== false || stripos( $user_agent, 'FeedBurner' ) !== false || stripos( $user_agent, 'AppleCoreMedia' ) !== false );
-		if ( 'URLs' === $media_type ) {
+		$media_name = $attachment->content;
+		if ( Attachment::URL === $attachment->type ) {
 			if ( $stats ) {
 				$media_name = sb_display_url() . sb_query_char() . 'show&amp;url=' . rawurlencode( $media_name );
 			}
@@ -217,6 +247,7 @@ class Podcast {
 		}
 		return self::xml_encode( $media_name );
 	}
+
 
 	/**
 	 * Returns an enclosure's type attribute, for the file types in filetypes.php.
