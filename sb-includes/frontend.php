@@ -961,9 +961,7 @@ function sb_print_filters($filter) {
 		$book_count = $wpdb->get_results("SELECT bs.book_name AS name, count(distinct bs.sermon_id) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs JOIN {$wpdb->prefix}sb_books AS b ON bs.book_name = b.name GROUP BY b.id ORDER BY b.id");
 		$sb = array(
 			__('Title', 'sermon-browser') => 'm.title',
-			__('Preacher', 'sermon-browser') => 'preacher',
 			__('Date', 'sermon-browser') => 'm.datetime',
-			__('Passage', 'sermon-browser') => 'b.id',
 		);
 		$di = array(
 			__('Ascending', 'sermon-browser') => 'asc',
