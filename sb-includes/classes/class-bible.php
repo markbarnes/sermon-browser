@@ -21,40 +21,16 @@ class Bible {
 	/**
 	 * Returns a human friendly Bible reference (John 3:1-16, not John 3:1-John 3:16), with the book translated.
 	 *
+	 * For callers that still pass arrays: Passage::reference() does the work.
+	 *
 	 * @param array $start    Start of the passage.
 	 * @param array $end      End of the passage.
 	 * @param bool  $add_link Whether to link the book names to the sermons on that book.
 	 * @return string HTML.
 	 */
 	public static function reference( $start, $end, $add_link = false ) {
-		if ( ! is_array( $start ) || ! is_array( $end ) || ! isset( $start['book'] ) || ! trim( $start['book'] ) ) {
-			return '';
-		}
-		$translated_books = array_combine( sb_get_default( 'eng_bible_books' ), sb_get_default( 'bible_books' ) );
-		$start_book       = esc_html( isset( $translated_books[ trim( $start['book'] ) ] ) ? $translated_books[ trim( $start['book'] ) ] : trim( $start['book'] ) );
-		$end_book         = esc_html( isset( $translated_books[ trim( $end['book'] ) ] ) ? $translated_books[ trim( $end['book'] ) ] : trim( $end['book'] ) );
-		$start_chapter    = (int) $start['chapter'];
-		$end_chapter      = (int) $end['chapter'];
-		$start_verse      = (int) $start['verse'];
-		$end_verse        = (int) $end['verse'];
-		if ( $add_link ) {
-			$start_book = '<a href="' . sb_get_book_link( trim( $start['book'] ) ) . "\">{$start_book}</a>";
-			$end_book   = '<a href="' . sb_get_book_link( trim( $end['book'] ) ) . "\">{$end_book}</a>";
-		}
-		if ( $start_book == $end_book ) {
-			if ( $start_chapter == $end_chapter ) {
-				if ( $start_verse == $end_verse ) {
-					$reference = "$start_book $start_chapter:$start_verse";
-				} else {
-					$reference = "$start_book $start_chapter:$start_verse-$end_verse";
-				}
-			} else {
-				$reference = "$start_book $start_chapter:$start_verse-$end_chapter:$end_verse";
-			}
-		} else {
-			$reference = "$start_book $start_chapter:$start_verse - $end_book $end_chapter:$end_verse";
-		}
-		return $reference;
+		$passage = Passage::from_arrays( $start, $end );
+		return $passage ? $passage->reference( $add_link ) : '';
 	}
 
 	/**
@@ -63,16 +39,15 @@ class Bible {
 	 * Other versions (KJV, ASV and so on) came from api.preachingcentral.com, which no longer exists,
 	 * so their template tags print nothing.
 	 *
-	 * @param array  $start   Start of the passage.
-	 * @param array  $end     End of the passage.
-	 * @param string $version 'esv' or 'net'.
+	 * @param Passage $passage The passage.
+	 * @param string  $version 'esv' or 'net'.
 	 * @return string HTML.
 	 */
-	public static function text( $start, $end, $version ) {
+	public static function text( Passage $passage, $version ) {
 		if ( $version == 'esv' ) {
-			return self::esv_text( $start, $end );
+			return self::esv_text( $passage );
 		} elseif ( $version == 'net' ) {
-			return self::net_text( $start, $end );
+			return self::net_text( $passage );
 		} else {
 			return '';
 		}
@@ -81,15 +56,14 @@ class Bible {
 	/**
 	 * Returns the ESV text of a passage, from api.esv.org, if an API key is set.
 	 *
-	 * @param array $start Start of the passage.
-	 * @param array $end   End of the passage.
+	 * @param Passage $passage The passage.
 	 * @return string HTML.
 	 */
-	private static function esv_text( $start, $end ) {
+	private static function esv_text( Passage $passage ) {
 		$api_key = sb_get_option( 'esv_api_key' );
 		if ( $api_key ) {
 			$header   = array( 'Authorization' => 'Token ' . $api_key );
-			$esv_url  = 'https://api.esv.org/v3/passage/html/?q=' . rawurlencode( wp_specialchars_decode( self::reference( $start, $end ) ) ) . '&include-headings=false&include-footnotes=false';
+			$esv_url  = 'https://api.esv.org/v3/passage/html/?q=' . rawurlencode( wp_specialchars_decode( $passage->reference() ) ) . '&include-headings=false&include-footnotes=false';
 			$api_body = self::download( $esv_url, $header );
 			$decode   = json_decode( $api_body );
 			if ( is_object( $decode ) && isset( $decode->passages ) && is_array( $decode->passages ) ) {
@@ -102,13 +76,12 @@ class Bible {
 	/**
 	 * Returns the NET Bible text of a passage, from labs.bible.org.
 	 *
-	 * @param array $start Start of the passage.
-	 * @param array $end   End of the passage.
+	 * @param Passage $passage The passage.
 	 * @return string HTML.
 	 */
-	private static function net_text( $start, $end ) {
-		$reference   = rawurlencode( wp_specialchars_decode( self::reference( $start, $end ) ) );
-		$old_chapter = $start['chapter'];
+	private static function net_text( Passage $passage ) {
+		$reference   = rawurlencode( wp_specialchars_decode( $passage->reference() ) );
+		$old_chapter = $passage->start->chapter;
 		// https://labs.bible.org/api_web_service
 		$net_url = "https://labs.bible.org/api/?passage={$reference}&type=xml";
 		$xml     = self::xml( self::download( $net_url . '&formatting=para' ) );
@@ -133,7 +106,7 @@ class Bible {
 				$output .= $item->text;
 			}
 		}
-		return "<div class=\"net\">\r<h2>" . self::reference( $start, $end ) . '</h2><p>' . wp_kses_post( $output ) . " (<a href=\"https://netbible.org/bible/{$reference}\">NET Bible</a>)</p></div>";
+		return "<div class=\"net\">\r<h2>" . $passage->reference() . '</h2><p>' . wp_kses_post( $output ) . " (<a href=\"https://netbible.org/bible/{$reference}\">NET Bible</a>)</p></div>";
 	}
 
 	/**

@@ -442,7 +442,7 @@ class Template_Renderer {
 	 */
 	private function tag_esvtext( Sermon $sermon ) {
 		foreach ( $sermon->passages as $passage ) {
-			echo Bible::text( $passage->start->to_array(), $passage->end->to_array(), 'esv' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in Bible::text()
+			echo Bible::text( $passage, 'esv' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in Bible::text()
 		}
 	}
 
@@ -451,7 +451,7 @@ class Template_Renderer {
 	 */
 	private function tag_nettext( Sermon $sermon ) {
 		foreach ( $sermon->passages as $passage ) {
-			echo Bible::text( $passage->start->to_array(), $passage->end->to_array(), 'net' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in Bible::text()
+			echo Bible::text( $passage, 'net' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in Bible::text()
 		}
 	}
 

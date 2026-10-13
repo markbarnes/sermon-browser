@@ -92,7 +92,8 @@ function sb_get_books($start, $end) {
 
 //Returns the text of a Bible passage (esv or net) for the single sermon page
 function sb_add_bible_text ($start, $end, $version) {
-	return SermonBrowser\Bible::text($start, $end, $version);
+	$passage = SermonBrowser\Passage::from_arrays($start, $end);
+	return $passage ? SermonBrowser\Bible::text($passage, $version) : '';
 }
 
 //Adds edit sermon link if current user has edit rights
