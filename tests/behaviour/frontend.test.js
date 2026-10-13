@@ -6,16 +6,18 @@
  * changes it fails until the change is reviewed (npm run test:update-snapshots). The other
  * assertions state the behaviour that must survive any change of output.
  */
-import { before, describe, it } from 'node:test';
+import { after, before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { debugLog, one, php, phpString, seed, SITE } from './lib/wp.js';
+import { debugLog, defaultTemplates, one, php, phpString, seed, setOptions, SITE, useTemplates } from './lib/wp.js';
 import { Client } from './lib/client.js';
 import { element, matchesSnapshot } from './lib/html.js';
 
 const visitor = new Client();
 
+let users;
+
 before( async () => {
-	await seed();
+	( { users } = await seed() );
 } );
 
 const sermonBrowser = async ( query = '' ) => element( await visitor.html( `/sermons/${ query ? '?' + query : '' }` ), '<div class="sermon-browser' );
@@ -234,6 +236,65 @@ describe( 'widgets', () => {
 	} );
 } );
 
+describe( 'template tags the default templates leave out', () => {
+	before( async () => {
+		const defaults = await defaultTemplates();
+		await useTemplates( {
+			search: defaults.search + '<div id="extra-tags">[tag_cloud][most_popular]</div>',
+			single: defaults.single + '<div id="extra-tags">[biblepassage]<ul>[files_loop]<li>[file]</li>[/files_loop]</ul></div>',
+		} );
+		// [most_popular] uses the popular widget's settings.
+		await setOptions( { popular_widget_options: { title: '', limit: 5, display_sermons: true, display_series: true, display_preachers: true } } );
+	} );
+
+	after( async () => {
+		const defaults = await defaultTemplates();
+		await useTemplates( defaults );
+	} );
+
+	it( 'shows the tag cloud and the most popular sermons in the sermon list', async () => {
+		await new Client().request( '/sermons/?show&file_name=2026-03-08-peace-with-god.mp3', { redirect: 'manual' } );
+		// Up to the popular widget's script, whose strings hold markup element() can't balance.
+		const page = await visitor.html( '/sermons/' );
+		const html = page.slice( page.indexOf( '<div id="extra-tags">' ) ).split( '<script' )[ 0 ];
+		assert.match( html, /^<div id="extra-tags"><a style="font-size:150%" href="[^"]*stag=grace">grace<\/a> / );
+		assert.match( html, /<div id="sermon_most_popular" style="border: 1px solid ; margin: 0pt 0pt 1em 2em; padding: 5px; float: right; font-size: 75%; line-height: 1em"><p><a id="popular_sermons_trigger_f" href="#">Sermons<\/a>/ );
+		assert.match( html, /<div id="sb_popular_wrapper_f"><div class="popular-sermons_f"><ul><li><a href="[^"]*sermon_id=3">Romans 5: peace with God<\/a>/ );
+	} );
+
+	it( 'shows each Bible passage and each file\'s player on a sermon page', async () => {
+		const html = element( await visitor.html( '/sermons/?sermon_id=3' ), '<div id="extra-tags">' );
+		matchesSnapshot( html, 'template-tags-sermon-3.html' );
+		assert.match( html, /^<div id="extra-tags"><p class='bible-passage'>Romans 5:1-11<\/p><p class='bible-passage'>Isaiah 53:4-6<\/p><ul><li><audio class="wp-audio-shortcode"/ );
+		assert.match( html, /<source type="audio\/mpeg" src="[^"]*\/sermons\/\?show&#038;file_name=2026-03-08-peace-with-god\.mp3&#038;_=\d+" \/>/ );
+		assert.doesNotMatch( html, /Download/ );
+	} );
+} );
+
+describe( 'the admin bar', () => {
+	const menu = async ( role, path ) => {
+		const html = await ( await Client.as( users[ role ] ) ).html( path );
+		return [ ...html.matchAll( /<li role='group' id='wp-admin-bar-(sermon-browser-[\w-]+)'[^>]*><a class='ab-item'[^>]*href='[^']*\/wp-admin\/admin\.php\?page=sermon-browser\/([^']*)'>([^<]*)<\/a>/g ) ].map( ( match ) => `${ match[ 3 ] }: ${ match[ 2 ] }` );
+	};
+
+	it( 'gives administrators every page they can open', async () => {
+		// The Templates item reuses the id of "Series & Services", so it replaces it.
+		assert.deepEqual( await menu( 'admin', '/sermons/' ), [ 'Sermons: sermon.php', 'Add Sermon: new_sermon.php', 'Files: files.php', 'Preachers: preachers.php', 'Templates: templates.php', 'Options: options.php', 'Uninstall: uninstall.php', 'Help: help.php', 'Sermon: new_sermon.php' ] );
+	} );
+
+	it( 'links to editing the sermon on its page', async () => {
+		const items = await menu( 'editor', '/sermons/?sermon_id=1' );
+		assert.deepEqual( items.slice( 0, 2 ), [ 'Edit Sermon: new_sermon.php&#038;mid=1', 'List Sermons: sermon.php' ] );
+	} );
+
+	it( 'gives each role only the pages its capabilities allow', async () => {
+		assert.deepEqual( await menu( 'editor', '/sermons/' ), [ 'Sermons: sermon.php', 'Add Sermon: new_sermon.php', 'Files: files.php', 'Preachers: preachers.php', 'Series &amp; Services: manage.php', 'Help: help.php', 'Sermon: new_sermon.php' ] );
+		// Authors can't add sermons (publish_pages), so their sermon page links to the list, not the editor.
+		assert.deepEqual( await menu( 'author', '/sermons/?sermon_id=1' ), [ 'Sermons: sermon.php', 'Files: files.php', 'Help: help.php', 'Sermon: new_sermon.php' ] );
+		assert.deepEqual( await menu( 'subscriber', '/sermons/' ), [] );
+	} );
+} );
+
 describe( 'the podcast feed', () => {
 	it( 'lists each audio file and audio URL as an episode, newest first', async () => {
 		const response = await visitor.request( '/sermons/?podcast' );
@@ -253,6 +314,20 @@ describe( 'the podcast feed', () => {
 		const response = await fetch( `${ SITE }/sermons/?podcast`, { headers: { 'User-Agent': 'iTunes/12.0' } } );
 		const xml = await response.text();
 		assert.match( xml, /<enclosure url="[^"]*\/wp-content\/uploads\/sermons\/2026-03-08-peace-with-god\.mp3"/ );
+	} );
+
+	it( 'points the podcast URL at the sermons page whenever a post is saved, unless it is on another site', async () => {
+		const savePost = "wp_update_post( array( 'ID' => get_page_by_path( 'sermon-widgets' )->ID, 'post_content' => get_page_by_path( 'sermon-widgets' )->post_content ) );";
+		const podcastUrl = () => php( "return sb_get_option( 'podcast_url' );" );
+		const original = await podcastUrl();
+		try {
+			await php( `sb_update_option( 'podcast_url', site_url() . '/old-sermons/?podcast' ); ${ savePost } return true;` );
+			assert.equal( await podcastUrl(), `${ SITE }/sermons/?podcast` );
+			await php( `sb_update_option( 'podcast_url', 'https://feeds.example.org/bethel' ); ${ savePost } return true;` );
+			assert.equal( await podcastUrl(), 'https://feeds.example.org/bethel' );
+		} finally {
+			await php( `sb_update_option( 'podcast_url', ${ phpString( original ) } ); return true;` );
+		}
 	} );
 
 	it( 'filters the feed', async () => {
