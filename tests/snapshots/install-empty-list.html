@@ -1,0 +1,53 @@
+<div class="sermon-browser">
+	<span class="inline_controls"><a href="#" id="show_hide_filter"></a></span><div id="mainfilter"></div>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		var filter_visible = false;
+		jQuery('#mainfilter').hide();
+		jQuery('#show_hide_filter').text('[ Show filter ]');
+		jQuery('#show_hide_filter').click(function() {
+			jQuery('#mainfilter:visible').slideUp('slow');
+			jQuery('#mainfilter:hidden').slideDown('slow');
+			if (filter_visible) {
+				jQuery('#show_hide_filter').text('[ Show filter ]');
+				filter_visible = false;
+			} else {
+				jQuery('#show_hide_filter').text('[ Hide filter ]');
+				filter_visible = true;
+			}
+			return false;
+		});
+		jQuery('.podcastcustom').hide();
+	});
+</script>
+   	<div class="sb-clear">
+		<h4>Subscribe to Podcast</h4>
+		<table class="podcast">
+			<tr>
+				<td class="podcastall">
+					<table>
+						<tr>
+							<td class="podcast-icon"><a href="{SITE}?podcast"><img decoding="async" alt="Subscribe to full podcast" title="Subscribe to full podcast" class="podcasticon" src="{SITE}/wp-content/plugins/sermon-browser/sb-includes/icons/podcast.png"/></a></td>
+							<td><strong>All sermons</strong><br /><a href="{SITE_ITPC}?podcast">iTunes</a> &bull; <a href="{SITE}?podcast">Other</a></td>
+						</tr>
+					</table>
+				<td style="width: 2em"> </td>
+				<td class="podcastcustom">
+					<table>
+						<tr>
+							<td class="podcast-icon"><a href="{SITE}/sermons/?podcast=1&#038;dir=desc&#038;sortby=m.datetime"><img decoding="async" alt="Subscribe to custom podcast" title="Subscribe to custom podcast" class="podcasticon" src="{SITE}/wp-content/plugins/sermon-browser/sb-includes/icons/podcast_custom.png"/></a></td>
+							<td><strong>Filtered sermons</strong><br /><a href="{SITE_ITPC}/sermons/?podcast=1&#038;dir=desc&#038;sortby=m.datetime">iTunes</a> &bull; <a href="{SITE}/sermons/?podcast=1&#038;dir=desc&#038;sortby=m.datetime">Other</a></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<h2 class="sb-clear">Sermons (0)</h2>
+   	<div class="floatright"></div>
+   	<div class="floatleft"></div>
+	<table class="sermons">
+		</table>
+   	<div class="floatright"></div>
+   	<div class="floatleft"></div>
+</div>
