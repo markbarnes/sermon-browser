@@ -36,6 +36,7 @@ The tests work from the outside: they make HTTP requests as visitors and as logg
 | `security-sql.test.js` | Hostile values in ID3 tags, sermon fields, filters and the feed |
 | `security-xss.test.js` | Script payloads in every field and request parameter, on every view; PHP in templates |
 | `frontend.test.js` | The sermon list, filters, sermon pages, widgets, feed and stylesheet, with output snapshots |
+| `bible-text.test.js` | Bible text from the ESV and NET APIs (stubbed) on sermon pages |
 
 How it fits together:
 
