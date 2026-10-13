@@ -8,7 +8,7 @@
 		"test": "node --test --test-concurrency=1 'tests/behaviour/**/*.test.js'",
 		"test:update-snapshots": "UPDATE_SNAPSHOTS=1 npm test",
 		"lint": "wp-env run cli bash -c 'find wp-content/plugins/sermon-browser -name \"*.php\" -not -path \"*/node_modules/*\" -print0 | xargs -0 -n1 php -l | grep -v \"^No syntax errors\" || true'",
-		"zip": "git archive --format=zip --prefix=sermon-browser/ -o sermon-browser.zip HEAD sermon.php readme.txt sb-includes"
+		"zip": "git archive --format=zip --prefix=sermon-browser/ -o sermon-browser.zip HEAD"
 	},
 	"devDependencies": {
 		"@wordpress/env": "^11.17.0"

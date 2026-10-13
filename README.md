@@ -2,25 +2,34 @@
 
 [Sermon Browser](https://wordpress.org/plugins/sermon-browser/) is a WordPress plugin for uploading, searching and podcasting sermons. WordPress.org closed the plugin on 4 February 2022 for a security issue ([CVE-2022-0499](https://www.wordfence.com/threat-intel/vulnerabilities/wordpress-plugins/sermon-browser/sermon-browser-04522-cross-site-request-forgery)). Version 0.46.0 fixes that and the other problems found in a full review; see the changelog in `readme.txt`.
 
-`297ef9f` is the 0.45.22 release (identical to WordPress.org SVN), so `git diff 297ef9f` shows every change since.
-
 ## Installing
 
-1. `npm run zip` builds `sermon-browser.zip` from the committed code (commit first).
-2. In WordPress, go to Plugins → Add New → Upload Plugin and upload the zip. If the old version is installed, WordPress offers to replace it; sermons, files and settings are kept.
-3. Templates are recompiled on the first page load after the update.
+Until WordPress.org reopens the plugin, install it from the zip attached to the latest [GitHub release](https://github.com/markbarnes/sermon-browser/releases):
 
-The plugin folder must be named `sermon-browser`.
+1. Download `sermon-browser.zip` from the release (not GitHub's green Code → Download ZIP button: that unpacks to a folder called `sermon-browser-master`, and the plugin only works in a folder called `sermon-browser`).
+2. In WordPress, go to Plugins → Add New → Upload Plugin and upload the zip. If an older version is installed, WordPress offers to replace it; sermons, files and settings are kept.
+3. Templates are recompiled on the first page load after the update.
 
 On servers other than Apache, also stop the web server running scripts from the sermon upload folder (normally `wp-content/uploads/sermons/`), since the `.htaccess` the plugin writes there only works on Apache.
 
+To build the zip yourself from a clone, without installing anything else:
+
+```bash
+git archive --format=zip --prefix=sermon-browser/ -o sermon-browser.zip HEAD
+```
+
+`.gitattributes` leaves the development files (tests, this README, the wp-env and npm files) out of the zip. It is built from committed code, so commit first.
+
 ## Development
 
-Requires Docker and Node.
+Requires Docker and Node; npm is only used for development (wp-env and the tests), never by the plugin itself.
+
+`297ef9f` is the 0.45.22 release (identical to WordPress.org SVN), so `git diff 297ef9f` shows every change since.
 
 - `npm start` runs WordPress with this plugin at http://localhost:8890 (admin: `admin` / `password`), on PHP 8.3 with debug logging to `wp-content/debug.log`. `npm stop` stops it.
 - `npm run lint` checks every PHP file's syntax.
 - Run WP-CLI with `npx wp-env run cli wp <command>`.
+- WordPress.org's [Plugin Check](https://wordpress.org/plugins/plugin-check/): install it once with `npx wp-env run cli wp plugin install plugin-check --activate`, then run `npx wp-env run cli wp plugin check sermon-browser`. It checks the whole folder, so ignore what it reports in `tests/`, dotfiles and other files the zip leaves out.
 
 ## Tests
 

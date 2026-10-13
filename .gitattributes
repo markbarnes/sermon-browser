@@ -1,5 +1,6 @@
-# Leave development files out of git archive and GitHub's downloads, so they
-# hold only the plugin. Install from the zip built by npm run zip.
+# Leave development files out of git archive, so that it holds only the plugin:
+# git archive --format=zip --prefix=sermon-browser/ -o sermon-browser.zip HEAD
+# (npm run zip runs the same command).
 /.gitattributes export-ignore
 /.gitignore export-ignore
 /.wp-env.json export-ignore
