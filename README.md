@@ -45,7 +45,8 @@ The tests work from the outside: they make HTTP requests as visitors and as logg
 | `security-sql.test.js` | Hostile values in ID3 tags, sermon fields, filters and the feed |
 | `security-xss.test.js` | Script payloads in every field and request parameter, on every view; PHP in templates |
 | `frontend.test.js` | The sermon list, filters, sermon pages, widgets, feed and stylesheet, with output snapshots |
-| `live-settings.test.js` | The same views with the live site's templates, stylesheet and options (sermons without attachments hidden, files with download links, widgets set up), with snapshots in `tests/snapshots/live/` |
+| `live-settings.test.js` | The same views with the live site's templates, stylesheet and options (sermons without attachments hidden, files with download links, widgets set up; built in `lib/live.js`), with snapshots in `tests/snapshots/live/` |
+| `upgrade.test.js` | Updating from 0.45.21 with the live site's settings, stored as the old version stored them: the first request recompiles the templates (output identical to a fresh install), protects the upload folder and removes old options; the database upgrade from 1.6 |
 | `bible-text.test.js` | Bible text from the ESV and NET APIs (stubbed) on sermon pages |
 
 How it fits together:
