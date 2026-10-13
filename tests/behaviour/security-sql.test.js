@@ -58,8 +58,9 @@ describe( 'importing ID3 tags', () => {
 		assert.match( page, /value="Tagged sermon"/, 'the title tag should be read' );
 		const series = await query( "SELECT id, name FROM {prefix}sb_series WHERE name LIKE 'No such series%'" );
 		assert.equal( series.length, 1, 'a series named after the album should be created' );
-		// getID3 HTML-encodes tag text, and the plugin stores it as it comes.
-		assert.equal( series[ 0 ].name, album.replaceAll( "'", '&#039;' ) );
+		// getID3 HTML-encodes tag text, and the plugin stores it as it comes. getID3 uses htmlentities()'s
+		// default flags, which encode single quotes only from PHP 8.1.
+		assert.ok( [ album, album.replaceAll( "'", '&#039;' ) ].includes( series[ 0 ].name ), series[ 0 ].name );
 		assert.match( page, new RegExp( `<option value="${ series[ 0 ].id }" selected="selected">` ) );
 		assert.deepEqual( await databaseErrors(), [] );
 	} );

@@ -7,7 +7,7 @@
  */
 import { before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { php, phpString, seed } from './lib/wp.js';
+import { debugLog, php, phpString, seed } from './lib/wp.js';
 import { Client } from './lib/client.js';
 import { assertNoLiveScript, element } from './lib/html.js';
 
@@ -158,5 +158,11 @@ describe( 'PHP in templates', () => {
 		const html = await visitor.html( '/sermons/' );
 		assert.doesNotMatch( html, /ran-template|ran-short/ );
 		assert.match( html, /class="sermon-browser/ );
+	} );
+} );
+
+describe( 'the debug log', () => {
+	it( 'has no PHP errors from these requests', async () => {
+		assert.deepEqual( await debugLog(), [] );
 	} );
 } );

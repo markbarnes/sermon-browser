@@ -6,7 +6,7 @@
  */
 import { before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { one, php, query, seed, uploadExists, SITE } from './lib/wp.js';
+import { debugLog, one, php, query, seed, SITE, uploadExists } from './lib/wp.js';
 import { Client } from './lib/client.js';
 
 const MP3 = Buffer.concat( [ Buffer.from( 'ID3\x03\x00\x00\x00\x00\x00\x00', 'latin1' ), Buffer.alloc( 20 * 417 ).fill( 0 ) ] );
@@ -241,5 +241,11 @@ describe( 'the upload folder setting', () => {
 		assert.equal( folder, 'wp-content/uploads/other-sermons/' );
 		assert.ok( await php( "return file_exists( SB_ABSPATH . 'wp-content/uploads/other-sermons/.htaccess' );" ) );
 		await saveFolder( fixtures.upload_dir );
+	} );
+} );
+
+describe( 'the debug log', () => {
+	it( 'has no PHP errors from these requests', async () => {
+		assert.deepEqual( await debugLog(), [] );
 	} );
 } );

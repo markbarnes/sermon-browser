@@ -42,7 +42,8 @@ How it fits together:
 - `tests/fixtures/seed.php` resets the plugin's tables, options and upload folder before each test file. Its data copies awkward shapes found in the live site's data (escaped apostrophes, typographic punctuation, entities, sermons without passages), plus a sermon with script payloads in every field. Test users' passwords are in the seed; they exist only on the test site.
 - `tests/mu-plugins/` is mapped into the test site only. It blocks outside HTTP requests (stubbing `example.org`) so output is the same on every run, and provides a test-only endpoint for seeding, queries and PHP.
 - `tests/snapshots/` holds the plugin's output for the main views. If a change to output is intended, run `npm run test:update-snapshots` and review the diff in git before committing.
-- The tests also check that the debug log stays free of PHP errors, warnings and notices.
+- Each test file ends by checking that the debug log is free of PHP errors, warnings, notices and deprecations. `.wp-env.json` turns on `WP_DEBUG` for the test site; wp-env turns it off there otherwise, and WordPress then writes nothing to the log.
+- To test another PHP version, put `{ "phpVersion": "8.5" }` in `.wp-env.override.json` (git-ignored) and run `npm start` again. The tests pass on PHP 7.4 to 8.5. With older PHP versions (at least 7.4 to 8.1), wp-env can't build its images if your user or group id is above 256000 (common on Macs managed by an organisation), because their Alpine Linux rejects such ids.
 
 To check that the security tests catch what they should, run them against the original code. In a clean working tree:
 

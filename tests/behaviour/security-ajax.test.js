@@ -6,7 +6,7 @@
  */
 import { before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { one, query, seed, uploadExists } from './lib/wp.js';
+import { debugLog, one, query, seed, uploadExists } from './lib/wp.js';
 import { Client } from './lib/client.js';
 
 let fixtures;
@@ -204,5 +204,11 @@ describe( 'listing sermons and files', () => {
 
 	it( 'refuses a subscriber searching files', async () => {
 		assertRefused( await clients.subscriber.ajax( { search: 'mp3' }, nonces.subscriber ) );
+	} );
+} );
+
+describe( 'the debug log', () => {
+	it( 'has no PHP errors from these requests', async () => {
+		assert.deepEqual( await debugLog(), [] );
 	} );
 } );

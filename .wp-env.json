@@ -14,6 +14,9 @@
 	},
 	"env": {
 		"tests": {
+			"config": {
+				"WP_DEBUG": true
+			},
 			"mappings": {
 				"wp-content/mu-plugins": "./tests/mu-plugins"
 			}

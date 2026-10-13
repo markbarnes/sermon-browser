@@ -6,7 +6,7 @@
  */
 import { before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { one, php, seed } from './lib/wp.js';
+import { debugLog, one, php, seed } from './lib/wp.js';
 import { Client } from './lib/client.js';
 
 let fixtures;
@@ -100,5 +100,11 @@ describe( 'remote URLs', () => {
 			assert.equal( response.status, 404, url );
 		}
 		assert.deepEqual( await requestsLogged(), [], 'no request should leave the server' );
+	} );
+} );
+
+describe( 'the debug log', () => {
+	it( 'has no PHP errors from these requests', async () => {
+		assert.deepEqual( await debugLog(), [] );
 	} );
 } );
