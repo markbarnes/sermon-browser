@@ -1,10 +1,10 @@
 /**
- * The live site's settings (recorded from its settings in October 2026), for tests that
- * check what its visitors see.
+ * A customised site's settings, modelled on a real site's: templates, stylesheet and options
+ * changed from the defaults in the ways sites commonly change them.
  *
- * The templates and stylesheet are built from the plugin's defaults with the live site's
+ * The templates and stylesheet are built from the plugin's defaults with these
  * changes, and each change is checked to apply, so a change to the defaults can't silently
- * stop the tests using the live templates.
+ * stop the tests using the customised templates.
  */
 import assert from 'node:assert/strict';
 import { defaultTemplates } from './wp.js';
@@ -24,11 +24,11 @@ function change( template, find, replacement ) {
 }
 
 /**
- * Returns the live site's templates and stylesheet.
+ * Returns the customised templates and stylesheet.
  *
  * @return {Promise<{search: string, single: string, css: string}>}
  */
-export async function liveTemplates() {
+export async function customisedTemplates() {
 	const defaults = await defaultTemplates();
 	let search = change( defaults.search, /<div class="sb-clear">\s*<h4>Subscribe to Podcast<\/h4>[\s\S]*?<\/table>\s*<\/div>/, '<div class="sb-clear">Subscribe to podcast (<a href="[itunes_podcast]">iTunes</a>, or <a href="[podcast]">other players</a>)</div>\r\n\t<hr/>' );
 	search = change( search, '[files_loop][file][/files_loop]', '[files_loop][file_with_download][/files_loop]' );
@@ -40,9 +40,9 @@ export async function liveTemplates() {
 }
 
 /**
- * The live site's options, other than the templates and stylesheet.
+ * The customised options, other than the templates and stylesheet.
  */
-export const liveOptions = {
+export const customisedOptions = {
 	hide_no_attachments: true,
 	filter_type: 'oneclick',
 	filter_hide: false,

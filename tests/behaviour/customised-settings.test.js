@@ -1,17 +1,17 @@
 /**
- * What visitors see with the live site's settings rather than the defaults: the sermon
+ * What visitors see with a customised site's settings rather than the defaults: the sermon
  * list hides sermons without files or embeds, lists files with download links and has a
  * one-line podcast link; the templates keep the credit link from older versions; the
  * stylesheet has an extra rule; the recent sermons and popular widgets are set up.
  *
- * The settings are in lib/live.js.
+ * The settings are in lib/customised.js.
  *
- * Snapshots are in tests/snapshots/live/.
+ * Snapshots are in tests/snapshots/customised/.
  */
 import { before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { debugLog, seed, setOptions, useTemplates } from './lib/wp.js';
-import { liveOptions, liveTemplates } from './lib/live.js';
+import { customisedOptions, customisedTemplates } from './lib/customised.js';
 import { Client } from './lib/client.js';
 import { element, matchesSnapshot } from './lib/html.js';
 
@@ -20,10 +20,10 @@ let css;
 
 before( async () => {
 	await seed();
-	const templates = await liveTemplates();
+	const templates = await customisedTemplates();
 	css = templates.css;
 	await useTemplates( templates );
-	await setOptions( { ...liveOptions, css_style: css } );
+	await setOptions( { ...customisedOptions, css_style: css } );
 	// Different play counts, so the popular widget's order doesn't depend on how the database breaks ties.
 	for ( const [ file, plays ] of [ [ '2026-03-08-peace-with-god.mp3', 3 ], [ '2026-03-01-faith-and-works.mp3', 2 ] ] ) {
 		for ( let i = 0; i < plays; i++ ) {
@@ -36,10 +36,10 @@ const sermonBrowser = async ( query = '' ) => element( await visitor.html( `/ser
 const listedIds = ( html ) => [ ...element( html, '<table class="sermons">' ).matchAll( /<a href="[^"]*sermon_id=(\d+)">/g ) ].map( ( match ) => Number( match[ 1 ] ) ).filter( ( id, index, ids ) => ids.indexOf( id ) === index );
 const sermonCount = ( html ) => Number( html.match( /Sermons \((\d+)\)/ )[ 1 ] );
 
-describe( 'the sermon list with the live settings', () => {
+describe( 'the sermon list with customised settings', () => {
 	it( 'lists only sermons with files or embeds', async () => {
 		const html = await sermonBrowser();
-		matchesSnapshot( html, 'live/list.html' );
+		matchesSnapshot( html, 'customised/list.html' );
 		assert.equal( sermonCount( html ), 3 );
 		assert.deepEqual( listedIds( html ), [ 4, 3, 1 ] );
 	} );
@@ -65,31 +65,31 @@ describe( 'the sermon list with the live settings', () => {
 	} );
 } );
 
-describe( 'sermon pages with the live settings', () => {
+describe( 'sermon pages with customised settings', () => {
 	it( 'shows a sermon with files and an embed', async () => {
-		matchesSnapshot( await sermonBrowser( 'sermon_id=1' ), 'live/sermon-1.html' );
+		matchesSnapshot( await sermonBrowser( 'sermon_id=1' ), 'customised/sermon-1.html' );
 	} );
 
 	it( 'still shows a sermon without attachments when asked for it', async () => {
-		matchesSnapshot( await sermonBrowser( 'sermon_id=2' ), 'live/sermon-2.html' );
+		matchesSnapshot( await sermonBrowser( 'sermon_id=2' ), 'customised/sermon-2.html' );
 	} );
 } );
 
-describe( 'the podcast feed with the live settings', () => {
+describe( 'the podcast feed with customised settings', () => {
 	it( 'is the same as with the default settings', async () => {
 		// Sermons without audio have no episode either way, so hide_no_attachments changes nothing.
 		matchesSnapshot( ( await visitor.request( '/sermons/?podcast' ) ).text, 'podcast.xml' );
 	} );
 } );
 
-describe( 'widgets with the live settings', () => {
+describe( 'widgets with customised settings', () => {
 	const widgets = async () => {
 		const html = await visitor.html( '/sermon-widgets/' );
 		return html.slice( html.indexOf( '<section id="sermon-2"' ), html.lastIndexOf( '</section>' ) + '</section>'.length );
 	};
 
 	it( 'shows recent sermons, tags and the most popular sermons in a widget area', async () => {
-		matchesSnapshot( await widgets(), 'live/widgets.html' );
+		matchesSnapshot( await widgets(), 'customised/widgets.html' );
 	} );
 
 	it( 'lists the five most recent sermons with dates, including those without attachments', async () => {
@@ -106,7 +106,7 @@ describe( 'widgets with the live settings', () => {
 	} );
 } );
 
-describe( 'the stylesheet with the live settings', () => {
+describe( 'the stylesheet with customised settings', () => {
 	it( 'is the stylesheet as saved', async () => {
 		assert.equal( ( await visitor.request( '/sb-style.css' ) ).text, css );
 	} );

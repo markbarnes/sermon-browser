@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * - a published "Sermons" page at /sermons/ with the [sermons] shortcode;
  * - the plugin's widgets in the test widget area, and a "Sermon widgets" page at
  *   /sermon-widgets/ that shows them;
- * - genuine sermons with the awkward content the live site's data has:
+ * - genuine sermons with the awkward content real sermon data has:
  *   apostrophes stored with slashes as the plugin saves them, unescaped
  *   ampersands, typographic punctuation, an HTML entity in a series name,
  *   a sermon with no Bible passage, a service time without a leading zero,
@@ -102,7 +102,7 @@ foreach ( array( 'sb_preachers', 'sb_series', 'sb_services' ) as $table ) {
 }
 $hostile = '<script>alert("xss")</script>';
 $preachers = array(
-	1 => array( 'Dylan Jones', 'Pastor of Bethel since 2015.', 'profile.jpg' ),
+	1 => array( 'Dylan Jones', 'Pastor of Ebenezer since 2015.', 'profile.jpg' ),
 	2 => array( 'Rhiannon Llŷr', 'Visiting preacher from Aberystwyth.' ),
 	3 => array( $hostile, '<img src=x onerror=alert("preacher")>' ),
 );

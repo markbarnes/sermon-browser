@@ -120,7 +120,7 @@ describe( 'sermon pages', () => {
 		assert.match( html, /download&#038;file_name=2026-03-01-faith-and-works\.mp3">Download<\/a>/ );
 		assert.match( html, /\?show&#038;url=https%3A%2F%2Fexample\.org%2Fsermons%2Ffaith-and-works-remote\.mp3/ );
 		assert.match( html, /<iframe width="560" height="315" src="https:\/\/www\.youtube-nocookie\.com\/embed\/abc123" allowfullscreen><\/iframe>/ );
-		assert.match( html, /About Dylan Jones: <\/span><span class='description'>Pastor of Bethel since 2015\.<\/span>/ );
+		assert.match( html, /About Dylan Jones: <\/span><span class='description'>Pastor of Ebenezer since 2015\.<\/span>/ );
 		assert.match( html, /<img alt='Dylan Jones' class='preacher' src='[^']*\/sermons\/images\/profile\.jpg'>/ );
 	} );
 
@@ -323,8 +323,8 @@ describe( 'the podcast feed', () => {
 		try {
 			await php( `sb_update_option( 'podcast_url', site_url() . '/old-sermons/?podcast' ); ${ savePost } return true;` );
 			assert.equal( await podcastUrl(), `${ SITE }/sermons/?podcast` );
-			await php( `sb_update_option( 'podcast_url', 'https://feeds.example.org/bethel' ); ${ savePost } return true;` );
-			assert.equal( await podcastUrl(), 'https://feeds.example.org/bethel' );
+			await php( `sb_update_option( 'podcast_url', 'https://feeds.example.org/sermons' ); ${ savePost } return true;` );
+			assert.equal( await podcastUrl(), 'https://feeds.example.org/sermons' );
 		} finally {
 			await php( `sb_update_option( 'podcast_url', ${ phpString( original ) } ); return true;` );
 		}

@@ -14,7 +14,7 @@ Upload sermons to your website, where they can be searched, listened to, and dow
 
 == Description ==
 
-The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to their website, where they can be searched, listened to, and downloaded. It is easy to use with comprehensive help and tutorials, and is used on hundreds of church websites. You can view working demos at [Bethel Evangelical Church](http://www.bethel-clydach.co.uk/sermons/), or the [Evangelical Movement of Wales](http://www.emw.org.uk/sermons/). Features include:
+The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to their website, where they can be searched, listened to, and downloaded. It is easy to use with comprehensive help and tutorials, and is used on hundreds of church websites. You can view a working demo at the [Evangelical Movement of Wales](http://www.emw.org.uk/sermons/). Features include:
 
 1. Store thousands of sermons, and **search** them by topic, preacher, bible passage or date.
 2. Full **podcasting** capabilities, including custom podcasts for individual users.

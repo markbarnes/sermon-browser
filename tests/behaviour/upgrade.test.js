@@ -1,19 +1,19 @@
 /**
- * Updating from 0.45.21, as the live site will: its database is already at version 1.7,
+ * Updating from 0.45.21, as sites still on it will: its database is already at version 1.7,
  * so only the code upgrade runs, on the first request of any kind after the update. It
  * recompiles the stored templates, protects the upload folder, removes options left by
  * the old version and records the new version.
  *
- * The site is put into the state 0.45.21 left it in, with the live site's settings,
+ * The site is put into the state 0.45.21 left it in, with customised settings (lib/customised.js),
  * stored the way the old version stored them (templates with escaped quotes, output
  * compiled by the old dictionary), using WordPress's functions rather than the plugin's.
  * Then a visitor's request must show exactly what a fresh install with the same settings
- * shows (the snapshots of live-settings.test.js).
+ * shows (the snapshots of customised-settings.test.js).
  */
 import { before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { debugLog, defaultTemplates, php, phpString, seed, uploadExists } from './lib/wp.js';
-import { liveOptions, liveTemplates } from './lib/live.js';
+import { customisedOptions, customisedTemplates } from './lib/customised.js';
 import { Client } from './lib/client.js';
 import { element, matchesSnapshot } from './lib/html.js';
 
@@ -50,18 +50,18 @@ describe( 'the first request after updating from 0.45.21', () => {
 
 	before( async () => {
 		await seed();
-		templates = await liveTemplates();
-		await storeAsOldVersion( { ...liveOptions, code_version: '0.45.21', db_version: '1.7' }, templates );
+		templates = await customisedTemplates();
+		await storeAsOldVersion( { ...customisedOptions, code_version: '0.45.21', db_version: '1.7' }, templates );
 		list = await visitor.html( '/sermons/' );
 	} );
 
 	it( 'shows the sermon list as a fresh install with the same settings does', () => {
 		assert.doesNotMatch( list, /Compiled by 0\.45\.21/, 'the old version\'s compiled template ran' );
-		matchesSnapshot( element( list, '<div class="sermon-browser' ), 'live/list.html' );
+		matchesSnapshot( element( list, '<div class="sermon-browser' ), 'customised/list.html' );
 	} );
 
 	it( 'shows sermon pages as a fresh install does', async () => {
-		matchesSnapshot( element( await visitor.html( '/sermons/?sermon_id=1' ), '<div class="sermon-browser' ), 'live/sermon-1.html' );
+		matchesSnapshot( element( await visitor.html( '/sermons/?sermon_id=1' ), '<div class="sermon-browser' ), 'customised/sermon-1.html' );
 	} );
 
 	it( 'serves the stylesheet as it was saved', async () => {
@@ -74,7 +74,7 @@ describe( 'the first request after updating from 0.45.21', () => {
 		assert.equal( state.db, '1.7' );
 		assert.equal( state.filter, 'oneclick' );
 		assert.equal( state.hide, true );
-		assert.deepEqual( state.widgets, liveOptions.sermons_widget_options );
+		assert.deepEqual( state.widgets, customisedOptions.sermons_widget_options );
 	} );
 
 	it( 'leaves the templates as they were stored', async () => {
