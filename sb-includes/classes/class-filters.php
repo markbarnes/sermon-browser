@@ -110,24 +110,15 @@ class Filters {
 			$series     = $facets->series;
 			$services   = $facets->services;
 			$book_count = $facets->books;
-			$dates      = array_map(
-				function ( $date ) {
-					return (object) array(
-						'year'  => (int) $date->format( 'Y' ),
-						'month' => (int) $date->format( 'n' ),
-						'day'   => (int) $date->format( 'j' ),
-					);
-				},
-				$facets->dates
-			);
+			$dates      = $facets->dates;
 
 			$this->more_applied = array();
-			$output             = str_replace( '*preacher*', isset( $preachers[0]->name ) ? esc_html( stripslashes( $preachers[0]->name ) ) : '', $output );
+			$output             = str_replace( '*preacher*', isset( $preachers[0]->name ) ? esc_html( $preachers[0]->name ) : '', $output );
 			$book               = isset( $_REQUEST['book'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['book'] ) ) : '';
 			$translated_books   = array_combine( sb_get_default( 'eng_bible_books' ), sb_get_default( 'bible_books' ) );
 			$output             = str_replace( '*book*', esc_html( isset( $translated_books[ $book ] ) ? $translated_books[ $book ] : $book ), $output );
-			$output             = str_replace( '*service*', isset( $services[0]->name ) ? esc_html( stripslashes( $services[0]->name ) ) : '', $output );
-			$output             = str_replace( '*series*', isset( $series[0]->name ) ? esc_html( stripslashes( $series[0]->name ) ) : '', $output );
+			$output             = str_replace( '*service*', isset( $services[0]->name ) ? esc_html( $services[0]->name ) : '', $output );
+			$output             = str_replace( '*series*', isset( $series[0]->name ) ? esc_html( $series[0]->name ) : '', $output );
 			$output             = str_replace( '*title*', isset( $_REQUEST['title'] ) ? esc_html( sanitize_text_field( wp_unslash( $_REQUEST['title'] ) ) ) : '', $output );
 
 			echo '<span class="inline_controls"><a href="#" id="show_hide_filter"></a></span>';
@@ -136,16 +127,16 @@ class Filters {
 			}
 			echo '<div id="mainfilter">';
 			if ( count( $preachers ) > 1 ) {
-				$this->print_line( 'preacher', $preachers, 'id', 'name', 7 );
+				$this->print_line( 'preacher', $preachers, 7 );
 			}
 			if ( count( $book_count ) > 1 ) {
-				$this->print_line( 'book', $book_count, 'name', 'name', 10 );
+				$this->print_line( 'book', $book_count, 10 );
 			}
 			if ( count( $series ) > 1 ) {
-				$this->print_line( 'series', $series, 'id', 'name', 10 );
+				$this->print_line( 'series', $series, 10 );
 			}
 			if ( count( $services ) > 1 ) {
-				$this->print_line( 'service', $services, 'id', 'name', 10 );
+				$this->print_line( 'service', $services, 10 );
 			}
 			$this->print_date_line( $dates );
 			echo "</div>\r";
@@ -207,7 +198,7 @@ class Filters {
 							<td class="field"><select name="preacher" id="preacher">
 									<option value="0" <?php echo ( isset( $_REQUEST['preacher'] ) && (int) $_REQUEST['preacher'] != 0 ) ? '' : 'selected="selected"'; ?>><?php esc_html_e( '[All]', 'sermon-browser' ); ?></option>
 									<?php foreach ( $preachers as $preacher ) : ?>
-									<option value="<?php echo (int) $preacher->id; ?>" <?php echo isset( $_REQUEST['preacher'] ) && $_REQUEST['preacher'] == $preacher->id ? 'selected="selected"' : ''; ?>><?php echo esc_html( stripslashes( $preacher->name ) ) . ' (' . (int) $preacher->count . ')'; ?></option>
+									<option value="<?php echo (int) $preacher->id; ?>" <?php echo isset( $_REQUEST['preacher'] ) && $_REQUEST['preacher'] == $preacher->id ? 'selected="selected"' : ''; ?>><?php echo esc_html( $preacher->name ) . ' (' . (int) $preacher->count . ')'; ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
@@ -215,7 +206,7 @@ class Filters {
 							<td class="field"><select name="service" id="service">
 									<option value="0" <?php echo isset( $_REQUEST['service'] ) && (int) $_REQUEST['service'] != 0 ? '' : 'selected="selected"'; ?>><?php esc_html_e( '[All]', 'sermon-browser' ); ?></option>
 									<?php foreach ( $services as $service ) : ?>
-									<option value="<?php echo (int) $service->id; ?>" <?php echo isset( $_REQUEST['service'] ) && $_REQUEST['service'] == $service->id ? 'selected="selected"' : ''; ?>><?php echo esc_html( stripslashes( $service->name ) ) . ' (' . (int) $service->count . ')'; ?></option>
+									<option value="<?php echo (int) $service->id; ?>" <?php echo isset( $_REQUEST['service'] ) && $_REQUEST['service'] == $service->id ? 'selected="selected"' : ''; ?>><?php echo esc_html( $service->name ) . ' (' . (int) $service->count . ')'; ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
@@ -225,7 +216,7 @@ class Filters {
 							<td class="field"><select name="book">
 									<option value=""><?php esc_html_e( '[All]', 'sermon-browser' ); ?></option>
 									<?php foreach ( $book_count as $book ) : ?>
-									<option value="<?php echo esc_attr( $book->name ); ?>" <?php echo isset( $_REQUEST['book'] ) && $_REQUEST['book'] == $book->name ? 'selected=selected' : ''; ?>><?php echo esc_html( isset( $translated_books[ stripslashes( $book->name ) ] ) ? $translated_books[ stripslashes( $book->name ) ] : stripslashes( $book->name ) ) . ' (' . (int) $book->count . ')'; ?></option>
+									<option value="<?php echo esc_attr( $book->name ); ?>" <?php echo isset( $_REQUEST['book'] ) && $_REQUEST['book'] == $book->name ? 'selected=selected' : ''; ?>><?php echo esc_html( isset( $translated_books[ $book->name ] ) ? $translated_books[ $book->name ] : $book->name ) . ' (' . (int) $book->count . ')'; ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
@@ -233,7 +224,7 @@ class Filters {
 							<td class="field"><select name="series" id="series">
 									<option value="0" <?php echo ( isset( $_REQUEST['series'] ) && (int) $_REQUEST['series'] != 0 ) ? '' : 'selected="selected"'; ?>><?php esc_html_e( '[All]', 'sermon-browser' ); ?></option>
 									<?php foreach ( $series as $item ) : ?>
-									<option value="<?php echo (int) $item->id; ?>" <?php echo isset( $_REQUEST['series'] ) && $_REQUEST['series'] == $item->id ? 'selected="selected"' : ''; ?>><?php echo esc_html( stripslashes( $item->name ) ) . ' (' . (int) $item->count . ')'; ?></option>
+									<option value="<?php echo (int) $item->id; ?>" <?php echo isset( $_REQUEST['series'] ) && $_REQUEST['series'] == $item->id ? 'selected="selected"' : ''; ?>><?php echo esc_html( $item->name ) . ' (' . (int) $item->count . ')'; ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
@@ -307,13 +298,11 @@ class Filters {
 	/**
 	 * Prints the one-click filter's line for a parameter, hiding all but the first $max_num - 1 choices behind a "more" link.
 	 *
-	 * @param string   $id      Request parameter.
-	 * @param object[] $results The choices, with the number of sermons in count.
-	 * @param string   $filter  The choice's property that holds the parameter's value.
-	 * @param string   $display The choice's property that holds its name.
-	 * @param int      $max_num Where the "more" link goes.
+	 * @param string  $id      Request parameter.
+	 * @param Facet[] $facets  The choices. Books are chosen by name, the others by id.
+	 * @param int     $max_num Where the "more" link goes.
 	 */
-	private function print_line( $id, $results, $filter, $display, $max_num = 7 ) {
+	private function print_line( $id, $facets, $max_num = 7 ) {
 		$translate_book = false;
 		if ( $id == 'book' ) {
 			$translate_book   = true;
@@ -322,7 +311,7 @@ class Filters {
 		echo '<div id = "' . esc_attr( $id ) . "\" class=\"filter\">\r<span class=\"filter-heading\">" . esc_html( self::heading( $id ) ) . ":</span> \r";
 		$i    = 1;
 		$more = false;
-		foreach ( $results as $result ) {
+		foreach ( $facets as $facet ) {
 			if ( $i == $max_num ) {
 				echo '<span id="' . esc_attr( $id ) . '-more">';
 				$more                 = true;
@@ -332,9 +321,9 @@ class Filters {
 				echo ", \r";
 			}
 			if ( $translate_book ) {
-				echo '<a href="' . esc_url( sb_build_url( array( $id => $result->$filter ), false ) ) . '">' . esc_html( isset( $translated_books[ stripslashes( $result->$display ) ] ) ? $translated_books[ stripslashes( $result->$display ) ] : stripslashes( $result->$display ) ) . '</a>&nbsp;(' . (int) $result->count . ')';
+				echo '<a href="' . esc_url( sb_build_url( array( $id => $facet->name ), false ) ) . '">' . esc_html( isset( $translated_books[ $facet->name ] ) ? $translated_books[ $facet->name ] : $facet->name ) . '</a>&nbsp;(' . (int) $facet->count . ')';
 			} else {
-				echo '<a href="' . esc_url( sb_build_url( array( $id => $result->$filter ), false ) ) . '">' . esc_html( stripslashes( $result->$display ) ) . '</a>&nbsp;(' . (int) $result->count . ')';
+				echo '<a href="' . esc_url( sb_build_url( array( $id => $facet->id ), false ) ) . '">' . esc_html( $facet->name ) . '</a>&nbsp;(' . (int) $facet->count . ')';
 			}
 			++$i;
 		}
@@ -348,7 +337,7 @@ class Filters {
 	/**
 	 * Prints the one-click filter's line for dates: years, or months if all the sermons are from one year.
 	 *
-	 * @param object[] $dates Each sermon's year, month and day, in date order.
+	 * @param \DateTimeImmutable[] $dates Each sermon's date, oldest first.
 	 */
 	private function print_date_line( $dates ) {
 		if ( empty( $dates ) ) {
@@ -358,24 +347,26 @@ class Filters {
 		$first       = $dates[0];
 		$last        = end( $dates );
 		$count       = 0;
-		if ( $first->year == $last->year ) {
-			if ( $first->month == $last->month ) {
+		if ( $first->format( 'Y' ) === $last->format( 'Y' ) ) {
+			if ( $first->format( 'n' ) === $last->format( 'n' ) ) {
 				$date_output = '';
 			} else {
 				$previous_month = -1;
 				foreach ( $dates as $date ) {
-					if ( $date->month != $previous_month ) {
+					$year  = (int) $date->format( 'Y' );
+					$month = (int) $date->format( 'n' );
+					if ( $month !== $previous_month ) {
 						if ( $count != 0 ) {
 							$date_output .= '(' . $count . '), ';
 						}
 						$date_output   .= '<a href="' . sb_build_url(
 							array(
-								'date'    => $date->year . '-' . $date->month . '-01',
-								'enddate' => $date->year . '-' . $date->month . '-31',
+								'date'    => $year . '-' . $month . '-01',
+								'enddate' => $year . '-' . $month . '-31',
 							),
 							false
-						) . '">' . esc_html( date_i18n( 'F', strtotime( "{$date->year}-{$date->month}-{$date->day}" ) ) ) . '</a> ';
-						$previous_month = $date->month;
+						) . '">' . esc_html( date_i18n( 'F', strtotime( $date->format( 'Y-n-j' ) ) ) ) . '</a> ';
+						$previous_month = $month;
 						$count          = 1;
 					} else {
 						++$count;
@@ -386,18 +377,19 @@ class Filters {
 		} else {
 			$previous_year = 0;
 			foreach ( $dates as $date ) {
-				if ( $date->year !== $previous_year ) {
+				$year = (int) $date->format( 'Y' );
+				if ( $year !== $previous_year ) {
 					if ( $count !== 0 ) {
 						$date_output .= '(' . $count . '), ';
 					}
 					$date_output  .= '<a href="' . sb_build_url(
 						array(
-							'date'    => $date->year . '-01-01',
-							'enddate' => $date->year . '-12-31',
+							'date'    => $year . '-01-01',
+							'enddate' => $year . '-12-31',
 						),
 						false
-					) . '">' . (int) $date->year . '</a> ';
-					$previous_year = $date->year;
+					) . '">' . $year . '</a> ';
+					$previous_year = $year;
 					$count         = 1;
 				} else {
 					++$count;
