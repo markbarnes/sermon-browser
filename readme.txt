@@ -271,7 +271,8 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 * **Change:** A template tag where it can't work (outside its loop, after its loop has ended, or in a loop that is never closed) is left out, instead of printing PHP warnings, the loop's last value or stopping the page with an error. Those who can edit the templates see why, with a link to a new section of the Help page, and the Templates page lists them.
 * **Bug fix:** `[file]`, `[file_with_download]` and `[embed]` outside their loops show the sermon's first file or embed, as the template tag help has always said; they printed a broken link, or the last one shown.
 * **Bug fix:** The sermon list printed PHP deprecation notices for sermons without a series.
-* **Bug fix:** A backslash in a sermon's title, or in a preacher's, series' or service's name, was removed from sermon lists and pages.
+* **Bug fix:** A backslash in a sermon's title or tags, or in a preacher's, series' or service's name, was removed from sermon lists, sermon pages and the recent sermons widget.
+* **Bug fix:** `sb_display_sermons()` with `url_only` printed PHP warnings when no sermon matched.
 * **Bug fix:** Saving the templates turned an attribute in single quotes, such as `data-x='y'`, into `data-x="&apos;y&apos;"`.
 
 = 0.48.0 (13 October 2026) =

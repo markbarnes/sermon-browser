@@ -24,31 +24,29 @@ function sb_display_sermons($options = array()) {
 	extract($options);
 	if ($url_only == 1)
 		$limit = 1;
-	$sermons = sb_get_sermons(array(
+	$sermons = SermonBrowser\Storage::sermons()->find(sb_sermon_query(array(
 			'preacher' => $preacher,
 			'service' => $service,
 			'series' => $series
 		),
-		array(), 1, $limit
-	);
-	if ($url_only == 1)
-		sb_print_sermon_link($sermons[0], true);
-	else {
+		array(), 1, $limit ? $limit : sb_get_option('sermons_per_page')
+	))->sermons;
+	if ($url_only == 1) {
+		if ($sermons)
+			sb_print_sermon_link($sermons[0], true);
+	} else {
 		echo "<ul class=\"sermon-widget\">\r";
 		foreach ((array) $sermons as $sermon) {
 			echo "\t<li>";
 			echo "<span class=\"sermon-title\"><a href=\"";
 			sb_print_sermon_link($sermon, true);
-			echo "\">".esc_html(stripslashes($sermon->title))."</a></span>";
-			if ($display_passage) {
-				$foo = sb_unserialize($sermon->start);
-				$bar = sb_unserialize($sermon->end);
-				echo "<span class=\"sermon-passage\"> (".(isset($foo[0], $bar[0]) ? wp_kses_post(sb_get_books($foo[0], $bar[0])) : '').")</span>";
-			}
+			echo "\">".esc_html($sermon->title)."</a></span>";
+			if ($display_passage)
+				echo "<span class=\"sermon-passage\"> (".($sermon->passages ? wp_kses_post($sermon->passages[0]->reference(true)) : '').")</span>";
 			if ($display_preacher) {
 				echo "<span class=\"sermon-preacher\">".esc_html__('by', 'sermon-browser')." <a href=\"";
 				sb_print_preacher_link($sermon);
-				echo "\">".esc_html(stripslashes($sermon->preacher))."</a></span>";
+				echo "\">".esc_html($sermon->preacher ? $sermon->preacher->name : '')."</a></span>";
 			}
 			if ($display_date)
 				echo " <span class=\"sermon-date\">".esc_html__('on', 'sermon-browser')." ".esc_html(sb_formatted_date ($sermon))."</span>";
@@ -124,12 +122,12 @@ function sb_build_url($arr, $clear = false) {
 	}
 }
 
-// Formats date into words
+// Formats a sermon's date into words
 function sb_formatted_date ($sermon) {
-	if ($sermon->datetime == '1970-01-01 00:00:00')
+	if (!$sermon->date)
 		return __('Unknown Date', 'sermon-browser');
 	else
-		return date_i18n(get_option('date_format'), strtotime($sermon->datetime));
+		return date_i18n(get_option('date_format'), strtotime($sermon->date->format('Y-m-d H:i:s')));
 }
 
 // Returns podcast URL
@@ -145,19 +143,19 @@ function sb_print_sermon_link($sermon, $echo = true) {
 		return sb_build_url(array('sermon_id' => $sermon->id), true);
 }
 
-// Prints preacher search URL
+// Prints the URL of a sermon's preacher's sermons
 function sb_print_preacher_link($sermon) {
-	echo esc_url(sb_build_url(array('preacher' => $sermon->pid), false));
+	echo esc_url(sb_build_url(array('preacher' => $sermon->preacher ? $sermon->preacher->id : null), false));
 }
 
-// Prints series search URL
-function sb_print_series_link($sermon) {
-	echo esc_url(sb_build_url(array('series' => $sermon->ssid), false));
+// Prints the URL of a sermon's series' sermons ($none is the id used for a sermon without a series: null leaves the filter out)
+function sb_print_series_link($sermon, $none = null) {
+	echo esc_url(sb_build_url(array('series' => $sermon->series ? $sermon->series->id : $none), false));
 }
 
-// Prints service search URL
+// Prints the URL of a sermon's service's sermons
 function sb_print_service_link($sermon) {
-	echo esc_url(sb_build_url(array('service' => $sermon->sid), false));
+	echo esc_url(sb_build_url(array('service' => $sermon->service ? $sermon->service->id : null), false));
 }
 
 // Prints bible book search URL
@@ -174,7 +172,6 @@ function sb_get_tag_link($tag) {
 function sb_print_tags($tags) {
 	$out = array();
 	foreach ((array) $tags as $tag) {
-		$tag = stripslashes($tag);
 		$out[] = '<a href="'.esc_url(sb_get_tag_link($tag)).'">'.esc_html($tag).'</a>';
 	}
 	echo wp_kses_post(implode(', ', (array) $out));
@@ -207,13 +204,12 @@ function sb_print_tag_clouds($minfont=80, $maxfont=150) {
 	echo wp_kses_post(implode(' ', $out));
 }
 
-//Prints link to next page
-function sb_print_next_page_link($limit = 0) {
-	global $record_count;
+//Prints link to next page, if the list's $total sermons need one
+function sb_print_next_page_link($limit = 0, $total = 0) {
 	if ($limit == 0)
 		$limit = sb_get_option('sermons_per_page');
 	$current = isset($_REQUEST['pagenum']) ? (int) $_REQUEST['pagenum'] : 1;
-	if ($current < ceil($record_count / $limit)) {
+	if ($current < ceil($total / $limit)) {
 		$url = sb_build_url(array('pagenum' => ++$current), false);
 		echo '<a href="'.esc_url($url).'">'.esc_html__('Next page', 'sermon-browser').' &raquo;</a>';
 	}
@@ -277,29 +273,28 @@ function sb_print_url_link($url) {
 	echo '</div>';
 }
 
-//Decode base64 encoded data
+//Prints embed code (HTML), filtered
 function sb_print_code($code) {
-	echo do_shortcode(sb_kses_embed(base64_decode($code))); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- filtered by sb_kses_embed()
+	echo do_shortcode(sb_kses_embed($code)); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- filtered by sb_kses_embed()
 }
 
-//Prints preacher description
+//Prints a sermon's preacher's description
 function sb_print_preacher_description($sermon) {
-	if (strlen($sermon->preacher_description)>0) {
-		echo "<div class='preacher-description'><span class='about'>" . esc_html__('About', 'sermon-browser').' '.esc_html(stripslashes($sermon->preacher)).': </span>';
-		echo "<span class='description'>".wp_kses_post(stripslashes($sermon->preacher_description))."</span></div>";
+	if ($sermon->preacher && $sermon->preacher->description !== '') {
+		echo "<div class='preacher-description'><span class='about'>" . esc_html__('About', 'sermon-browser').' '.esc_html($sermon->preacher->name).': </span>';
+		echo "<span class='description'>".wp_kses_post($sermon->preacher->description)."</span></div>";
 	}
 }
 
-//Prints preacher image
+//Prints a sermon's preacher's image
 function sb_print_preacher_image($sermon) {
-	if ($sermon->image)
-		echo "<img alt='".esc_attr(stripslashes($sermon->preacher))."' class='preacher' src='".esc_url(trailingslashit(site_url()).sb_get_option('upload_dir').'images/'.rawurlencode($sermon->image))."'>";
+	if ($sermon->preacher && $sermon->preacher->image !== '')
+		echo "<img alt='".esc_attr($sermon->preacher->name)."' class='preacher' src='".esc_url(trailingslashit(site_url()).sb_get_option('upload_dir').'images/'.rawurlencode($sermon->preacher->image))."'>";
 }
 
 //Prints link to sermon preached next (but not today)
 function sb_print_next_sermon_link($sermon) {
-	$sermon = sb_find_sermon((int) $sermon->id);
-	$next = $sermon ? SermonBrowser\Storage::sermons()->next($sermon) : null;
+	$next = SermonBrowser\Storage::sermons()->next($sermon);
 	if (!$next) return;
 	echo '<a href="';
 	sb_print_sermon_link($next);
@@ -308,8 +303,7 @@ function sb_print_next_sermon_link($sermon) {
 
 //Prints link to sermon preached on previous days
 function sb_print_prev_sermon_link($sermon) {
-	$sermon = sb_find_sermon((int) $sermon->id);
-	$prev = $sermon ? SermonBrowser\Storage::sermons()->previous($sermon) : null;
+	$prev = SermonBrowser\Storage::sermons()->previous($sermon);
 	if (!$prev) return;
 	echo '<a href="';
 	sb_print_sermon_link($prev);
@@ -318,8 +312,7 @@ function sb_print_prev_sermon_link($sermon) {
 
 //Prints links to other sermons preached on the same day
 function sb_print_sameday_sermon_link($sermon) {
-	$sermon = sb_find_sermon((int) $sermon->id);
-	$same = $sermon ? SermonBrowser\Storage::sermons()->same_day($sermon) : array();
+	$same = SermonBrowser\Storage::sermons()->same_day($sermon);
 	if (!$same) {
 		esc_html_e('None', 'sermon-browser');
 		return;

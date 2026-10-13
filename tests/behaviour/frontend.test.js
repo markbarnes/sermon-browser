@@ -229,6 +229,10 @@ describe( 'sb_display_sermons(), which the readme tells theme authors to call', 
 		assert.match( await display( { url_only: 1 } ), /^http:\/\/[^"<>\s]*\/sermons\/\?sermon_id=4$/ );
 		assert.match( await display( { url_only: 1, preacher: 2 } ), /\?sermon_id=2$/ );
 	} );
+
+	it( 'prints nothing with url_only when no sermon matches', async () => {
+		assert.equal( await display( { url_only: 1, preacher: 99 } ), '' );
+	} );
 } );
 
 describe( 'widgets', () => {

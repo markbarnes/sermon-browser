@@ -71,7 +71,7 @@ class Recent_Sermons {
 		$instance = $options[ $widget_args['number'] ];
 		echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
 		echo $args['before_title'] . esc_html( $instance['title'] ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
-		$sermons = sb_get_sermons(
+		$query   = sb_sermon_query(
 			array(
 				'preacher' => $instance['preacher'],
 				'service'  => $instance['service'],
@@ -79,23 +79,20 @@ class Recent_Sermons {
 			),
 			array(),
 			1,
-			$instance['limit']
+			$instance['limit'] ? $instance['limit'] : sb_get_option( 'sermons_per_page' )
 		);
+		$sermons = \SermonBrowser\Storage::sermons()->find( $query )->sermons;
 		echo '<ul class="sermon-widget">';
-		foreach ( (array) $sermons as $sermon ) {
+		foreach ( $sermons as $sermon ) {
 			echo '<li><span class="sermon-title">';
-			echo '<a href="' . esc_url( sb_build_url( array( 'sermon_id' => $sermon->id ), true ) ) . '">' . esc_html( stripslashes( $sermon->title ) ) . '</a></span>';
-			if ( $instance['book'] ) {
-				$start = sb_unserialize( $sermon->start );
-				$end   = sb_unserialize( $sermon->end );
-				if ( isset( $start[0] ) && isset( $end[0] ) ) {
-					echo ' <span class="sermon-passage">(' . wp_kses_post( sb_get_books( $start[0], $end[0] ) ) . ')</span>';
-				}
+			echo '<a href="' . esc_url( sb_build_url( array( 'sermon_id' => $sermon->id ), true ) ) . '">' . esc_html( $sermon->title ) . '</a></span>';
+			if ( $instance['book'] && $sermon->passages ) {
+				echo ' <span class="sermon-passage">(' . wp_kses_post( $sermon->passages[0]->reference( true ) ) . ')</span>';
 			}
 			if ( $instance['preacherz'] ) {
 				echo ' <span class="sermon-preacher">' . esc_html__( 'by', 'sermon-browser' ) . ' <a href="';
 				sb_print_preacher_link( $sermon );
-				echo '">' . esc_html( stripslashes( $sermon->preacher ) ) . '</a></span>';
+				echo '">' . esc_html( $sermon->preacher ? $sermon->preacher->name : '' ) . '</a></span>';
 			}
 			if ( $instance['date'] ) {
 				echo ' <span class="sermon-date">' . esc_html__( ' on ', 'sermon-browser' ) . esc_html( sb_formatted_date( $sermon ) ) . '</span>';

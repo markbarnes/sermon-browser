@@ -202,18 +202,6 @@ class Template_Renderer {
 		// Any other tag is a Bible version that no longer exists, and prints nothing.
 	}
 
-	/**
-	 * Returns a link to the sermons a filter (preacher, series, service) gives.
-	 *
-	 * @param string   $filter Filter.
-	 * @param int|null $id     The preacher, series or service, or null for none.
-	 * @param string   $name   Its name.
-	 * @return string HTML.
-	 */
-	private static function filter_link( $filter, $id, $name ) {
-		return '<a href="' . esc_url( sb_build_url( array( $filter => $id ), false ) ) . '">' . esc_html( $name ) . '</a>';
-	}
-
 	// The tags, in the order of the Templates page's help. Each takes the sermon (if there is one) and the context.
 
 	private function tag_filters_form() {
@@ -233,17 +221,11 @@ class Template_Renderer {
 	}
 
 	private function tag_previous_page() {
-		$current = isset( $_REQUEST['pagenum'] ) ? (int) $_REQUEST['pagenum'] : 1;
-		if ( $current > 1 ) {
-			echo '<a href="' . esc_url( sb_build_url( array( 'pagenum' => $current - 1 ), false ) ) . '">&laquo; ' . esc_html__( 'Previous page', 'sermon-browser' ) . '</a>';
-		}
+		sb_print_prev_page_link();
 	}
 
 	private function tag_next_page() {
-		$current = isset( $_REQUEST['pagenum'] ) ? (int) $_REQUEST['pagenum'] : 1;
-		if ( $current < ceil( $this->page->total / sb_get_option( 'sermons_per_page' ) ) ) {
-			echo '<a href="' . esc_url( sb_build_url( array( 'pagenum' => $current + 1 ), false ) ) . '">' . esc_html__( 'Next page', 'sermon-browser' ) . ' &raquo;</a>';
-		}
+		sb_print_next_page_link( 0, $this->page->total );
 	}
 
 	private function tag_podcast() {
@@ -294,49 +276,49 @@ class Template_Renderer {
 	 * @param Sermon $sermon Sermon.
 	 */
 	private function tag_preacher_link( Sermon $sermon ) {
-		echo self::filter_link( 'preacher', $sermon->preacher ? $sermon->preacher->id : null, $sermon->preacher ? $sermon->preacher->name : '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in filter_link()
+		echo '<a href="';
+		sb_print_preacher_link( $sermon );
+		echo '">' . esc_html( $sermon->preacher ? $sermon->preacher->name : '' ) . '</a>';
 	}
 
 	/**
 	 * @param Sermon $sermon Sermon.
 	 */
 	private function tag_series_link( Sermon $sermon ) {
+		echo '<a href="';
 		// A sermon page has always linked a sermon without a series to series=0.
-		$none = Template::SINGLE === $this->template->kind ? 0 : null;
-		echo self::filter_link( 'series', $sermon->series ? $sermon->series->id : $none, $sermon->series ? $sermon->series->name : '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in filter_link()
+		sb_print_series_link( $sermon, Template::SINGLE === $this->template->kind ? 0 : null );
+		echo '">' . esc_html( $sermon->series ? $sermon->series->name : '' ) . '</a>';
 	}
 
 	/**
 	 * @param Sermon $sermon Sermon.
 	 */
 	private function tag_service_link( Sermon $sermon ) {
-		echo self::filter_link( 'service', $sermon->service ? $sermon->service->id : null, $sermon->service ? $sermon->service->name : '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in filter_link()
+		echo '<a href="';
+		sb_print_service_link( $sermon );
+		echo '">' . esc_html( $sermon->service ? $sermon->service->name : '' ) . '</a>';
 	}
 
 	/**
 	 * @param Sermon $sermon Sermon.
 	 */
 	private function tag_preacher_description( Sermon $sermon ) {
-		if ( $sermon->preacher && '' !== $sermon->preacher->description ) {
-			echo "<div class='preacher-description'><span class='about'>" . esc_html__( 'About', 'sermon-browser' ) . ' ' . esc_html( $sermon->preacher->name ) . ': </span>';
-			echo "<span class='description'>" . wp_kses_post( $sermon->preacher->description ) . '</span></div>';
-		}
+		sb_print_preacher_description( $sermon );
 	}
 
 	/**
 	 * @param Sermon $sermon Sermon.
 	 */
 	private function tag_preacher_image( Sermon $sermon ) {
-		if ( $sermon->preacher && '' !== $sermon->preacher->image ) {
-			echo "<img alt='" . esc_attr( $sermon->preacher->name ) . "' class='preacher' src='" . esc_url( trailingslashit( site_url() ) . sb_get_option( 'upload_dir' ) . 'images/' . rawurlencode( $sermon->preacher->image ) ) . "'>";
-		}
+		sb_print_preacher_image( $sermon );
 	}
 
 	/**
 	 * @param Sermon $sermon Sermon.
 	 */
 	private function tag_date( Sermon $sermon ) {
-		echo esc_html( $sermon->date ? date_i18n( get_option( 'date_format' ), strtotime( $sermon->date->format( 'Y-m-d H:i:s' ) ) ) : __( 'Unknown Date', 'sermon-browser' ) );
+		echo esc_html( sb_formatted_date( $sermon ) );
 	}
 
 	/**
@@ -405,7 +387,7 @@ class Template_Renderer {
 			$embed  = $embeds ? $embeds[0] : null;
 		}
 		if ( null !== $embed ) {
-			echo do_shortcode( sb_kses_embed( $embed ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- filtered by sb_kses_embed()
+			sb_print_code( $embed );
 		}
 	}
 

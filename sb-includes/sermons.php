@@ -2,39 +2,11 @@
 if (!defined('ABSPATH'))
 	exit;
 /**
-* Reading sermons and their attachments from the database
+* Turning the request's filters into a sermon query, and finding a sermon once a request
 *
 * @package common_functions
 */
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
-
-/**
-* Get multiple sermons, as the compiled templates and older code expect them
-*
-* Reads them through the sermon repository. Each sermon is a row object with the columns and aliases the
-* old query returned (pid, preacher, ssid, series, start and end serialized and so on); text is unslashed.
-* Stage 3 of the move to custom post types replaces the templates, and this, with Sermon objects.
-* @param array $filter Keys title, preacher, date, enddate, series, service, book, tag, id
-* @param array $order Keys by (a sortby value) and dir (asc or desc)
-* @param integer $page
-* @param integer $limit
-* @param boolean $hide_empty Leave out sermons without attachments
-* @global integer record_count Set to the number of sermons on all pages
-* @return array
-*/
-function sb_get_sermons($filter, $order, $page = 1, $limit = 0, $hide_empty = false) {
-	global $record_count;
-	if ($limit == 0)
-		$limit = sb_get_option('sermons_per_page');
-	$result = SermonBrowser\Storage::sermons()->find(sb_sermon_query($filter, $order, $page, $limit, $hide_empty));
-	$record_count = $result->total;
-	$sermons = array();
-	foreach ($result->sermons as $sermon) {
-		sb_remember_sermon($sermon);
-		$sermons[] = sb_sermon_row($sermon);
-	}
-	return $sermons;
-}
 
 /**
 * Turns the filter and order arrays the plugin has always used into a sermon query
@@ -70,68 +42,15 @@ function sb_sermon_query($filter, $order, $page = 1, $limit = 0, $hide_empty = f
 }
 
 /**
-* Returns a sermon as a row object with the columns and aliases of the old sermon list query
-*
-* @param SermonBrowser\Sermon $sermon
-* @return stdClass
-*/
-function sb_sermon_row($sermon) {
-	$start = $end = array();
-	foreach ($sermon->passages as $passage) {
-		$start[] = $passage->start->to_array();
-		$end[] = $passage->end->to_array();
-	}
-	return (object) array(
-		'id' => $sermon->id,
-		'title' => $sermon->title,
-		'description' => $sermon->description,
-		'datetime' => $sermon->date ? $sermon->date->format('Y-m-d H:i:s') : '1970-01-01 00:00:00',
-		'time' => $sermon->time,
-		'start' => serialize($start),
-		'end' => serialize($end),
-		'pid' => $sermon->preacher ? $sermon->preacher->id : null,
-		'preacher' => $sermon->preacher ? $sermon->preacher->name : null,
-		'preacher_description' => $sermon->preacher ? $sermon->preacher->description : null,
-		'image' => $sermon->preacher ? $sermon->preacher->image : null,
-		'sid' => $sermon->service ? $sermon->service->id : null,
-		'service' => $sermon->service ? $sermon->service->name : null,
-		'ssid' => $sermon->series ? $sermon->series->id : null,
-		'series' => $sermon->series ? $sermon->series->name : null,
-	);
-}
-
-/**
-* Keeps a sermon read in this request, so sb_find_sermon() needn't read it again
-*
-* @param SermonBrowser\Sermon $sermon
-* @return SermonBrowser\Sermon
-*/
-function sb_remember_sermon($sermon) {
-	return sb_sermon_cache($sermon->id, $sermon);
-}
-
-/**
-* Returns a sermon, from the sermons already read in this request if it's one of them
+* Returns a sermon, reading it only once in a request (the page head, title and shortcode all want it)
 *
 * @param integer $id
 * @return SermonBrowser\Sermon|null
 */
 function sb_find_sermon($id) {
-	return sb_sermon_cache((int) $id);
-}
-
-/**
-* Holds the sermons read in this request (for sb_remember_sermon() and sb_find_sermon())
-*
-* @param integer $id
-* @param SermonBrowser\Sermon|null $sermon The sermon to keep, or null to return the one kept (reading it if need be)
-* @return SermonBrowser\Sermon|null
-*/
-function sb_sermon_cache($id, $sermon = null) {
 	static $sermons = array();
-	if ($sermon)
-		$sermons[$id] = $sermon;
-	elseif (!array_key_exists($id, $sermons))
+	$id = (int) $id;
+	if (!array_key_exists($id, $sermons))
 		$sermons[$id] = SermonBrowser\Storage::sermons()->get($id);
 	return $sermons[$id];
 }
@@ -148,44 +67,6 @@ function sb_normalise_sortby($sortby) {
 }
 
 /**
-* Gets a sermon's attachments, as the compiled templates and the feed expect them
-*
-* @param object $sermon (with its id in the id property)
-* @param boolean $mp3_only (if true will only return MP3 files)
-* @return array Files (file names), URLs, and Code (base64-encoded embed code), newest first
-*/
-function sb_get_stuff($sermon, $mp3_only = FALSE) {
-	$found = sb_find_sermon((int) $sermon->id);
-	return sb_sermon_stuff($found ? $found->attachments : array(), $mp3_only);
-}
-
-/**
-* Sorts attachments into the lists sb_get_stuff() returns
-*
-* @param SermonBrowser\Attachment[] $attachments
-* @param boolean $mp3_only (if true will only return MP3 files)
-* @return array Files (file names), URLs, and Code (base64-encoded embed code)
-*/
-function sb_sermon_stuff($attachments, $mp3_only = FALSE) {
-	$file = $url = $code = array();
-	foreach ($attachments as $attachment) {
-		if ($mp3_only && strtolower(substr($attachment->content, -4)) != '.mp3')
-			continue;
-		if ($attachment->type == SermonBrowser\Attachment::FILE)
-			$file[] = $attachment->content;
-		elseif ($attachment->type == SermonBrowser\Attachment::URL)
-			$url[] = $attachment->content;
-		elseif ($attachment->type == SermonBrowser\Attachment::EMBED)
-			$code[] = base64_encode($attachment->content);
-	}
-	return array(
-		'Files' => $file,
-		'URLs' => $url,
-		'Code' => $code,
-	);
-}
-
-/**
 * Count download stats for sermon
 *
 * Returns the number of plays for a particular file
@@ -198,29 +79,4 @@ function sb_sermon_stats($sermonid) {
 	$stats = $wpdb->get_var($wpdb->prepare("SELECT SUM(count) FROM {$wpdb->prefix}sb_stuff WHERE sermon_id = %d", $sermonid));
 	if ($stats > 0)
 		return $stats;
-}
-
-/**
-* Gets a single sermon, as the compiled single sermon template expects it
-*
-* @param integer $id
-* @return array|false Keys Sermon (a row object, with start and end as arrays), Files, Code and Tags
-*/
-function sb_get_single_sermon($id) {
-	$sermon = sb_find_sermon($id);
-	// The old query joined the preacher and service without LEFT JOIN, so a sermon missing either wasn't found
-	if (!$sermon || !$sermon->preacher || !$sermon->service)
-		return false;
-	$row = sb_sermon_row($sermon);
-	$row->start = sb_unserialize($row->start);
-	$row->end = sb_unserialize($row->end);
-	$row->series = $sermon->series ? $sermon->series->name : '';
-	$row->ssid = $sermon->series ? $sermon->series->id : 0;
-	$stuff = sb_sermon_stuff($sermon->attachments);
-	return array(
-		'Sermon' => $row,
-		'Files' => $stuff['Files'],
-		'Code' => $stuff['Code'],
-		'Tags' => $sermon->tags,
-	);
 }
