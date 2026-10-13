@@ -72,6 +72,67 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * @param Sermon $sermon The sermon.
+	 * @return Sermon|null
+	 */
+	public function next( Sermon $sermon ) {
+		$sermons = $this->neighbours( $sermon, '>', 'ASC', 1 );
+		return $sermons ? $sermons[0] : null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param Sermon $sermon The sermon.
+	 * @return Sermon|null
+	 */
+	public function previous( Sermon $sermon ) {
+		$sermons = $this->neighbours( $sermon, '<', 'DESC', 1 );
+		return $sermons ? $sermons[0] : null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param Sermon $sermon The sermon.
+	 * @return Sermon[]
+	 */
+	public function same_day( Sermon $sermon ) {
+		return $this->neighbours( $sermon, '=', 'ASC' );
+	}
+
+	/**
+	 * Returns other dated sermons on days before, after or the same as a sermon's.
+	 *
+	 * @param Sermon $sermon     The sermon.
+	 * @param string $comparison <, > or =, comparing their day with the sermon's.
+	 * @param string $direction  ASC or DESC.
+	 * @param int    $limit      How many, or 0 for all.
+	 * @return Sermon[]
+	 */
+	private function neighbours( Sermon $sermon, $comparison, $direction, $limit = 0 ) {
+		global $wpdb;
+		if ( ! $sermon->date || ! in_array( $comparison, array( '<', '>', '=' ), true ) || ! in_array( $direction, array( 'ASC', 'DESC' ), true ) ) {
+			return array();
+		}
+		// $comparison and $direction are checked above.
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$ids = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT id FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) {$comparison} DATE(%s) AND id <> %d AND datetime <> %s ORDER BY datetime {$direction}, id {$direction} LIMIT %d",
+				$sermon->date->format( 'Y-m-d H:i:s' ),
+				$sermon->id,
+				self::UNKNOWN_DATE,
+				$limit ? $limit : PHP_INT_MAX
+			)
+		);
+		// phpcs:enable
+		return $this->load( array_map( 'intval', $ids ) );
+	}
+
+	/**
 	 * Returns the WHERE clause for a query's filters.
 	 *
 	 * @param Sermon_Query $query The query.

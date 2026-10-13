@@ -32,4 +32,28 @@ interface Sermon_Repository {
 	 * @return Sermon|null
 	 */
 	public function get( $id );
+
+	/**
+	 * Returns the first sermon preached on a later day, or null. Sermons with unknown dates have none.
+	 *
+	 * @param Sermon $sermon The sermon.
+	 * @return Sermon|null
+	 */
+	public function next( Sermon $sermon );
+
+	/**
+	 * Returns the last sermon preached on an earlier day, or null. Sermons with unknown dates have none.
+	 *
+	 * @param Sermon $sermon The sermon.
+	 * @return Sermon|null
+	 */
+	public function previous( Sermon $sermon );
+
+	/**
+	 * Returns the other sermons preached on the same day, in the order they were preached.
+	 *
+	 * @param Sermon $sermon The sermon.
+	 * @return Sermon[]
+	 */
+	public function same_day( Sermon $sermon );
 }

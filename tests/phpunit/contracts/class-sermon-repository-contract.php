@@ -226,4 +226,33 @@ abstract class Sermon_Repository_Contract extends WP_UnitTestCase {
 		$this->assertSame( array( 3, 1 ), $this->ids( array( 'book' => 'Romans', 'order_by' => Sermon_Query::BY_PASSAGE ) ) );
 		$this->assertSame( array( 3 ), $this->ids( array( 'book' => 'Isaiah', 'order_by' => Sermon_Query::BY_PASSAGE, 'ascending' => true ) ) );
 	}
+
+	public function test_next_is_the_first_sermon_on_a_later_day() {
+		$this->assertSame( 3, $this->repository()->next( $this->repository()->get( 1 ) )->id );
+		$this->assertSame( 3, $this->repository()->next( $this->repository()->get( 2 ) )->id );
+		$this->assertSame( 5, $this->repository()->next( $this->repository()->get( 3 ) )->id );
+		$this->assertSame( 1, $this->repository()->next( $this->repository()->get( 4 ) )->id );
+		$this->assertNull( $this->repository()->next( $this->repository()->get( 5 ) ) );
+	}
+
+	public function test_previous_is_the_last_sermon_on_an_earlier_day() {
+		$this->assertSame( 2, $this->repository()->previous( $this->repository()->get( 3 ) )->id );
+		$this->assertSame( 4, $this->repository()->previous( $this->repository()->get( 1 ) )->id );
+		$this->assertSame( 4, $this->repository()->previous( $this->repository()->get( 2 ) )->id );
+		$this->assertNull( $this->repository()->previous( $this->repository()->get( 4 ) ) );
+	}
+
+	public function test_same_day_lists_the_other_sermons_that_day_in_order() {
+		$this->assertSame( array( 2 ), wp_list_pluck( $this->repository()->same_day( $this->repository()->get( 1 ) ), 'id' ) );
+		$this->assertSame( array( 1 ), wp_list_pluck( $this->repository()->same_day( $this->repository()->get( 2 ) ), 'id' ) );
+		$this->assertSame( array(), $this->repository()->same_day( $this->repository()->get( 3 ) ) );
+	}
+
+	public function test_an_undated_sermon_has_no_neighbours() {
+		$undated = $this->repository()->get( 6 );
+
+		$this->assertNull( $this->repository()->next( $undated ) );
+		$this->assertNull( $this->repository()->previous( $undated ) );
+		$this->assertSame( array(), $this->repository()->same_day( $undated ) );
+	}
 }

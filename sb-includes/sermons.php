@@ -178,11 +178,10 @@ function sb_sermon_stats($sermonid) {
 * @return array|false Keys Sermon (a row object, with start and end as arrays), Files, Code and Tags
 */
 function sb_get_single_sermon($id) {
-	$sermon = SermonBrowser\Storage::sermons()->get((int) $id);
+	$sermon = sb_remember_sermon(null, (int) $id);
 	// The old query joined the preacher and service without LEFT JOIN, so a sermon missing either wasn't found
 	if (!$sermon || !$sermon->preacher || !$sermon->service)
 		return false;
-	sb_remember_sermon($sermon);
 	$row = sb_sermon_row($sermon);
 	$row->start = sb_unserialize($row->start);
 	$row->end = sb_unserialize($row->end);

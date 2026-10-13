@@ -69,12 +69,10 @@ function sb_print_most_popular() {
 
 //Modify page title
 function sb_page_title($title) {
-	global $wpdb;
 	if (isset($_GET['sermon_id'])) {
-		$id = (int)$_GET['sermon_id'];
-		$sermon = $wpdb->get_row($wpdb->prepare("SELECT m.title, p.name FROM {$wpdb->prefix}sb_sermons as m LEFT JOIN {$wpdb->prefix}sb_preachers as p ON m.preacher_id = p.id where m.id = %d", $id));
+		$sermon = sb_remember_sermon(null, (int) $_GET['sermon_id']);
 		if ($sermon)
-			return $title.' ('.esc_html(stripslashes($sermon->title)).' - '.esc_html(stripslashes($sermon->name)).')';
+			return $title.' ('.esc_html($sermon->title).' - '.esc_html($sermon->preacher ? $sermon->preacher->name : '').')';
 		else
 			return $title.' ('.esc_html__('No sermons found.', 'sermon-browser').')';
 	}
@@ -306,35 +304,35 @@ function sb_print_preacher_image($sermon) {
 
 //Prints link to sermon preached next (but not today)
 function sb_print_next_sermon_link($sermon) {
-	global $wpdb;
-	$next = $wpdb->get_row($wpdb->prepare("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) > DATE(%s) AND id <> %d ORDER BY datetime asc LIMIT 1", $sermon->datetime, $sermon->id));
+	$sermon = sb_remember_sermon(null, (int) $sermon->id);
+	$next = $sermon ? SermonBrowser\Storage::sermons()->next($sermon) : null;
 	if (!$next) return;
 	echo '<a href="';
 	sb_print_sermon_link($next);
-	echo '">'.esc_html(stripslashes($next->title)).' &raquo;</a>';
+	echo '">'.esc_html($next->title).' &raquo;</a>';
 }
 
 //Prints link to sermon preached on previous days
 function sb_print_prev_sermon_link($sermon) {
-	global $wpdb;
-	$prev = $wpdb->get_row($wpdb->prepare("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) < DATE(%s) AND id <> %d ORDER BY datetime desc LIMIT 1", $sermon->datetime, $sermon->id));
+	$sermon = sb_remember_sermon(null, (int) $sermon->id);
+	$prev = $sermon ? SermonBrowser\Storage::sermons()->previous($sermon) : null;
 	if (!$prev) return;
 	echo '<a href="';
 	sb_print_sermon_link($prev);
-	echo '">&laquo; '.esc_html(stripslashes($prev->title)).'</a>';
+	echo '">&laquo; '.esc_html($prev->title).'</a>';
 }
 
 //Prints links to other sermons preached on the same day
 function sb_print_sameday_sermon_link($sermon) {
-	global $wpdb;
-	$same = $wpdb->get_results($wpdb->prepare("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) = DATE(%s) AND id <> %d", $sermon->datetime, $sermon->id));
+	$sermon = sb_remember_sermon(null, (int) $sermon->id);
+	$same = $sermon ? SermonBrowser\Storage::sermons()->same_day($sermon) : array();
 	if (!$same) {
 		esc_html_e('None', 'sermon-browser');
 		return;
 	}
 	$output = array();
 	foreach ($same as $cur)
-		$output[] = '<a href="'.esc_url(sb_print_sermon_link($cur, false)).'">'.esc_html(stripslashes($cur->title)).'</a>';
+		$output[] = '<a href="'.esc_url(sb_print_sermon_link($cur, false)).'">'.esc_html($cur->title).'</a>';
 	echo wp_kses_post(implode(', ', $output));
 }
 
