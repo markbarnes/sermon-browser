@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- the sermon list and its filters are read-only GET requests
 
 /**
@@ -49,7 +48,6 @@ class Filters {
 	 * @param array $filter The shortcode's attributes.
 	 */
 	private function print_filters( $filter ) {
-		global $wpdb;
 		$hide_filter = false;
 		if ( $filter['filterhide'] == 'hide' ) {
 			$hide_filter = true;
@@ -107,20 +105,21 @@ class Filters {
 					$hide_custom_podcast = false;
 				}
 			}
-			$hide_empty = sb_get_option( 'hide_no_attachments' );
-			$sermons    = sb_get_sermons( $filter, array(), 1, 99999, $hide_empty );
-			$ids        = array();
-			foreach ( $sermons as $sermon ) {
-				$ids[] = $sermon->id;
-			}
-			// Sermon ids (integers), so the queries below need no placeholders
-			$ids = '(' . ( count( $ids ) ? implode( ', ', array_map( 'intval', $ids ) ) : '0' ) . ')';
-
-			$preachers  = $wpdb->get_results( "SELECT p.*, count(p.id) AS count FROM {$wpdb->prefix}sb_preachers AS p JOIN {$wpdb->prefix}sb_sermons AS sermons ON p.id = sermons.preacher_id WHERE sermons.id IN {$ids} GROUP BY p.id ORDER BY count DESC, MAX(sermons.datetime) DESC, p.name ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $ids holds integers
-			$series     = $wpdb->get_results( "SELECT ss.*, count(ss.id) AS count FROM {$wpdb->prefix}sb_series AS ss JOIN {$wpdb->prefix}sb_sermons AS sermons ON ss.id = sermons.series_id  WHERE sermons.id IN {$ids} GROUP BY ss.id ORDER BY MAX(sermons.datetime) DESC, ss.name ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $ids holds integers
-			$services   = $wpdb->get_results( "SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id  WHERE sermons.id IN {$ids} GROUP BY s.id ORDER BY count DESC, s.name ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $ids holds integers
-			$book_count = $wpdb->get_results( "SELECT bs.book_name AS name, count(distinct bs.sermon_id) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs JOIN {$wpdb->prefix}sb_books as b ON bs.book_name=b.name AND bs.sermon_id IN {$ids} GROUP BY b.id ORDER BY b.id" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $ids holds integers
-			$dates      = $wpdb->get_results( "SELECT YEAR(datetime) as year, MONTH (datetime) as month, DAY(datetime) as day FROM {$wpdb->prefix}sb_sermons WHERE id IN {$ids} ORDER BY datetime ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $ids holds integers
+			$facets     = Storage::sermons()->facets( sb_sermon_query( $filter, array(), 1, 1, sb_get_option( 'hide_no_attachments' ) ) );
+			$preachers  = $facets->preachers;
+			$series     = $facets->series;
+			$services   = $facets->services;
+			$book_count = $facets->books;
+			$dates      = array_map(
+				function ( $date ) {
+					return (object) array(
+						'year'  => (int) $date->format( 'Y' ),
+						'month' => (int) $date->format( 'n' ),
+						'day'   => (int) $date->format( 'j' ),
+					);
+				},
+				$facets->dates
+			);
 
 			$this->more_applied = array();
 			$output             = str_replace( '*preacher*', isset( $preachers[0]->name ) ? esc_html( stripslashes( $preachers[0]->name ) ) : '', $output );
@@ -177,10 +176,11 @@ class Filters {
 		} elseif ( $filter['filter'] == 'dropdown' ) {
 			// Drop-down filter
 			$translated_books = array_combine( sb_get_default( 'eng_bible_books' ), sb_get_default( 'bible_books' ) );
-			$preachers        = $wpdb->get_results( "SELECT p.*, count(p.id) AS count FROM {$wpdb->prefix}sb_preachers AS p JOIN {$wpdb->prefix}sb_sermons AS s ON p.id = s.preacher_id GROUP BY p.id ORDER BY count DESC, MAX(s.datetime) DESC, p.name ASC" );
-			$series           = $wpdb->get_results( "SELECT ss.*, count(ss.id) AS count FROM {$wpdb->prefix}sb_series AS ss JOIN {$wpdb->prefix}sb_sermons AS sermons ON ss.id = sermons.series_id GROUP BY ss.id ORDER BY MAX(sermons.datetime) DESC, ss.name ASC" );
-			$services         = $wpdb->get_results( "SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id GROUP BY s.id ORDER BY count DESC, s.name ASC" );
-			$book_count       = $wpdb->get_results( "SELECT bs.book_name AS name, count(distinct bs.sermon_id) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs JOIN {$wpdb->prefix}sb_books AS b ON bs.book_name = b.name GROUP BY b.id ORDER BY b.id" );
+			$facets           = Storage::sermons()->facets( new Sermon_Query() );
+			$preachers        = $facets->preachers;
+			$series           = $facets->series;
+			$services         = $facets->services;
+			$book_count       = $facets->books;
 			$sb               = array(
 				__( 'Title', 'sermon-browser' )    => 'm.title',
 				__( 'Preacher', 'sermon-browser' ) => 'preacher',

@@ -255,4 +255,70 @@ abstract class Sermon_Repository_Contract extends WP_UnitTestCase {
 		$this->assertNull( $this->repository()->previous( $undated ) );
 		$this->assertSame( array(), $this->repository()->same_day( $undated ) );
 	}
+
+	/**
+	 * Returns a list of facets as array( id, name, count ) for each.
+	 *
+	 * @param SermonBrowser\Facet[] $facets Facets.
+	 * @return array[]
+	 */
+	private function facet_list( array $facets ) {
+		return array_map(
+			function ( $facet ) {
+				return array( $facet->id, $facet->name, $facet->count );
+			},
+			$facets
+		);
+	}
+
+	/**
+	 * Returns facets for a query.
+	 *
+	 * @param array $properties Sermon_Query properties to set.
+	 * @return SermonBrowser\Sermon_Facets
+	 */
+	private function facets( array $properties = array() ) {
+		$query = new Sermon_Query();
+		foreach ( $properties as $name => $value ) {
+			$query->$name = $value;
+		}
+		return $this->repository()->facets( $query );
+	}
+
+	public function test_facets_count_every_sermon_by_preacher_most_first_then_latest_sermon_first() {
+		$this->assertSame( array( array( 1, 'Dylan Jones', 3 ), array( 2, 'Rhiannon Llŷr', 2 ), array( 3, "Aled O'Brien", 1 ) ), $this->facet_list( $this->facets()->preachers ) );
+	}
+
+	public function test_facets_count_series_with_the_latest_sermon_first() {
+		$this->assertSame( array( array( 1, 'Romans', 2 ), array( 2, 'The Psalms &#8211; songs for every season', 1 ) ), $this->facet_list( $this->facets()->series ) );
+	}
+
+	public function test_facets_count_services_most_first_then_by_name() {
+		$this->assertSame( array( array( 1, 'Sunday Morning', 4 ), array( 3, 'Christmas morning', 1 ), array( 2, 'Sunday Evening', 1 ) ), $this->facet_list( $this->facets()->services ) );
+	}
+
+	public function test_facets_count_sermons_with_any_passage_in_each_book_in_bible_order() {
+		$this->assertSame( array( array( 0, 'Genesis', 1 ), array( 0, 'Psalm', 1 ), array( 0, 'Isaiah', 1 ), array( 0, 'John', 1 ), array( 0, 'Romans', 2 ) ), $this->facet_list( $this->facets()->books ) );
+	}
+
+	public function test_facets_list_dated_sermons_dates_in_order() {
+		$dates = $this->facets()->dates;
+
+		$this->assertSame( array( '2025-12-25 09:45', '2026-03-01 10:30', '2026-03-01 18:00', '2026-03-08 10:30', '2026-03-15 19:00' ), array_map( function ( $date ) { return $date->format( 'Y-m-d H:i' ); }, $dates ) );
+	}
+
+	public function test_facets_cover_only_the_sermons_a_query_matches() {
+		$facets = $this->facets( array( 'preacher' => 1, 'per_page' => 1 ) );
+
+		$this->assertSame( array( array( 1, 'Dylan Jones', 3 ) ), $this->facet_list( $facets->preachers ) );
+		$this->assertSame( array( array( 1, 'Romans', 2 ) ), $this->facet_list( $facets->series ) );
+		$this->assertSame( array( array( 1, 'Sunday Morning', 2 ), array( 3, 'Christmas morning', 1 ) ), $this->facet_list( $facets->services ) );
+		$this->assertSame( array( array( 0, 'Isaiah', 1 ), array( 0, 'Romans', 2 ) ), $this->facet_list( $facets->books ) );
+		$this->assertCount( 3, $facets->dates );
+	}
+
+	public function test_facets_of_a_book_list_every_book_its_sermons_are_on() {
+		$this->assertSame( array( array( 0, 'Isaiah', 1 ), array( 0, 'Romans', 1 ) ), $this->facet_list( $this->facets( array( 'book' => 'Isaiah' ) )->books ) );
+		$this->assertSame( array( array( 1, 'Dylan Jones', 2 ) ), $this->facet_list( $this->facets( array( 'with_attachments' => true ) )->preachers ) );
+	}
 }

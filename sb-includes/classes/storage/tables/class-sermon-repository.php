@@ -8,9 +8,11 @@
 namespace SermonBrowser\Storage\Tables;
 
 use SermonBrowser\Attachment;
+use SermonBrowser\Facet;
 use SermonBrowser\Passage;
 use SermonBrowser\Preacher;
 use SermonBrowser\Sermon;
+use SermonBrowser\Sermon_Facets;
 use SermonBrowser\Sermon_Page;
 use SermonBrowser\Sermon_Query;
 use SermonBrowser\Series;
@@ -133,6 +135,45 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * @param Sermon_Query $query Filters.
+	 * @return Sermon_Facets
+	 */
+	public function facets( Sermon_Query $query ) {
+		global $wpdb;
+		$where = $this->where( $query );
+		// $where is built from prepared fragments.
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$preachers = $wpdb->get_results( "SELECT p.id, p.name, COUNT(*) AS count FROM {$wpdb->prefix}sb_sermons AS m JOIN {$wpdb->prefix}sb_preachers AS p ON p.id = m.preacher_id WHERE {$where} GROUP BY p.id, p.name ORDER BY count DESC, MAX(m.datetime) DESC, p.name ASC" );
+		$series    = $wpdb->get_results( "SELECT ss.id, ss.name, COUNT(*) AS count FROM {$wpdb->prefix}sb_sermons AS m JOIN {$wpdb->prefix}sb_series AS ss ON ss.id = m.series_id WHERE {$where} GROUP BY ss.id, ss.name ORDER BY MAX(m.datetime) DESC, ss.name ASC" );
+		$services  = $wpdb->get_results( "SELECT s.id, s.name, COUNT(*) AS count FROM {$wpdb->prefix}sb_sermons AS m JOIN {$wpdb->prefix}sb_services AS s ON s.id = m.service_id WHERE {$where} GROUP BY s.id, s.name ORDER BY count DESC, s.name ASC" );
+		$books     = $wpdb->get_results( "SELECT b.name, COUNT(DISTINCT m.id) AS count FROM {$wpdb->prefix}sb_sermons AS m JOIN {$wpdb->prefix}sb_books_sermons AS bs ON bs.sermon_id = m.id JOIN {$wpdb->prefix}sb_books AS b ON b.name = bs.book_name WHERE {$where} GROUP BY b.id, b.name ORDER BY b.id" );
+		$dates     = $wpdb->get_col( $wpdb->prepare( "SELECT m.datetime FROM {$wpdb->prefix}sb_sermons AS m WHERE {$where} AND m.datetime <> %s ORDER BY m.datetime ASC", self::UNKNOWN_DATE ) );
+		// phpcs:enable
+		$facets = function ( $rows, $with_id = true ) {
+			return array_map(
+				function ( $row ) use ( $with_id ) {
+					return new Facet( $with_id ? (int) $row->id : 0, stripslashes( $row->name ), (int) $row->count );
+				},
+				$rows
+			);
+		};
+		return new Sermon_Facets(
+			$facets( $preachers ),
+			$facets( $series ),
+			$facets( $services ),
+			$facets( $books, false ),
+			array_map(
+				function ( $date ) {
+					return new \DateTimeImmutable( $date, wp_timezone() );
+				},
+				$dates
+			)
+		);
+	}
+
+	/**
 	 * Returns the WHERE clause for a query's filters.
 	 *
 	 * @param Sermon_Query $query The query.
@@ -146,7 +187,7 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 			$like         = '%' . $wpdb->esc_like( $query->text ) . '%';
 			$slashed      = '%' . $wpdb->esc_like( addslashes( $query->text ) ) . '%';
 			$conditions[] = $wpdb->prepare(
-				"(m.title LIKE %s OR m.title LIKE %s OR m.description LIKE %s OR m.description LIKE %s OR EXISTS (SELECT 1 FROM {$wpdb->prefix}sb_sermons_tags AS st JOIN {$wpdb->prefix}sb_tags AS t ON t.id = st.tag_id WHERE st.sermon_id = m.id AND t.name LIKE %s))",
+				"(m.title LIKE %s OR m.title LIKE %s OR m.description LIKE %s OR m.description LIKE %s OR EXISTS (SELECT 1 FROM {$wpdb->prefix}sb_sermons_tags AS fst JOIN {$wpdb->prefix}sb_tags AS ft ON ft.id = fst.tag_id WHERE fst.sermon_id = m.id AND ft.name LIKE %s))",
 				$like,
 				$slashed,
 				$like,
@@ -164,10 +205,10 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 			$conditions[] = $wpdb->prepare( 'm.service_id = %d', $query->service );
 		}
 		if ( '' !== $query->book ) {
-			$conditions[] = $wpdb->prepare( "EXISTS (SELECT 1 FROM {$wpdb->prefix}sb_books_sermons AS bs WHERE bs.sermon_id = m.id AND bs.book_name = %s)", $query->book );
+			$conditions[] = $wpdb->prepare( "EXISTS (SELECT 1 FROM {$wpdb->prefix}sb_books_sermons AS fbs WHERE fbs.sermon_id = m.id AND fbs.book_name = %s)", $query->book );
 		}
 		if ( '' !== $query->tag ) {
-			$conditions[] = $wpdb->prepare( "EXISTS (SELECT 1 FROM {$wpdb->prefix}sb_sermons_tags AS st JOIN {$wpdb->prefix}sb_tags AS t ON t.id = st.tag_id WHERE st.sermon_id = m.id AND t.name LIKE %s)", '%' . $wpdb->esc_like( $query->tag ) . '%' );
+			$conditions[] = $wpdb->prepare( "EXISTS (SELECT 1 FROM {$wpdb->prefix}sb_sermons_tags AS fst JOIN {$wpdb->prefix}sb_tags AS ft ON ft.id = fst.tag_id WHERE fst.sermon_id = m.id AND ft.name LIKE %s)", '%' . $wpdb->esc_like( $query->tag ) . '%' );
 		}
 		if ( '' !== $query->from ) {
 			$conditions[] = $wpdb->prepare( 'm.datetime >= %s', $query->from );
@@ -182,7 +223,7 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 			$conditions[] = $wpdb->prepare( 'm.id = %d', $query->id );
 		}
 		if ( $query->with_attachments ) {
-			$conditions[] = "EXISTS (SELECT 1 FROM {$wpdb->prefix}sb_stuff AS stuff WHERE stuff.sermon_id = m.id AND stuff.name != '')";
+			$conditions[] = "EXISTS (SELECT 1 FROM {$wpdb->prefix}sb_stuff AS fstuff WHERE fstuff.sermon_id = m.id AND fstuff.name != '')";
 		}
 		return implode( ' AND ', $conditions );
 	}

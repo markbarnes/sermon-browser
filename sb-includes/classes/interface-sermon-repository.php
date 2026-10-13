@@ -56,4 +56,12 @@ interface Sermon_Repository {
 	 * @return Sermon[]
 	 */
 	public function same_day( Sermon $sermon );
+
+	/**
+	 * Returns what the sermons a query matches have in common, on all its pages, for the filters.
+	 *
+	 * @param Sermon_Query $query Filters (its order and page don't matter).
+	 * @return Sermon_Facets
+	 */
+	public function facets( Sermon_Query $query );
 }
