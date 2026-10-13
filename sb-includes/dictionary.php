@@ -3,7 +3,7 @@ if (!defined('ABSPATH'))
 	exit;
 
 /**
-* Compiles a template into the PHP code that sb_shortcode() runs
+* Compiles a template into the PHP code that SermonBrowser\Shortcode::render() runs
 *
 * Templates are HTML with [tags], and only the dictionary's code is allowed to run.
 * Any PHP tags in the template itself are turned into harmless text.

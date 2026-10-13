@@ -2619,4 +2619,24 @@ function sb_add_contextual_help($help) {
 	$out.= '</p></div>';
 	return $out;
 }
+
+/**
+* Add Sermons menu and sub-menus in admin
+*/
+function sb_add_pages() {
+	add_menu_page(__('Sermons', 'sermon-browser'), __('Sermons', 'sermon-browser'), 'publish_posts', 'sermon-browser/sermon.php', 'sb_manage_sermons', SB_PLUGIN_URL.'/sb-includes/sb-icon.png');
+	add_submenu_page('sermon-browser/sermon.php', __('Sermons', 'sermon-browser'), __('Sermons', 'sermon-browser'), 'publish_posts', 'sermon-browser/sermon.php', 'sb_manage_sermons');
+	if (isset($_REQUEST['page']) && $_REQUEST['page'] == 'sermon-browser/new_sermon.php' && isset($_REQUEST['mid'])) {
+		add_submenu_page('sermon-browser/sermon.php', __('Edit Sermon', 'sermon-browser'), __('Edit Sermon', 'sermon-browser'), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
+	} else {
+		add_submenu_page('sermon-browser/sermon.php', __('Add Sermon', 'sermon-browser'), __('Add Sermon', 'sermon-browser'), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
+	}
+	add_submenu_page('sermon-browser/sermon.php', __('Files', 'sermon-browser'), __('Files', 'sermon-browser'), 'upload_files', 'sermon-browser/files.php', 'sb_files');
+	add_submenu_page('sermon-browser/sermon.php', __('Preachers', 'sermon-browser'), __('Preachers', 'sermon-browser'), 'manage_categories', 'sermon-browser/preachers.php', 'sb_manage_preachers');
+	add_submenu_page('sermon-browser/sermon.php', __('Series &amp; Services', 'sermon-browser'), __('Series &amp; Services', 'sermon-browser'), 'manage_categories', 'sermon-browser/manage.php', 'sb_manage_everything');
+	add_submenu_page('sermon-browser/sermon.php', __('Options', 'sermon-browser'), __('Options', 'sermon-browser'), 'manage_options', 'sermon-browser/options.php', 'sb_options');
+	add_submenu_page('sermon-browser/sermon.php', __('Templates', 'sermon-browser'), __('Templates', 'sermon-browser'), 'manage_options', 'sermon-browser/templates.php', 'sb_templates');
+	add_submenu_page('sermon-browser/sermon.php', __('Uninstall', 'sermon-browser'), __('Uninstall', 'sermon-browser'), 'edit_plugins', 'sermon-browser/uninstall.php', 'sb_uninstall');
+	add_submenu_page('sermon-browser/sermon.php', __('Help', 'sermon-browser'), __('Help', 'sermon-browser'), 'publish_posts', 'sermon-browser/help.php', 'sb_help');
+}
 ?>

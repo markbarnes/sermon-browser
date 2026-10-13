@@ -1,6 +1,11 @@
 <?php
 if (!defined('ABSPATH'))
 	exit;
+/**
+* Template tags: the functions the compiled templates call to print sermons and their links, and sb_display_sermons() for themes
+*
+* @package frontend_functions
+*/
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- the sermon list, its filters, feed and downloads are read-only GET requests
 // Function to display sermons for users to add to their template
@@ -320,41 +325,6 @@ function sb_print_sameday_sermon_link($sermon) {
 	foreach ($same as $cur)
 		$output[] = '<a href="'.esc_url(sb_print_sermon_link($cur, false)).'">'.esc_html(stripslashes($cur->title)).'</a>';
 	echo wp_kses_post(implode(', ', $output));
-}
-
-//Gets single sermon from the database
-function sb_get_single_sermon($id) {
-	global $wpdb;
-	$id = (int) $id;
-	$sermon = $wpdb->get_row($wpdb->prepare("SELECT m.id, m.title, m.datetime, m.start, m.end, m.description, p.id as pid, p.name as preacher, p.image as image, p.description as preacher_description, s.id as sid, s.name as service FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_preachers as p, {$wpdb->prefix}sb_services as s where m.preacher_id = p.id and m.service_id = s.id and m.id = %d", $id));
-	$series = $wpdb->get_row($wpdb->prepare("SELECT ss.id as ssid, ss.name as series FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_series as ss WHERE m.series_id = ss.id and m.id = %d", $id));
-	if ($sermon) {
-		if ($series) {
-			$sermon->series = $series->series;
-			$sermon->ssid = $series->ssid;
-		}
-		else {
-			$sermon->series = '';
-			$sermon->ssid = 0;
-		}
-		$file = $code = $tags = array();
-		$stuff = $wpdb->get_results($wpdb->prepare("SELECT f.id, f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = %d ORDER BY id desc", $id));
-		$rawtags = $wpdb->get_results($wpdb->prepare("SELECT t.name FROM {$wpdb->prefix}sb_sermons_tags as st LEFT JOIN {$wpdb->prefix}sb_tags as t ON st.tag_id = t.id WHERE st.sermon_id = %d ORDER BY t.name asc", $id));
-		foreach ($rawtags as $tag) {
-			$tags[] = $tag->name;
-		}
-		foreach ($stuff as $cur)
-			${$cur->type}[] = $cur->name;
-		$sermon->start = sb_unserialize($sermon->start);
-		$sermon->end = sb_unserialize($sermon->end);
-		return array(
-			'Sermon' => $sermon,
-			'Files' => $file,
-			'Code' => $code,
-			'Tags' => $tags,
-		);
-	} else
-		return false;
 }
 
 //Prints the filters on the sermon list

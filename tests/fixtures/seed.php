@@ -73,7 +73,7 @@ foreach ( $users as $key => $user ) {
 foreach ( get_posts( array( 'post_type' => 'page', 'name' => 'sermons', 'post_status' => 'any', 'numberposts' => -1 ) ) as $page ) {
 	wp_delete_post( $page->ID, true );
 }
-// Dated in the past: sb_add_headers() only treats a page as the sermons page if post_date
+// Dated in the past: SermonBrowser\Page_Head::add() only treats a page as the sermons page if post_date
 // (local time) is before the database's NOW(), which a page created this hour may not be.
 $page_id = wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'publish', 'post_title' => 'Sermons', 'post_name' => 'sermons', 'post_content' => '[sermons]', 'post_date' => '2026-01-01 00:00:00' ) );
 sb_update_option( 'podcast_url', get_permalink( $page_id ) . '?podcast' );
