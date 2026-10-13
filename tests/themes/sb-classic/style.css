@@ -1,0 +1,5 @@
+/*
+Theme Name: Sermon Browser classic test theme
+Description: Test site only. A classic theme. It calls wp_title() itself, as older themes do, unless the sb_test_title_tag option gives it title-tag support; it shows the tests' widget area with dynamic_sidebar().
+Version: 1.0
+*/

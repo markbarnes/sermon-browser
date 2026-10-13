@@ -18,7 +18,8 @@
 				"WP_DEBUG": true
 			},
 			"mappings": {
-				"wp-content/mu-plugins": "./tests/mu-plugins"
+				"wp-content/mu-plugins": "./tests/mu-plugins",
+				"wp-content/themes/sb-classic": "./tests/themes/sb-classic"
 			}
 		}
 	}

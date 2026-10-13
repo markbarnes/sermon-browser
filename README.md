@@ -50,6 +50,7 @@ The tests work from the outside: they make HTTP requests as visitors and as logg
 | `live-settings.test.js` | The same views with the live site's templates, stylesheet and options (sermons without attachments hidden, files with download links, widgets set up; built in `lib/live.js`), with snapshots in `tests/snapshots/live/` |
 | `upgrade.test.js` | Updating from 0.45.21 with the live site's settings, stored as the old version stored them: the first request recompiles the templates (output identical to a fresh install), protects the upload folder and removes old options; the database upgrade from 1.6 |
 | `bible-text.test.js` | Bible text from the ESV and NET APIs (stubbed) on sermon pages |
+| `themes.test.js` | Classic themes as well as block themes (the others use the block theme): the same output, and the sermon in the page title for classic themes that call `wp_title()`. The classic theme is `tests/themes/sb-classic`, mapped into the test site by `.wp-env.json` |
 
 How it fits together:
 
