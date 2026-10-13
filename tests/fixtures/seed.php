@@ -1,4 +1,6 @@
 <?php
+// Only inside WordPress (the test API or wp eval-file): the seed starts by dropping the plugin's tables.
+defined( 'ABSPATH' ) || exit;
 /**
  * Resets the test site to a known state and prints it as JSON.
  *

@@ -17,6 +17,11 @@ if ( ! isset( $_SERVER['HTTP_X_SB_TEST'] ) || 'run' !== $_SERVER['HTTP_X_SB_TEST
 	return;
 }
 
+// It runs any PHP it's sent, so never on a real site, even if this file is copied to one.
+if ( 'local' !== wp_get_environment_type() ) {
+	return;
+}
+
 add_action(
 	'wp_loaded',
 	function () {
