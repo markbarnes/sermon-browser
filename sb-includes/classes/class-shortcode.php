@@ -16,9 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Shows a single sermon, or a list of sermons, with the templates set on the Templates page.
- *
- * The templates are compiled to PHP by sb_compile_template() (dictionary.php) when they're saved,
- * and run here with eval(), with $sermon or $sermons, $atts and $record_count in scope.
  */
 class Shortcode {
 
@@ -32,8 +29,6 @@ class Shortcode {
 	 * @return string
 	 */
 	public static function render( $atts, $content = null ) {
-		global $record_count;
-		ob_start();
 		$atts = shortcode_atts(
 			array(
 				'filter'     => sb_get_option( 'filter_type' ),
@@ -58,14 +53,12 @@ class Shortcode {
 				$latest     = Storage::sermons()->find( sb_sermon_query( $atts, array(), 1, 1 ) )->sermons;
 				$atts['id'] = $latest ? $latest[0]->id : 0;
 			}
-			$sermon = sb_get_single_sermon( (int) $atts['id'] );
-			if ( $sermon ) {
-				eval( '?>' . sb_get_option( 'single_output' ) );
-			} else {
-				echo '<div class="sermon-browser-results"><span class="error">';
-				esc_html_e( 'No sermons found.', 'sermon-browser' );
-				echo '</span></div>';
+			$sermon = sb_find_sermon( (int) $atts['id'] );
+			// Sermons without a preacher or a service have never been shown on their own.
+			if ( ! $sermon || ! $sermon->preacher || ! $sermon->service ) {
+				return '<div class="sermon-browser-results"><span class="error">' . esc_html__( 'No sermons found.', 'sermon-browser' ) . '</span></div>';
 			}
+			return Template_Renderer::single( Template::parse( sb_get_option( 'single_template' ), Template::SINGLE ), $sermon );
 		} else {
 			if ( isset( $_REQUEST['sortby'] ) ) {
 				$sort_criteria = sanitize_text_field( wp_unslash( $_REQUEST['sortby'] ) );
@@ -88,13 +81,9 @@ class Shortcode {
 			} else {
 				$page = 1;
 			}
-			$hide_empty = sb_get_option( 'hide_no_attachments' );
-			$sermons    = sb_get_sermons( $atts, $sort_order, $page, (int) $atts['limit'], $hide_empty );
-			$output     = '?>' . sb_get_option( 'search_output' );
-			eval( $output );
+			$limit   = (int) $atts['limit'] ? (int) $atts['limit'] : sb_get_option( 'sermons_per_page' );
+			$sermons = Storage::sermons()->find( sb_sermon_query( $atts, $sort_order, $page, $limit, sb_get_option( 'hide_no_attachments' ) ) );
+			return Template_Renderer::search( Template::parse( sb_get_option( 'search_template' ), Template::SEARCH ), $sermons, $atts );
 		}
-		$content = ob_get_contents();
-		ob_end_clean();
-		return $content;
 	}
 }

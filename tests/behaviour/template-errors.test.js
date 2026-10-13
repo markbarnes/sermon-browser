@@ -7,15 +7,14 @@
  * [file], [file_with_download] and [embed] in a sermon but outside their loops aren't
  * faults: they show the sermon's first file or embed, as the readme has always said.
  *
- * Todo until the templates are rendered at display time (stage 3): the compiled templates
- * print warnings, wrong values or a critical error for these.
+ * The compiled templates (up to 0.48) printed warnings, wrong values or a critical error for these.
  */
 import { before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { debugLog, php, seed, useTemplates } from './lib/wp.js';
 import { Client } from './lib/client.js';
 
-const todo = 'until the templates are rendered at display time (stage 3)';
+const todo = 'until the Templates page checks templates when saving them';
 const visitor = new Client();
 let admin;
 let editor;
@@ -78,21 +77,21 @@ async function assertFault( templates, withoutFaults, query, faultyTags ) {
 }
 
 describe( 'a tag outside its loop', () => {
-	it( 'is left out of the sermon list, with an error for administrators', { todo }, () => assertFault(
+	it( 'is left out of the sermon list, with an error for administrators', () => assertFault(
 		{ search: 'a[sermon_title]b[date]c' },
 		{ search: 'abc' },
 		'',
 		[ '[sermon_title]', '[date]' ]
 	) );
 
-	it( 'is left out when it is a file or embed outside the sermons loop', { todo }, () => assertFault(
+	it( 'is left out when it is a file or embed outside the sermons loop', () => assertFault(
 		{ search: 'a[file]b[files_loop]f[/files_loop]c[embed_loop]e[/embed_loop]d' },
 		{ search: 'abcd' },
 		'',
 		[ '[file]', '[files_loop]', '[embed_loop]' ]
 	) );
 
-	it( 'is left out of a sermon page when it is a passage outside the passages loop', { todo }, () => assertFault(
+	it( 'is left out of a sermon page when it is a passage outside the passages loop', () => assertFault(
 		{ single: 'a[passage]b' },
 		{ single: 'ab' },
 		'sermon_id=3',
@@ -101,14 +100,14 @@ describe( 'a tag outside its loop', () => {
 } );
 
 describe( 'a tag after its loop has ended', () => {
-	it( 'is left out, rather than showing the loop\'s last sermon', { todo }, () => assertFault(
+	it( 'is left out, rather than showing the loop\'s last sermon', () => assertFault(
 		{ search: '[sermons_loop]<i>[sermon_title]</i>[/sermons_loop]a[sermon_title]b' },
 		{ search: '[sermons_loop]<i>[sermon_title]</i>[/sermons_loop]ab' },
 		'',
 		[ '[sermon_title]' ]
 	) );
 
-	it( 'is left out when it is a passage after the passages loop', { todo }, () => assertFault(
+	it( 'is left out when it is a passage after the passages loop', () => assertFault(
 		{ single: '[passages_loop][passage][/passages_loop]a[passage]b' },
 		{ single: '[passages_loop][passage][/passages_loop]ab' },
 		'sermon_id=3',
@@ -117,28 +116,28 @@ describe( 'a tag after its loop has ended', () => {
 } );
 
 describe( 'loops that are not closed, or not opened', () => {
-	it( 'leave out a loop that is never closed, and the tags that needed it', { todo }, () => assertFault(
+	it( 'leave out a loop that is never closed, and the tags that needed it', () => assertFault(
 		{ search: 'x[sermons_loop]<i>[sermon_title]</i>y' },
 		{ search: 'x<i></i>y' },
 		'',
 		[ '[sermons_loop]', '[sermon_title]' ]
 	) );
 
-	it( 'leave out a closing tag with no loop to close', { todo }, () => assertFault(
+	it( 'leave out a closing tag with no loop to close', () => assertFault(
 		{ search: 'x[sermons_loop]a[/sermons_loop][/sermons_loop]y[/files_loop]z' },
 		{ search: 'x[sermons_loop]a[/sermons_loop]yz' },
 		'',
 		[ '[/sermons_loop]', '[/files_loop]' ]
 	) );
 
-	it( 'leave out a closing tag on a sermon page', { todo }, () => assertFault(
+	it( 'leave out a closing tag on a sermon page', () => assertFault(
 		{ single: 'x[/embed_loop]y[/passages_loop]z' },
 		{ single: 'xyz' },
 		'sermon_id=1',
 		[ '[/embed_loop]', '[/passages_loop]' ]
 	) );
 
-	it( 'never stop the page with an error', { todo }, async () => {
+	it( 'never stop the page with an error', async () => {
 		await useTemplates( { search: marked( '[sermons_loop][files_loop][sermon_title]' ), single: marked( '[/embed_loop][/embed_loop][passages_loop]' ) } );
 		for ( const query of [ '', 'sermon_id=1' ] ) {
 			const response = await visitor.request( `/sermons/${ query ? '?' + query : '' }` );
@@ -158,7 +157,7 @@ describe( 'a file or embed tag outside its loop, in a sermon', () => {
 	const first = ( html ) => ( html.match( /<p>.*?<\/p>/s ) || [ '' ] )[ 0 ];
 
 	for ( const [ tag, loop ] of [ [ 'file', 'files_loop' ], [ 'file_with_download', 'files_loop' ], [ 'embed', 'embed_loop' ] ] ) {
-		it( `shows the sermon's first ${ tag === 'embed' ? 'embed' : 'file' } for [${ tag }], with no error`, { todo }, async () => {
+		it( `shows the sermon's first ${ tag === 'embed' ? 'embed' : 'file' } for [${ tag }], with no error`, async () => {
 			await useTemplates( { single: marked( `[${ loop }]<p>[${ tag }]</p>[/${ loop }]` ) } );
 			const firstInLoop = withoutPlayerIds( first( await render( 'sermon_id=1' ) ) );
 			assert.notEqual( firstInLoop, '', 'Sermon 1 has one' );
@@ -168,7 +167,7 @@ describe( 'a file or embed tag outside its loop, in a sermon', () => {
 		} );
 	}
 
-	it( 'shows the first file, not the last, after the files loop', { todo }, async () => {
+	it( 'shows the first file, not the last, after the files loop', async () => {
 		await useTemplates( { single: marked( '[files_loop]<p>[file]</p>[/files_loop]' ) } );
 		const loop = withoutPlayerIds( await render( 'sermon_id=1' ) );
 		const files = loop.match( /<p>.*?<\/p>/gs );
@@ -177,7 +176,7 @@ describe( 'a file or embed tag outside its loop, in a sermon', () => {
 		assert.equal( withoutPlayerIds( await render( 'sermon_id=1' ) ), loop + files[ 0 ] );
 	} );
 
-	it( 'shows each sermon\'s first file in the sermon list', { todo }, async () => {
+	it( 'shows each sermon\'s first file in the sermon list', async () => {
 		await useTemplates( { search: marked( '[sermons_loop]<li>[files_loop]<p>[file]</p>[/files_loop]</li>[/sermons_loop]' ) } );
 		const firsts = [ ...withoutPlayerIds( await render() ).matchAll( /<li>(.*?)<\/li>/gs ) ].map( ( match ) => ( match[ 1 ].match( /<p>.*?<\/p>/s ) || [ '' ] )[ 0 ] );
 		assert.ok( firsts.includes( '' ) && firsts.some( ( html ) => html !== '' ), 'Some sermons have files and some don\'t' );
@@ -187,7 +186,7 @@ describe( 'a file or embed tag outside its loop, in a sermon', () => {
 		assert.deepEqual( errors( await render( '', admin ) ), [] );
 	} );
 
-	it( 'shows nothing, with no error, for a sermon without files or embeds', { todo }, async () => {
+	it( 'shows nothing, with no error, for a sermon without files or embeds', async () => {
 		await useTemplates( { single: marked( '[file]|[file_with_download]|[embed]' ) } );
 		const without = await php( "global $wpdb; return (int) $wpdb->get_var( \"SELECT s.id FROM {$wpdb->prefix}sb_sermons s LEFT JOIN {$wpdb->prefix}sb_stuff f ON f.sermon_id = s.id WHERE f.id IS NULL ORDER BY s.id LIMIT 1\" );" );
 		assert.ok( without, 'The seed has a sermon without files or embeds' );
@@ -217,7 +216,7 @@ describe( 'saving templates with faults on the Templates page', () => {
 		assert.match( warning, /href="[^"]*\/wp-admin\/admin\.php\?page=sermon-browser\/help\.php/ );
 	} );
 
-	it( 'gives no warning for the default templates, or for a lone [file] or [embed] in a sermon', { todo }, async () => {
+	it( 'gives no warning for the default templates, or for a lone [file] or [embed] in a sermon', async () => {
 		const defaults = await php( "require_once SB_INCLUDES_DIR . '/sb-install.php'; return array( sb_default_multi_template(), sb_default_single_template() );" );
 		assert.doesNotMatch( await save( defaults[ 0 ], defaults[ 1 ] ), /notice-warning/ );
 		assert.doesNotMatch( await save( '[sermons_loop][file][embed][/sermons_loop]', '[file][file_with_download][embed]' ), /notice-warning/ );
@@ -225,7 +224,7 @@ describe( 'saving templates with faults on the Templates page', () => {
 } );
 
 describe( 'the debug log', () => {
-	it( 'has no PHP errors, warnings or notices from any of these views', { todo }, async () => {
+	it( 'has no PHP errors, warnings or notices from any of these views', async () => {
 		assert.deepEqual( await debugLog(), [] );
 	} );
 } );
