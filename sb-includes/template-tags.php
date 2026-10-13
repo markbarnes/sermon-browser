@@ -24,13 +24,13 @@ function sb_display_sermons($options = array()) {
 	extract($options);
 	if ($url_only == 1)
 		$limit = 1;
-	$sermons = SermonBrowser\Storage::sermons()->find(sb_sermon_query(array(
-			'preacher' => $preacher,
-			'service' => $service,
-			'series' => $series
-		),
-		array(), 1, $limit ? $limit : sb_get_option('sermons_per_page')
-	))->sermons;
+	$query = SermonBrowser\Sermon_Query::from_filters(array(
+		'preacher' => $preacher,
+		'service' => $service,
+		'series' => $series
+	));
+	$query->per_page = max(1, (int) ($limit ? $limit : sb_get_option('sermons_per_page')));
+	$sermons = SermonBrowser\Storage::sermons()->find($query)->sermons;
 	if ($url_only == 1) {
 		if ($sermons)
 			sb_print_sermon_link($sermons[0], true);

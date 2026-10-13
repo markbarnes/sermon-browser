@@ -29,24 +29,9 @@ class Podcast {
 	 * Sends the feed and ends the request.
 	 */
 	public static function serve() {
-		$query           = sb_sermon_query(
-			array(
-				'title'    => isset( $_REQUEST['title'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['title'] ) ) : '',
-				'preacher' => isset( $_REQUEST['preacher'] ) ? (int) $_REQUEST['preacher'] : '',
-				'date'     => isset( $_REQUEST['date'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['date'] ) ) : '',
-				'enddate'  => isset( $_REQUEST['enddate'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['enddate'] ) ) : '',
-				'series'   => isset( $_REQUEST['series'] ) ? (int) $_REQUEST['series'] : '',
-				'service'  => isset( $_REQUEST['service'] ) ? (int) $_REQUEST['service'] : '',
-				'book'     => isset( $_REQUEST['book'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['book'] ) ) : '',
-				'tag'      => isset( $_REQUEST['stag'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['stag'] ) ) : '',
-			),
-			array(
-				'by'  => 'm.datetime',
-				'dir' => 'desc',
-			),
-			1,
-			self::BATCH
-		);
+		// Always newest first, whatever order the list was in.
+		$query           = Sermon_Query::from_filters( Sermon_Query::filters_from_request() );
+		$query->per_page = self::BATCH;
 		$episodes        = self::episodes( $query );
 		$query->per_page = 1;
 		$newest          = Storage::sermons()->find( $query )->sermons;

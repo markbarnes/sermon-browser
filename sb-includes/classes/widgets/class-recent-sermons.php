@@ -71,17 +71,15 @@ class Recent_Sermons {
 		$instance = $options[ $widget_args['number'] ];
 		echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
 		echo $args['before_title'] . esc_html( $instance['title'] ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
-		$query   = sb_sermon_query(
+		$query           = \SermonBrowser\Sermon_Query::from_filters(
 			array(
 				'preacher' => $instance['preacher'],
 				'service'  => $instance['service'],
 				'series'   => $instance['series'],
-			),
-			array(),
-			1,
-			$instance['limit'] ? $instance['limit'] : sb_get_option( 'sermons_per_page' )
+			)
 		);
-		$sermons = \SermonBrowser\Storage::sermons()->find( $query )->sermons;
+		$query->per_page = max( 1, (int) ( $instance['limit'] ? $instance['limit'] : sb_get_option( 'sermons_per_page' ) ) );
+		$sermons         = \SermonBrowser\Storage::sermons()->find( $query )->sermons;
 		echo '<ul class="sermon-widget">';
 		foreach ( $sermons as $sermon ) {
 			echo '<li><span class="sermon-title">';

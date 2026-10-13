@@ -105,7 +105,9 @@ class Filters {
 					$hide_custom_podcast = false;
 				}
 			}
-			$facets     = Storage::sermons()->facets( sb_sermon_query( $filter, array(), 1, 1, sb_get_option( 'hide_no_attachments' ) ) );
+			$query                   = Sermon_Query::from_filters( $filter );
+			$query->with_attachments = (bool) sb_get_option( 'hide_no_attachments' );
+			$facets                  = Storage::sermons()->facets( $query );
 			$preachers  = $facets->preachers;
 			$series     = $facets->series;
 			$services   = $facets->services;
@@ -182,7 +184,7 @@ class Filters {
 				__( 'Ascending', 'sermon-browser' )  => 'asc',
 				__( 'Descending', 'sermon-browser' ) => 'desc',
 			);
-			$csb              = isset( $_REQUEST['sortby'] ) ? sb_normalise_sortby( sanitize_text_field( wp_unslash( $_REQUEST['sortby'] ) ) ) : 'm.datetime';
+			$csb              = isset( $_REQUEST['sortby'] ) ? Sermon_Query::normalise_sortby( sanitize_text_field( wp_unslash( $_REQUEST['sortby'] ) ) ) : 'm.datetime';
 			$cd               = isset( $_REQUEST['dir'] ) ? strtolower( sanitize_text_field( wp_unslash( $_REQUEST['dir'] ) ) ) : '';
 			if ( $cd != 'asc' && $cd != 'desc' ) {
 				$cd = 'desc';
