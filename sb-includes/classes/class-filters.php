@@ -233,9 +233,9 @@ class Filters {
 						</tr>
 						<tr>
 							<td class="fieldname"><?php esc_html_e( 'Start date', 'sermon-browser' ); ?></td>
-							<td class="field"><input type="text" name="date" id="date" value="<?php echo ( isset( $_REQUEST['date'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['date'] ) ) ) : '' ); ?>" /></td>
+							<td class="field"><input type="date" name="date" id="date" value="<?php echo ( isset( $_REQUEST['date'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['date'] ) ) ) : '' ); ?>" /></td>
 							<td class="fieldname rightcolumn"><?php esc_html_e( 'End date', 'sermon-browser' ); ?></td>
-							<td class="field"><input type="text" name="enddate" id="enddate" value="<?php echo ( isset( $_REQUEST['enddate'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['enddate'] ) ) ) : '' ); ?>" /></td>
+							<td class="field"><input type="date" name="enddate" id="enddate" value="<?php echo ( isset( $_REQUEST['enddate'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['enddate'] ) ) ) : '' ); ?>" /></td>
 						</tr>
 						<tr>
 							<td class="fieldname"><?php esc_html_e( 'Keywords', 'sermon-browser' ); ?></td>
@@ -267,9 +267,6 @@ class Filters {
 			</form>
 		</div>
 		<script type="text/javascript">
-			jQuery.datePicker.setDateFormat('ymd','-');
-			jQuery('#date').datePicker({startDate:'01/01/1970'});
-			jQuery('#enddate').datePicker({startDate:'01/01/1970'});
 			<?php if ( $hide_filter === true ) { ?>
 			jQuery(document).ready(function() {
 				<?php echo $js_hide; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JavaScript above, with its text escaped by esc_js() ?>

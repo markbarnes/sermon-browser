@@ -44,9 +44,9 @@
 						</tr>
 						<tr>
 							<td class="fieldname">Start date</td>
-							<td class="field"><input type="text" name="date" id="date" value="" /></td>
+							<td class="field"><input type="date" name="date" id="date" value="" /></td>
 							<td class="fieldname rightcolumn">End date</td>
-							<td class="field"><input type="text" name="enddate" id="enddate" value="" /></td>
+							<td class="field"><input type="date" name="enddate" id="enddate" value="" /></td>
 						</tr>
 						<tr>
 							<td class="fieldname">Keywords</td>
@@ -78,9 +78,6 @@
 			</form>
 		</div>
 		<script type="text/javascript">
-			jQuery.datePicker.setDateFormat('ymd','-');
-			jQuery('#date').datePicker({startDate:'01/01/1970'});
-			jQuery('#enddate').datePicker({startDate:'01/01/1970'});
 						jQuery(document).ready(function() {
 				
 		var filter_visible = false;

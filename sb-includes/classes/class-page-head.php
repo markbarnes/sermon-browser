@@ -30,10 +30,6 @@ class Page_Head {
 			wp_enqueue_style( 'sb_style' );
 			$pageid = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE %s AND (post_status = 'publish' OR post_status = 'private') AND ID = %d AND post_date < NOW();", '%' . $wpdb->esc_like( '[sermons' ) . '%', $post->ID ) );
 			if ( $pageid !== null ) {
-				if ( sb_get_option( 'filter_type' ) == 'dropdown' ) {
-					wp_enqueue_script( 'sb_datepicker' );
-					wp_enqueue_style( 'sb_datepicker' );
-				}
 				if ( isset( $_REQUEST['title'] ) || isset( $_REQUEST['preacher'] ) || isset( $_REQUEST['date'] ) || isset( $_REQUEST['enddate'] ) || isset( $_REQUEST['series'] ) || isset( $_REQUEST['service'] ) || isset( $_REQUEST['book'] ) || isset( $_REQUEST['stag'] ) ) {
 					echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Custom sermon podcast', 'sermon-browser' ) . '" href="' . esc_url( sb_podcast_url() ) . "\" />\r";
 				}

@@ -75,9 +75,6 @@ class Plugin {
 			Podcast::serve();
 		}
 
-		wp_register_script( 'sb_64', SB_PLUGIN_URL . '/sb-includes/64.js', false, SB_CURRENT_VERSION, false );
-		wp_register_script( 'sb_datepicker', SB_PLUGIN_URL . '/sb-includes/datePicker.js', array( 'jquery' ), SB_CURRENT_VERSION, false );
-		wp_register_style( 'sb_datepicker', SB_PLUGIN_URL . '/sb-includes/datepicker.css', false, SB_CURRENT_VERSION );
 		if ( get_option( 'permalink_structure' ) == '' ) {
 			wp_register_style( 'sb_style', trailingslashit( home_url() ) . '?sb-style&', false, sb_get_option( 'style_date_modified' ) );
 		} else {

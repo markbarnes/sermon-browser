@@ -75,12 +75,13 @@ describe( 'the page head', () => {
 		assert.match( html, /<link rel="alternate" type="application\/rss\+xml" title="Custom sermon podcast" href="[^"]*\/sermons\/\?preacher=1&#038;podcast=1&#038;dir=desc&#038;sortby=m\.datetime" \/>/ );
 	} );
 
-	it( 'loads the date picker for the drop-down filter', async () => {
+	it( 'uses the browser\'s date fields for the drop-down filter, with no bundled date picker', async () => {
 		await php( "sb_update_option( 'filter_type', 'dropdown' ); return true;" );
 		try {
 			const html = await page();
-			assert.match( html, /<script id="sb_datepicker-js" src="[^"]*\/sb-includes\/datePicker\.js\?ver=[^"]*"><\/script>/ );
-			assert.match( html, /<link rel='stylesheet' id='sb_datepicker-css' href='[^']*\/sb-includes\/datepicker\.css\?ver=[^']*' media='all' \/>/ );
+			assert.match( html, /<input type="date" name="date" id="date" value="" \/>/ );
+			assert.match( html, /<input type="date" name="enddate" id="enddate" value="" \/>/ );
+			assert.doesNotMatch( html, /sb_datepicker|datePicker/ );
 		} finally {
 			await php( "sb_update_option( 'filter_type', 'oneclick' ); return true;" );
 		}

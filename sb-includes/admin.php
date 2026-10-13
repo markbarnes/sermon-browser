@@ -22,9 +22,6 @@ function sb_add_admin_headers() {
 		wp_enqueue_script('jquery');
 	}
 	if ($page == 'sermon-browser/new_sermon.php') {
-		wp_enqueue_script('sb_datepicker');
-		wp_enqueue_script('sb_64');
-		wp_enqueue_style ('sb_datepicker');
 		wp_enqueue_style ('sb_style');
 	}
 }
@@ -1887,7 +1884,7 @@ function sb_new_sermon() {
 					<td style="overflow: visible">
 						<strong><?php esc_html_e('Date', 'sermon-browser') ?></strong> (yyyy-mm-dd)
 						<div>
-							<input type="text" id="date" name="date" value="<?php if ((isset($curSermon->datetime) && $curSermon->datetime != '1970-01-01 00:00:00') || isset($id3_tags['date'])) echo esc_attr(isset($id3_tags['date']) ? $id3_tags['date'] : substr(stripslashes($curSermon->datetime),0,10)) ?>" />
+							<input type="date" id="date" name="date" value="<?php if ((isset($curSermon->datetime) && $curSermon->datetime != '1970-01-01 00:00:00') || isset($id3_tags['date'])) echo esc_attr(isset($id3_tags['date']) ? $id3_tags['date'] : substr(stripslashes($curSermon->datetime),0,10)) ?>" />
 						</div>
 					</td>
 					<td rowspan="3">
@@ -2009,8 +2006,6 @@ function sb_new_sermon() {
 		</form>
 	</div>
 	<script type="text/javascript">
-		jQuery.datePicker.setDateFormat('ymd','-');
-		jQuery('#date').datePicker({startDate:'01/01/1970'});
 		<?php if (empty($curSermon->time)): ?>
 			jQuery('#time').val(timeArr[jQuery('*[selected]', jQuery("select[name='service']")).attr('value')]);
 		<?php endif ?>
@@ -2057,7 +2052,7 @@ function sb_new_sermon() {
 			<?php for ($lolz = 0; $lolz < count($assocCode); $lolz++): ?>
 				<?php $r = true ?>
 				addFile();
-				stuff.push(<?php echo wp_json_encode($assocCode[$lolz]->name) ?>);
+				stuff.push(<?php echo wp_json_encode(base64_decode($assocCode[$lolz]->name), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>);
 				type.push('code');
 			<?php endfor ?>
 
@@ -2094,7 +2089,7 @@ function sb_new_sermon() {
 						jQuery('td', this).css('display', 'none');
 						jQuery("option[value='newcode']", this).attr('selected', 'selected');
 						jQuery('.newcode', this).css('display','');
-						jQuery(".newcode input", this).val(Base64.decode(stuff[i]));
+						jQuery(".newcode input", this).val(stuff[i]);
 						break;
 				}
 			});

@@ -268,6 +268,10 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 
 == Changelog ==
 
+= 0.49.1 (13 October 2026) =
+* **Change:** The date fields in the drop-down filter and on the Add Sermon page use the browser's own date picker, instead of a bundled script from 2006 and its stylesheet.
+* **Change:** The Add Sermon page no longer loads a bundled Base64 script to show a sermon's embed code.
+
 = 0.49.0 (13 October 2026) =
 The search results and sermon page templates no longer run as PHP.
 
