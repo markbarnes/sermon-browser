@@ -265,6 +265,10 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 
 == Changelog ==
 
+= Unreleased =
+
+* **Bug fix:** Saving the templates turned an attribute in single quotes, such as `data-x='y'`, into `data-x="&apos;y&apos;"`.
+
 = 0.48.0 (13 October 2026) =
 Sermons are read through one storage layer, the first step towards storing them as WordPress posts.
 

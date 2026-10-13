@@ -509,10 +509,10 @@ function sb_templates () {
             wp_die(esc_html__("You do not have the correct permissions to edit the SermonBrowser templates", 'sermon-browser'));
         }
 		require_once(SB_INCLUDES_DIR.'/dictionary.php');
-		// Saved slashed, as sb_update_option() has always stored them; sb_get_option() strips the slashes
-		$multi = isset($_POST['multi']) ? wp_kses_post($_POST['multi']) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-		$single = isset($_POST['single']) ? wp_kses_post($_POST['single']) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-		$style = isset($_POST['style']) ? wp_kses_post($_POST['style']) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		// Filtered unslashed, so that kses reads quoted attributes as written, then saved slashed, as sb_update_option() has always stored them; sb_get_option() strips the slashes
+		$multi = isset($_POST['multi']) ? wp_slash(wp_kses_post(wp_unslash($_POST['multi']))) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- wp_kses_post() sanitises; wp_slash() keeps the stored format
+		$single = isset($_POST['single']) ? wp_slash(wp_kses_post(wp_unslash($_POST['single']))) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- as above
+		$style = isset($_POST['style']) ? wp_slash(wp_kses_post(wp_unslash($_POST['style']))) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- as above
 		if(isset($_POST['resetdefault'])){
 			require_once(SB_INCLUDES_DIR.'/sb-install.php');
 			$multi = sb_default_multi_template();

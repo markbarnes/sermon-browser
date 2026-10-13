@@ -236,9 +236,8 @@ describe( 'the Templates page', () => {
 			style,
 		} );
 		const list = element( await visitor.html( '/sermons/' ), '<div class="sermon-browser saved-list"' );
-		// wp_kses_post() runs on the slashed form, so a single-quoted attribute keeps its quotes, escaped, in its value.
-		// Block themes curl the double quotes in the text.
-		assert.match( list, /^<div class="sermon-browser saved-list" data-note="&apos;single&apos;">5 sermons, the &#8220;latest&#8221; first: <span><a href="[^"]*sermon_id=4">/ );
+		// kses writes attributes with double quotes. Block themes curl the double quotes in the text.
+		assert.match( list, /^<div class="sermon-browser saved-list" data-note="single">5 sermons, the &#8220;latest&#8221; first: <span><a href="[^"]*sermon_id=4">/ );
 		// The Templates page filters what it saves with wp_kses_post(), even for administrators.
 		assert.doesNotMatch( list, /<script>/ );
 		assert.match( element( await visitor.html( '/sermons/?sermon_id=1' ), '<div class="sermon-browser saved-single"' ), /^<div class="sermon-browser saved-single">Paul&#039;s letter: Faith &amp; Works \\ 1 March 2026<\/div>$/ );
