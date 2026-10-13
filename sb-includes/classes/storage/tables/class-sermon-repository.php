@@ -297,9 +297,10 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 			case Sermon_Query::BY_PREACHER:
 				return array( "LEFT JOIN {$wpdb->prefix}sb_preachers AS p ON p.id = m.preacher_id", "p.name {$dir}, m.datetime DESC, m.id DESC" );
 			case Sermon_Query::BY_PASSAGE:
-				// Each sermon's first passage, in Bible order (sb_books lists the books in order).
+				// Each sermon's first passage, in Bible order (sb_books lists the books in order). Only one row
+				// of it, in case it is stored twice, so no sermon is listed twice.
 				return array(
-					"LEFT JOIN {$wpdb->prefix}sb_books_sermons AS bs ON bs.sermon_id = m.id AND bs.order = 0 AND bs.type = 'start'
+					"LEFT JOIN {$wpdb->prefix}sb_books_sermons AS bs ON bs.id = (SELECT MIN(first.id) FROM {$wpdb->prefix}sb_books_sermons AS first WHERE first.sermon_id = m.id AND first.order = 0 AND first.type = 'start')
 					LEFT JOIN {$wpdb->prefix}sb_books AS b ON b.name = bs.book_name",
 					"b.id IS NULL, b.id {$dir}, bs.chapter {$dir}, bs.verse {$dir}, m.datetime DESC, m.id DESC",
 				);

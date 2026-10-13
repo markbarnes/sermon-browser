@@ -59,6 +59,6 @@ class Download_Count {
 	 * @return float
 	 */
 	public function average() {
-		return $this->attachments ? $this->downloads / $this->attachments : 0.0;
+		return $this->attachments ? (float) $this->downloads / $this->attachments : 0.0;
 	}
 }
