@@ -5,5 +5,5 @@
 set -e
 cd "$(dirname "$0")/../.."
 wp db query 'CREATE DATABASE IF NOT EXISTS sb_phpunit' > /dev/null
-[ -d vendor ] || composer install --quiet --no-interaction
+composer install --quiet --no-interaction
 WORDPRESS_DB_NAME=sb_phpunit exec vendor/bin/phpunit "$@"

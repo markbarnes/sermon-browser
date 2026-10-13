@@ -28,6 +28,7 @@ Requires Docker and Node; npm is only used for development (wp-env and the tests
 
 - `npm start` runs WordPress with this plugin at http://localhost:8890 (admin: `admin` / `password`), on PHP 8.3 with debug logging to `wp-content/debug.log`. `npm stop` stops it.
 - `npm run lint` checks every PHP file's syntax.
+- `npm run phpcs -- <files>` checks files against the WordPress Coding Standards (the classes in `sb-includes/classes/` follow them; the older procedural files don't yet), and `npm run phpcbf -- <files>` fixes what it can. They run in the test site's CLI container with the Composer packages `npm run test:unit` installs.
 - Run WP-CLI with `npx wp-env run cli wp <command>`, or on the test site `npx wp-env run --config=.wp-env.tests.json cli wp <command>`.
 - WordPress.org's [Plugin Check](https://wordpress.org/plugins/plugin-check/): install it once with `npx wp-env run cli wp plugin install plugin-check --activate`, then run `npx wp-env run cli wp plugin check sermon-browser`. It checks the whole folder, so ignore what it reports in `tests/`, dotfiles and other files the zip leaves out.
 

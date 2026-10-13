@@ -10,6 +10,8 @@
 		"test:unit": "wp-env run --config=.wp-env.tests.json cli --env-cwd=wp-content/plugins/sermon-browser tests/phpunit/run.sh",
 		"test:coverage": "node tests/coverage/run.js",
 		"lint": "wp-env run cli bash -c 'find wp-content/plugins/sermon-browser -name \"*.php\" -not -path \"*/node_modules/*\" -not -path \"*/vendor/*\" -print0 | xargs -0 -n1 php -l | grep -v \"^No syntax errors\" || true'",
+		"phpcs": "wp-env run --config=.wp-env.tests.json cli --env-cwd=wp-content/plugins/sermon-browser vendor/bin/phpcs --standard=WordPress-Core",
+		"phpcbf": "wp-env run --config=.wp-env.tests.json cli --env-cwd=wp-content/plugins/sermon-browser vendor/bin/phpcbf --standard=WordPress-Core",
 		"zip": "git archive --format=zip --prefix=sermon-browser/ -o sermon-browser.zip HEAD"
 	},
 	"devDependencies": {
