@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.47.0
+Stable tag: 0.47.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -248,6 +248,9 @@ The tags for other Bible versions (`[kjvtext]`, `[asvtext]`, `[ylttext]`, `[webt
 
 == Upgrade Notice ==
 
+= 0.47.1 =
+Sorting by preacher and passage works again, the admin pages are hardened, and the help is built in. The "Powered by" link now points to GitHub.
+
 = 0.47.0 =
 Reorganises the plugin's code, with no change for visitors except two broken sort options removed. Themes calling the plugin's internal functions should check the changelog.
 
@@ -259,13 +262,14 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 
 == Changelog ==
 
-= Unreleased =
+= 0.47.1 (13 October 2026) =
+Restores sorting by preacher and passage, finishes escaping the admin pages, and moves the plugin's help from sermonbrowser.com into the plugin.
 
 * **Bug fix:** The drop-down filter can sort by preacher and by passage again, which had sorted by date since 0.45.12. Passages sort in Bible order of each sermon's first passage, with sermons that have none at the end; a preacher's sermons are listed newest first. Old links that sort by `p.name` or `b.id` still work.
 * **Bug fix:** After uploading or importing a file on the Files page with import options set, the Add Sermon page opened without the file's details, because the link to it was escaped for HTML inside a script.
 * **Bug fix:** Series, preacher and service names with HTML entities (such as an en dash saved as `&#8211;`) showed the entity in the admin pages' drop-down lists.
 * **Bug fix:** The Options page didn't show its error when the upload folder doesn't exist.
-* **Bug fix:** Some of the dashboard's sermon statistics and the help tab's links weren't translated.
+* **Bug fix:** Some of the dashboard's sermon statistics weren't translated.
 * **Change:** The plugin's home is now [on GitHub](https://github.com/markbarnes/sermon-browser), until it is back on WordPress.org. The sermonbrowser.com site, its forum and its tutorials are no longer maintained, so the plugin no longer links to them: the "Powered by" link (`[creditlink]`), the podcast feed's generator and the plugin's home page point to GitHub, and the Help page and help tabs now hold the help themselves, including a description of every template tag. Report problems on GitHub.
 * **Change:** Removed the global constants `IS_MU` (use WordPress's `is_multisite()`), `SB_PLUGIN_DIR` and `SB_WP_CONTENT_DIR`, and support for installing the plugin in `mu-plugins`, which didn't work: its URLs were wrong.
 * **Documentation:** The FAQ and installation instructions are brought up to date, and `[sermon_description]` and `[most_popular]` are documented. The changelog before 0.46.0 is in CHANGELOG.md on GitHub.
