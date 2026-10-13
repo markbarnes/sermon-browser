@@ -5,7 +5,7 @@ Plugin URI: http://www.sermonbrowser.com/
 Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
 Text Domain: sermon-browser
-Version: 0.46.1
+Version: 0.47.0
 Author URI: https://www.markbarnes.net/
 Requires at least: 5.8
 Requires PHP: 7.4
@@ -53,7 +53,7 @@ The sermon list and sermon pages are output by SermonBrowser\Shortcode::render()
 if (!defined('ABSPATH'))
 	exit;
 
-define('SB_CURRENT_VERSION', '0.46.1');
+define('SB_CURRENT_VERSION', '0.47.0');
 define('SB_DATABASE_VERSION', '1.7');
 define('SB_PLUGIN_FILE', __FILE__);
 sb_define_constants();

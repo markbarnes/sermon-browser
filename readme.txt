@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.46.1
+Stable tag: 0.47.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -259,6 +259,9 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.47.0 =
+Reorganises the plugin's code, with no change for visitors except two broken sort options removed. Themes calling the plugin's internal functions should check the changelog.
+
 = 0.46.1 =
 Fixes NET Bible text and searching for titles with apostrophes, and removes Bible versions whose service no longer exists.
 
@@ -346,6 +349,15 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.47.0 (13 October 2026) =
+The plugin's code is reorganised, to prepare for moving sermons to a custom post type. Output is unchanged except where noted below.
+
+* **Change:** The code is split into classes (namespace `SermonBrowser`, in `sb-includes/classes`) and files by purpose: `functions.php`, `sermons.php` and `template-tags.php` (which was `frontend.php`). `podcast.php` and `style.php` are gone. `sb_display_sermons()` and the functions templates use are unchanged, but themes or plugins calling other internal functions (such as `sb_shortcode()`, `sb_hijack()`, `sb_add_headers()` or the widget functions) need updating.
+* **Change:** Removed functions nothing called: `display_sermons()` (deprecated since 0.41), `sb_first_mp3()`, `sb_get_bible_books()`, `sb_display_front_end()` and `sb_default_excerpt_template()`.
+* **Change:** The drop-down filter no longer offers sorting by preacher or passage. Neither has worked since 0.45.12; both sorted by date.
+* **Bug fix:** The default stylesheet's podcast box background pointed to the wrong folder. Saved stylesheets are unchanged; resetting to the default fixes it.
+* **Documentation:** The FAQ on ESV text describes the API key on the Options page.
 
 = 0.46.1 (13 October 2026) =
 Preparation for reopening on WordPress.org, from the results of its Plugin Check.
