@@ -153,11 +153,11 @@ The Help page in the plugin's admin menu explains how to get started, the shortc
 
 == Screenshots ==
 
-1. **Displaying sermons on your website:** This first screen shot shows how Sermon Browser looks on your site. You can see one of the widgets in the left-hand sidebar, together with the main sermons page showing the one-click filter/search. Each of the sermons has an MP3 files attached, this can be played without leaving the site.
-2. **The single sermon page (with Bible text):** This shows the detail for one sermon. You can see additional links to other sermons preached around that time, plus the complete ESV text of the passage being preached on, and a photograph of the preacher.
-3. **Editing a sermon:** You can see a wide variety of information can be entered, including the bible passage being preached on, and any files linked to the sermon. Any number of Bible passages can be included, and any number of files (e.g. you could attach an mp3 file for the audio recording, a powerpoint file, and a PDF of the sermon text).
-4. **The options page:** You can customise SermonBrowser through this option page. At the bottom of the screen are the settings that allow you to customise how MP3 ID3 tags will be imported.
-5. **Using the template facility:** The powerful templating facility means that with a little knowledge of HTML, CSS, and the Sermon Browser template tags, you can easily adapt Sermon Browser's output to suit your own requirements. SermonBrowser produces valid XHTML code, using semantically correct markup and is fully standards compliant.
+1. **The sermons page:** the one-click filter by preacher, book, series, service and date, the podcast links, and each sermon with its Bible passage, series and audio player (shown in Twenty Twenty-Five).
+2. **A sermon's page:** the preacher, series, service and tags, the audio with a download link, the sermons before and after it, and the text of the Bible passage (here from the NET Bible).
+3. **The Sermons admin page:** every sermon, with how often its files have been downloaded.
+4. **Adding or editing a sermon:** the preacher, series, service and date, any number of Bible passages, and any number of files, links or embedded videos.
+5. **The Templates page:** the HTML for the sermons page and each sermon's page, with template tags such as `[sermon_title]` and `[files_loop]`, and the stylesheet.
 
 == Customisation ==
 
@@ -271,6 +271,7 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 = 0.49.1 (13 October 2026) =
 * **Change:** The date fields in the drop-down filter and on the Add Sermon page use the browser's own date picker, instead of a bundled script from 2006 and its stylesheet.
 * **Change:** The Add Sermon page no longer loads a bundled Base64 script to show a sermon's embed code.
+* **Change:** New screenshots for the readme.
 
 = 0.49.0 (13 October 2026) =
 The search results and sermon page templates no longer run as PHP.
