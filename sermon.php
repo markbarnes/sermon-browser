@@ -230,7 +230,6 @@ function sb_sermon_init () {
 		add_action('wp_head', 'sb_add_headers', 0);
 		add_action('wp_head', 'wp_print_styles', 9);
 		add_action('admin_bar_menu', 'sb_admin_bar_menu', 45);
-		add_filter('wp_title', 'sb_page_title');
 	} else {
 		require_once (SB_INCLUDES_DIR.'/admin.php');
 		add_action ('admin_menu', 'sb_add_pages');
@@ -259,27 +258,6 @@ function sb_add_pages() {
 	add_submenu_page('sermon-browser/sermon.php', __('Templates', 'sermon-browser'), __('Templates', 'sermon-browser'), 'manage_options', 'sermon-browser/templates.php', 'sb_templates');
 	add_submenu_page('sermon-browser/sermon.php', __('Uninstall', 'sermon-browser'), __('Uninstall', 'sermon-browser'), 'edit_plugins', 'sermon-browser/uninstall.php', 'sb_uninstall');
 	add_submenu_page('sermon-browser/sermon.php', __('Help', 'sermon-browser'), __('Help', 'sermon-browser'), 'publish_posts', 'sermon-browser/help.php', 'sb_help');
-}
-
-/**
-* Converts php.ini mega- or giga-byte numbers into kilobytes
-*
-* @param string $val
-* @return integer
-*/
-function sb_return_kbytes($val) {
-	$val = trim((string) $val);
-	if ($val === '')
-		return 0;
-	$last = strtolower($val[strlen($val)-1]);
-	$number = (int) $val;
-	switch($last) {
-		case 'g':
-			$number *= 1024;
-		case 'm':
-			$number *= 1024;
-	}
-	return $number;
 }
 
 /**
@@ -338,20 +316,6 @@ function sb_get_default ($default_type) {
 		case 'eng_bible_books':
 			return array('Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalm', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation');
 	}
-}
-
-/**
-* Returns true if sermons are displayed on the current page
-*
-* @return bool
-*/
-function sb_display_front_end() {
-	global $wpdb, $post;
-	$pageid = sb_get_page_id();
-	if ($pageid === 0)
-		return FALSE;
-	else
-		return TRUE;
 }
 
 /**
@@ -681,16 +645,6 @@ function sb_define_constants() {
 	define ('SB_WP_CONTENT_DIR', sb_sanitise_path(WP_CONTENT_DIR));
 	define ('SB_INCLUDES_DIR', SB_PLUGIN_DIR.'/sermon-browser/sb-includes');
 	define ('SB_ABSPATH', sb_sanitise_path(ABSPATH));
-}
-
-/**
-* Returns list of bible books from the database
-*
-* @return array
-*/
-function sb_get_bible_books () {
-	global $wpdb;
-	return $wpdb->get_col("SELECT name FROM {$wpdb->prefix}sb_books order by id");
 }
 
 /**

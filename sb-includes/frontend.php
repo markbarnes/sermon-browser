@@ -3,10 +3,6 @@ if (!defined('ABSPATH'))
 	exit;
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- the sermon list, its filters, feed and downloads are read-only GET requests
-// Error message for people using the old function
-function display_sermons($options = array()) {
-	echo "This function is now deprecated. Use sb_display_sermons or the sermon browser widget, instead.";
-}
 // Function to display sermons for users to add to their template
 function sb_display_sermons($options = array()) {
 	$default = array(
@@ -316,21 +312,6 @@ function sb_print_most_popular() {
 	$args['after_title'] = '</span>';
 	$args['suffix'] = '_f';
 	sb_widget_popular ($args);
-}
-
-//Modify page title
-function sb_page_title($title) {
-	global $wpdb;
-	if (isset($_GET['sermon_id'])) {
-		$id = (int)$_GET['sermon_id'];
-		$sermon = $wpdb->get_row($wpdb->prepare("SELECT m.title, p.name FROM {$wpdb->prefix}sb_sermons as m LEFT JOIN {$wpdb->prefix}sb_preachers as p ON m.preacher_id = p.id where m.id = %d", $id));
-		if ($sermon)
-			return $title.' ('.esc_html(stripslashes($sermon->title)).' - '.esc_html(stripslashes($sermon->name)).')';
-		else
-			return $title.' ('.esc_html__('No sermons found.', 'sermon-browser').')';
-	}
-	else
-		return $title;
 }
 
 //Downloads external webpage. Used to add Bible passages to sermon page.
@@ -1080,29 +1061,5 @@ function sb_print_filters($filter) {
 			<?php } ?>
 		</script>
 	<?php
-	}
-}
-// Returns the first MP3 file attached to a sermon
-// Stats have to be turned off for iTunes compatibility
-function sb_first_mp3($sermon, $stats= TRUE) {
-	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
-	if (stripos($user_agent, 'itunes') !== FALSE || stripos($user_agent, 'FeedBurner') !== FALSE)
-		$stats = FALSE;
-	$stuff = sb_get_stuff($sermon, true);
-	$stuff = array_merge((array)$stuff['Files'], (array)$stuff['URLs']);
-	foreach ((array) $stuff as $file) {
-		if (strtolower(substr($file, strrpos($file, '.') + 1)) == 'mp3') {
-			if ((substr($file,0,7) == "http://") or (substr($file,0,8) == 'https://')) {
-				if ($stats)
-					$file=sb_display_url().sb_query_char().'show&amp;url='.rawurlencode($file);
-			} else {
-				if (!$stats)
-					$file=trailingslashit(site_url()).sb_get_option('upload_dir').rawurlencode($file);
-				else
-					$file=sb_display_url().sb_query_char().'show&amp;file_name='.rawurlencode($file);
-			}
-			return $file;
-			break;
-		}
 	}
 }

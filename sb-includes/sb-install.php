@@ -477,29 +477,4 @@ h2 div.sb_edit_link {
 }';
    return str_replace('**SB_PATH**', SB_PLUGIN_URL, $css);
 }
-
-function sb_default_excerpt_template () {
-$multi = '<div class="sermon-browser">
-	<table class="sermons">
-	[sermons_loop]
-		<tr>
-			<td class="sermon-title">[sermon_title]</td>
-		</tr>
-		<tr>
-			<td class="sermon-passage">[first_passage] (Part of the [series_link] series).</td>
-		</tr>
-		<tr>
-			<td class="files">[files_loop][file][/files_loop]</td>
-		</tr>
-		<tr>
-			<td class="embed">[embed_loop][embed][/embed_loop]</td>
-		</tr>
-		<tr>
-			<td class="preacher">Preached by [preacher_link] on [date] ([service_link]).</td>
-		</tr>
-   	[/sermons_loop]
-	</table>
-</div>';
-	return $multi;
-}
 ?>

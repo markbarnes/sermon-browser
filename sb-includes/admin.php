@@ -26,6 +26,27 @@ function sb_add_admin_headers() {
 }
 
 /**
+* Converts php.ini mega- or giga-byte numbers into kilobytes
+*
+* @param string $val
+* @return integer
+*/
+function sb_return_kbytes($val) {
+	$val = trim((string) $val);
+	if ($val === '')
+		return 0;
+	$last = strtolower($val[strlen($val)-1]);
+	$number = (int) $val;
+	switch($last) {
+		case 'g':
+			$number *= 1024;
+		case 'm':
+			$number *= 1024;
+	}
+	return $number;
+}
+
+/**
 * Display the options page and handle changes
 */
 function sb_options() {
