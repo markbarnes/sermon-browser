@@ -1,8 +1,8 @@
 /**
  * Updating from 0.45.21, as sites still on it will: its database is already at version 1.7,
  * so only the code upgrade runs, on the first request of any kind after the update. It
- * recompiles the stored templates, protects the upload folder, removes options left by
- * the old version and records the new version.
+ * removes the templates the old version stored compiled to PHP, protects the upload folder,
+ * removes other options left by the old version and records the new version.
  *
  * The site is put into the state 0.45.21 left it in, with customised settings (lib/customised.js),
  * stored the way the old version stored them (templates with escaped quotes, output
@@ -86,6 +86,10 @@ describe( 'the first request after updating from 0.45.21', () => {
 		assert.ok( await uploadExists( '.htaccess' ) );
 		const rules = await php( "return file_get_contents( SB_ABSPATH . sb_get_option( 'upload_dir' ) . '.htaccess' );" );
 		assert.match( rules, /<FilesMatch "\\\.\(\?i:php\[0-9\]\?\|phtml\|phar\|pht\|shtml\|cgi\|pl\|py\|sh\)\$">\n\tRequire all denied\n<\/FilesMatch>/ );
+	} );
+
+	it( 'removes the templates the old version stored compiled to PHP', async () => {
+		assert.deepEqual( await php( "return array( get_option( 'sermonbrowser_search_output' ), get_option( 'sermonbrowser_single_output' ) );" ), [ false, false ] );
 	} );
 
 	it( 'removes the options for the donation notice that has been removed', async () => {

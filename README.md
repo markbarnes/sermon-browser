@@ -8,7 +8,7 @@ Until WordPress.org reopens the plugin, install it from the zip attached to the 
 
 1. Download `sermon-browser.zip` from the release (not GitHub's green Code → Download ZIP button: that unpacks to a folder called `sermon-browser-master`, and the plugin only works in a folder called `sermon-browser`).
 2. In WordPress, go to Plugins → Add New → Upload Plugin and upload the zip. If an older version is installed, WordPress offers to replace it; sermons, files and settings are kept.
-3. Templates are recompiled on the first page load after the update.
+3. The first page load after the update finishes upgrading (it tidies up old settings).
 
 On servers other than Apache, also stop the web server running scripts from the sermon upload folder (normally `wp-content/uploads/sermons/`), since the `.htaccess` the plugin writes there only works on Apache.
 
@@ -49,7 +49,9 @@ The tests work from the outside: they make HTTP requests as visitors and as logg
 | `filters.test.js` | Filters the seed alone doesn't reach (a long line folded behind "more", dates listed by month, several active filters) and what the sermons page adds to the head (feed links, the date picker) |
 | `install.test.js` | Uninstalling (who may, the nonce, removing tables, options and files, deactivating) and installing afresh (tables, sample data, default settings, upload folder) |
 | `customised-settings.test.js` | The same views with customised templates, stylesheet and options (sermons without attachments hidden, files with download links, widgets set up; built in `lib/customised.js`), with snapshots in `tests/snapshots/customised/` |
-| `upgrade.test.js` | Updating from 0.45.21 with customised settings, stored as the old version stored them: the first request recompiles the templates (output identical to a fresh install), protects the upload folder and removes old options; the database upgrade from 1.6 |
+| `upgrade.test.js` | Updating from 0.45.21 with customised settings, stored as the old version stored them: the first request shows the same output as a fresh install, protects the upload folder and removes old options, including the templates older versions stored compiled to PHP; the database upgrade from 1.6 |
+| `templates.test.js` | How templates are read: every tag on its own for each sermon (snapshots in `tests/snapshots/templates/`), the text around tags, tags that aren't the template's, PHP in templates, loops used twice or inside each other, the passages loop, and saving and resetting on the Templates page |
+| `template-errors.test.js` | Tags where they can't work (outside or after their loop, loops not closed or not opened): left out for visitors, explained to administrators and on the Templates page; `[file]` and `[embed]` outside their loops show the first |
 | `bible-text.test.js` | Bible text from the ESV and NET APIs (stubbed) on sermon pages |
 | `themes.test.js` | Classic themes as well as block themes (the others use the block theme): the same output, and the sermon in the page title for classic themes that call `wp_title()`. The classic theme is `tests/themes/sb-classic`, mapped into the test site by `.wp-env.tests.json` |
 
@@ -69,12 +71,12 @@ To see which parts of the plugin the tests never reach, restart the environment 
 npx wp-env start --config=.wp-env.tests.json --xdebug=coverage && npm run test:coverage
 ```
 
-`tests/mu-plugins/sb-test-coverage.php` records the plugin lines each request runs, and `tests/coverage/run.js` merges them into `coverage/summary.md` (lines covered per file, functions never or partly run, template tags no test renders) and `coverage/files/`, the source with uncovered lines marked `!!`. Template tags run inside `eval()`, which line coverage can't see, so they're reported by whether a rendered template contained them. Pass test files to `npm run test:coverage --` to cover only those. Xdebug roughly doubles the time the tests take; `npm start` turns it off again (restarting takes a couple of minutes either way).
+`tests/mu-plugins/sb-test-coverage.php` records the plugin lines each request runs, and `tests/coverage/run.js` merges them into `coverage/summary.md` (lines covered per file, functions never or partly run) and `coverage/files/`, the source with uncovered lines marked `!!`. Pass test files to `npm run test:coverage --` to cover only those. Xdebug roughly doubles the time the tests take; `npm start` turns it off again (restarting takes a couple of minutes either way).
 
 ## Security model
 
 - Admin AJAX requests (`ajax.php`, any POST with `sermon=1`) need a logged-in user, the `sb_ajax` nonce (`sbAjaxNonce` in the page) and the capability of the matching admin page.
 - Uploads only accept file types WordPress allows the user to upload (`sb_check_uploaded_file()`), checked by name and content.
 - `?download` and `?show` only serve files and URLs recorded in the `sb_stuff` table.
-- Templates are compiled to PHP and run with `eval()`. `sb_compile_template()` turns any PHP tags in a template into text, so only the template tags in `dictionary.php` produce code, and those escape what they print.
+- Templates are read when a page is shown (`SermonBrowser\Template`) and printed by `SermonBrowser\Template_Renderer`, whose tags escape what they print. Nothing in a template runs as PHP: PHP tags in it are shown as text.
 - Escape on output; use `$wpdb->prepare()` for every value in SQL.

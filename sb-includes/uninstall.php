@@ -23,6 +23,9 @@ delete_option('sermonbrowser_options');
 $special_options = sb_special_option_names();
 foreach ($special_options as $option)
 	delete_option("sermonbrowser_{$option}");
+// Templates compiled to PHP by versions before 0.49, in case the upgrade that removes them hasn't run
+delete_option('sermonbrowser_search_output');
+delete_option('sermonbrowser_single_output');
 
 if (is_multisite()) {
 	echo '<div id="message" class="updated fade"><p><b>'.esc_html__('All sermon data has been removed.', 'sermon-browser').'</b></div>';

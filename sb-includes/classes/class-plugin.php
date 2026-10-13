@@ -102,7 +102,7 @@ class Plugin {
 				sb_install();
 			}
 		}
-		// Recompile templates after a code update, on any request, so fixes to the template tags apply straight away.
+		// Upgrade after a code update, on any request.
 		$sb_version = sb_get_option( 'code_version' );
 		if ( false !== $sb_version && SB_CURRENT_VERSION != $sb_version ) {
 			require_once SB_INCLUDES_DIR . '/upgrade.php';

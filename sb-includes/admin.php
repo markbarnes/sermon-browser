@@ -508,7 +508,6 @@ function sb_templates () {
         if (! isset($_POST['sermon_template_edit_nonce']) || ! wp_verify_nonce( sanitize_key( $_POST['sermon_template_edit_nonce'] ), 'sermon_template_edit' )) {
             wp_die(esc_html__("You do not have the correct permissions to edit the SermonBrowser templates", 'sermon-browser'));
         }
-		require_once(SB_INCLUDES_DIR.'/dictionary.php');
 		// Filtered unslashed, so that kses reads quoted attributes as written, then saved slashed, as sb_update_option() has always stored them; sb_get_option() strips the slashes
 		$multi = isset($_POST['multi']) ? wp_slash(wp_kses_post(wp_unslash($_POST['multi']))) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- wp_kses_post() sanitises; wp_slash() keeps the stored format
 		$single = isset($_POST['single']) ? wp_slash(wp_kses_post(wp_unslash($_POST['single']))) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- as above
@@ -522,8 +521,6 @@ function sb_templates () {
 		sb_update_option('search_template', $multi);
 		sb_update_option('single_template', $single);
 		sb_update_option('css_style', $style);
-		sb_update_option('search_output', sb_compile_template($multi, sb_search_results_dictionary()));
-		sb_update_option('single_output', sb_compile_template($single, sb_sermon_page_dictionary()));
 		sb_update_option('style_date_modified', strtotime('now'));
 		echo '<div id="message" class="updated fade"><p><b>';
 		esc_html_e('Templates saved successfully.', 'sermon-browser');

@@ -11,7 +11,6 @@
  * Each request writes coverage/raw/<id>.json with:
  *   lines:     plugin file => { line: 1 (ran) or -1 (didn't run) }
  *   functions: plugin function or method (Class::method) => [file, first line, last line]
- *   templates: the templates rendered ('search', 'single') as their uncompiled text
  */
 
 if ( ! function_exists( 'xdebug_start_code_coverage' ) || false === strpos( (string) ini_get( 'xdebug.mode' ), 'coverage' ) ) {
@@ -44,22 +43,12 @@ register_shutdown_function(
 		$result = array(
 			'lines'     => array(),
 			'functions' => array(),
-			'templates' => array(),
 		);
 		foreach ( $coverage as $file => $lines ) {
 			if ( 0 !== strpos( $file, $sb_coverage_plugin ) ) {
 				continue;
 			}
 			$relative = substr( $file, strlen( $sb_coverage_plugin ) );
-			// Templates run as eval()'d code, reported as "sermon.php(451) : eval()'d code".
-			if ( preg_match( '/^(.+)\((\d+)\) : eval\(\)\'d code$/', $relative, $match ) ) {
-				$source = file( $sb_coverage_plugin . $match[1] );
-				$type   = false !== strpos( $source[ $match[2] - 1 ], 'single_output' ) ? 'single' : 'search';
-				if ( function_exists( 'sb_get_option' ) ) {
-					$result['templates'][ $type ] = sb_get_option( $type . '_template' );
-				}
-				continue;
-			}
 			if ( 0 === strpos( $relative, 'tests/' ) || 0 === strpos( $relative, 'node_modules/' ) ) {
 				continue;
 			}

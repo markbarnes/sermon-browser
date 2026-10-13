@@ -156,7 +156,7 @@ function sb_update_option($type, $val) {
 * @return array
 */
 function sb_special_option_names() {
-	return array ('single_template', 'single_output', 'search_template', 'search_output', 'css_style');
+	return array ('single_template', 'search_template', 'css_style');
 }
 
 /**

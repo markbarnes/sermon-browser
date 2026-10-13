@@ -243,6 +243,11 @@ describe( 'the Templates page', () => {
 		assert.match( element( await visitor.html( '/sermons/?sermon_id=1' ), '<div class="sermon-browser saved-single"' ), /^<div class="sermon-browser saved-single">Paul&#039;s letter: Faith &amp; Works \\ 1 March 2026<\/div>$/ );
 	} );
 
+	it( 'stores only the templates, not PHP compiled from them', async () => {
+		await save( { resetdefault: 'Reset to defaults' } );
+		assert.deepEqual( await php( "return array( get_option( 'sermonbrowser_search_output' ), get_option( 'sermonbrowser_single_output' ) );" ), [ false, false ] );
+	} );
+
 	it( 'resets the templates to the defaults', async () => {
 		await save( { resetdefault: 'Reset to defaults' } );
 		const defaults = await php( "require_once SB_INCLUDES_DIR . '/sb-install.php'; return sb_get_option( 'search_template' ) === sb_default_multi_template() && sb_get_option( 'single_template' ) === sb_default_single_template();" );

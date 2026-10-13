@@ -34,19 +34,20 @@ sermon.php     - This file. Defines the constants, loads the files below and sta
 In sb-includes:
 functions.php     - Functions shared by the admin pages and the front end: options, the sermons page's URL, the upload folder.
 sermons.php       - Reads sermons and their attachments from the database.
-template-tags.php - Functions the templates call to print sermons, and sb_display_sermons() for themes.
+template-tags.php - Functions that print sermons and their links, and sb_display_sermons() for themes.
 classes/          - Classes (namespace SermonBrowser), loaded by sb_autoload(): the plugin's hooks (Plugin), the shortcode,
                     filters, widgets, podcast feed, downloads, stylesheet, Bible text, page head and admin bar.
 admin.php         - The admin pages.
 ajax.php          - Handles the admin pages' AJAX requests.
-dictionary.php    - Compiles the templates' tags into PHP, and describes them for the help. Used when saving a template.
+dictionary.php    - Lists and describes the templates' tags, for the help.
 filetypes.php     - The names, icons and MIME types of the file types sermons may have attached.
 sb-install.php    - Installs the plugin's tables and default settings.
 uninstall.php     - Removes the plugin's tables, options and (if asked) files.
 upgrade.php       - Upgrades from earlier versions.
 
 To follow the logic of the code, start with SermonBrowser\Plugin::load() and trace the WordPress actions and filters.
-The sermon list and sermon pages are output by SermonBrowser\Shortcode::render().
+The sermon list and sermon pages are output by SermonBrowser\Shortcode::render(), which prints the templates with
+SermonBrowser\Template_Renderer.
 
 */
 

@@ -36,7 +36,6 @@ const status = spawnSync( 'node', [ '--test', '--test-concurrency=1', ...( testF
 // Merge every request: a line counts as covered if any request ran it.
 const lines = {};
 const functions = {};
-const templates = { search: new Set(), single: new Set() };
 const rawFiles = fs.readdirSync( raw ).filter( ( name ) => name.endsWith( '.json' ) );
 for ( const name of rawFiles ) {
 	const data = JSON.parse( fs.readFileSync( path.join( raw, name ), 'utf8' ) );
@@ -47,9 +46,6 @@ for ( const name of rawFiles ) {
 		}
 	}
 	Object.assign( functions, data.functions );
-	for ( const [ type, template ] of Object.entries( data.templates ) ) {
-		templates[ type ].add( template );
-	}
 }
 
 // Plugin files no request loaded at all.
@@ -100,19 +96,6 @@ const listFunctions = ( title, test ) => {
 };
 listFunctions( 'Functions never run', ( f ) => f.total && ! f.covered );
 listFunctions( 'Functions partly run (under 75%)', ( f ) => f.covered && f.covered / f.total < 0.75 );
-
-// Template tags: each tag's code runs inside eval(), which line coverage can't see,
-// so list the dictionary tags that no rendered template contained.
-// Read from the source rather than the site, so the report itself isn't recorded.
-const dictionarySource = fs.readFileSync( path.join( root, 'sb-includes/dictionary.php' ), 'utf8' );
-const dictionaryTags = ( name ) => [ ...dictionarySource.split( `function ${ name }(` )[ 1 ].split( /\nfunction / )[ 0 ].matchAll( /^\s*'(\[[^\]]+\])' =>/gm ) ].map( ( match ) => match[ 1 ] );
-const dictionaries = { search: dictionaryTags( 'sb_search_results_dictionary' ), single: dictionaryTags( 'sb_sermon_page_dictionary' ) };
-report.push( '', '## Template tags never rendered', '' );
-for ( const [ type, tags ] of Object.entries( dictionaries ) ) {
-	const rendered = [ ...templates[ type ] ].join( '\n' );
-	const missing = tags.filter( ( tag ) => ! rendered.includes( tag ) );
-	report.push( `**${ type }** (${ templates[ type ].size } template${ templates[ type ].size === 1 ? '' : 's' } rendered): ` + ( missing.length ? missing.map( ( tag ) => '`' + tag + '`' ).join( ', ' ) : 'none' ), '' );
-}
 
 fs.writeFileSync( path.join( out, 'summary.md' ), report.join( '\n' ) + '\n' );
 // Stop recording, so that npm test doesn't go on filling the folder.

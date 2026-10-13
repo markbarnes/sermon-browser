@@ -2,7 +2,7 @@
 if (!defined('ABSPATH'))
 	exit;
 /**
-* Template tags: the functions the compiled templates call to print sermons and their links, and sb_display_sermons() for themes
+* Template tags: functions that print sermons and their links, and sb_display_sermons() for themes
 *
 * @package frontend_functions
 */

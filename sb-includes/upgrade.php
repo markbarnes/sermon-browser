@@ -26,9 +26,7 @@ function sb_upgrade_options () {
 		}
 	$base64_options = array (
 		array ('old_option' => 'sb_sermon_single_form', 'new_option' => 'single_template'),
-		array ('old_option' => 'sb_sermon_single_output', 'new_option' => 'single_output'),
 		array ('old_option' => 'sb_sermon_multi_form', 'new_option' => 'search_template'),
-		array ('old_option' => 'sb_sermon_multi_output', 'new_option' => 'search_output'),
 		array ('old_option' => 'sb_sermon_style', 'new_option' => 'css_style'),
 	);
 	foreach ($base64_options as $option)
@@ -38,17 +36,16 @@ function sb_upgrade_options () {
 			delete_option ($option['old_option']);
 		}
 	delete_option('sb_sermon_style_output');
+	// Templates compiled to PHP by versions before 0.49
+	delete_option('sb_sermon_single_output');
+	delete_option('sb_sermon_multi_output');
 }
 
-// Runs the version upgrade procedures (re-save templates, add options added since last db update)
+// Runs the version upgrade procedures (tidy up, add options added since last db update)
 function sb_version_upgrade ($old_version, $new_version) {
-	require_once(SB_INCLUDES_DIR.'/dictionary.php');
-	$sbmf = sb_get_option('search_template');
-	if ($sbmf)
-		sb_update_option('search_output', sb_compile_template($sbmf, sb_search_results_dictionary()));
-	$sbsf = sb_get_option('single_template');
-	if ($sbsf)
-		sb_update_option('single_output', sb_compile_template($sbsf, sb_sermon_page_dictionary()));
+	// Templates compiled to PHP by versions before 0.49, which read the templates when a page is shown instead
+	delete_option('sermonbrowser_search_output');
+	delete_option('sermonbrowser_single_output');
 	sb_protect_upload_dir();
 	// Left by versions before 0.46.1, which could turn off a notice that has been removed
 	delete_option('sb_show_donate_reminder');
@@ -60,7 +57,6 @@ function sb_version_upgrade ($old_version, $new_version) {
 
 //Runs the database upgrade procedures (modifies database structure)
 function sb_database_upgrade ($old_version) {
-	require_once(SB_INCLUDES_DIR.'/dictionary.php');
 	require_once(SB_INCLUDES_DIR.'/admin.php');
 	global $wpdb;
 	$sermonUploadDir = sb_get_default('sermon_path');
@@ -93,8 +89,6 @@ function sb_database_upgrade ($old_version) {
 			$wpdb->query("ALTER TABLE {$wpdb->prefix}sb_sermons ADD page_id INT(10) NOT NULL");
 			add_option('sb_display_method', 'dynamic');
 			add_option('sb_sermons_per_page', '10');
-			add_option('sb_sermon_multi_output', base64_encode(sb_compile_template(base64_decode(get_option('sb_sermon_multi_form')), sb_search_results_dictionary())));
-			add_option('sb_sermon_single_output', base64_encode(sb_compile_template(base64_decode(get_option('sb_sermon_single_form')), sb_sermon_page_dictionary())));
 			add_option('sb_sermon_style_output', base64_encode(stripslashes(base64_decode(get_option('sb_sermon_style')))));
 			add_option('sb_sermon_style_date_modified', strtotime('now'));
 			update_option('sb_sermon_db_version', '1.4');

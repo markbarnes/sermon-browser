@@ -37,23 +37,6 @@ class Template_Test extends WP_UnitTestCase {
 		);
 	}
 
-	public function test_the_tags_are_those_the_templates_page_describes() {
-		require_once SB_INCLUDES_DIR . '/dictionary.php';
-		foreach ( array(
-			Template::SEARCH => sb_search_results_dictionary(),
-			Template::SINGLE => sb_sermon_page_dictionary(),
-		) as $kind => $dictionary ) {
-			$names = array_keys( Template::tags( $kind ) );
-			foreach ( array_keys( Template::LOOPS[ $kind ] ) as $loop ) {
-				array_push( $names, $loop, "/$loop" );
-			}
-			$expected = array_map( fn( $tag ) => trim( $tag, '[]' ), array_keys( $dictionary ) );
-			sort( $names );
-			sort( $expected );
-			$this->assertSame( $expected, $names, $kind );
-		}
-	}
-
 	public function test_parses_text_tags_and_loops() {
 		$template = Template::parse( 'a[sermons_count]b[sermons_loop]c[sermon_title][files_loop][file][/files_loop][/sermons_loop]d', Template::SEARCH );
 		$this->assertSame( array( 'a', '[sermons_count]', 'b', array( '[sermons_loop]' => array( 'c', '[sermon_title]', array( '[files_loop]' => array( '[file]' ) ) ) ), 'd' ), self::shape( $template->nodes ) );

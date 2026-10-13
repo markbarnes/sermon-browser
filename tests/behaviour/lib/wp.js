@@ -148,18 +148,18 @@ export function setOptions( options ) {
 }
 
 /**
- * Sets the search results and single sermon templates and compiles them, as saving the Templates page does.
+ * Sets the search results and single sermon templates.
  *
  * @param {{search?: string, single?: string}} templates
  * @return {Promise<true>}
  */
 export function useTemplates( { search, single } ) {
-	const code = [ "require_once SB_INCLUDES_DIR . '/dictionary.php';" ];
+	const code = [];
 	if ( search !== undefined ) {
-		code.push( `sb_update_option( 'search_template', ${ phpString( search ) } ); sb_update_option( 'search_output', sb_compile_template( ${ phpString( search ) }, sb_search_results_dictionary() ) );` );
+		code.push( `sb_update_option( 'search_template', ${ phpString( search ) } );` );
 	}
 	if ( single !== undefined ) {
-		code.push( `sb_update_option( 'single_template', ${ phpString( single ) } ); sb_update_option( 'single_output', sb_compile_template( ${ phpString( single ) }, sb_sermon_page_dictionary() ) );` );
+		code.push( `sb_update_option( 'single_template', ${ phpString( single ) } );` );
 	}
 	return php( code.join( ' ' ) + ' return true;' );
 }

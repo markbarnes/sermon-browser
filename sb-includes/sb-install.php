@@ -5,7 +5,6 @@ function sb_install() {
 	// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery -- creating the plugin's own tables, with fixed SQL
 	global $wpdb;
 	$sermonUploadDir = sb_get_default('sermon_path');
-	require_once(SB_INCLUDES_DIR.'/dictionary.php');
 	if (!is_dir(SB_ABSPATH.$sermonUploadDir))
 		sb_mkdir(SB_ABSPATH.$sermonUploadDir);
 	if (!is_dir(SB_ABSPATH.$sermonUploadDir.'images'))
@@ -145,8 +144,6 @@ function sb_install() {
 	sb_update_option('single_template', sb_default_single_template());
 	sb_update_option('css_style', sb_default_css());
 	sb_update_option('style_date_modified', strtotime('now'));
-	sb_update_option('search_output', sb_compile_template(sb_default_multi_template(), sb_search_results_dictionary()));
-	sb_update_option('single_output', sb_compile_template(sb_default_single_template(), sb_sermon_page_dictionary()));
 	$books = sb_get_default('eng_bible_books');
 	foreach ($books as $book)
 		$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, %s)", $book));
