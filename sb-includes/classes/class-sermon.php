@@ -84,23 +84,6 @@ class Sermon {
 	}
 
 	/**
-	 * Returns the attachments of one type, newest first.
-	 *
-	 * @param string $type One of Attachment's constants.
-	 * @return Attachment[]
-	 */
-	public function attachments_of_type( $type ) {
-		return array_values(
-			array_filter(
-				$this->attachments,
-				function ( $attachment ) use ( $type ) {
-					return $attachment->type === $type;
-				}
-			)
-		);
-	}
-
-	/**
 	 * Returns the total downloads of the sermon's attachments.
 	 *
 	 * @return int
