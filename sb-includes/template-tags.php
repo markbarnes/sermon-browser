@@ -70,7 +70,7 @@ function sb_print_most_popular() {
 //Modify page title
 function sb_page_title($title) {
 	if (isset($_GET['sermon_id'])) {
-		$sermon = sb_remember_sermon(null, (int) $_GET['sermon_id']);
+		$sermon = sb_find_sermon((int) $_GET['sermon_id']);
 		if ($sermon)
 			return $title.' ('.esc_html($sermon->title).' - '.esc_html($sermon->preacher ? $sermon->preacher->name : '').')';
 		else
@@ -297,7 +297,7 @@ function sb_print_preacher_image($sermon) {
 
 //Prints link to sermon preached next (but not today)
 function sb_print_next_sermon_link($sermon) {
-	$sermon = sb_remember_sermon(null, (int) $sermon->id);
+	$sermon = sb_find_sermon((int) $sermon->id);
 	$next = $sermon ? SermonBrowser\Storage::sermons()->next($sermon) : null;
 	if (!$next) return;
 	echo '<a href="';
@@ -307,7 +307,7 @@ function sb_print_next_sermon_link($sermon) {
 
 //Prints link to sermon preached on previous days
 function sb_print_prev_sermon_link($sermon) {
-	$sermon = sb_remember_sermon(null, (int) $sermon->id);
+	$sermon = sb_find_sermon((int) $sermon->id);
 	$prev = $sermon ? SermonBrowser\Storage::sermons()->previous($sermon) : null;
 	if (!$prev) return;
 	echo '<a href="';
@@ -317,7 +317,7 @@ function sb_print_prev_sermon_link($sermon) {
 
 //Prints links to other sermons preached on the same day
 function sb_print_sameday_sermon_link($sermon) {
-	$sermon = sb_remember_sermon(null, (int) $sermon->id);
+	$sermon = sb_find_sermon((int) $sermon->id);
 	$same = $sermon ? SermonBrowser\Storage::sermons()->same_day($sermon) : array();
 	if (!$same) {
 		esc_html_e('None', 'sermon-browser');

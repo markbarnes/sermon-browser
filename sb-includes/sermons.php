@@ -101,19 +101,37 @@ function sb_sermon_row($sermon) {
 }
 
 /**
-* Keeps the sermons just listed, so sb_get_stuff() needn't read them again
+* Keeps a sermon read in this request, so sb_find_sermon() needn't read it again
 *
-* @param SermonBrowser\Sermon|null $sermon The sermon to keep, or null to look one up
-* @param integer $id The id to look up
+* @param SermonBrowser\Sermon $sermon
+* @return SermonBrowser\Sermon
+*/
+function sb_remember_sermon($sermon) {
+	return sb_sermon_cache($sermon->id, $sermon);
+}
+
+/**
+* Returns a sermon, from the sermons already read in this request if it's one of them
+*
+* @param integer $id
 * @return SermonBrowser\Sermon|null
 */
-function sb_remember_sermon($sermon = null, $id = 0) {
+function sb_find_sermon($id) {
+	return sb_sermon_cache((int) $id);
+}
+
+/**
+* Holds the sermons read in this request (for sb_remember_sermon() and sb_find_sermon())
+*
+* @param integer $id
+* @param SermonBrowser\Sermon|null $sermon The sermon to keep, or null to return the one kept (reading it if need be)
+* @return SermonBrowser\Sermon|null
+*/
+function sb_sermon_cache($id, $sermon = null) {
 	static $sermons = array();
-	if ($sermon) {
-		$sermons[$sermon->id] = $sermon;
-		return $sermon;
-	}
-	if (!isset($sermons[$id]))
+	if ($sermon)
+		$sermons[$id] = $sermon;
+	elseif (!array_key_exists($id, $sermons))
 		$sermons[$id] = SermonBrowser\Storage::sermons()->get($id);
 	return $sermons[$id];
 }
@@ -137,9 +155,20 @@ function sb_normalise_sortby($sortby) {
 * @return array Files (file names), URLs, and Code (base64-encoded embed code), newest first
 */
 function sb_get_stuff($sermon, $mp3_only = FALSE) {
+	$found = sb_find_sermon((int) $sermon->id);
+	return sb_sermon_stuff($found ? $found->attachments : array(), $mp3_only);
+}
+
+/**
+* Sorts attachments into the lists sb_get_stuff() returns
+*
+* @param SermonBrowser\Attachment[] $attachments
+* @param boolean $mp3_only (if true will only return MP3 files)
+* @return array Files (file names), URLs, and Code (base64-encoded embed code)
+*/
+function sb_sermon_stuff($attachments, $mp3_only = FALSE) {
 	$file = $url = $code = array();
-	$found = sb_remember_sermon(null, (int) $sermon->id);
-	foreach ($found ? $found->attachments : array() as $attachment) {
+	foreach ($attachments as $attachment) {
 		if ($mp3_only && strtolower(substr($attachment->content, -4)) != '.mp3')
 			continue;
 		if ($attachment->type == SermonBrowser\Attachment::FILE)
@@ -178,7 +207,7 @@ function sb_sermon_stats($sermonid) {
 * @return array|false Keys Sermon (a row object, with start and end as arrays), Files, Code and Tags
 */
 function sb_get_single_sermon($id) {
-	$sermon = sb_remember_sermon(null, (int) $id);
+	$sermon = sb_find_sermon($id);
 	// The old query joined the preacher and service without LEFT JOIN, so a sermon missing either wasn't found
 	if (!$sermon || !$sermon->preacher || !$sermon->service)
 		return false;
@@ -187,7 +216,7 @@ function sb_get_single_sermon($id) {
 	$row->end = sb_unserialize($row->end);
 	$row->series = $sermon->series ? $sermon->series->name : '';
 	$row->ssid = $sermon->series ? $sermon->series->id : 0;
-	$stuff = sb_get_stuff($row);
+	$stuff = sb_sermon_stuff($sermon->attachments);
 	return array(
 		'Sermon' => $row,
 		'Files' => $stuff['Files'],
