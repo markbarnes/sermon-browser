@@ -11,7 +11,7 @@ Requires at least: 5.8
 Requires PHP: 7.4
 Update URI: false
 
-Copyright (c) 2008-2018 Mark Barnes
+Copyright (c) 2008-2026 Mark Barnes
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -453,6 +453,8 @@ function sb_query_char ($return_entity = true) {
 */
 function sb_shortcode($atts, $content=null) {
 	global $wpdb, $record_count;
+	// Content is also rendered in admin, e.g. when the block editor preloads the page's REST data
+	require_once (SB_INCLUDES_DIR.'/frontend.php');
 	ob_start();
 	$atts = shortcode_atts(array(
 		'filter' => sb_get_option('filter_type'),
