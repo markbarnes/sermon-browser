@@ -348,6 +348,7 @@ Security release. The plugin was closed on WordPress.org in February 2022 for CV
 * **Hardening:** Queries that built SQL from request data or MP3 ID3 tags now use prepared statements. These weren't exploitable in 0.45.22, because the values were slashed, cast to integers or HTML-encoded first, but they relied on that.
 * **Security:** Output is escaped throughout (front end, widgets, podcast feed, admin), templates can no longer contain PHP, embed code can no longer use iframe srcdoc, and Bible text from remote APIs is filtered.
 * **Bug fix:** Works on PHP 8: the sermon list was always empty, and saving a sermon without a Bible passage or showing the popular sermons widget caused fatal errors.
+* **Bug fix:** The popular sermons widget showed an empty entry in each list when a file wasn't attached to a sermon.
 
 = 0.45.22 (29 August 2018) =
 * **Bug fix:** Sermons couldn't be deleted. Now they can.

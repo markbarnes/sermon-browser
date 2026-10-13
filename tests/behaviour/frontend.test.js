@@ -166,6 +166,8 @@ describe( 'widgets', () => {
 		assert.match( html, /<div id="sb_popular_wrapper_f"><div class="popular-sermons_f"><ul><li><a href="[^"]*sermon_id=3">Romans 5: peace with God<\/a>/ );
 		assert.match( html, /popular_series_trigger_f/ );
 		assert.match( html, /popular_preachers_trigger_f/ );
+		// The seed has a file attached to no sermon; it mustn't show up as an empty entry.
+		assert.doesNotMatch( html, /<li><a href=\\?"[^"\\]*\\?"><\/a><\/li>/ );
 	} );
 } );
 

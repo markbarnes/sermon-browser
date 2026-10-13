@@ -166,7 +166,7 @@ function sb_widget_popular ($args) {
 	if ($options['display_sermons']) {
 		$sermons = $wpdb->get_results("SELECT sermons.id, sermons.title, sum(stuff.count) AS total
 									   FROM {$wpdb->prefix}sb_stuff AS stuff
-									   LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
+									   JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
 									   GROUP BY sermons.id ORDER BY total DESC LIMIT 0, ".(int) $options['limit']);
 		if ($sermons) {
 			$output['sermons'] = '<div class="popular-sermons'.$suffix.'"><ul>';
@@ -190,13 +190,13 @@ function sb_widget_popular ($args) {
 	if ($options['display_series']) {
 		$series1 = $wpdb->get_results("SELECT series.id, series.name, avg(stuff.count) AS average
 									   FROM {$wpdb->prefix}sb_stuff AS stuff
-									   LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-									   LEFT JOIN {$wpdb->prefix}sb_series AS series ON sermons.series_id = series.id
+									   JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
+									   JOIN {$wpdb->prefix}sb_series AS series ON sermons.series_id = series.id
 									   GROUP BY series.id ORDER BY average DESC");
 		$series2 = $wpdb->get_results("SELECT series.id, sum(stuff.count) AS total
 									   FROM {$wpdb->prefix}sb_stuff AS stuff
-									   LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-									   LEFT JOIN {$wpdb->prefix}sb_series AS series ON sermons.series_id = series.id
+									   JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
+									   JOIN {$wpdb->prefix}sb_series AS series ON sermons.series_id = series.id
 									   GROUP BY series.id ORDER BY total DESC");
 		if ($series1) {
 			$i=1;
@@ -236,14 +236,14 @@ function sb_widget_popular ($args) {
 	if ($options['display_preachers']) {
 		$preachers1 = $wpdb->get_results("SELECT preachers.id, preachers.name, avg(stuff.count) AS average
 										  FROM {$wpdb->prefix}sb_stuff AS stuff
-										  LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-										  LEFT JOIN {$wpdb->prefix}sb_preachers AS preachers ON sermons.preacher_id = preachers.id
+										  JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
+										  JOIN {$wpdb->prefix}sb_preachers AS preachers ON sermons.preacher_id = preachers.id
 										  GROUP BY preachers.id
 										  ORDER BY average DESC");
 		$preachers2 = $wpdb->get_results("SELECT preachers.id, sum(stuff.count) AS total
 										  FROM {$wpdb->prefix}sb_stuff AS stuff
-										  LEFT JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-										  LEFT JOIN {$wpdb->prefix}sb_preachers AS preachers ON sermons.preacher_id = preachers.id
+										  JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
+										  JOIN {$wpdb->prefix}sb_preachers AS preachers ON sermons.preacher_id = preachers.id
 										  GROUP BY preachers.id
 										  ORDER BY total DESC");
 		if ($preachers1) {
