@@ -55,6 +55,14 @@ How it fits together:
 - Each test file ends by checking that the debug log is free of PHP errors, warnings, notices and deprecations. `.wp-env.json` turns on `WP_DEBUG` for the test site; wp-env turns it off there otherwise, and WordPress then writes nothing to the log.
 - To test another PHP version, put `{ "phpVersion": "8.5" }` in `.wp-env.override.json` (git-ignored) and run `npm start` again. The tests pass on PHP 7.4 to 8.5. With older PHP versions (at least 7.4 to 8.1), wp-env can't build its images if your user or group id is above 256000 (common on Macs managed by an organisation), because their Alpine Linux rejects such ids.
 
+To see which parts of the plugin the tests never reach, restart the environment with Xdebug's coverage mode and run the tests with coverage:
+
+```bash
+npx wp-env start --xdebug=coverage && npm run test:coverage
+```
+
+`tests/mu-plugins/sb-test-coverage.php` records the plugin lines each request runs, and `tests/coverage/run.js` merges them into `coverage/summary.md` (lines covered per file, functions never or partly run, template tags no test renders) and `coverage/files/`, the source with uncovered lines marked `!!`. Template tags run inside `eval()`, which line coverage can't see, so they're reported by whether a rendered template contained them. Pass test files to `npm run test:coverage --` to cover only those. Xdebug roughly doubles the time the tests take; `npm start` turns it off again (restarting takes a couple of minutes either way).
+
 To check that the security tests catch what they should, run them against the original code. In a clean working tree:
 
 ```bash
