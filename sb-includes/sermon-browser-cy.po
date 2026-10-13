@@ -674,15 +674,6 @@ msgstr "Nid oes gennych y caniatâd angenrheidiol i olygu pregethau"
 msgid "Sermon saved to database."
 msgstr "Pregethau wedi eu cadw i'r gronfa ddata."
 
-#: sb-includes/admin.php:1255
-#, php-format
-msgid ""
-"If you find SermonBrowser useful, please consider %1$ssupporting%2$s the "
-"ministry of Nathanael and Anna Ayling in Japan."
-msgstr ""
-"Os yw SermonBrowser yn ddefnyddiol i chi, ystyriwch gefnogi %1$ssupporting"
-"%2$s gweinidogaeth Nathanael ac Anna Ayling yn Japan."
-
 #: sb-includes/admin.php:1257
 msgid ""
 "Sermon Browser 2.0 is under development. If you're a coder, and would like "
@@ -1098,10 +1089,6 @@ msgstr "Fforwm Cefnogaeth"
 msgid "Shortcode syntax"
 msgstr "Cystrawen cod byr"
 
-#: sb-includes/admin.php:2637
-msgid "Donate"
-msgstr "Rhodd"
-
 #: sb-includes/ajax.php:188
 msgid "No results"
 msgstr "Dim canlyniadau"
@@ -1139,10 +1126,6 @@ msgstr "Dewisiadau"
 #: sb-includes/frontend.php:134 sermon.php:250
 msgid "Help"
 msgstr "Cymorth"
-
-#: sb-includes/frontend.php:135 sermon.php:251
-msgid "Pray for Japan"
-msgstr "Gweddïo dros Japan"
 
 #: sb-includes/frontend.php:321 sermon.php:455
 msgid "No sermons found."

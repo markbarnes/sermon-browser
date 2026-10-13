@@ -608,15 +608,6 @@ msgstr "आप उपदेश को संपादित करने के 
 msgid "Sermon saved to database."
 msgstr "उपदेश डेटाबेस से बचाया."
 
-#: sb-includes/admin.php:1255
-#, php-format
-msgid ""
-"If you find SermonBrowser useful, please consider %1$ssupporting%2$s the ministry of "
-"Nathanael and Anna Ayling in Japan."
-msgstr ""
-"sयदि आप SermonBrowser उपयोगी पाते हैं, तो पर विचार %1$ssupporting%2$s है नतनएल और जापान में अन्ना "
-"Ayling मंत्रालय कृपया."
-
 #: sb-includes/admin.php:1257
 msgid ""
 "Sermon Browser 2.0 is under development. If you're a coder, and would like to help, please "
@@ -1007,10 +998,6 @@ msgstr "समर्थन फोरम"
 msgid "Shortcode syntax"
 msgstr "shortcode सिंटैक्स"
 
-#: sb-includes/admin.php:2637
-msgid "Donate"
-msgstr "दान"
-
 #: sb-includes/ajax.php:188
 msgid "No results"
 msgstr "कोई परिणाम नहीं"
@@ -1048,10 +1035,6 @@ msgstr "विकल्प"
 #: sb-includes/frontend.php:134 sermon.php:250
 msgid "Help"
 msgstr "मदद"
-
-#: sb-includes/frontend.php:135 sermon.php:251
-msgid "Pray for Japan"
-msgstr "जापान के लिए प्रार्थना करो"
 
 #: sb-includes/frontend.php:321 sermon.php:455
 msgid "No sermons found."

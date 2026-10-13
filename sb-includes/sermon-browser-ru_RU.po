@@ -669,15 +669,6 @@ msgstr "У вас недостаточно прав для редактиров�
 msgid "Sermon saved to database."
 msgstr "Проповедь сохранена в базу данных."
 
-#: sb-includes/admin.php:1255
-#, php-format
-msgid ""
-"If you find SermonBrowser useful, please consider %1$ssupporting%2$s the "
-"ministry of Nathanael and Anna Ayling in Japan."
-msgstr ""
-"Если вы нашли SermonBrowser полезным, пожалуйста, %1$sподдержите%2$s "
-"министерство Натанаэля и Анны Эйлинг в Японии."
-
 #: sb-includes/admin.php:1257
 msgid ""
 "Sermon Browser 2.0 is under development. If you're a coder, and would like "
@@ -1093,10 +1084,6 @@ msgstr "Поддержка и форум"
 msgid "Shortcode syntax"
 msgstr "Синтаксис короткой ссылки"
 
-#: sb-includes/admin.php:2637
-msgid "Donate"
-msgstr "Пожертвовать"
-
 #: sb-includes/ajax.php:188
 msgid "No results"
 msgstr "Нет результатов"
@@ -1134,10 +1121,6 @@ msgstr "Настройки"
 #: sb-includes/frontend.php:134 sermon.php:250
 msgid "Help"
 msgstr "Помощь"
-
-#: sb-includes/frontend.php:135 sermon.php:251
-msgid "Pray for Japan"
-msgstr "Молитесь за Японию"
 
 #: sb-includes/frontend.php:321 sermon.php:455
 msgid "No sermons found."

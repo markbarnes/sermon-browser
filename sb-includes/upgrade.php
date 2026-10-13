@@ -17,7 +17,6 @@ function sb_upgrade_options () {
 		array ('old_option' => 'sb_sermon_upload_url', 'new_option' => 'upload_url'),
 		array ('old_option' => 'sb_display_method', 'new_option' => 'display_method'),
 		array ('old_option' => 'sb_sermons_per_page', 'new_option' => 'sermons_per_page'),
-		array ('old_option' => 'sb_show_donate_reminder', 'new_option' => 'show_donate_reminder'),
 		array ('old_option' => 'sb_display_method', 'new_option' => 'display_method'),
 	);
 	foreach ($standard_options as $option)
@@ -51,6 +50,9 @@ function sb_version_upgrade ($old_version, $new_version) {
 	if ($sbsf)
 		sb_update_option('single_output', sb_compile_template($sbsf, sb_sermon_page_dictionary()));
 	sb_protect_upload_dir();
+	// Left by versions before 0.46.1, which could turn off a notice that has been removed
+	delete_option('sb_show_donate_reminder');
+	delete_option('show_donate_reminder');
 	sb_update_option('code_version', $new_version);
 	if (sb_get_option('filter_type') == '')
 		sb_update_option('filter_type', 'dropdown');

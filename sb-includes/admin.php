@@ -2078,53 +2078,7 @@ sb_do_alerts();
 		<a href="http://www.sermonbrowser.com/"><img src="<?php echo SB_PLUGIN_URL; ?>/sb-includes/logo-small.png" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
 		<div style="width:45%;float:right;clear:right">
 		<h2>Thank you</h2>
-		<p>A number of individuals and churches have kindly <a href="http://www.sermonbrowser.com/donate/">donated</a> to the development of Sermon Browser. Their support is very much appreciated. Since April 2011, all donations have been sent to <a href="<?php echo admin_url('admin.php?page=sermon-browser/japan.php')?>">support the ministry of Nathanael and Anna Ayling</a> in Japan.</p>
-		<ul style="list-style-type:circle; margin-left: 2em">
-			<li><a href="http://www.cambray.org/" target="_blank">Cambray Baptist Church</a>, UK</li>
-			<li><a href="https://www.bethel-clydach.co.uk/" target="_blank">Bethel Evangelical Church</a>, Clydach, UK</li>
-			<li><a href="http://www.bethel-laleston.co.uk/" target="_blank">Bethel Baptist Church</a>, Laleston, UK</li>
-			<li><a href="http://www.hessonchurch.com/" target="_blank">Hesson Christian Fellowship</a>, Ontario, Canada</li>
-			<li><a href="http://www.icvineyard.org/" target="_blank">Vineyard Community Church</a>, Iowa</li>
-			<li><a href="http://www.cbcsd.us/" target="_blank">Chinese Bible Church of San Diego</a>, California</li>
-			<li><a href="http://thecreekside.org/" target="_blank">Creekside Community Church</a>, Texas</li>
-			<li><a href="http://stluke.info/" target="_blank">St. Luke Lutheran Church, Gales Ferry</a>, Connecticut</li>
-			<li><a href="http://www.bunnbaptistchurch.org/" target="_blank">Bunn Baptist Church</a>, North Carolina</li>
-			<li><a href="http://www.ccpconline.org" target="_blank">Christ Community Presbyterian Church</a>, Florida</li>
-			<li><a href="http://www.harborhawaii.org" target="_blank">Harbor Church</a>, Hawaii</li>
-			<li>Vicky H, UK</li>
-			<li>Ben S, UK</li>
-			<li>Tom W, UK</li>
-			<li>Gavin D, UK</li>
-			<li>Douglas C, UK</li>
-			<li>David A, UK</li>
-			<li>Thomas C, Canada</li>
-			<li>Daniel J, Germany</li>
-			<li>Hiromi O, Japan</li>
-			<li>David C, Australia</li>
-			<li>Lou B, Australia</li>
-			<li>Edward P, Delaware</li>
-			<li>Steve J, Pensylvania</li>
-			<li>William H, Indiana</li>
-			<li>Brandon E, New Jersey</li>
-			<li>Jamon A, Missouri</li>
-			<li>Chuck H, Tennessee</li>
-			<li>David F, Maryland</li>
-			<li>Antony L, California</li>
-			<li>David W, Florida</li>
-			<li>Fabio P, Connecticut</li>
-			<li>Bill C, Georgia</li>
-			<li>Scott J, Florida</li>
-			<li><a href="http://www.emw.org.uk/" target="_blank">Evangelical Movement of Wales</a>, UK</li>
-			<li><a href="http://BetterCommunication.org" target="_blank">BetterCommunication.org</a></li>
-			<li>Home and Outdoor Living, Indiana</li>
-			<li><a href="http://design.ddandhservices.com/" target="_blank">DD&H Services</a>, British Columbia</li>
-			<li><a href="http://www.dirtroadphotography.com" target="_blank">Dirt Road Photography</a>, Nebraska</li>
-			<li><a href="http://www.hardeysolutions.com/" target="_blank">Hardey Solutions</a>, Houston</li>
-			<li><a href="http://www.olivetreehost.com/" target="_blank">Olivetreehost.com</a></li>
-			<li><a href="http://www.onQsites.com/" target="_blank">onQsites</a>, South Carolina</li>
-			<li>Glorified Web Solutions</li>
-		</ul>
-		<p>Additional help was also received from:</p>
+		<p>Thanks to everyone who has helped with Sermon Browser:</p>
 		<ul style="list-style-type:circle; margin-left: 2em">
 			<li><a href="http://codeandmore.com/">Tien Do Xuan</a> (help with initial coding).
 			<li>James Hudson, Matthew Hiatt, Mark Bouchard (code contributions)</li>
@@ -2641,7 +2595,6 @@ function sb_add_contextual_help($help) {
 	$out.= ' | <a href="http://www.sermonbrowser.com/faq/">'.__('Frequently Asked Questions').'</a>';
 	$out.= ' | <a href="http://www.sermonbrowser.com/forum/">'.__('Support Forum').'</a>';
 	$out.= ' | <a href="http://www.sermonbrowser.com/customisation/">'.__('Shortcode syntax').'</a>';
-	$out.= ' | <a href="http://www.sermonbrowser.com/donate/">'.__('Donate').'</a>';
 	$out.= '</p></div>';
 	return $out;
 }

@@ -1,6 +1,5 @@
 === Sermon Browser ===
 Contributors: mark8barnes
-Donate link: http://www.sermonbrowser.com/donate/
 Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
@@ -360,7 +359,7 @@ Preparation for reopening on WordPress.org, from the results of its Plugin Check
 * **Bug fix:** The bundled translations weren't loaded on multisite networks.
 * **Change:** The KJV, ASV, YLT, WEB, AKJV, HNV, Reina Valera, Cornilescu and Synodal texts came from a service that no longer exists, so they already showed nothing. Their template tags now print nothing without trying, and `[esvtext]` without an API key shows nothing instead of falling back to the KJV.
 * **Change:** New installations no longer put a "Powered by Sermon Browser" link in the templates. Existing templates are unchanged.
-* **Change:** Removed the Pray for Japan page and the notices shown at random after saving a sermon.
+* **Change:** Removed an admin page that loaded remote content, and the notices shown at random after saving a sermon.
 * **Change:** The plugin no longer changes PHP settings (memory limit, time limit and upload sizes) on every request.
 * **Change:** Updates from WordPress.org are allowed again (the Update URI header is gone), ready for the plugin to be reopened there.
 * **Hardening:** Output on the front end, in the feed and in AJAX responses is escaped where it is printed, every query uses prepared statements, request values are sanitised where they are read, and uploads, deleting and renaming files use WordPress's functions. The readme lists the external services the plugin uses.
@@ -588,7 +587,6 @@ Security release. The plugin was closed on WordPress.org in February 2022 for CV
 * **New feature:** Optionally hide sermons that do not have files attached.
 * **New feature:** Copy MP3 files from other websites to your server.
 * **New feature:** Contextual help in admin (Wordpress 2.7+ only).
-* **New feature:** Thank you page for those who have donated.
 * **Optimisation:** Sermon length now stored in the database.
 * **Optimisation:** Major changes to coding structure for better performance and easier updates.
 * **Optimisation:** Tidied up code to enable WP_DEBUG to be set without throwing up dozens of notices.

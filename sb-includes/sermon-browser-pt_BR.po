@@ -768,16 +768,6 @@ msgstr "Você não tem permissões suficientes para editar sermões"
 msgid "Sermon saved to database."
 msgstr "Sermões salvos no banco de dados."
 
-#: sb-includes/admin.php:1255
-#, php-format
-msgid ""
-"If you find SermonBrowser useful, please consider %1$ssupporting%2$s the "
-"ministry of Nathanael and Anna Ayling in Japan."
-msgstr ""
-"Se você acha o SermonBrowser útil, por favor considere  %1$ssupporting%2$s o "
-"ministério de Nathanael e Anna Ayling no Japão, a equipe de desenvolvedores "
-"e/ou tradutores."
-
 #: sb-includes/admin.php:1257
 msgid ""
 "Sermon Browser 2.0 is under development. If you're a coder, and would like "
@@ -1281,10 +1271,6 @@ msgstr "Fóruns de Suporte"
 msgid "Shortcode syntax"
 msgstr "Sintaxe curta"
 
-#: sb-includes/admin.php:2637
-msgid "Donate"
-msgstr "Doar"
-
 # @ sermon
 #: sb-includes/ajax.php:188
 msgid "No results"
@@ -1331,10 +1317,6 @@ msgstr "Opções"
 #: sb-includes/frontend.php:134 sermon.php:250
 msgid "Help"
 msgstr "Ajuda"
-
-#: sb-includes/frontend.php:135 sermon.php:251
-msgid "Pray for Japan"
-msgstr "Ore pelo Japão"
 
 # @ sermon
 #: sb-includes/frontend.php:321 sermon.php:455
