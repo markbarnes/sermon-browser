@@ -7,8 +7,9 @@
 		"destroy": "wp-env destroy && wp-env destroy --config=.wp-env.tests.json",
 		"test": "node --test --test-concurrency=1 'tests/behaviour/**/*.test.js'",
 		"test:update-snapshots": "UPDATE_SNAPSHOTS=1 npm test",
+		"test:unit": "wp-env run --config=.wp-env.tests.json cli --env-cwd=wp-content/plugins/sermon-browser tests/phpunit/run.sh",
 		"test:coverage": "node tests/coverage/run.js",
-		"lint": "wp-env run cli bash -c 'find wp-content/plugins/sermon-browser -name \"*.php\" -not -path \"*/node_modules/*\" -print0 | xargs -0 -n1 php -l | grep -v \"^No syntax errors\" || true'",
+		"lint": "wp-env run cli bash -c 'find wp-content/plugins/sermon-browser -name \"*.php\" -not -path \"*/node_modules/*\" -not -path \"*/vendor/*\" -print0 | xargs -0 -n1 php -l | grep -v \"^No syntax errors\" || true'",
 		"zip": "git archive --format=zip --prefix=sermon-browser/ -o sermon-browser.zip HEAD"
 	},
 	"devDependencies": {

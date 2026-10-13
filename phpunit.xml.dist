@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<phpunit
+	bootstrap="tests/phpunit/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertDeprecationsToExceptions="true"
+	>
+	<testsuites>
+		<testsuite name="sermon-browser">
+			<directory suffix="-test.php">./tests/phpunit/</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

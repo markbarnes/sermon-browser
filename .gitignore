@@ -4,3 +4,5 @@ node_modules/
 .wp-env.override.json
 .wp-env.tests.override.json
 /coverage/
+/vendor/
+.phpunit.result.cache

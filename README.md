@@ -60,6 +60,8 @@ How it fits together:
 - Each test file ends by checking that the debug log is free of PHP errors, warnings, notices and deprecations. `.wp-env.tests.json` turns on `WP_DEBUG` and `WP_DEBUG_LOG`; without them WordPress writes nothing to the log.
 - To test another PHP version, put `{ "phpVersion": "8.5" }` in `.wp-env.tests.override.json` (git-ignored; `.wp-env.override.json` does the same for the development site) and run `npm start` again. The tests pass on PHP 7.4 to 8.5. With older PHP versions (at least 7.4 to 8.1), wp-env can't build its images if your user or group id is above 256000 (common on Macs managed by an organisation), because their Alpine Linux rejects such ids.
 
+`npm run test:unit` runs the PHPUnit tests in `tests/phpunit/` (files ending `-test.php`) inside the test site's CLI container, with WordPress's own test suite, which wp-env provides. They test PHP code directly: the repositories' contract tests, which every storage implementation must pass. WordPress's test bootstrap reinstalls WordPress in the database it is given, so they use a database of their own, `sb_phpunit`, created on the first run, and never touch the test site. The first run also installs PHPUnit with Composer into `vendor/` (git-ignored, and left out of the zip like the rest). Pass PHPUnit options after `--`, for example `npm run test:unit -- --filter Sermon_Repository`.
+
 To see which parts of the plugin the tests never reach, restart the environment with Xdebug's coverage mode and run the tests with coverage:
 
 ```bash
