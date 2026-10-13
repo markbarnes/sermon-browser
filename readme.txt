@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.48.0
+Stable tag: 0.49.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -248,6 +248,9 @@ The tags for other Bible versions (`[kjvtext]`, `[asvtext]`, `[ylttext]`, `[webt
 
 == Upgrade Notice ==
 
+= 0.49.0 =
+Templates are read when a page is shown instead of being run as PHP. Pages look the same; misplaced template tags are now left out and listed on the Templates page. Theme developers: see the changelog for changed functions.
+
 = 0.48.0 =
 Reads sermons through a new storage layer, the first step towards storing them as WordPress posts. Fixes a fatal error on some old sermons' pages; a few orders and filters change slightly (see the changelog).
 
@@ -265,7 +268,8 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 
 == Changelog ==
 
-= Unreleased =
+= 0.49.0 (13 October 2026) =
+The search results and sermon page templates no longer run as PHP.
 
 * **Change:** The search results and sermon page templates are read when a page is shown, instead of being turned into PHP when saved and run with `eval()`. They print the same as before.
 * **Change:** A template tag where it can't work (outside its loop, after its loop has ended, or in a loop that is never closed) is left out, instead of printing PHP warnings, the loop's last value or stopping the page with an error. Those who can edit the templates see why, with a link to a new section of the Help page, and the Templates page lists them.
