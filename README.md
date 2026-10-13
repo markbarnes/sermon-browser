@@ -28,12 +28,12 @@ Requires Docker and Node; npm is only used for development (wp-env and the tests
 
 - `npm start` runs WordPress with this plugin at http://localhost:8890 (admin: `admin` / `password`), on PHP 8.3 with debug logging to `wp-content/debug.log`. `npm stop` stops it.
 - `npm run lint` checks every PHP file's syntax.
-- Run WP-CLI with `npx wp-env run cli wp <command>`.
+- Run WP-CLI with `npx wp-env run cli wp <command>`, or on the test site `npx wp-env run --config=.wp-env.tests.json cli wp <command>`.
 - WordPress.org's [Plugin Check](https://wordpress.org/plugins/plugin-check/): install it once with `npx wp-env run cli wp plugin install plugin-check --activate`, then run `npx wp-env run cli wp plugin check sermon-browser`. It checks the whole folder, so ignore what it reports in `tests/`, dotfiles and other files the zip leaves out.
 
 ## Tests
 
-`npm test` runs the behaviour tests (about 15 seconds) against the wp-env test site at http://localhost:8891, which has its own database, so it never touches the development site. Run `npm start` first.
+`npm test` runs the behaviour tests (about 20 seconds) against the wp-env test site at http://localhost:8891. It is a separate wp-env environment (`.wp-env.tests.json`) with its own containers and database, so it never touches the development site. `npm start` starts both.
 
 The tests work from the outside: they make HTTP requests as visitors and as logged-in users of each role, and check responses, rendered output and database state. That way they keep passing through restructuring, as long as behaviour is unchanged.
 
@@ -50,20 +50,20 @@ The tests work from the outside: they make HTTP requests as visitors and as logg
 | `customised-settings.test.js` | The same views with customised templates, stylesheet and options (sermons without attachments hidden, files with download links, widgets set up; built in `lib/customised.js`), with snapshots in `tests/snapshots/customised/` |
 | `upgrade.test.js` | Updating from 0.45.21 with customised settings, stored as the old version stored them: the first request recompiles the templates (output identical to a fresh install), protects the upload folder and removes old options; the database upgrade from 1.6 |
 | `bible-text.test.js` | Bible text from the ESV and NET APIs (stubbed) on sermon pages |
-| `themes.test.js` | Classic themes as well as block themes (the others use the block theme): the same output, and the sermon in the page title for classic themes that call `wp_title()`. The classic theme is `tests/themes/sb-classic`, mapped into the test site by `.wp-env.json` |
+| `themes.test.js` | Classic themes as well as block themes (the others use the block theme): the same output, and the sermon in the page title for classic themes that call `wp_title()`. The classic theme is `tests/themes/sb-classic`, mapped into the test site by `.wp-env.tests.json` |
 
 How it fits together:
 
 - `tests/fixtures/seed.php` resets the plugin's tables, options and upload folder before each test file. Its data copies awkward shapes found in real sermon data (escaped apostrophes, typographic punctuation, entities, sermons without passages), plus a sermon with script payloads in every field. Test users' passwords are in the seed; they exist only on the test site.
 - `tests/mu-plugins/` is mapped into the test site only. It blocks outside HTTP requests (stubbing `example.org`) so output is the same on every run, provides a test-only endpoint for seeding, queries and PHP, and registers a widget area, so the widgets are tested the way a theme shows them (the seed's `/sermon-widgets/` page renders each with the Legacy Widget block).
 - `tests/snapshots/` holds the plugin's output for the main views. If a change to output is intended, run `npm run test:update-snapshots` and review the diff in git before committing.
-- Each test file ends by checking that the debug log is free of PHP errors, warnings, notices and deprecations. `.wp-env.json` turns on `WP_DEBUG` for the test site; wp-env turns it off there otherwise, and WordPress then writes nothing to the log.
-- To test another PHP version, put `{ "phpVersion": "8.5" }` in `.wp-env.override.json` (git-ignored) and run `npm start` again. The tests pass on PHP 7.4 to 8.5. With older PHP versions (at least 7.4 to 8.1), wp-env can't build its images if your user or group id is above 256000 (common on Macs managed by an organisation), because their Alpine Linux rejects such ids.
+- Each test file ends by checking that the debug log is free of PHP errors, warnings, notices and deprecations. `.wp-env.tests.json` turns on `WP_DEBUG` and `WP_DEBUG_LOG`; without them WordPress writes nothing to the log.
+- To test another PHP version, put `{ "phpVersion": "8.5" }` in `.wp-env.tests.override.json` (git-ignored; `.wp-env.override.json` does the same for the development site) and run `npm start` again. The tests pass on PHP 7.4 to 8.5. With older PHP versions (at least 7.4 to 8.1), wp-env can't build its images if your user or group id is above 256000 (common on Macs managed by an organisation), because their Alpine Linux rejects such ids.
 
 To see which parts of the plugin the tests never reach, restart the environment with Xdebug's coverage mode and run the tests with coverage:
 
 ```bash
-npx wp-env start --xdebug=coverage && npm run test:coverage
+npx wp-env start --config=.wp-env.tests.json --xdebug=coverage && npm run test:coverage
 ```
 
 `tests/mu-plugins/sb-test-coverage.php` records the plugin lines each request runs, and `tests/coverage/run.js` merges them into `coverage/summary.md` (lines covered per file, functions never or partly run, template tags no test renders) and `coverage/files/`, the source with uncovered lines marked `!!`. Template tags run inside `eval()`, which line coverage can't see, so they're reported by whether a rendered template contained them. Pass test files to `npm run test:coverage --` to cover only those. Xdebug roughly doubles the time the tests take; `npm start` turns it off again (restarting takes a couple of minutes either way).

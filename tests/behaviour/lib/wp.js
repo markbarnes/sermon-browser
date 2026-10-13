@@ -15,7 +15,7 @@ export const SITE = 'http://localhost:8891';
  * @return {string}
  */
 export function wp( args ) {
-	return execFileSync( 'npx', [ 'wp-env', 'run', 'tests-cli', 'wp', ...args ], {
+	return execFileSync( 'npx', [ 'wp-env', 'run', '--config=.wp-env.tests.json', 'cli', 'wp', ...args ], {
 		cwd: root,
 		encoding: 'utf8',
 		stdio: [ 'ignore', 'pipe', 'pipe' ],

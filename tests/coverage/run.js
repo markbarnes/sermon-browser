@@ -3,7 +3,7 @@
  * plugin they never reach (npm run test:coverage).
  *
  * The test site must be running with Xdebug in coverage mode
- * (npx wp-env start --xdebug=coverage). tests/mu-plugins/sb-test-coverage.php
+ * (npx wp-env start --config=.wp-env.tests.json --xdebug=coverage). tests/mu-plugins/sb-test-coverage.php
  * records each request into coverage/raw/ while it exists; it's deleted once the
  * report is written.
  *
@@ -25,7 +25,7 @@ const raw = path.join( out, 'raw' );
 
 const mode = await php( "return (string) ini_get( 'xdebug.mode' );" );
 if ( ! mode.includes( 'coverage' ) ) {
-	console.error( 'Xdebug coverage is off on the test site. Run: npx wp-env start --xdebug=coverage' );
+	console.error( 'Xdebug coverage is off on the test site. Run: npx wp-env start --config=.wp-env.tests.json --xdebug=coverage' );
 	process.exit( 1 );
 }
 fs.rmSync( out, { recursive: true, force: true } );

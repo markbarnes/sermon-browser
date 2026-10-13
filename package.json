@@ -2,9 +2,9 @@
 	"name": "sermon-browser",
 	"private": true,
 	"scripts": {
-		"start": "wp-env start",
-		"stop": "wp-env stop",
-		"destroy": "wp-env destroy",
+		"start": "wp-env start && wp-env start --config=.wp-env.tests.json",
+		"stop": "wp-env stop && wp-env stop --config=.wp-env.tests.json",
+		"destroy": "wp-env destroy && wp-env destroy --config=.wp-env.tests.json",
 		"test": "node --test --test-concurrency=1 'tests/behaviour/**/*.test.js'",
 		"test:update-snapshots": "UPDATE_SNAPSHOTS=1 npm test",
 		"test:coverage": "node tests/coverage/run.js",
