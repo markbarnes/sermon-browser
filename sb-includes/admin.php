@@ -243,8 +243,8 @@ function sb_options() {
 		<tr>
 		<?php
 				$template = sb_get_option ('single_template');
-				if (!sb_get_option ('esv_api_key') && strpos ($template, '[esvtext]') !==NULL) {
-					$extra_text = __ ('<br/>Without an API key, your site will display text from the KJV, instead.', 'sermon-browser');
+				if (!sb_get_option ('esv_api_key') && strpos ($template, '[esvtext]') !== false) {
+					$extra_text = __ ('<br/>Without an API key, no Bible text is shown.', 'sermon-browser');
 				} else {
 					$extra_text = '';
 				}

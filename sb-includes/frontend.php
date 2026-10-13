@@ -382,13 +382,14 @@ function sb_get_books($start, $end) {
 }
 
 //Add Bible text to single sermon page
+//Other versions (KJV, ASV and so on) came from api.preachingcentral.com, which no longer exists, so their template tags print nothing
 function sb_add_bible_text ($start, $end, $version) {
 	if ($version == 'esv')
 		return sb_add_esv_text ($start, $end);
 	elseif ($version == 'net')
 		return sb_add_net_text ($start, $end);
 	else
-		return sb_add_other_bibles ($start, $end, $version);
+		return '';
 }
 
 //Returns ESV text
@@ -402,10 +403,8 @@ function sb_add_esv_text ($start, $end) {
 		if (is_object($decode) && isset($decode->passages) && is_array($decode->passages)) {
 			return wp_kses_post(implode ('', $decode->passages));
 		}
-		return '';
-	} else {
-		return sb_add_bible_text($start, $end, 'kjv');
 	}
+	return '';
 }
 
 // Converts XML string to object
@@ -449,33 +448,6 @@ function sb_add_net_text ($start, $end) {
 		}
 	}
 	return "<div class=\"net\">\r<h2>".sb_tidy_reference ($start, $end)."</h2><p>".wp_kses_post($output)." (<a href=\"https://netbible.org/bible/{$reference}\">NET Bible</a>)</p></div>";
-}
-
-//Returns Bible text using SermonBrowser's own API
-function sb_add_other_bibles ($start, $end, $version) {
-	if ($version == 'hnv')
-		return '<div class="'.$version.'"><p>Sorry, the Hebrew Names Version is no longer available.</p></div>';
-	$reference = str_replace(' ', '+', wp_specialchars_decode(sb_tidy_reference ($start, $end)));
-	$reference = str_replace('Psalm+', 'Psalms+', $reference);		//Fix for API "Psalms" vs "Psalm"
-	$old_chapter = $start['chapter'];
-	$url = "http://api.preachingcentral.com/bible.php?passage=".str_replace('%2B', '+', rawurlencode($reference))."&version=".rawurlencode($version);
-	$xml = sb_get_xml(sb_download_page($url));
-	if (!$xml)
-		return '';
-	$output='';
-	if ($xml->range->item)
-		foreach ($xml->range->item as $item) {
-			if ($item->text != '[[EMPTY]]') {
-				if ($old_chapter == $item->chapter) {
-					$output .= " <span class=\"verse-num\">".(int) $item->verse."</span>";
-				} else {
-					$output .= " <span class=\"chapter-num\">".(int) $item->chapter.":".(int) $item->verse."</span> ";
-					$old_chapter = strval($item->chapter);
-				}
-				$output .=	 $item->text;
-			}
-		}
-	return '<div class="'.esc_attr($version).'"><h2>'.sb_tidy_reference ($start, $end). '</h2><p>'.wp_kses_post($output).' (<a href="http://biblepro.bibleocean.com/dox/default.aspx">'. esc_html(strtoupper($version)). '</a>)</p></div>';
 }
 
 //Adds edit sermon link if current user has edit rights

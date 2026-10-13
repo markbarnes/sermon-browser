@@ -1,6 +1,7 @@
 /**
- * Bible text on sermon pages: [esvtext] (api.esv.org, with the site's key) and [nettext]
- * (labs.bible.org).
+ * Bible text on sermon pages: [esvtext] (api.esv.org, with the site's key), [nettext]
+ * (labs.bible.org) and the versions that relied on api.preachingcentral.com, which no
+ * longer exists.
  *
  * tests/mu-plugins/sb-test-http.php answers the two APIs like the real ones, with a script
  * tag in the text, and logs every request.
@@ -43,6 +44,12 @@ describe( 'ESV text', () => {
 		await sermonPage( 3 );
 		assert.deepEqual( ( await requests() ).map( ( url ) => new URL( url ).searchParams.get( 'q' ) ), [ 'Romans 5:1-11', 'Isaiah 53:4-6' ] );
 	} );
+
+	it( 'shows nothing, and makes no request, without an API key', async () => {
+		const html = await sermonPage( 1 );
+		assert.deepEqual( await requests(), [] );
+		assert.match( html, /<div class="bible-text"><\/div>/ );
+	} );
 } );
 
 describe( 'NET Bible text', () => {
@@ -59,6 +66,17 @@ describe( 'NET Bible text', () => {
 		assert.doesNotMatch( html, /<script>alert\("net"\)/ );
 		assertNoLiveScript( html, 'NET Bible text' );
 	} );
+} );
+
+describe( 'versions that came from api.preachingcentral.com', () => {
+	for ( const tag of [ 'kjvtext', 'asvtext', 'ylttext', 'webtext', 'akjvtext', 'hnvtext', 'lbrvtext', 'cornilescutext', 'synodaltext' ] ) {
+		it( `[${ tag }] shows nothing and makes no request`, async () => {
+			await useSingleTemplate( `<div class="bible-text">[${ tag }]</div>` );
+			const html = await sermonPage( 1 );
+			assert.deepEqual( await requests(), [] );
+			assert.match( html, /<div class="bible-text"><\/div>/ );
+		} );
+	}
 } );
 
 describe( 'the debug log', () => {

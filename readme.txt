@@ -23,7 +23,7 @@ The Sermon Browser Wordpress Plugin allows churches to simply upload sermons to 
 4. Three optional **sidebar widgets** can display sermons on all of your posts or pages.
 5. **Embed videos** and other flash files from sites such as [YouTube](http://www.youtube.com/) or [Vimeo](http://www.vimeo.com/), using either HTML code provided by those sites, or shortcode providing by a WordPress plugin.
 6. **Other file types** can also be uploaded, including PDF, Powerpoint, Word, text and RTF. Multiple files can be attached to single sermons.
-7. The **full Bible text** of the passage being preached on can be included on each sermon page (eight English-language versions including ESV and NET, plus Spanish, Russian and Romanian).
+7. The **full Bible text** of the passage being preached on can be included on each sermon page (ESV, with a free API key, or NET).
 8. Files can be uploaded to your own site **through the browser or via FTP**. Alternatively you can use free audio hosting sites.
 9. Details about each sermon can be **added automatically from the MP3's ID3 tags**.
 10. Powerful **templating function** allows complete customisation to complement the look of your site.
@@ -88,9 +88,9 @@ memory_limit = 48M`
 If you are using a version of WordPress older than 3.6, you need to install and activate your favourite WordPress MP3 plugin. WordPress 3.6 has the MediaElement.js player built-in; if you are running an older version of WordPress, you can install the [Mediaelement.js plugin](https://wordpress.org/plugins/media-element-html5-video-and-audio-player/).  SermonBrowser also supports any WordPress MP3 player that allows you add the player by entering shortcodes in a post or page. To use a different media player plugin, change the MP3 shortcode setting on the Sermons, Options admin page.
 
 = How do I change the Bible version from the ESV? =
-Several Bible versions are supported by Sermon Browser. To switch to a different version, go to Options, and edit the single template. Replace `[esvtext]` with the appropriate template tag for the alternative version.(Template tags are listed on the `Customisation` page of this site). For example, to switch to the KJV, use the tag `[kjvtext]`. Thanks go to Crossway for providing access to the ESV, bible.org for the NET Bible. Other versions are supplied by SermonBrowser itself.
+Sermon Browser can show the ESV (which needs a free API key, entered on the Options page) or the NET Bible. To switch to the NET Bible, go to Templates, and edit the single template: replace `[esvtext]` with `[nettext]`. Thanks go to Crossway for providing access to the ESV, and bible.org for the NET Bible.
 
-There are lots of other versions available in non-English languages.  [This forum post](http://www.sermonbrowser.com/forum/sermon-browser-support/german-bible-support/#p19464) describes what is available and how to add a new version to your Sermon Browser installation.
+The other versions Sermon Browser used to offer (KJV, ASV, YLT, WEB, AKJV, HNV, Reina Valera, Cornilescu and Synodal) came from a service that no longer exists. Their template tags now show nothing.
 
 If you're desperate to use other versions not currently supported, you can manage it using other WordPress plugins (albeit with reduced functionality). The eBibleicious plugin allows for NASB, MSG, KJV, NKJV, ESV, HCSB, and NCV (use it in 'snippet' mode). However, there are three disadvantages. (1) To use it, you'll need to register for an API key (although it is free). (2) It uses Javascript so search engines won't see the Bible text, and nor will users with javascript turned off. (3) Most importantly, it only shows a maximum of four verses (the ESV shows up to 500 verses!).
 
@@ -241,16 +241,8 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 * **[prev_sermon]** - Displays a link to the previous sermon preached
 * **[sameday_sermon]** - Displays a link to other sermons preached on that day
 * **[tags]** - Displays the tags for that sermons
-* **[esvtext]** - Displays the full text of the ESV Bible for all passages linked to that sermon.
-* **[asvtext]** - Displays the full text of the ASV Bible for all passages linked to that sermon.
-* **[kjvtext]** - Displays the full text of the KJV Bible for all passages linked to that sermon.
-* **[ylttext]** - Displays the full text of the YLT Bible for all passages linked to that sermon.
-* **[webtext]** - Displays the full text of the WEB Bible for all passages linked to that sermon.
-* **[akjvtext]** - Displays the full text of the AKJV Bible for all passages linked to that sermon.
-* **[hnvtext]** - Displays the full text of the HNV Bible for all passages linked to that sermon.
-* **[lbrvtext]** - Displays the full text of the Reina Valera Bible (Spanish) for all passages linked to that sermon.
-* **[cornilescutext]** - Displays the full text of the Cornilescu Bible (Romanian) for all passages linked to that sermon.
-* **[synodaltext]** - Displays the full text of the Synodal 1876 Translation (Russian) for all passages linked to that sermon.
+* **[esvtext]** - Displays the full text of the ESV Bible for all passages linked to that sermon (needs an API key).
+* **[nettext]** - Displays the full text of the NET Bible for all passages linked to that sermon.
 * **[biblepassage]** - Displays the reference of the bible passages for that sermon. Useful for utilising other bible plugins (see FAQ).
 
 
