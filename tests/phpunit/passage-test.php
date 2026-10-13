@@ -5,12 +5,11 @@
  * @package SermonBrowser
  */
 
-use SermonBrowser\Bible;
 use SermonBrowser\Passage;
 use SermonBrowser\Verse;
 
 /**
- * Tests SermonBrowser\Passage::reference() and the array wrapper Bible::reference().
+ * Tests SermonBrowser\Passage::reference().
  */
 class Passage_Test extends WP_UnitTestCase {
 
@@ -39,11 +38,5 @@ class Passage_Test extends WP_UnitTestCase {
 
 	public function test_gives_nothing_for_a_passage_without_a_book() {
 		$this->assertSame( '', self::passage( array( ' ', 1, 1 ), array( '', 1, 1 ) )->reference() );
-	}
-
-	public function test_bible_reference_takes_the_arrays_older_code_passes() {
-		$this->assertSame( 'Psalm 23:1-6', Bible::reference( array( 'book' => 'Psalm', 'chapter' => '23', 'verse' => '1' ), array( 'book' => 'Psalm', 'chapter' => 23, 'verse' => 6 ) ) );
-		$this->assertSame( '', Bible::reference( array(), array() ) );
-		$this->assertSame( '', Bible::reference( null, null ) );
 	}
 }

@@ -12,26 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Formats Bible references, and fetches passages' text from the ESV and NET Bible APIs.
- *
- * A passage's start and end are arrays with the keys book (its English name), chapter and verse.
+ * Fetches passages' text from the ESV and NET Bible APIs. Passage formats references.
  */
 class Bible {
-
-	/**
-	 * Returns a human friendly Bible reference (John 3:1-16, not John 3:1-John 3:16), with the book translated.
-	 *
-	 * For callers that still pass arrays: Passage::reference() does the work.
-	 *
-	 * @param array $start    Start of the passage.
-	 * @param array $end      End of the passage.
-	 * @param bool  $add_link Whether to link the book names to the sermons on that book.
-	 * @return string HTML.
-	 */
-	public static function reference( $start, $end, $add_link = false ) {
-		$passage = Passage::from_arrays( $start, $end );
-		return $passage ? $passage->reference( $add_link ) : '';
-	}
 
 	/**
 	 * Returns the text of a passage, or '' if it can't be fetched.

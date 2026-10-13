@@ -35,17 +35,4 @@ class Verse {
 		$this->chapter = $chapter;
 		$this->verse   = $verse;
 	}
-
-	/**
-	 * Returns the verse as the array the template tags and SermonBrowser\Bible take.
-	 *
-	 * @return array Keys book, chapter and verse.
-	 */
-	public function to_array() {
-		return array(
-			'book'    => $this->book,
-			'chapter' => $this->chapter,
-			'verse'   => $this->verse,
-		);
-	}
 }

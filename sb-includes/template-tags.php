@@ -78,22 +78,6 @@ function sb_page_title($title) {
 		return $title;
 }
 
-//Print unstyled bible passage
-function sb_print_bible_passage ($start, $end) {
-	echo "<p class='bible-passage'>".wp_kses_post(SermonBrowser\Bible::reference($start, $end))."</p>";
-}
-
-// Returns human friendly Bible reference with link to filter
-function sb_get_books($start, $end) {
-	return SermonBrowser\Bible::reference($start, $end, TRUE);
-}
-
-//Returns the text of a Bible passage (esv or net) for the single sermon page
-function sb_add_bible_text ($start, $end, $version) {
-	$passage = SermonBrowser\Passage::from_arrays($start, $end);
-	return $passage ? SermonBrowser\Bible::text($passage, $version) : '';
-}
-
 //Adds edit sermon link if current user has edit rights
 function sb_edit_link ($id) {
 	if (current_user_can('publish_posts')) {

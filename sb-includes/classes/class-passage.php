@@ -61,19 +61,4 @@ class Passage {
 		}
 		return "$start_book {$start->chapter}:{$start->verse}";
 	}
-
-	/**
-	 * Returns a passage from the arrays older code passes (keys book, chapter and verse), or null if they aren't a passage.
-	 *
-	 * @param mixed $start Start of the passage.
-	 * @param mixed $end   End of the passage.
-	 * @return Passage|null
-	 */
-	public static function from_arrays( $start, $end ) {
-		if ( ! is_array( $start ) || ! is_array( $end ) || ! isset( $start['book'], $end['book'] ) ) {
-			return null;
-		}
-		$verse = fn( $verse ) => new Verse( (string) $verse['book'], isset( $verse['chapter'] ) ? (int) $verse['chapter'] : 0, isset( $verse['verse'] ) ? (int) $verse['verse'] : 0 );
-		return new self( $verse( $start ), $verse( $end ) );
-	}
 }

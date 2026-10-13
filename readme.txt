@@ -274,7 +274,7 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 * **Bug fix:** A backslash in a sermon's title or tags, or in a preacher's, series' or service's name, was removed from sermon lists, sermon pages and the recent sermons widget.
 * **Bug fix:** `sb_display_sermons()` with `url_only` printed PHP warnings when no sermon matched.
 * **Bug fix:** Saving the templates turned an attribute in single quotes, such as `data-x='y'`, into `data-x="&apos;y&apos;"`.
-* **Development:** The functions in `template-tags.php` that print parts of a sermon (`sb_print_preacher_link()`, `sb_formatted_date()`, `sb_print_preacher_description()` and the rest) take a `SermonBrowser\Sermon` instead of a database row, `sb_print_code()` takes the embed's HTML instead of base64, and `sb_get_sermons()`, `sb_get_single_sermon()`, `sb_get_stuff()` and `sb_compile_template()` are gone. `sb_display_sermons()` is unchanged.
+* **Development:** The functions in `template-tags.php` that print parts of a sermon (`sb_print_preacher_link()`, `sb_formatted_date()`, `sb_print_preacher_description()` and the rest) take a `SermonBrowser\Sermon` instead of a database row, `sb_print_code()` takes the embed's HTML instead of base64, and `sb_get_sermons()`, `sb_get_single_sermon()`, `sb_get_stuff()`, `sb_get_books()`, `sb_print_bible_passage()`, `sb_add_bible_text()` and `sb_compile_template()` are gone (`SermonBrowser\Passage::reference()` formats a passage). `sb_display_sermons()` is unchanged.
 
 = 0.48.0 (13 October 2026) =
 Sermons are read through one storage layer, the first step towards storing them as WordPress posts.
