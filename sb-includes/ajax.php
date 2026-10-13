@@ -117,7 +117,7 @@ if (isset($_POST['pname'])) { // preacher
 			echo 'forbidden';
 			die();
 		}
-		if (!file_exists($upload_dir.$fname) && rename($upload_dir.$old_name, $upload_dir.$fname)) {
+		if (!file_exists($upload_dir.$fname) && sb_move_file($upload_dir.$old_name, $upload_dir.$fname)) {
 			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET name = %s WHERE id = $fid;", $fname));
 			echo 'renamed';
 		} else

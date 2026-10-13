@@ -67,7 +67,7 @@ function sb_database_upgrade ($old_version) {
 			$oldSermonPath = dirname(__FILE__)."/files/";
 			$files = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' ORDER BY name ASC");
 			foreach ((array)$files as $file) {
-				@rename(SB_ABSPATH.$oldSermonPath.$file->name, SB_ABSPATH.$sermonUploadDir.$file->name);
+				sb_move_file(SB_ABSPATH.$oldSermonPath.$file->name, SB_ABSPATH.$sermonUploadDir.$file->name);
 			}
 			$table_name = $wpdb->prefix . "sb_preachers";
 			if($wpdb->get_var("show tables like '{$table_name}'") == $table_name) {

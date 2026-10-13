@@ -992,6 +992,28 @@ function sb_handle_upload($file, $dir, $file_name) {
 }
 
 /**
+* Moves or renames a file in the upload folder
+*
+* The plugin writes to its upload folder directly, as WordPress does with its own uploads, so this uses the direct
+* filesystem class: WP_Filesystem() may choose FTP and need credentials, which an AJAX request can't ask for.
+*
+* @param string $from absolute path
+* @param string $to absolute path
+* @return boolean
+*/
+function sb_move_file($from, $to) {
+	require_once(ABSPATH.'wp-admin/includes/class-wp-filesystem-base.php');
+	require_once(ABSPATH.'wp-admin/includes/class-wp-filesystem-direct.php');
+	// As WP_Filesystem() defines them, for the copy that move() falls back to
+	if (!defined('FS_CHMOD_DIR'))
+		define('FS_CHMOD_DIR', (fileperms(ABSPATH) & 0777 | 0755));
+	if (!defined('FS_CHMOD_FILE'))
+		define('FS_CHMOD_FILE', (fileperms(ABSPATH.'index.php') & 0777 | 0644));
+	$filesystem = new WP_Filesystem_Direct(null);
+	return $filesystem->move($from, $to);
+}
+
+/**
 * Sanitizes Windows paths
 */
 function sb_sanitise_path ($path) {
