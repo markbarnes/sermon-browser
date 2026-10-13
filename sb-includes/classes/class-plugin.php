@@ -108,6 +108,7 @@ class Plugin {
 			add_action( 'wp_head', array( Page_Head::class, 'add' ), 0 );
 			add_action( 'wp_head', 'wp_print_styles', 9 );
 			add_action( 'admin_bar_menu', array( Admin_Bar::class, 'add_menu' ), 45 );
+			add_filter( 'wp_title', 'sb_page_title' );
 		} else {
 			require_once SB_INCLUDES_DIR . '/admin.php';
 			add_action( 'admin_menu', 'sb_add_pages' );

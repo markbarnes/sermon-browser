@@ -67,6 +67,21 @@ function sb_print_most_popular() {
 	SermonBrowser\Widgets\Popular::display($args);
 }
 
+//Modify page title
+function sb_page_title($title) {
+	global $wpdb;
+	if (isset($_GET['sermon_id'])) {
+		$id = (int)$_GET['sermon_id'];
+		$sermon = $wpdb->get_row($wpdb->prepare("SELECT m.title, p.name FROM {$wpdb->prefix}sb_sermons as m LEFT JOIN {$wpdb->prefix}sb_preachers as p ON m.preacher_id = p.id where m.id = %d", $id));
+		if ($sermon)
+			return $title.' ('.esc_html(stripslashes($sermon->title)).' - '.esc_html(stripslashes($sermon->name)).')';
+		else
+			return $title.' ('.esc_html__('No sermons found.', 'sermon-browser').')';
+	}
+	else
+		return $title;
+}
+
 //Print unstyled bible passage
 function sb_print_bible_passage ($start, $end) {
 	echo "<p class='bible-passage'>".wp_kses_post(SermonBrowser\Bible::reference($start, $end))."</p>";
