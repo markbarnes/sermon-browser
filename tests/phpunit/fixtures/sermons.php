@@ -25,7 +25,10 @@ return array(
 		3 => array( 'Christmas morning', '9:30' ),
 	),
 	// Passages are array( book, chapter, verse, end book, end chapter, end verse ).
-	// Attachments are array( type, content, downloads, duration ), oldest first.
+	// Attachments are array( type, content, downloads, duration ), oldest first; unattached ones belong to no sermon.
+	'unattached' => array(
+		array( 'file', 'unlinked-sermon.mp3', 0, '' ),
+	),
 	'sermons'   => array(
 		1 => array(
 			'title'       => "Paul's letter: Faith & Works",

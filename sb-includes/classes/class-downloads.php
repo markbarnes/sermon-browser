@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- downloads are read-only GET requests
 
 /**
@@ -43,11 +42,12 @@ class Downloads {
 	 * @param string $requested The file_name parameter, unslashed.
 	 */
 	private static function serve_file( $requested ) {
-		$file_name = self::attachment_name( rawurldecode( $requested ), 'file' );
+		$attachment = Storage::attachments()->find( Attachment::FILE, rawurldecode( $requested ) );
+		$file_name  = $attachment ? $attachment->content : null;
 		if ( null === $file_name || ! sb_is_plain_file_name( $file_name ) ) {
 			wp_die( esc_html( rawurldecode( sanitize_text_field( $requested ) ) ) . ' ' . esc_html__( 'not found', 'sermon-browser' ), esc_html__( 'File not found', 'sermon-browser' ), array( 'response' => 404 ) );
 		}
-		self::count( $file_name );
+		self::count( $attachment );
 		if ( isset( $_GET['download'] ) ) {
 			// Forces the file to download.
 			$file_path = SB_ABSPATH . sb_get_option( 'upload_dir' ) . $file_name;
@@ -72,8 +72,8 @@ class Downloads {
 	 * @param string $requested The url parameter, unslashed.
 	 */
 	private static function serve_url( $requested ) {
-		$stored_url = self::attachment_name( rawurldecode( $requested ), 'url' );
-		$url        = is_null( $stored_url ) ? '' : esc_url_raw( wp_specialchars_decode( $stored_url, ENT_QUOTES ), array( 'http', 'https' ) );
+		$attachment = Storage::attachments()->find( Attachment::URL, rawurldecode( $requested ) );
+		$url        = $attachment ? esc_url_raw( wp_specialchars_decode( $attachment->content, ENT_QUOTES ), array( 'http', 'https' ) ) : '';
 		if ( '' === $url ) {
 			wp_die( esc_html( rawurldecode( sanitize_text_field( $requested ) ) ) . ' ' . esc_html__( 'not found', 'sermon-browser' ), esc_html__( 'URL not found', 'sermon-browser' ), array( 'response' => 404 ) );
 		}
@@ -84,7 +84,7 @@ class Downloads {
 			if ( is_wp_error( $downloaded_file ) ) {
 				wp_die( esc_html( $url ) . ' ' . esc_html__( 'not found', 'sermon-browser' ), esc_html__( 'URL not found', 'sermon-browser' ), array( 'response' => 404 ) );
 			}
-			self::count( $stored_url );
+			self::count( $attachment );
 			header( 'Content-Type: application/octet-stream' );
 			header( 'Content-Disposition: attachment; filename="' . self::header_file_name( basename( wp_parse_url( $url, PHP_URL_PATH ) ) ) . '"' );
 			header( 'X-Content-Type-Options: nosniff' );
@@ -93,22 +93,10 @@ class Downloads {
 			wp_delete_file( $downloaded_file );
 		} else {
 			// Sends the browser to the URL.
-			self::count( $stored_url );
+			self::count( $attachment );
 			wp_redirect( $url ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- only URLs attached to a sermon (checked above), which are usually on other hosts
 		}
 		die();
-	}
-
-	/**
-	 * Returns the name of an attachment exactly as stored in the database, or null if there is none.
-	 *
-	 * @param string $name Name of a file, or a URL.
-	 * @param string $type 'file' or 'url'.
-	 * @return string|null
-	 */
-	private static function attachment_name( $name, $type ) {
-		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}sb_stuff WHERE name = %s AND type = %s LIMIT 1", $name, $type ) );
 	}
 
 	/**
@@ -124,12 +112,11 @@ class Downloads {
 	/**
 	 * Adds one to an attachment's download count, unless the visitor can edit sermons.
 	 *
-	 * @param string $name Name of the attachment, as stored.
+	 * @param Attachment $attachment The attachment.
 	 */
-	private static function count( $name ) {
+	private static function count( Attachment $attachment ) {
 		if ( ! ( current_user_can( 'edit_posts' ) || current_user_can( 'publish_posts' ) ) ) {
-			global $wpdb;
-			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}sb_stuff SET COUNT=COUNT+1 WHERE name = %s", $name ) );
+			Storage::attachments()->record_download( $attachment );
 		}
 	}
 

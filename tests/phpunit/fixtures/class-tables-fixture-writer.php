@@ -31,6 +31,9 @@ class Tables_Fixture_Writer implements Fixture_Writer {
 		foreach ( $fixtures['services'] as $id => $service ) {
 			$wpdb->insert( "{$wpdb->prefix}sb_services", array( 'id' => $id, 'name' => $service[0], 'time' => $service[1] ) );
 		}
+		foreach ( $fixtures['unattached'] as $attachment ) {
+			$this->attach( 0, $attachment );
+		}
 		foreach ( $fixtures['sermons'] as $id => $sermon ) {
 			$start = array();
 			$end   = array();
@@ -68,18 +71,29 @@ class Tables_Fixture_Writer implements Fixture_Writer {
 				$wpdb->insert( "{$wpdb->prefix}sb_sermons_tags", array( 'sermon_id' => $id, 'tag_id' => $tag_id ) );
 			}
 			foreach ( $sermon['attachments'] as $attachment ) {
-				list( $type, $content, $downloads, $duration ) = $attachment;
-				$wpdb->insert(
-					"{$wpdb->prefix}sb_stuff",
-					array(
-						'type'      => $type,
-						'name'      => 'code' === $type ? base64_encode( $content ) : $content,
-						'sermon_id' => $id,
-						'count'     => $downloads,
-						'duration'  => $duration,
-					)
-				);
+				$this->attach( $id, $attachment );
 			}
 		}
+	}
+
+	/**
+	 * Stores an attachment.
+	 *
+	 * @param int   $sermon_id  The sermon's id, or 0.
+	 * @param array $attachment Type, content, downloads and duration.
+	 */
+	private function attach( $sermon_id, array $attachment ) {
+		global $wpdb;
+		list( $type, $content, $downloads, $duration ) = $attachment;
+		$wpdb->insert(
+			"{$wpdb->prefix}sb_stuff",
+			array(
+				'type'      => $type,
+				'name'      => 'code' === $type ? base64_encode( $content ) : $content,
+				'sermon_id' => $sermon_id,
+				'count'     => $downloads,
+				'duration'  => $duration,
+			)
+		);
 	}
 }

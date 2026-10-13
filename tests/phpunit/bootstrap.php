@@ -39,3 +39,4 @@ sb_install();
 require __DIR__ . '/fixtures/interface-fixture-writer.php';
 require __DIR__ . '/fixtures/class-tables-fixture-writer.php';
 require __DIR__ . '/contracts/class-sermon-repository-contract.php';
+require __DIR__ . '/contracts/class-attachment-repository-contract.php';

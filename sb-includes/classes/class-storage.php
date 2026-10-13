@@ -18,6 +18,8 @@ class Storage {
 
 	private static ?Sermon_Repository $sermons = null;
 
+	private static ?Attachment_Repository $attachments = null;
+
 	/**
 	 * Returns the sermon repository.
 	 *
@@ -28,5 +30,17 @@ class Storage {
 			self::$sermons = new Storage\Tables\Sermon_Repository();
 		}
 		return self::$sermons;
+	}
+
+	/**
+	 * Returns the attachment repository.
+	 *
+	 * @return Attachment_Repository
+	 */
+	public static function attachments() {
+		if ( null === self::$attachments ) {
+			self::$attachments = new Storage\Tables\Attachment_Repository();
+		}
+		return self::$attachments;
 	}
 }

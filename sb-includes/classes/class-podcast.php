@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- the feed is a read-only GET request
 
 /**
@@ -152,11 +151,10 @@ class Podcast {
 	 * @return string|null
 	 */
 	private static function duration( $media_name, $media_type ) {
-		global $wpdb;
 		if ( strtolower( substr( $media_name, -3 ) ) == 'mp3' && 'Files' === $media_type ) {
-			$duration = $wpdb->get_var( $wpdb->prepare( "SELECT duration FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' AND name = %s", $media_name ) );
-			if ( $duration ) {
-				return $duration;
+			$attachment = Storage::attachments()->find( Attachment::FILE, $media_name );
+			if ( $attachment && $attachment->duration ) {
+				return $attachment->duration;
 			}
 			if ( ! class_exists( 'getID3' ) ) {
 				require ABSPATH . WPINC . '/ID3/getid3.php';
@@ -164,7 +162,9 @@ class Podcast {
 			$getid3     = new \getID3();
 			$media_info = $getid3->analyze( SB_ABSPATH . sb_get_option( 'upload_dir' ) . $media_name );
 			$duration   = isset( $media_info['playtime_string'] ) ? $media_info['playtime_string'] : '';
-			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}sb_stuff SET duration = %s WHERE type = 'file' AND name = %s", $duration, $media_name ) );
+			if ( $attachment ) {
+				Storage::attachments()->set_duration( $attachment, $duration );
+			}
 			return $duration;
 		}
 	}
