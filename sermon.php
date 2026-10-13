@@ -9,7 +9,8 @@ Version: 0.46.0
 Author URI: https://www.markbarnes.net/
 Requires at least: 5.8
 Requires PHP: 7.4
-Update URI: false
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Copyright (c) 2008-2026 Mark Barnes
 

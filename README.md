@@ -10,7 +10,7 @@
 2. In WordPress, go to Plugins → Add New → Upload Plugin and upload the zip. If the old version is installed, WordPress offers to replace it; sermons, files and settings are kept.
 3. Templates are recompiled on the first page load after the update.
 
-The plugin folder must be named `sermon-browser`. The `Update URI: false` header stops WordPress from replacing this version with the closed 0.45.22 from WordPress.org.
+The plugin folder must be named `sermon-browser`.
 
 On servers other than Apache, also stop the web server running scripts from the sermon upload folder (normally `wp-content/uploads/sermons/`), since the `.htaccess` the plugin writes there only works on Apache.
 
