@@ -111,7 +111,7 @@ class Sermon_Query {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- the sermon list's filters are read-only GET requests
 		$text = fn( $name ) => isset( $_REQUEST[ $name ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ $name ] ) ) : '';
 		$id   = fn( $name ) => isset( $_REQUEST[ $name ] ) ? (int) $_REQUEST[ $name ] : '';
-		// phpcs:enable
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		return array(
 			'title'    => $text( 'title' ),
 			'preacher' => $id( 'preacher' ),

@@ -50,7 +50,7 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 		$offset                  = $per_page * max( 0, $query->page - 1 );
 		list( $join, $order_by ) = $this->order( $query );
 		// $where is built from prepared fragments and $join and $order_by from fixed SQL.
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}sb_sermons AS m WHERE {$where}" );
 		$ids   = $wpdb->get_col(
 			$wpdb->prepare(
@@ -59,7 +59,7 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 				$per_page
 			)
 		);
-		// phpcs:enable
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		return new Sermon_Page( $this->load( array_map( 'intval', $ids ) ), $total );
 	}
 
@@ -121,7 +121,7 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 			return array();
 		}
 		// $comparison and $direction are checked above.
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		$ids = $wpdb->get_col(
 			$wpdb->prepare(
 				"SELECT id FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) {$comparison} DATE(%s) AND id <> %d AND datetime <> %s ORDER BY datetime {$direction}, id {$direction} LIMIT %d",
@@ -131,7 +131,7 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 				$limit ? $limit : PHP_INT_MAX
 			)
 		);
-		// phpcs:enable
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		return $this->load( array_map( 'intval', $ids ) );
 	}
 
@@ -145,13 +145,13 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 		global $wpdb;
 		$where = $this->where( $query );
 		// $where is built from prepared fragments.
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		$preachers = $wpdb->get_results( "SELECT p.id, p.name, COUNT(*) AS count FROM {$wpdb->prefix}sb_sermons AS m JOIN {$wpdb->prefix}sb_preachers AS p ON p.id = m.preacher_id WHERE {$where} GROUP BY p.id, p.name ORDER BY count DESC, MAX(m.datetime) DESC, p.name ASC" );
 		$series    = $wpdb->get_results( "SELECT ss.id, ss.name, COUNT(*) AS count FROM {$wpdb->prefix}sb_sermons AS m JOIN {$wpdb->prefix}sb_series AS ss ON ss.id = m.series_id WHERE {$where} GROUP BY ss.id, ss.name ORDER BY MAX(m.datetime) DESC, ss.name ASC" );
 		$services  = $wpdb->get_results( "SELECT s.id, s.name, COUNT(*) AS count FROM {$wpdb->prefix}sb_sermons AS m JOIN {$wpdb->prefix}sb_services AS s ON s.id = m.service_id WHERE {$where} GROUP BY s.id, s.name ORDER BY count DESC, s.name ASC" );
 		$books     = $wpdb->get_results( "SELECT b.name, COUNT(DISTINCT m.id) AS count FROM {$wpdb->prefix}sb_sermons AS m JOIN {$wpdb->prefix}sb_books_sermons AS bs ON bs.sermon_id = m.id JOIN {$wpdb->prefix}sb_books AS b ON b.name = bs.book_name WHERE {$where} GROUP BY b.id, b.name ORDER BY b.id" );
 		$dates     = $wpdb->get_col( $wpdb->prepare( "SELECT m.datetime FROM {$wpdb->prefix}sb_sermons AS m WHERE {$where} AND m.datetime <> %s ORDER BY m.datetime ASC", self::UNKNOWN_DATE ) );
-		// phpcs:enable
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		$facets = function ( $rows, $with_id = true ) {
 			return array_map(
 				function ( $row ) use ( $with_id ) {
@@ -218,7 +218,9 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 			return array();
 		}
 		// $join is one of the two above.
-		$rows = $wpdb->get_results( "SELECT g.id, g.name, SUM(stuff.count) AS downloads, COUNT(stuff.id) AS attachments, MAX(m.datetime) AS latest FROM {$wpdb->prefix}sb_stuff AS stuff JOIN {$wpdb->prefix}sb_sermons AS m ON m.id = stuff.sermon_id {$join} GROUP BY g.id, g.name ORDER BY latest DESC, g.name ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
+		$rows = $wpdb->get_results( "SELECT g.id, g.name, SUM(stuff.count) AS downloads, COUNT(stuff.id) AS attachments, MAX(m.datetime) AS latest FROM {$wpdb->prefix}sb_stuff AS stuff JOIN {$wpdb->prefix}sb_sermons AS m ON m.id = stuff.sermon_id {$join} GROUP BY g.id, g.name ORDER BY latest DESC, g.name ASC" );
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		return array_map(
 			function ( $row ) {
 				return new Download_Count( (int) $row->id, stripslashes( $row->name ), (int) $row->downloads, (int) $row->attachments, self::UNKNOWN_DATE === $row->latest ? null : new \DateTimeImmutable( $row->latest, wp_timezone() ) );
@@ -322,7 +324,7 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 		}
 		$in = implode( ',', array_map( 'intval', $ids ) );
 		// $in holds integers only.
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		$rows        = $wpdb->get_results(
 			"SELECT m.id, m.title, m.description, m.datetime, m.time, m.override, m.start, m.end,
 				p.id AS preacher_id, p.name AS preacher_name, p.description AS preacher_description, p.image AS preacher_image,
@@ -337,7 +339,7 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 		);
 		$tag_rows    = $wpdb->get_results( "SELECT st.sermon_id, t.name FROM {$wpdb->prefix}sb_sermons_tags AS st JOIN {$wpdb->prefix}sb_tags AS t ON t.id = st.tag_id WHERE st.sermon_id IN ({$in}) ORDER BY t.name ASC" );
 		$attachments = $wpdb->get_results( "SELECT id, sermon_id, type, name, count, duration FROM {$wpdb->prefix}sb_stuff WHERE sermon_id IN ({$in}) ORDER BY id DESC" );
-		// phpcs:enable
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		$tags = array();
 		foreach ( $tag_rows as $tag ) {
 			if ( null !== $tag->name && '' !== $tag->name ) {
