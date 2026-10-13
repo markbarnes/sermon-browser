@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.47.1
+Stable tag: 0.48.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -248,6 +248,9 @@ The tags for other Bible versions (`[kjvtext]`, `[asvtext]`, `[ylttext]`, `[webt
 
 == Upgrade Notice ==
 
+= 0.48.0 =
+Reads sermons through a new storage layer, the first step towards storing them as WordPress posts. Fixes a fatal error on some old sermons' pages; a few orders and filters change slightly (see the changelog).
+
 = 0.47.1 =
 Sorting by preacher and passage works again, the admin pages are hardened, and the help is built in. The "Powered by" link now points to GitHub.
 
@@ -262,7 +265,7 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 
 == Changelog ==
 
-= 0.48.0 (unreleased) =
+= 0.48.0 (13 October 2026) =
 Sermons are read through one storage layer, the first step towards storing them as WordPress posts.
 
 * **Bug fix:** The page of a sermon whose passages were saved empty by an old version (stored as `null`) stopped with a fatal error on PHP 8.
