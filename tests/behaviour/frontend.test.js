@@ -76,6 +76,7 @@ describe( 'filters', () => {
 		'book=Psalm': [ 2 ],
 		'stag=grace': [ 3, 1 ],
 		'title=shepherd': [ 2 ],
+		'title=Paul%27s': [ 1 ], // stored with the apostrophe escaped: Paul\'s
 		'date=2026-03-01&enddate=2026-03-02': [ 2, 1 ],
 		'date=2025-01-01&enddate=2025-12-31': [ 5 ],
 	};

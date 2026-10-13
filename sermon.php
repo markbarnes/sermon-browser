@@ -426,14 +426,14 @@ function sb_shortcode($atts, $content=null) {
 		'id' => isset($_REQUEST['sermon_id']) ? (int)$_REQUEST['sermon_id'] : '',
 		'preacher' => isset($_REQUEST['preacher']) ? (int)$_REQUEST['preacher'] : '',
 		'series' => isset($_REQUEST['series']) ? (int)$_REQUEST['series'] : '',
-		'book' => isset($_REQUEST['book']) ? sanitize_text_field($_REQUEST['book']) : '',
+		'book' => isset($_REQUEST['book']) ? sanitize_text_field(wp_unslash($_REQUEST['book'])) : '',
 		'service' => isset($_REQUEST['service']) ? (int)$_REQUEST['service'] : '',
-		'date' => isset($_REQUEST['date']) ? sanitize_text_field($_REQUEST['date']) : '',
-		'enddate' => isset($_REQUEST['enddate']) ? sanitize_text_field($_REQUEST['enddate']) : '',
-		'tag' => isset($_REQUEST['stag']) ? sanitize_text_field($_REQUEST['stag']) : '',
-		'title' => isset($_REQUEST['title']) ? sanitize_text_field($_REQUEST['title']) : '',
+		'date' => isset($_REQUEST['date']) ? sanitize_text_field(wp_unslash($_REQUEST['date'])) : '',
+		'enddate' => isset($_REQUEST['enddate']) ? sanitize_text_field(wp_unslash($_REQUEST['enddate'])) : '',
+		'tag' => isset($_REQUEST['stag']) ? sanitize_text_field(wp_unslash($_REQUEST['stag'])) : '',
+		'title' => isset($_REQUEST['title']) ? sanitize_text_field(wp_unslash($_REQUEST['title'])) : '',
 		'limit' => '0',
-		'dir' => isset($_REQUEST['dir']) ? sanitize_text_field($_REQUEST['dir']) : '',	),
+		'dir' => isset($_REQUEST['dir']) ? sanitize_text_field(wp_unslash($_REQUEST['dir'])) : '',	),
 	$atts);
 	if ($atts['id'] != '') {
 		if (strtolower($atts['id']) == 'latest') {
@@ -746,9 +746,11 @@ function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0, $
 		$order['by'] = $default_order['by'];
 	$page = (int) $page;
 	$cond = '1=1 ';
+	// Text saved by the Add Sermon page is stored with quotes escaped (God\'s), so searches match both forms
 	if ($filter['title'] != '') {
 		$like = '%'.$wpdb->esc_like($filter['title']).'%';
-		$cond .= $wpdb->prepare('AND (m.title LIKE %s OR m.description LIKE %s OR t.name LIKE %s) ', $like, $like, $like);
+		$slashed = '%'.$wpdb->esc_like(addslashes($filter['title'])).'%';
+		$cond .= $wpdb->prepare('AND (m.title LIKE %s OR m.title LIKE %s OR m.description LIKE %s OR m.description LIKE %s OR t.name LIKE %s) ', $like, $slashed, $like, $slashed, $like);
 	}
 	if ((int) $filter['preacher'] != 0) {
 		$cond .= $wpdb->prepare('AND m.preacher_id = %d ', $filter['preacher']);
