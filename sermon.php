@@ -243,8 +243,6 @@ function sb_sermon_init () {
 		add_action('wp_head', 'wp_print_styles', 9);
 		add_action('admin_bar_menu', 'sb_admin_bar_menu', 45);
 		add_filter('wp_title', 'sb_page_title');
-		if (defined('SAVEQUERIES') && SAVEQUERIES)
-			add_action ('wp_footer', 'sb_footer_stats');
 	} else {
 		require_once (SB_INCLUDES_DIR.'/admin.php');
 		add_action ('admin_menu', 'sb_add_pages');
@@ -252,8 +250,6 @@ function sb_sermon_init () {
 		add_action ('rightnow_end', 'sb_rightnow');
 		add_action('admin_init', 'sb_add_admin_headers');
 		add_action('current_screen', 'sb_add_help_tab');
-		if (defined('SAVEQUERIES') && SAVEQUERIES)
-			add_action('admin_footer', 'sb_footer_stats');
 	}
 }
 
@@ -408,22 +404,6 @@ function sb_display_url() {
 			}
 	}
 	return $sb_display_url;
-}
-
-/**
-* Adds database statistics to the HTML comments
-*
-* Requires define('SAVEQUERIES', true) in wp-config.php
-* Useful for diagnostics
-*/
-function sb_footer_stats() {
-	global $wpdb;
-	echo '<!-- ';
-	echo($wpdb->num_queries.' queries. '.timer_stop().' seconds.');
-	echo chr(13);
-	print_r($wpdb->queries);
-	echo chr(13);
-	echo ' -->';
 }
 
 /**
