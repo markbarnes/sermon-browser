@@ -40,7 +40,6 @@ OTHER FILES
 ajax.php       - Handles AJAX returns.
 dictionary.php - Translates the template tags into php code. Used only when saving a template.
 filetypes.php  - User-editable file, which returns the correct mime-type for common file-extensions.
-podcast.php    - Handles the podcast feed
 sb-install.php - Used only when installing the plugin for the first time
 uninstall.php  - Removes the plugin and its databases tables and rows
 upgrade.php    - Runs only when upgrading from earlier versions of SermonBrowser
@@ -125,7 +124,7 @@ function sb_sermon_init () {
 
 	//Display the podcast if that's what's requested
 	if (isset($_GET['podcast']))
-		require(SB_INCLUDES_DIR.'/podcast.php');
+		SermonBrowser\Podcast::serve();
 
 	// Register custom CSS and javascript files
 	wp_register_script('sb_64', SB_PLUGIN_URL.'/sb-includes/64.js', false, SB_CURRENT_VERSION, false);
