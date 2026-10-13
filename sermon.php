@@ -167,11 +167,11 @@ function sb_header_file_name($file_name) {
 */
 function sb_sermon_init () {
 	global $wpdb, $defaultMultiForm, $defaultSingleForm, $defaultStyle;
-	if (IS_MU) {
-			load_plugin_textdomain('sermon-browser', '', 'sb-includes');
-	} else {
-			load_plugin_textdomain('sermon-browser', '', 'sermon-browser/sb-includes');
-	}
+	// Translations bundled in sb-includes; installed as a must-use plugin, the plugin's files are directly in mu-plugins
+	if (basename(dirname(__FILE__)) == 'mu-plugins')
+		load_muplugin_textdomain('sermon-browser', 'sb-includes');
+	else
+		load_plugin_textdomain('sermon-browser', false, dirname(plugin_basename(__FILE__)).'/sb-includes');
 
     if(defined('WPLANG')){
 		if (WPLANG != '')
