@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.49.0
+Stable tag: 0.49.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -247,6 +247,9 @@ The tags for other Bible versions (`[kjvtext]`, `[asvtext]`, `[ylttext]`, `[webt
 
 
 == Upgrade Notice ==
+
+= 0.49.1 =
+Date fields use the browser's own date picker; two old bundled scripts are removed.
 
 = 0.49.0 =
 Templates are read when a page is shown instead of being run as PHP. Pages look the same; misplaced template tags are now left out and listed on the Templates page. Theme developers: see the changelog for changed functions.
