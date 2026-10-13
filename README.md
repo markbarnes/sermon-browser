@@ -70,7 +70,7 @@ npx wp-env start --xdebug=coverage && npm run test:coverage
 To check that the security tests catch what they should, run them against the original code. In a clean working tree:
 
 ```bash
-git checkout 297ef9f -- sermon.php sb-includes && node --test --test-concurrency=1 'tests/behaviour/security-*.test.js'; git checkout HEAD -- sermon.php sb-includes && git rm -q --cached sb-includes/widget.php && rm sb-includes/widget.php
+git checkout 297ef9f -- sermon.php sb-includes && node --test --test-concurrency=1 'tests/behaviour/security-*.test.js'; git checkout HEAD -- sermon.php sb-includes && git rm -q -f sb-includes/widget.php sb-includes/frontend.php sb-includes/podcast.php sb-includes/style.php
 ```
 
 Against 0.45.22, 96 of the 128 security tests fail (including the debug log check at the end of each file). Those that pass cover behaviour that was already correct, including the SQL cases, which were hardening rather than exploitable.
