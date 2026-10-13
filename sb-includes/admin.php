@@ -529,6 +529,7 @@ function sb_templates () {
 		esc_html_e('Templates saved successfully.', 'sermon-browser');
 		echo '</b></p></div>';
 	}
+	sb_print_template_faults();
 	sb_do_alerts();
 	// HTML for templates page
 	?>
@@ -568,6 +569,27 @@ function sb_templates () {
 		});
 	</script>
 <?php
+}
+
+/**
+* Warns about template tags that can't work where they are, which the sermon pages leave out
+*/
+function sb_print_template_faults() {
+	$messages = array();
+	foreach (array(
+		SermonBrowser\Template::SEARCH => array('search_template', __('Search results page', 'sermon-browser')),
+		SermonBrowser\Template::SINGLE => array('single_template', __('Sermon page', 'sermon-browser')),
+	) as $kind => $option) {
+		$template = SermonBrowser\Template::parse(sb_get_option($option[0]), $kind);
+		foreach ($template->faults() as $fault)
+			$messages[] = $option[1].': '.$template->fault_message($fault);
+	}
+	if (!$messages)
+		return;
+	echo '<div class="notice notice-warning"><p><b>'.esc_html__('Some template tags can\'t work where they are, so your pages leave them out:', 'sermon-browser').'</b></p><ul style="list-style-type:disc; margin-left: 2em">';
+	foreach ($messages as $message)
+		echo '<li>'.esc_html($message).'</li>';
+	echo '</ul><p><a href="'.esc_url(admin_url('admin.php?page=sermon-browser/help.php').'#template-errors').'">'.esc_html__('How to use template tags', 'sermon-browser').'</a></p></div>';
 }
 
 /**
@@ -2163,6 +2185,10 @@ sb_do_alerts();
 			/* translators: %s: link to the Templates page */
 			printf(esc_html__('The %s page sets how the list of sermons and each sermon\'s page look, using HTML and these template tags. Its help tab lists them too.', 'sermon-browser'), '<a href="'.esc_url(admin_url('admin.php?page=sermon-browser/templates.php')).'">'.esc_html__('Templates', 'sermon-browser').'</a>') ?></p>
 		<?php sb_print_template_tag_help() ?>
+		<h4 id="template-errors"><?php esc_html_e('Where tags work', 'sermon-browser') ?></h4>
+		<p><?php esc_html_e('In the search results template, the tags about a sermon (its title, preacher, date and so on) only work between [sermons_loop] and [/sermons_loop], which repeats them for each sermon. In the sermon page template, [passage] only works between [passages_loop] and [/passages_loop]. Every loop needs its closing tag.', 'sermon-browser') ?></p>
+		<p><?php esc_html_e('[file], [file_with_download] and [embed] show each file or embed between [files_loop] and [/files_loop], or [embed_loop] and [/embed_loop]; elsewhere in a sermon, they show its first.', 'sermon-browser') ?></p>
+		<p><?php esc_html_e('A tag that can\'t work where it is, or a loop that isn\'t closed, is left out of your pages. Administrators see a message there instead, and the Templates page lists them.', 'sermon-browser') ?></p>
 		<h3><?php esc_html_e('Questions and problems', 'sermon-browser') ?></h3>
 		<p><?php
 			/* translators: 1: link to the frequently asked questions, 2: link to report a problem */

@@ -14,7 +14,6 @@ import assert from 'node:assert/strict';
 import { debugLog, php, seed, useTemplates } from './lib/wp.js';
 import { Client } from './lib/client.js';
 
-const todo = 'until the Templates page checks templates when saving them';
 const visitor = new Client();
 let admin;
 let editor;
@@ -201,7 +200,7 @@ describe( 'saving templates with faults on the Templates page', () => {
 		return ( await admin.request( '/wp-admin/admin.php?page=sermon-browser/templates.php', { form: { sermon_template_edit_nonce: nonce, save: 'Save', multi, single, style } } ) ).text;
 	};
 
-	it( 'saves them, and warns about each fault', { todo }, async () => {
+	it( 'saves them, and warns about each fault', async () => {
 		const multi = '<div class="sermon-browser">[sermon_title][sermons_loop][date]</div>';
 		const single = '<div class="sermon-browser">[/files_loop][passage]</div>';
 		const html = await save( multi, single );
@@ -220,6 +219,14 @@ describe( 'saving templates with faults on the Templates page', () => {
 		const defaults = await php( "require_once SB_INCLUDES_DIR . '/sb-install.php'; return array( sb_default_multi_template(), sb_default_single_template() );" );
 		assert.doesNotMatch( await save( defaults[ 0 ], defaults[ 1 ] ), /notice-warning/ );
 		assert.doesNotMatch( await save( '[sermons_loop][file][embed][/sermons_loop]', '[file][file_with_download][embed]' ), /notice-warning/ );
+	} );
+} );
+
+describe( 'the Help page', () => {
+	it( 'explains where tags work, where the errors and warnings link to', async () => {
+		const html = await admin.adminPage( 'help.php' );
+		assert.match( html, /<h4 id="template-errors">Where tags work<\/h4>/ );
+		assert.match( html, /elsewhere in a sermon, they show its first\./ );
 	} );
 } );
 
