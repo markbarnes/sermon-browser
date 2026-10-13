@@ -53,7 +53,7 @@ for ( const name of rawFiles ) {
 }
 
 // Plugin files no request loaded at all.
-const pluginFiles = [ 'sermon.php', ...fs.readdirSync( path.join( root, 'sb-includes' ) ).filter( ( name ) => name.endsWith( '.php' ) ).map( ( name ) => 'sb-includes/' + name ) ];
+const pluginFiles = [ 'sermon.php', ...fs.readdirSync( path.join( root, 'sb-includes' ), { recursive: true } ).filter( ( name ) => name.endsWith( '.php' ) ).map( ( name ) => 'sb-includes/' + name.split( path.sep ).join( '/' ) ) ];
 const neverLoaded = pluginFiles.filter( ( file ) => ! lines[ file ] );
 
 function count( file, from = 0, to = Infinity ) {

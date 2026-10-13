@@ -10,7 +10,7 @@
  *
  * Each request writes coverage/raw/<id>.json with:
  *   lines:     plugin file => { line: 1 (ran) or -1 (didn't run) }
- *   functions: plugin function => [file, first line, last line]
+ *   functions: plugin function or method (Class::method) => [file, first line, last line]
  *   templates: the templates rendered ('search', 'single') as their uncompiled text
  */
 
@@ -76,6 +76,18 @@ register_shutdown_function(
 			$file     = (string) $function->getFileName();
 			if ( 0 === strpos( $file, $sb_coverage_plugin ) && 0 !== strpos( $file, $sb_coverage_plugin . 'tests/' ) ) {
 				$result['functions'][ $function->getName() ] = array( substr( $file, strlen( $sb_coverage_plugin ) ), $function->getStartLine(), $function->getEndLine() );
+			}
+		}
+		foreach ( get_declared_classes() as $class ) {
+			$reflection = new ReflectionClass( $class );
+			$file       = (string) $reflection->getFileName();
+			if ( 0 !== strpos( $file, $sb_coverage_plugin ) || 0 === strpos( $file, $sb_coverage_plugin . 'tests/' ) ) {
+				continue;
+			}
+			foreach ( $reflection->getMethods() as $method ) {
+				if ( $method->getDeclaringClass()->getName() === $class ) {
+					$result['functions'][ $class . '::' . $method->getName() ] = array( substr( $file, strlen( $sb_coverage_plugin ) ), $method->getStartLine(), $method->getEndLine() );
+				}
 			}
 		}
 		file_put_contents( $sb_coverage_plugin . 'coverage/raw/' . uniqid( '', true ) . '.json', wp_json_encode( $result ) );
