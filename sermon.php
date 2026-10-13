@@ -65,9 +65,12 @@ define('SB_CURRENT_VERSION', '0.46.1');
 define('SB_DATABASE_VERSION', '1.7');
 sb_define_constants();
 spl_autoload_register('sb_autoload');
+require_once (SB_INCLUDES_DIR.'/frontend.php');
 add_action ('init', 'sb_hijack', 0);
 add_action ('init', 'sb_sermon_init');
-add_action ('widgets_init', 'sb_widget_sermon_init');
+add_action ('widgets_init', array('SermonBrowser\\Widgets\\Recent_Sermons', 'register'));
+add_action ('widgets_init', array('SermonBrowser\\Widgets\\Tag_Cloud', 'register'));
+add_action ('widgets_init', array('SermonBrowser\\Widgets\\Popular', 'register'));
 
 /**
 * Loads the plugin's classes (namespace SermonBrowser) from sb-includes/classes
@@ -166,10 +169,9 @@ function sb_sermon_init () {
 
 	// Check to see what functions are required, and only load what is needed
 	if (!is_admin()) {
-		require_once (SB_INCLUDES_DIR.'/frontend.php');
-		add_action('wp_head', 'sb_add_headers', 0);
+		add_action('wp_head', array('SermonBrowser\\Page_Head', 'add'), 0);
 		add_action('wp_head', 'wp_print_styles', 9);
-		add_action('admin_bar_menu', 'sb_admin_bar_menu', 45);
+		add_action('admin_bar_menu', array('SermonBrowser\\Admin_Bar', 'add_menu'), 45);
 	} else {
 		require_once (SB_INCLUDES_DIR.'/admin.php');
 		add_action ('admin_menu', 'sb_add_pages');
@@ -382,74 +384,6 @@ function sb_shortcode($atts, $content=null) {
 	$content = ob_get_contents();
 	ob_end_clean();
 	return $content;
-}
-
-/**
-* Registers the Sermon Browser widgets
-*/
-function sb_widget_sermon_init() {
-	//Sermons Widget
-	if (!$options = sb_get_option('sermons_widget_options'))
-		$options = array();
-	$widget_ops = array('classname' => 'sermon', 'description' => __('Display a list of recent sermons.', 'sermon-browser'));
-	$control_ops = array('width' => 400, 'height' => 350, 'id_base' => 'sermon');
-	$name = __('Sermons', 'sermon-browser');
-	$registered = false;
-	foreach (array_keys($options) as $o) {
-		if (!isset($options[$o]['limit']))
-			continue;
-		$id = "sermon-$o";
-		$registered = true;
-		wp_register_sidebar_widget($id, $name, 'sb_widget_sermon_wrapper', $widget_ops, array('number' => $o));
-		wp_register_widget_control($id, $name, 'sb_widget_sermon_control', $control_ops, array('number' => $o));
-	}
-	if (!$registered) {
-		wp_register_sidebar_widget('sermon-1', $name, 'sb_widget_sermon_wrapper', $widget_ops, array('number' => -1));
-		wp_register_widget_control('sermon-1', $name, 'sb_widget_sermon_control', $control_ops, array('number' => -1));
-	}
-	//Tags Widget
-	wp_register_sidebar_widget('sermon-browser-tags', __('Sermon Browser tags', 'sermon-browser'), 'sb_widget_tag_cloud_wrapper');
-	//Most popular widget
-	$name = __('Most popular sermons', 'sermon-browser');
-	$description = __('Display a list of the most popular sermons, series or preachers.', 'sermon-browser');
-	$widget_ops = array('classname' => 'sermon-browser-popular', 'description' => $description);
-	$control_ops = array('width' => 400, 'height' => 350, 'id_base' => 'sermon-browser-popular');
-	wp_register_sidebar_widget( 'sermon-browser-popular', $name, 'sb_widget_popular_wrapper', $widget_ops);
-	wp_register_widget_control( 'sermon-browser-popular', $name, 'sb_widget_popular_control', $control_ops);
-}
-
-/**
-* Wrapper for sb_widget_sermon in frontend.php
-*
-* Allows main widget functionality to be in the frontend package, whilst still allowing widgets to be modified in admin
-* @param array $args
-* @param integer $widget_args
-*/
-function sb_widget_sermon_wrapper ($args, $widget_args = 1) {
-	require_once (SB_INCLUDES_DIR.'/frontend.php');
-	sb_widget_sermon($args, $widget_args);
-}
-
-/**
-* Wrapper for sb_widget_tag_cloud in frontend.php
-*
-* Allows main widget functionality to be in the frontend package, whilst still allowing widgets to be modified in admin
-* @param array $args
-*/
-function sb_widget_tag_cloud_wrapper ($args) {
-	require_once (SB_INCLUDES_DIR.'/frontend.php');
-	sb_widget_tag_cloud ($args);
-}
-
-/**
-* Wrapper for sb_widget_popular in frontend.php
-*
-* Allows main widget functionality to be in the frontend package, whilst still allowing widgets to be modified in admin
-* @param array $args
-*/
-function sb_widget_popular_wrapper ($args) {
-	require_once (SB_INCLUDES_DIR.'/frontend.php');
-	sb_widget_popular ($args);
 }
 
 /**
