@@ -1,0 +1,22 @@
+
+<dl>
+<dt>sermon_title</dt><dd>&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</dd>
+<dt>sermon_description</dt><dd></dd>
+<dt>preacher_link</dt><dd><a href="{SITE}/sermons/?preacher=3">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a></dd>
+<dt>preacher_description</dt><dd><div class='preacher-description'><span class='about'>About &lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;: </span><span class='description'><img decoding="async" src="x"></span></div></dd>
+<dt>preacher_image</dt><dd></dd>
+<dt>series_link</dt><dd><a href="{SITE}/sermons/?series=3">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a></dd>
+<dt>service_link</dt><dd><a href="{SITE}/sermons/?service=3">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a></dd>
+<dt>date</dt><dd>15 March 2026</dd>
+<dt>next_sermon</dt><dd></dd>
+<dt>prev_sermon</dt><dd><a href="{SITE}/sermons/?sermon_id=3">&laquo; Romans 5: peace with God</a></dd>
+<dt>sameday_sermon</dt><dd>None</dd>
+<dt>tags</dt><dd><a href="{SITE}/sermons/?stag=%3Cimg%20src%3Dx%20onerror%3Dalert%28%22tag%22%29%3E">&lt;img src=x onerror=alert(&quot;tag&quot;)&gt;</a></dd>
+<dt>biblepassage</dt><dd><p class='bible-passage'>John 3:16</p></dd>
+<dt>editlink</dt><dd></dd>
+<dt>creditlink</dt><dd><div id="poweredbysermonbrowser">Powered by <a href="https://github.com/markbarnes/sermon-browser">Sermon Browser</a></div></dd>
+<dt>passage</dt><dd><a href="{SITE}/sermons/?book=John">John</a> 3:16</dd>
+<dt>file</dt><dd><p><audio class="wp-audio-shortcode" id="audio-{POST}-2" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg+src%3Dx+onerror%3Dalert%28%22file%22%29%3E.mp3&#038;_=2" /><a href="{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3">{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3</a></audio></p><p><a href="{SITE}/sermons/?download&#038;file_name=javascript%3Aalert%28%22url%22%29"><img decoding="async" class="site-icon" alt=" file" title=" file" src="{SITE}/wp-content/plugins/sermon-browser/sb-includes/icons/url.png"></a></p></dd>
+<dt>file_with_download</dt><dd><p><div class="sermon_file"><audio class="wp-audio-shortcode" id="audio-{POST}-4" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg+src%3Dx+onerror%3Dalert%28%22file%22%29%3E.mp3&#038;_=4" /><a href="{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3">{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3</a></audio> <a href="{SITE}/sermons/?download&#038;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3">Download</a></div></p><p><div class="sermon_file"><a href="{SITE}/sermons/?download&#038;file_name=javascript%3Aalert%28%22url%22%29"><img decoding="async" class="site-icon" alt=" file" title=" file" src="{SITE}/wp-content/plugins/sermon-browser/sb-includes/icons/url.png"></a></div></p></dd>
+<dt>embed</dt><dd><p><iframe src="https://example.org/"></iframe>alert(&#8220;embed&#8221;)</p></dd>
+</dl>

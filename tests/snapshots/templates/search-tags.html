@@ -1,0 +1,156 @@
+
+<dl>
+<dt>filters_form</dt><dd><span class="inline_controls"><a href="#" id="show_hide_filter"></a></span><div id="mainfilter"><div id = "preacher" class="filter">
+<span class="filter-heading">Preacher:</span> 
+<a href="{SITE}/sermons/?preacher=1">Dylan Jones</a>&nbsp;(3), 
+<a href="{SITE}/sermons/?preacher=3">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a>&nbsp;(1), 
+<a href="{SITE}/sermons/?preacher=2">Rhiannon Llŷr</a>&nbsp;(1).</div><div id = "book" class="filter">
+<span class="filter-heading">Book:</span> 
+<a href="{SITE}/sermons/?book=Psalm">Psalm</a>&nbsp;(1), 
+<a href="{SITE}/sermons/?book=Isaiah">Isaiah</a>&nbsp;(1), 
+<a href="{SITE}/sermons/?book=John">John</a>&nbsp;(1), 
+<a href="{SITE}/sermons/?book=Romans">Romans</a>&nbsp;(2).</div><div id = "series" class="filter">
+<span class="filter-heading">Series:</span> 
+<a href="{SITE}/sermons/?series=3">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a>&nbsp;(1), 
+<a href="{SITE}/sermons/?series=1">Romans</a>&nbsp;(2), 
+<a href="{SITE}/sermons/?series=2">The Psalms &#8211; a book of mixed emotions</a>&nbsp;(2).</div><div id = "service" class="filter">
+<span class="filter-heading">Service:</span> 
+<a href="{SITE}/sermons/?service=1">Sunday Morning</a>&nbsp;(2), 
+<a href="{SITE}/sermons/?service=3">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a>&nbsp;(1), 
+<a href="{SITE}/sermons/?service=4">Christmas morning</a>&nbsp;(1), 
+<a href="{SITE}/sermons/?service=2">Sunday Evening</a>&nbsp;(1).</div><div id = "dates" class="filter">
+<span class="filter-heading">Date:</span> 
+<a href="{SITE}/sermons/?date=2025-01-01&#038;enddate=2025-12-31">2025</a> (1), <a href="{SITE}/sermons/?date=2026-01-01&#038;enddate=2026-12-31">2026</a> (4)</div>
+</div>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		var filter_visible = false;
+		jQuery('#mainfilter').hide();
+		jQuery('#show_hide_filter').text('[ Show filter ]');
+		jQuery('#show_hide_filter').click(function() {
+			jQuery('#mainfilter:visible').slideUp('slow');
+			jQuery('#mainfilter:hidden').slideDown('slow');
+			if (filter_visible) {
+				jQuery('#show_hide_filter').text('[ Show filter ]');
+				filter_visible = false;
+			} else {
+				jQuery('#show_hide_filter').text('[ Hide filter ]');
+				filter_visible = true;
+			}
+			return false;
+		});
+		jQuery('.podcastcustom').hide();
+	});
+</script>
+</dd>
+<dt>most_popular</dt><dd><div id="sermon_most_popular" style="border: 1px solid ; margin: 0pt 0pt 1em 2em; padding: 5px; float: right; font-size: 75%; line-height: 1em"><p><a id="popular_sermons_trigger_f" href="#">Sermons</a> | <a id="popular_series_trigger_f" href="#">Series</a> | <a id="popular_preachers_trigger_f" href="#">Preachers</a></p><div id="sb_popular_wrapper_f"><div class="popular-sermons_f"><ul><li><a href="{SITE}/sermons/?sermon_id=3">Romans 5: peace with God</a></li><li><a href="{SITE}/sermons/?sermon_id=1">Paul&#039;s letter: Faith &amp; Works</a></li><li><a href="{SITE}/sermons/?sermon_id=4">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a></li></ul></div></div><script type="text/javascript">jQuery.setSbCookie = function (value) {
+											document.cookie = "sb_popular="+encodeURIComponent(value);
+										 };</script><script type="text/javascript">jQuery.getSbCookie = function () {
+											var cookieValue = null;
+											if (document.cookie && document.cookie != "") {
+												var cookies = document.cookie.split(";");
+												for (var i = 0; i < cookies.length; i++) {
+													var cookie = jQuery.trim(cookies[i]);
+													var name = "sb_popular";
+													if (cookie.substring(0, name.length + 1) == (name + "=")) {
+														cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+														break;
+													}
+												}
+											}
+										 return cookieValue;
+										 }</script><script type="text/javascript">jQuery(document).ready(function() {jQuery("#popular_sermons_trigger_f").click(function() {
+							jQuery(this).attr("style", "font-weight:bold");
+							jQuery("#popular_series_trigger_f").removeAttr("style");
+							jQuery("#popular_preachers_trigger_f").removeAttr("style");
+							jQuery.setSbCookie ("sermons");
+							jQuery("#sb_popular_wrapper_f").fadeOut("slow", function() {
+								jQuery("#sb_popular_wrapper_f").html("<div class=\"popular-sermons_f\"><ul><li><a href=\"{SITE}\/sermons\/?sermon_id=3\">Romans 5: peace with God<\/a><\/li><li><a href=\"{SITE}\/sermons\/?sermon_id=1\">Paul&#039;s letter: Faith &amp; Works<\/a><\/li><li><a href=\"{SITE}\/sermons\/?sermon_id=4\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
+							});
+							return false;
+						});jQuery("#popular_series_trigger_f").click(function() {
+							jQuery(this).attr("style", "font-weight:bold");
+							jQuery("#popular_sermons_trigger_f").removeAttr("style");
+							jQuery("#popular_preachers_trigger_f").removeAttr("style");
+							jQuery.setSbCookie ("series");
+							jQuery("#sb_popular_wrapper_f").fadeOut("slow", function() {
+								jQuery("#sb_popular_wrapper_f").html("<div class=\"popular-series_f\"><ul><li><a href=\"{SITE}\/sermons\/?series=1\">Romans<\/a><\/li><li><a href=\"{SITE}\/sermons\/?series=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
+							});
+							return false;
+						});jQuery("#popular_preachers_trigger_f").click(function() {
+								jQuery(this).attr("style", "font-weight:bold");
+								jQuery("#popular_series_trigger_f").removeAttr("style");
+								jQuery("#popular_sermons_trigger_f").removeAttr("style");
+								jQuery.setSbCookie("preachers");
+								jQuery("#sb_popular_wrapper_f").fadeOut("slow", function() {
+									jQuery("#sb_popular_wrapper_f").html("<div class=\"popular-preachers_f\"><ul><li><a href=\"{SITE}\/sermons\/?preacher=1\">Dylan Jones<\/a><\/li><li><a href=\"{SITE}\/sermons\/?preacher=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
+								});
+								return false;
+							 });if (jQuery.getSbCookie() == "preachers") { jQuery("#popular_preachers_trigger_f").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_f").html("<div class=\"popular-preachers_f\"><ul><li><a href=\"{SITE}\/sermons\/?preacher=1\">Dylan Jones<\/a><\/li><li><a href=\"{SITE}\/sermons\/?preacher=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};if (jQuery.getSbCookie() == "series") { jQuery("#popular_series_trigger_f").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_f").html("<div class=\"popular-series_f\"><ul><li><a href=\"{SITE}\/sermons\/?series=1\">Romans<\/a><\/li><li><a href=\"{SITE}\/sermons\/?series=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};if (jQuery.getSbCookie() == "sermons") { jQuery("#popular_sermons_trigger_f").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_f").html("<div class=\"popular-sermons_f\"><ul><li><a href=\"{SITE}\/sermons\/?sermon_id=3\">Romans 5: peace with God<\/a><\/li><li><a href=\"{SITE}\/sermons\/?sermon_id=1\">Paul&#039;s letter: Faith &amp; Works<\/a><\/li><li><a href=\"{SITE}\/sermons\/?sermon_id=4\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};});</script></div></dd>
+<dt>tag_cloud</dt><dd><a style="font-size:150%" href="{SITE}/sermons/?stag=grace">grace</a> <a style="font-size:80%" href="{SITE}/sermons/?stag=%3Cimg%20src%3Dx%20onerror%3Dalert%28%22tag%22%29%3E">&lt;img src=x onerror=alert(&quot;tag&quot;)&gt;</a> <a style="font-size:80%" href="{SITE}/sermons/?stag=faith">faith</a> <a style="font-size:80%" href="{SITE}/sermons/?stag=psalms">psalms</a></dd>
+<dt>sermons_count</dt><dd>5</dd>
+<dt>next_page</dt><dd></dd>
+<dt>previous_page</dt><dd></dd>
+<dt>podcast</dt><dd>{SITE}/sermons/?podcast</dd>
+<dt>podcast_for_search</dt><dd>{SITE}/sermons/?podcast=1&#038;dir=desc&#038;sortby=m.datetime</dd>
+<dt>itunes_podcast</dt><dd>{SITE_ITPC}/sermons/?podcast</dd>
+<dt>itunes_podcast_for_search</dt><dd>{SITE_ITPC}/sermons/?podcast=1&#038;dir=desc&#038;sortby=m.datetime</dd>
+<dt>podcasticon</dt><dd><img decoding="async" alt="Subscribe to full podcast" title="Subscribe to full podcast" class="podcasticon" src="{SITE}/wp-content/plugins/sermon-browser/sb-includes/icons/podcast.png"/></dd>
+<dt>podcasticon_for_search</dt><dd><img decoding="async" alt="Subscribe to custom podcast" title="Subscribe to custom podcast" class="podcasticon" src="{SITE}/wp-content/plugins/sermon-browser/sb-includes/icons/podcast_custom.png"/></dd>
+</dl>
+<dl class="sermon">
+<dt>sermon_title</dt><dd><a href="{SITE}/sermons/?sermon_id=4">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a></dd>
+<dt>preacher_link</dt><dd><a href="{SITE}/sermons/?preacher=3">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a></dd>
+<dt>series_link</dt><dd><a href="{SITE}/sermons/?series=3">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a></dd>
+<dt>service_link</dt><dd><a href="{SITE}/sermons/?service=3">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</a></dd>
+<dt>date</dt><dd>15 March 2026</dd>
+<dt>first_passage</dt><dd><a href="{SITE}/sermons/?book=John">John</a> 3:16</dd>
+<dt>editlink</dt><dd></dd>
+<dt>file</dt><dd><p><audio class="wp-audio-shortcode" id="audio-{POST}-2" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg+src%3Dx+onerror%3Dalert%28%22file%22%29%3E.mp3&#038;_=2" /><a href="{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3">{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3</a></audio></p><p><a href="{SITE}/sermons/?download&#038;file_name=javascript%3Aalert%28%22url%22%29"><img decoding="async" class="site-icon" alt=" file" title=" file" src="{SITE}/wp-content/plugins/sermon-browser/sb-includes/icons/url.png"></a></p></dd>
+<dt>file_with_download</dt><dd><p><div class="sermon_file"><audio class="wp-audio-shortcode" id="audio-{POST}-4" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg+src%3Dx+onerror%3Dalert%28%22file%22%29%3E.mp3&#038;_=4" /><a href="{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3">{SITE}/sermons/?show&#038;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3</a></audio> <a href="{SITE}/sermons/?download&#038;file_name=x%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert%28%22file%22%29%3E.mp3">Download</a></div></p><p><div class="sermon_file"><a href="{SITE}/sermons/?download&#038;file_name=javascript%3Aalert%28%22url%22%29"><img decoding="async" class="site-icon" alt=" file" title=" file" src="{SITE}/wp-content/plugins/sermon-browser/sb-includes/icons/url.png"></a></div></p></dd>
+<dt>embed</dt><dd><p><iframe src="https://example.org/"></iframe>alert("embed")</p></dd>
+</dl><dl class="sermon">
+<dt>sermon_title</dt><dd><a href="{SITE}/sermons/?sermon_id=3">Romans 5: peace with God</a></dd>
+<dt>preacher_link</dt><dd><a href="{SITE}/sermons/?preacher=1">Dylan Jones</a></dd>
+<dt>series_link</dt><dd><a href="{SITE}/sermons/?series=1">Romans</a></dd>
+<dt>service_link</dt><dd><a href="{SITE}/sermons/?service=1">Sunday Morning</a></dd>
+<dt>date</dt><dd>8 March 2026</dd>
+<dt>first_passage</dt><dd><a href="{SITE}/sermons/?book=Romans">Romans</a> 5:1-11</dd>
+<dt>editlink</dt><dd></dd>
+<dt>file</dt><dd><p><audio class="wp-audio-shortcode" id="audio-{POST}-6" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="{SITE}/sermons/?show&#038;file_name=2026-03-08-peace-with-god.mp3&#038;_=6" /><a href="{SITE}/sermons/?show&#038;file_name=2026-03-08-peace-with-god.mp3">{SITE}/sermons/?show&#038;file_name=2026-03-08-peace-with-god.mp3</a></audio></p></dd>
+<dt>file_with_download</dt><dd><p><div class="sermon_file"><audio class="wp-audio-shortcode" id="audio-{POST}-8" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="{SITE}/sermons/?show&#038;file_name=2026-03-08-peace-with-god.mp3&#038;_=8" /><a href="{SITE}/sermons/?show&#038;file_name=2026-03-08-peace-with-god.mp3">{SITE}/sermons/?show&#038;file_name=2026-03-08-peace-with-god.mp3</a></audio> <a href="{SITE}/sermons/?download&#038;file_name=2026-03-08-peace-with-god.mp3">Download</a></div></p></dd>
+<dt>embed</dt><dd></dd>
+</dl><dl class="sermon">
+<dt>sermon_title</dt><dd><a href="{SITE}/sermons/?sermon_id=2">Gŵyl Dewi — the Lord’s my shepherd…</a></dd>
+<dt>preacher_link</dt><dd><a href="{SITE}/sermons/?preacher=2">Rhiannon Llŷr</a></dd>
+<dt>series_link</dt><dd><a href="{SITE}/sermons/?series=2">The Psalms &#8211; a book of mixed emotions</a></dd>
+<dt>service_link</dt><dd><a href="{SITE}/sermons/?service=2">Sunday Evening</a></dd>
+<dt>date</dt><dd>1 March 2026</dd>
+<dt>first_passage</dt><dd><a href="{SITE}/sermons/?book=Psalm">Psalm</a> 23:1-6</dd>
+<dt>editlink</dt><dd></dd>
+<dt>file</dt><dd></dd>
+<dt>file_with_download</dt><dd></dd>
+<dt>embed</dt><dd></dd>
+</dl><dl class="sermon">
+<dt>sermon_title</dt><dd><a href="{SITE}/sermons/?sermon_id=1">Paul&#039;s letter: Faith &amp; Works</a></dd>
+<dt>preacher_link</dt><dd><a href="{SITE}/sermons/?preacher=1">Dylan Jones</a></dd>
+<dt>series_link</dt><dd><a href="{SITE}/sermons/?series=1">Romans</a></dd>
+<dt>service_link</dt><dd><a href="{SITE}/sermons/?service=1">Sunday Morning</a></dd>
+<dt>date</dt><dd>1 March 2026</dd>
+<dt>first_passage</dt><dd><a href="{SITE}/sermons/?book=Romans">Romans</a> 3:21-31</dd>
+<dt>editlink</dt><dd></dd>
+<dt>file</dt><dd><p><audio class="wp-audio-shortcode" id="audio-{POST}-10" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="{SITE}/sermons/?show&#038;file_name=2026-03-01-faith-and-works.mp3&#038;_=10" /><a href="{SITE}/sermons/?show&#038;file_name=2026-03-01-faith-and-works.mp3">{SITE}/sermons/?show&#038;file_name=2026-03-01-faith-and-works.mp3</a></audio></p><p><audio class="wp-audio-shortcode" id="audio-{POST}-12" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="{SITE}/sermons/?show&#038;url=https%3A%2F%2Fexample.org%2Fsermons%2Ffaith-and-works-remote.mp3&#038;_=12" /><a href="{SITE}/sermons/?show&#038;url=https%3A%2F%2Fexample.org%2Fsermons%2Ffaith-and-works-remote.mp3">{SITE}/sermons/?show&#038;url=https%3A%2F%2Fexample.org%2Fsermons%2Ffaith-and-works-remote.mp3</a></audio></p></dd>
+<dt>file_with_download</dt><dd><p><div class="sermon_file"><audio class="wp-audio-shortcode" id="audio-{POST}-14" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="{SITE}/sermons/?show&#038;file_name=2026-03-01-faith-and-works.mp3&#038;_=14" /><a href="{SITE}/sermons/?show&#038;file_name=2026-03-01-faith-and-works.mp3">{SITE}/sermons/?show&#038;file_name=2026-03-01-faith-and-works.mp3</a></audio> <a href="{SITE}/sermons/?download&#038;file_name=2026-03-01-faith-and-works.mp3">Download</a></div></p><p><div class="sermon_file"><audio class="wp-audio-shortcode" id="audio-{POST}-16" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="{SITE}/sermons/?show&#038;url=https%3A%2F%2Fexample.org%2Fsermons%2Ffaith-and-works-remote.mp3&#038;_=16" /><a href="{SITE}/sermons/?show&#038;url=https%3A%2F%2Fexample.org%2Fsermons%2Ffaith-and-works-remote.mp3">{SITE}/sermons/?show&#038;url=https%3A%2F%2Fexample.org%2Fsermons%2Ffaith-and-works-remote.mp3</a></audio> <a href="{SITE}/sermons/?download&#038;url=https%3A%2F%2Fexample.org%2Fsermons%2Ffaith-and-works-remote.mp3">Download</a></div></p></dd>
+<dt>embed</dt><dd><p><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/abc123" allowfullscreen></iframe></p></dd>
+</dl><dl class="sermon">
+<dt>sermon_title</dt><dd><a href="{SITE}/sermons/?sermon_id=5">Christmas morning: Unto us a child is born</a></dd>
+<dt>preacher_link</dt><dd><a href="{SITE}/sermons/?preacher=1">Dylan Jones</a></dd>
+<dt>series_link</dt><dd><a href="{SITE}/sermons/?series=2">The Psalms &#8211; a book of mixed emotions</a></dd>
+<dt>service_link</dt><dd><a href="{SITE}/sermons/?service=4">Christmas morning</a></dd>
+<dt>date</dt><dd>25 December 2025</dd>
+<dt>first_passage</dt><dd></dd>
+<dt>editlink</dt><dd></dd>
+<dt>file</dt><dd></dd>
+<dt>file_with_download</dt><dd></dd>
+<dt>embed</dt><dd></dd>
+</dl>
