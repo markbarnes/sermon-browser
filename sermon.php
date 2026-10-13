@@ -62,14 +62,14 @@ if (!defined('ABSPATH'))
 define('SB_CURRENT_VERSION', '0.46.0');
 define('SB_DATABASE_VERSION', '1.7');
 sb_define_constants();
-add_action ('plugins_loaded', 'sb_hijack');
+add_action ('init', 'sb_hijack', 0);
 add_action ('init', 'sb_sermon_init');
 add_action ('widgets_init', 'sb_widget_sermon_init');
 
 /**
 * Display podcast, or download linked files
 *
-* Intercepts Wordpress at earliest opportunity. Checks whether the following are required before the full framework is loaded:
+* Runs at the start of init (translations can't be loaded earlier). Checks whether the following are required before the page is built:
 * Ajax data, stylesheet, file download
 */
 function sb_hijack() {
