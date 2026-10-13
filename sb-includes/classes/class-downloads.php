@@ -30,21 +30,22 @@ class Downloads {
 			return;
 		}
 		if ( isset( $_GET['file_name'] ) ) {
-			self::serve_file();
+			self::serve_file( wp_unslash( $_GET['file_name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only compared with the names stored in sb_stuff
 		}
 		if ( isset( $_GET['url'] ) ) {
-			self::serve_url();
+			self::serve_url( wp_unslash( $_GET['url'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only compared with the URLs stored in sb_stuff
 		}
 	}
 
 	/**
 	 * Serves a file from the upload folder: only names listed in the database.
+	 *
+	 * @param string $requested The file_name parameter, unslashed.
 	 */
-	private static function serve_file() {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only compared with the names stored in sb_stuff
-		$file_name = self::attachment_name( rawurldecode( wp_unslash( $_GET['file_name'] ) ), 'file' );
+	private static function serve_file( $requested ) {
+		$file_name = self::attachment_name( rawurldecode( $requested ), 'file' );
 		if ( null === $file_name || ! sb_is_plain_file_name( $file_name ) ) {
-			wp_die( esc_html( rawurldecode( sanitize_text_field( wp_unslash( $_GET['file_name'] ) ) ) ) . ' ' . esc_html__( 'not found', 'sermon-browser' ), esc_html__( 'File not found', 'sermon-browser' ), array( 'response' => 404 ) );
+			wp_die( esc_html( rawurldecode( sanitize_text_field( $requested ) ) ) . ' ' . esc_html__( 'not found', 'sermon-browser' ), esc_html__( 'File not found', 'sermon-browser' ), array( 'response' => 404 ) );
 		}
 		self::count( $file_name );
 		if ( isset( $_GET['download'] ) ) {
@@ -67,13 +68,14 @@ class Downloads {
 
 	/**
 	 * Serves an external URL: only URLs attached to a sermon.
+	 *
+	 * @param string $requested The url parameter, unslashed.
 	 */
-	private static function serve_url() {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only compared with the URLs stored in sb_stuff
-		$stored_url = self::attachment_name( rawurldecode( wp_unslash( $_GET['url'] ) ), 'url' );
+	private static function serve_url( $requested ) {
+		$stored_url = self::attachment_name( rawurldecode( $requested ), 'url' );
 		$url        = is_null( $stored_url ) ? '' : esc_url_raw( wp_specialchars_decode( $stored_url, ENT_QUOTES ), array( 'http', 'https' ) );
 		if ( '' === $url ) {
-			wp_die( esc_html( rawurldecode( sanitize_text_field( wp_unslash( $_GET['url'] ) ) ) ) . ' ' . esc_html__( 'not found', 'sermon-browser' ), esc_html__( 'URL not found', 'sermon-browser' ), array( 'response' => 404 ) );
+			wp_die( esc_html( rawurldecode( sanitize_text_field( $requested ) ) ) . ' ' . esc_html__( 'not found', 'sermon-browser' ), esc_html__( 'URL not found', 'sermon-browser' ), array( 'response' => 404 ) );
 		}
 		if ( isset( $_GET['download'] ) ) {
 			// Downloads the URL and passes it on as a download.
