@@ -321,4 +321,40 @@ abstract class Sermon_Repository_Contract extends WP_UnitTestCase {
 		$this->assertSame( array( array( 0, 'Isaiah', 1 ), array( 0, 'Romans', 1 ) ), $this->facet_list( $this->facets( array( 'book' => 'Isaiah' ) )->books ) );
 		$this->assertSame( array( array( 1, 'Dylan Jones', 2 ) ), $this->facet_list( $this->facets( array( 'with_attachments' => true ) )->preachers ) );
 	}
+
+	public function test_tag_counts_count_sermons_per_tag_most_first_then_alphabetically() {
+		$this->assertSame( array( array( 0, 'grace', 2 ), array( 0, 'faith', 1 ), array( 0, 'new birth', 1 ), array( 0, 'psalms', 1 ) ), $this->facet_list( $this->repository()->tag_counts() ) );
+	}
+
+	public function test_most_downloaded_lists_sermons_with_attachments_most_downloaded_first() {
+		$this->assertSame( array( 1, 3 ), wp_list_pluck( $this->repository()->most_downloaded( 5 ), 'id' ) );
+		$this->assertSame( array( 1 ), wp_list_pluck( $this->repository()->most_downloaded( 1 ), 'id' ) );
+	}
+
+	public function test_most_downloaded_lists_ties_newest_first() {
+		$fixtures = require dirname( __DIR__ ) . '/fixtures/sermons.php';
+		$fixtures['sermons'][3]['attachments'][0][2] = 7;
+		$this->writer()->write( $fixtures );
+
+		$this->assertSame( array( 3, 1 ), wp_list_pluck( $this->repository()->most_downloaded( 5 ), 'id' ) );
+	}
+
+	public function test_download_counts_total_each_series_and_preachers_attachments() {
+		$fixtures = require dirname( __DIR__ ) . '/fixtures/sermons.php';
+		$fixtures['sermons'][2]['attachments'] = array( array( 'file', 'psalm-23.mp3', 3, '' ) );
+		$fixtures['sermons'][6]['attachments'] = array( array( 'file', 'undated.mp3', 1, '' ), array( 'file', 'undated-2.mp3', 0, '' ) );
+		$this->writer()->write( $fixtures );
+		$counts = function ( $by ) {
+			return array_map(
+				function ( $count ) {
+					return array( $count->id, $count->name, $count->downloads, $count->attachments, $count->latest ? $count->latest->format( 'Y-m-d' ) : null );
+				},
+				$this->repository()->download_counts( $by )
+			);
+		};
+
+		// The one with the latest sermon first; only those with attachments.
+		$this->assertSame( array( array( 1, 'Romans', 7, 4, '2026-03-08' ), array( 2, 'The Psalms &#8211; songs for every season', 3, 1, '2026-03-01' ) ), $counts( SermonBrowser\Sermon_Repository::BY_SERIES ) );
+		$this->assertSame( array( array( 1, 'Dylan Jones', 7, 4, '2026-03-08' ), array( 2, 'Rhiannon Llŷr', 4, 3, '2026-03-01' ) ), $counts( SermonBrowser\Sermon_Repository::BY_PREACHER ) );
+	}
 }

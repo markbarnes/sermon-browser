@@ -17,6 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 interface Sermon_Repository {
 
+	const BY_SERIES   = 'series';
+	const BY_PREACHER = 'preacher';
+
 	/**
 	 * Returns one page of the sermons a query matches.
 	 *
@@ -64,4 +67,28 @@ interface Sermon_Repository {
 	 * @return Sermon_Facets
 	 */
 	public function facets( Sermon_Query $query );
+
+	/**
+	 * Returns each tag with the number of sermons that have it: most first, then alphabetically.
+	 *
+	 * @return Facet[] With id 0: tags are chosen by name.
+	 */
+	public function tag_counts();
+
+	/**
+	 * Returns the sermons with attachments, most downloaded first (ties newest first).
+	 *
+	 * @param int $limit How many.
+	 * @return Sermon[]
+	 */
+	public function most_downloaded( $limit );
+
+	/**
+	 * Returns the downloads of each series' or preacher's attachments: those with attachments only,
+	 * the one with the latest sermon first, then by name.
+	 *
+	 * @param string $by BY_SERIES or BY_PREACHER.
+	 * @return Download_Count[]
+	 */
+	public function download_counts( $by );
 }

@@ -7,11 +7,13 @@
 
 namespace SermonBrowser\Widgets;
 
+use SermonBrowser\Download_Count;
+use SermonBrowser\Sermon_Repository;
+use SermonBrowser\Storage;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
 
 /**
  * The most downloaded sermons, series and preachers, with links to switch between them.
@@ -47,7 +49,6 @@ class Popular {
 	 *                    element ids, and options, which replace the saved settings.
 	 */
 	public static function display( $args ) {
-		global $wpdb;
 		$suffix  = isset( $args['suffix'] ) ? $args['suffix'] : '_w';
 		$options = isset( $args['options'] ) ? $args['options'] : sb_get_option( 'popular_widget_options' );
 		if ( ! is_array( $options ) ) {
@@ -69,16 +70,11 @@ class Popular {
 		$series_final    = array();
 		$preachers_final = array();
 		if ( $options['display_sermons'] ) {
-			$sermons = $wpdb->get_results(
-				"SELECT sermons.id, sermons.title, sum(stuff.count) AS total
-									   FROM {$wpdb->prefix}sb_stuff AS stuff
-									   JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-									   GROUP BY sermons.id ORDER BY total DESC LIMIT 0, " . (int) $options['limit']
-			);
+			$sermons = Storage::sermons()->most_downloaded( (int) $options['limit'] );
 			if ( $sermons ) {
 				$output['sermons'] = '<div class="popular-sermons' . $suffix . '"><ul>';
 				foreach ( $sermons as $sermon ) {
-					$output['sermons'] .= '<li><a href="' . sb_build_url( array( 'sermon_id' => $sermon->id ), true ) . '">' . esc_html( stripslashes( $sermon->title ) ) . '</a></li>';
+					$output['sermons'] .= '<li><a href="' . sb_build_url( array( 'sermon_id' => $sermon->id ), true ) . '">' . esc_html( $sermon->title ) . '</a></li>';
 				}
 				$output['sermons'] .= '</ul></div>';
 				$trigger[]          = '<a id="popular_sermons_trigger' . $suffix . '" href="#">Sermons</a>';
@@ -96,41 +92,12 @@ class Popular {
 		}
 
 		if ( $options['display_series'] ) {
-			$series1 = $wpdb->get_results(
-				"SELECT series.id, series.name, avg(stuff.count) AS average
-									   FROM {$wpdb->prefix}sb_stuff AS stuff
-									   JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-									   JOIN {$wpdb->prefix}sb_series AS series ON sermons.series_id = series.id
-									   GROUP BY series.id ORDER BY average DESC"
-			);
-			$series2 = $wpdb->get_results(
-				"SELECT series.id, sum(stuff.count) AS total
-									   FROM {$wpdb->prefix}sb_stuff AS stuff
-									   JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-									   JOIN {$wpdb->prefix}sb_series AS series ON sermons.series_id = series.id
-									   GROUP BY series.id ORDER BY total DESC"
-			);
-			if ( $series1 ) {
-				$i = 1;
-				foreach ( $series1 as $series ) {
-					$series_final[ $series->id ]       = new \stdClass();
-					$series_final[ $series->id ]->name = $series->name;
-					$series_final[ $series->id ]->rank = $i;
-					$series_final[ $series->id ]->id   = $series->id;
-					++$i;
-				}
-				$i = 1;
-				foreach ( $series2 as $series ) {
-					if ( isset( $series_final[ $series->id ] ) ) {
-						$series_final[ $series->id ]->rank += $i;
-					}
-					++$i;
-				}
-				usort( $series_final, array( self::class, 'compare_rank' ) );
+			$series_final = self::rank( Storage::sermons()->download_counts( Sermon_Repository::BY_SERIES ) );
+			if ( $series_final ) {
 				$series_final     = array_slice( $series_final, 0, $options['limit'] );
 				$output['series'] = '<div class="popular-series' . $suffix . '"><ul>';
 				foreach ( $series_final as $series ) {
-					$output['series'] .= '<li><a href="' . sb_build_url( array( 'series' => $series->id ), true ) . '">' . esc_html( stripslashes( $series->name ) ) . '</a></li>';
+					$output['series'] .= '<li><a href="' . sb_build_url( array( 'series' => $series->id ), true ) . '">' . esc_html( $series->name ) . '</a></li>';
 				}
 				$output['series'] .= '</ul></div>';
 			}
@@ -148,43 +115,12 @@ class Popular {
 		}
 
 		if ( $options['display_preachers'] ) {
-			$preachers1 = $wpdb->get_results(
-				"SELECT preachers.id, preachers.name, avg(stuff.count) AS average
-										  FROM {$wpdb->prefix}sb_stuff AS stuff
-										  JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-										  JOIN {$wpdb->prefix}sb_preachers AS preachers ON sermons.preacher_id = preachers.id
-										  GROUP BY preachers.id
-										  ORDER BY average DESC"
-			);
-			$preachers2 = $wpdb->get_results(
-				"SELECT preachers.id, sum(stuff.count) AS total
-										  FROM {$wpdb->prefix}sb_stuff AS stuff
-										  JOIN {$wpdb->prefix}sb_sermons AS sermons ON stuff.sermon_id = sermons.id
-										  JOIN {$wpdb->prefix}sb_preachers AS preachers ON sermons.preacher_id = preachers.id
-										  GROUP BY preachers.id
-										  ORDER BY total DESC"
-			);
-			if ( $preachers1 ) {
-				$i = 1;
-				foreach ( $preachers1 as $preacher ) {
-					$preachers_final[ $preacher->id ]       = new \stdClass();
-					$preachers_final[ $preacher->id ]->name = $preacher->name;
-					$preachers_final[ $preacher->id ]->rank = $i;
-					$preachers_final[ $preacher->id ]->id   = $preacher->id;
-					++$i;
-				}
-				$i = 1;
-				foreach ( $preachers2 as $preacher ) {
-					if ( isset( $preachers_final[ $preacher->id ] ) ) {
-						$preachers_final[ $preacher->id ]->rank += $i;
-					}
-					++$i;
-				}
-				usort( $preachers_final, array( self::class, 'compare_rank' ) );
+			$preachers_final = self::rank( Storage::sermons()->download_counts( Sermon_Repository::BY_PREACHER ) );
+			if ( $preachers_final ) {
 				$preachers_final     = array_slice( $preachers_final, 0, $options['limit'] );
 				$output['preachers'] = '<div class="popular-preachers' . $suffix . '"><ul>';
 				foreach ( $preachers_final as $preacher ) {
-					$output['preachers'] .= '<li><a href="' . sb_build_url( array( 'preacher' => $preacher->id ), true ) . '">' . esc_html( stripslashes( $preacher->name ) ) . '</a></li>';
+					$output['preachers'] .= '<li><a href="' . sb_build_url( array( 'preacher' => $preacher->id ), true ) . '">' . esc_html( $preacher->name ) . '</a></li>';
 				}
 				$output['preachers'] .= '</ul></div>';
 				$trigger[]            = '<a id="popular_preachers_trigger' . $suffix . '" href="#">Preachers</a>';
@@ -229,16 +165,47 @@ class Popular {
 	}
 
 	/**
-	 * Compares two series or preachers by rank, for usort().
+	 * Ranks series or preachers by their place by average downloads per attachment plus their place by
+	 * total downloads, best first. Ties keep the repository's order (the latest sermon first).
 	 *
-	 * @param object $a A series or preacher.
-	 * @param object $b A series or preacher.
-	 * @return int
+	 * @param Download_Count[] $counts In the repository's order.
+	 * @return Download_Count[]
 	 */
-	private static function compare_rank( $a, $b ) {
-		if ( $a->rank == $b->rank ) {
-			return 0;
-		}
-		return ( $a->rank < $b->rank ) ? -1 : 1;
+	private static function rank( array $counts ) {
+		$places     = function ( $value ) use ( $counts ) {
+			$order = array_keys( $counts );
+			usort(
+				$order,
+				function ( $a, $b ) use ( $counts, $value ) {
+					$difference = $value( $counts[ $b ] ) <=> $value( $counts[ $a ] );
+					return $difference ? $difference : $a <=> $b;
+				}
+			);
+			return array_flip( $order );
+		};
+		$by_average = $places(
+			function ( $count ) {
+				return $count->average();
+			}
+		);
+		$by_total   = $places(
+			function ( $count ) {
+				return $count->downloads;
+			}
+		);
+		$order      = array_keys( $counts );
+		usort(
+			$order,
+			function ( $a, $b ) use ( $by_average, $by_total ) {
+				$difference = ( $by_average[ $a ] + $by_total[ $a ] ) <=> ( $by_average[ $b ] + $by_total[ $b ] );
+				return $difference ? $difference : $a <=> $b;
+			}
+		);
+		return array_map(
+			function ( $key ) use ( $counts ) {
+				return $counts[ $key ];
+			},
+			$order
+		);
 	}
 }

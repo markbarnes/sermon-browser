@@ -8,6 +8,7 @@
 namespace SermonBrowser\Storage\Tables;
 
 use SermonBrowser\Attachment;
+use SermonBrowser\Download_Count;
 use SermonBrowser\Facet;
 use SermonBrowser\Passage;
 use SermonBrowser\Preacher;
@@ -170,6 +171,59 @@ class Sermon_Repository implements \SermonBrowser\Sermon_Repository {
 				},
 				$dates
 			)
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return Facet[]
+	 */
+	public function tag_counts() {
+		global $wpdb;
+		$rows = $wpdb->get_results( "SELECT t.name, COUNT(DISTINCT st.sermon_id) AS count FROM {$wpdb->prefix}sb_sermons_tags AS st JOIN {$wpdb->prefix}sb_tags AS t ON t.id = st.tag_id JOIN {$wpdb->prefix}sb_sermons AS m ON m.id = st.sermon_id WHERE t.name <> '' GROUP BY t.id, t.name ORDER BY count DESC, t.name ASC" );
+		return array_map(
+			function ( $row ) {
+				return new Facet( 0, stripslashes( $row->name ), (int) $row->count );
+			},
+			$rows
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param int $limit How many.
+	 * @return Sermon[]
+	 */
+	public function most_downloaded( $limit ) {
+		global $wpdb;
+		$ids = $wpdb->get_col( $wpdb->prepare( "SELECT m.id FROM {$wpdb->prefix}sb_sermons AS m JOIN {$wpdb->prefix}sb_stuff AS stuff ON stuff.sermon_id = m.id GROUP BY m.id, m.datetime ORDER BY SUM(stuff.count) DESC, m.datetime DESC, m.id DESC LIMIT %d", max( 0, (int) $limit ) ) );
+		return $this->load( array_map( 'intval', $ids ) );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param string $by BY_SERIES or BY_PREACHER.
+	 * @return Download_Count[]
+	 */
+	public function download_counts( $by ) {
+		global $wpdb;
+		if ( self::BY_SERIES === $by ) {
+			$join = "JOIN {$wpdb->prefix}sb_series AS g ON g.id = m.series_id";
+		} elseif ( self::BY_PREACHER === $by ) {
+			$join = "JOIN {$wpdb->prefix}sb_preachers AS g ON g.id = m.preacher_id";
+		} else {
+			return array();
+		}
+		// $join is one of the two above.
+		$rows = $wpdb->get_results( "SELECT g.id, g.name, SUM(stuff.count) AS downloads, COUNT(stuff.id) AS attachments, MAX(m.datetime) AS latest FROM {$wpdb->prefix}sb_stuff AS stuff JOIN {$wpdb->prefix}sb_sermons AS m ON m.id = stuff.sermon_id {$join} GROUP BY g.id, g.name ORDER BY latest DESC, g.name ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return array_map(
+			function ( $row ) {
+				return new Download_Count( (int) $row->id, stripslashes( $row->name ), (int) $row->downloads, (int) $row->attachments, self::UNKNOWN_DATE === $row->latest ? null : new \DateTimeImmutable( $row->latest, wp_timezone() ) );
+			},
+			$rows
 		);
 	}
 

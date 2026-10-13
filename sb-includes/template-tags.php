@@ -181,17 +181,11 @@ function sb_print_tags($tags) {
 
 //Prints tag cloud
 function sb_print_tag_clouds($minfont=80, $maxfont=150) {
-	global $wpdb;
-	$rawtags = $wpdb->get_results("SELECT name FROM {$wpdb->prefix}sb_tags as t RIGHT JOIN {$wpdb->prefix}sb_sermons_tags as st ON t.id = st.tag_id");
+	// Most used first, then alphabetically
 	$cnt = array();
 	$out = array();
-	foreach ($rawtags as $tag) {
-		if (isset($cnt[$tag->name]))
-			$cnt[$tag->name]++;
-		else
-			$cnt[$tag->name] = 1;
-	}
-	unset($cnt['']);
+	foreach (SermonBrowser\Storage::sermons()->tag_counts() as $tag)
+		$cnt[$tag->name] = $tag->count;
 	if (count($cnt) == 0)
 		return;
 	$fontrange = $maxfont - $minfont;
@@ -205,10 +199,9 @@ function sb_print_tag_clouds($minfont=80, $maxfont=150) {
 	$minlog = log($mincnt);
 	$maxlog = log($maxcnt);
 	$logrange = $maxlog == $minlog ? 1 : $maxlog - $minlog;
-	arsort($cnt);
 	foreach ($cnt as $tag => $count) {
 		$size = $minfont + $fontrange * (log($count) - $minlog) / $logrange;
-		$out[] = '<a style="font-size:'.(int) $size.'%" href="'.esc_url(sb_get_tag_link($tag)).'">'.esc_html(stripslashes($tag)).'</a>';
+		$out[] = '<a style="font-size:'.(int) $size.'%" href="'.esc_url(sb_get_tag_link($tag)).'">'.esc_html($tag).'</a>';
 	}
 	echo wp_kses_post(implode(' ', $out));
 }
