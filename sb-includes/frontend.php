@@ -40,15 +40,15 @@ function sb_display_sermons($options = array()) {
 			if ($display_passage) {
 				$foo = sb_unserialize($sermon->start);
 				$bar = sb_unserialize($sermon->end);
-				echo "<span class=\"sermon-passage\"> (".(isset($foo[0], $bar[0]) ? sb_get_books($foo[0], $bar[0]) : '').")</span>";
+				echo "<span class=\"sermon-passage\"> (".(isset($foo[0], $bar[0]) ? wp_kses_post(sb_get_books($foo[0], $bar[0])) : '').")</span>";
 			}
 			if ($display_preacher) {
-				echo "<span class=\"sermon-preacher\">".__('by', 'sermon-browser')." <a href=\"";
+				echo "<span class=\"sermon-preacher\">".esc_html__('by', 'sermon-browser')." <a href=\"";
 				sb_print_preacher_link($sermon);
 				echo "\">".esc_html(stripslashes($sermon->preacher))."</a></span>";
 			}
 			if ($display_date)
-				echo " <span class=\"sermon-date\">".__('on', 'sermon-browser')." ".sb_formatted_date ($sermon)."</span>";
+				echo " <span class=\"sermon-date\">".esc_html__('on', 'sermon-browser')." ".esc_html(sb_formatted_date ($sermon))."</span>";
 			echo ".</li>\r";
 		}
 		echo "</ul>\r";
@@ -66,8 +66,8 @@ function sb_widget_sermon($args, $widget_args=1) {
 	if ( !isset($options[$number]) )
 		return;
 	extract($options[$number]);
-	echo $before_widget;
-	echo $before_title . esc_html($title) . $after_title;
+	echo $before_widget; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
+	echo $before_title . esc_html($title) . $after_title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
 	$sermons = sb_get_sermons(array(
 			'preacher' => $preacher,
 			'service' => $service,
@@ -80,33 +80,33 @@ function sb_widget_sermon($args, $widget_args=1) {
 	foreach ((array) $sermons as $sermon){
 		$i++;
 		echo "<li><span class=\"sermon-title\">";
-		echo '<a href="'.sb_build_url(array('sermon_id' => $sermon->id), true).'">'.esc_html(stripslashes($sermon->title)).'</a></span>';
+		echo '<a href="'.esc_url(sb_build_url(array('sermon_id' => $sermon->id), true)).'">'.esc_html(stripslashes($sermon->title)).'</a></span>';
 		if ($book) {
 			$foo = sb_unserialize($sermon->start);
 			$bar = sb_unserialize($sermon->end);
 			if (isset ($foo[0]) && isset($bar[0]))
-				echo " <span class=\"sermon-passage\">(".sb_get_books($foo[0], $bar[0]).")</span>";
+				echo " <span class=\"sermon-passage\">(".wp_kses_post(sb_get_books($foo[0], $bar[0])).")</span>";
 		}
 		if ($preacherz) {
-			echo " <span class=\"sermon-preacher\">".__('by', 'sermon-browser')." <a href=\"";
+			echo " <span class=\"sermon-preacher\">".esc_html__('by', 'sermon-browser')." <a href=\"";
 			sb_print_preacher_link($sermon);
 			echo "\">".esc_html(stripslashes($sermon->preacher))."</a></span>";
 		}
 		if ($date)
-			echo " <span class=\"sermon-date\">".__(' on ', 'sermon-browser').sb_formatted_date ($sermon)."</span>";
+			echo " <span class=\"sermon-date\">".esc_html__(' on ', 'sermon-browser').esc_html(sb_formatted_date ($sermon))."</span>";
 		echo ".</li>";
 	}
 	echo "</ul>";
-	echo $after_widget;
+	echo $after_widget; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
 }
 
 // Displays the tag cloud in the sidebar
 function sb_widget_tag_cloud ($args) {
 	extract($args);
-	echo $before_widget;
-	echo $before_title.__('Sermon Browser tags', 'sermon-browser').$after_title;
+	echo $before_widget; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
+	echo $before_title.esc_html__('Sermon Browser tags', 'sermon-browser').$after_title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
 	sb_print_tag_clouds();
-	echo $after_widget;
+	echo $after_widget; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
 }
 
 function sb_admin_bar_menu () {
@@ -154,9 +154,9 @@ function sb_widget_popular ($args) {
 		$options = sb_get_option('popular_widget_options');
 	if (!is_array($options))
 		$options = array('title' => '', 'limit' => 5, 'display_sermons' => true, 'display_series' => true, 'display_preachers' => true);
-	echo $before_widget;
+	echo $before_widget; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
 	if ($options['title'] != '')
-		echo $before_title.esc_html($options['title']).$after_title;
+		echo $before_title.esc_html($options['title']).$after_title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
 	$jscript = '';
 	$trigger = array();
 	$output = array();
@@ -283,8 +283,8 @@ function sb_widget_popular ($args) {
 	$jscript .= 'if (jQuery.getSbCookie() == "preachers") { jQuery("#popular_preachers_trigger'.$suffix.'").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper'.$suffix.'").html('.wp_json_encode(isset($output['preachers']) ? $output['preachers'] : '').')};';
 	$jscript .= 'if (jQuery.getSbCookie() == "series") { jQuery("#popular_series_trigger'.$suffix.'").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper'.$suffix.'").html('.wp_json_encode(isset($output['series']) ? $output['series'] : '').')};';
 	$jscript .= 'if (jQuery.getSbCookie() == "sermons") { jQuery("#popular_sermons_trigger'.$suffix.'").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper'.$suffix.'").html('.wp_json_encode(isset($output['sermons']) ? $output['sermons'] : '').')};';
-	echo '<p>'.implode (' | ', $trigger).'</p>';
-	echo '<div id="sb_popular_wrapper'.$suffix.'">'.current($output).'</div>';
+	echo '<p>'.wp_kses_post(implode (' | ', $trigger)).'</p>';
+	echo '<div id="sb_popular_wrapper'.esc_attr($suffix).'">'.wp_kses_post(current($output)).'</div>';
 	echo '<script type="text/javascript">jQuery.setSbCookie = function (value) {
 											document.cookie = "sb_popular="+encodeURIComponent(value);
 										 };</script>';
@@ -303,8 +303,8 @@ function sb_widget_popular ($args) {
 											}
 										 return cookieValue;
 										 }</script>';
-	echo '<script type="text/javascript">jQuery(document).ready(function() {'.$jscript.'});</script>';
-	echo $after_widget;
+	echo '<script type="text/javascript">jQuery(document).ready(function() {'.$jscript.'});</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JavaScript built above, with its HTML encoded by wp_json_encode()
+	echo $after_widget; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- markup from the theme's register_sidebar()
 }
 
 function sb_print_most_popular() {
@@ -321,11 +321,11 @@ function sb_page_title($title) {
 	global $wpdb;
 	if (isset($_GET['sermon_id'])) {
 		$id = (int)$_GET['sermon_id'];
-		$sermon = $wpdb->get_row("SELECT m.title, p.name FROM {$wpdb->prefix}sb_sermons as m LEFT JOIN {$wpdb->prefix}sb_preachers as p ON m.preacher_id = p.id where m.id = $id");
+		$sermon = $wpdb->get_row($wpdb->prepare("SELECT m.title, p.name FROM {$wpdb->prefix}sb_sermons as m LEFT JOIN {$wpdb->prefix}sb_preachers as p ON m.preacher_id = p.id where m.id = %d", $id));
 		if ($sermon)
 			return $title.' ('.esc_html(stripslashes($sermon->title)).' - '.esc_html(stripslashes($sermon->name)).')';
 		else
-			return $title.' ('.__('No sermons found.', 'sermon-browser').')';
+			return $title.' ('.esc_html__('No sermons found.', 'sermon-browser').')';
 	}
 	else
 		return $title;
@@ -373,7 +373,7 @@ function sb_tidy_reference ($start, $end, $add_link = FALSE) {
 
 //Print unstyled bible passage
 function sb_print_bible_passage ($start, $end) {
-	echo "<p class='bible-passage'>".sb_tidy_reference($start, $end)."</p>";
+	echo "<p class='bible-passage'>".wp_kses_post(sb_tidy_reference($start, $end))."</p>";
 }
 
 // Returns human friendly Bible reference with link to filter
@@ -454,7 +454,7 @@ function sb_add_net_text ($start, $end) {
 function sb_edit_link ($id) {
 	if (current_user_can('publish_posts')) {
 		$id = (int)$id;
-		echo '<div class="sb_edit_link"><a href="'.admin_url('admin.php?page=sermon-browser/new_sermon.php&mid='.$id).'">Edit Sermon</a></div>';
+		echo '<div class="sb_edit_link"><a href="'.esc_url(admin_url('admin.php?page=sermon-browser/new_sermon.php&mid='.$id)).'">'.esc_html__('Edit Sermon', 'sermon-browser').'</a></div>';
 	}
 }
 
@@ -482,26 +482,21 @@ function sb_build_url($arr, $clear = false) {
 function sb_add_headers() {
 	global $post, $wpdb, $wp_scripts;
 	if (isset($post->ID) && $post->ID != '') {
-		echo "<!-- Added by SermonBrowser (version ".SB_CURRENT_VERSION.") - http://www.sermonbrowser.com/ -->\r";
+		echo "<!-- Added by SermonBrowser (version ".esc_html(SB_CURRENT_VERSION).") - http://www.sermonbrowser.com/ -->\r";
 		echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".esc_attr__('Sermon podcast', 'sermon-browser')."\" href=\"".esc_url(sb_get_option('podcast_url'))."\" />\r";
 		wp_enqueue_style('sb_style');
-		$pageid = $wpdb->get_var("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE '%[sermons%' AND (post_status = 'publish' OR post_status = 'private') AND ID={$post->ID} AND post_date < NOW();");
+		$pageid = $wpdb->get_var($wpdb->prepare("SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE %s AND (post_status = 'publish' OR post_status = 'private') AND ID = %d AND post_date < NOW();", '%'.$wpdb->esc_like('[sermons').'%', $post->ID));
 		if ($pageid !== NULL) {
 			if (sb_get_option('filter_type') == 'dropdown') {
 				wp_enqueue_script('sb_datepicker');
 				wp_enqueue_style ('sb_datepicker');
 			}
 			if (isset($_REQUEST['title']) || isset($_REQUEST['preacher']) || isset($_REQUEST['date']) || isset($_REQUEST['enddate']) || isset($_REQUEST['series']) || isset($_REQUEST['service']) || isset($_REQUEST['book']) || isset($_REQUEST['stag']))
-				echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".__('Custom sermon podcast', 'sermon-browser')."\" href=\"".sb_podcast_url()."\" />\r";
+				echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".esc_attr__('Custom sermon podcast', 'sermon-browser')."\" href=\"".esc_url(sb_podcast_url())."\" />\r";
 			wp_enqueue_script('jquery');
 		} else {
-			$sidebars_widgets = wp_get_sidebars_widgets();
-			if (isset($sidebars_widgets['wp_inactive_widgets']))
-				unset($sidebars_widgets['wp_inactive_widgets']);
-			if (is_array($sidebars_widgets))
-				foreach ($sidebars_widgets as $sb_w)
-					if (is_array($sb_w) && in_array('sermon-browser-popular', $sb_w))
-						wp_enqueue_script('jquery');
+			if (is_active_widget(false, 'sermon-browser-popular'))
+				wp_enqueue_script('jquery');
 		}
 	}
 }
@@ -526,24 +521,24 @@ function sb_podcast_url() {
 // Prints sermon search URL
 function sb_print_sermon_link($sermon, $echo = true) {
 	if ($echo)
-		echo sb_build_url(array('sermon_id' => $sermon->id), true);
+		echo esc_url(sb_build_url(array('sermon_id' => $sermon->id), true));
 	else
 		return sb_build_url(array('sermon_id' => $sermon->id), true);
 }
 
 // Prints preacher search URL
 function sb_print_preacher_link($sermon) {
-	echo sb_build_url(array('preacher' => $sermon->pid), false);
+	echo esc_url(sb_build_url(array('preacher' => $sermon->pid), false));
 }
 
 // Prints series search URL
 function sb_print_series_link($sermon) {
-	echo sb_build_url(array('series' => $sermon->ssid), false);
+	echo esc_url(sb_build_url(array('series' => $sermon->ssid), false));
 }
 
 // Prints service search URL
 function sb_print_service_link($sermon) {
-	echo sb_build_url(array('service' => $sermon->sid), false);
+	echo esc_url(sb_build_url(array('service' => $sermon->sid), false));
 }
 
 // Prints bible book search URL
@@ -561,10 +556,9 @@ function sb_print_tags($tags) {
 	$out = array();
 	foreach ((array) $tags as $tag) {
 		$tag = stripslashes($tag);
-		$out[] = '<a href="'.sb_get_tag_link($tag).'">'.esc_html($tag).'</a>';
+		$out[] = '<a href="'.esc_url(sb_get_tag_link($tag)).'">'.esc_html($tag).'</a>';
 	}
-	$tags = implode(', ', (array) $out);
-	echo $tags;
+	echo wp_kses_post(implode(', ', (array) $out));
 }
 
 //Prints tag cloud
@@ -596,9 +590,9 @@ function sb_print_tag_clouds($minfont=80, $maxfont=150) {
 	arsort($cnt);
 	foreach ($cnt as $tag => $count) {
 		$size = $minfont + $fontrange * (log($count) - $minlog) / $logrange;
-		$out[] = '<a style="font-size:'.(int) $size.'%" href="'.sb_get_tag_link($tag).'">'.esc_html(stripslashes($tag)).'</a>';
+		$out[] = '<a style="font-size:'.(int) $size.'%" href="'.esc_url(sb_get_tag_link($tag)).'">'.esc_html(stripslashes($tag)).'</a>';
 	}
-	echo implode(' ', $out);
+	echo wp_kses_post(implode(' ', $out));
 }
 
 //Prints link to next page
@@ -609,7 +603,7 @@ function sb_print_next_page_link($limit = 0) {
 	$current = isset($_REQUEST['pagenum']) ? (int) $_REQUEST['pagenum'] : 1;
 	if ($current < ceil($record_count / $limit)) {
 		$url = sb_build_url(array('pagenum' => ++$current), false);
-		echo '<a href="'.$url.'">'.__('Next page', 'sermon-browser').' &raquo;</a>';
+		echo '<a href="'.esc_url($url).'">'.esc_html__('Next page', 'sermon-browser').' &raquo;</a>';
 	}
 }
 
@@ -619,7 +613,7 @@ function sb_print_prev_page_link($limit = 0) {
 	$current = isset($_REQUEST['pagenum']) ? (int) $_REQUEST['pagenum'] : 1;
 	if ($current > 1) {
 		$url = sb_build_url(array('pagenum' => --$current), false);
-		echo '<a href="'.$url.'">&laquo; '.__('Previous page', 'sermon-browser').'</a>';
+		echo '<a href="'.esc_url($url).'">&laquo; '.esc_html__('Previous page', 'sermon-browser').'</a>';
 	}
 }
 
@@ -645,15 +639,15 @@ function sb_print_url($url) {
 	$uicon = isset($filetypes[$ext]['icon']) ? $filetypes[$ext]['icon'] : $uicon;
 	if (strtolower($ext) == 'mp3') {
 		if (do_shortcode(sb_get_option('mp3_shortcode')) != sb_get_option('mp3_shortcode')) {
-			echo do_shortcode(str_ireplace('%SERMONURL%', $url, sb_get_option('mp3_shortcode')));
+			echo do_shortcode(str_ireplace('%SERMONURL%', $url, sb_get_option('mp3_shortcode'))); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the player from the shortcode the site owner chose
 			return;
 		}
 	}
 	$uicon = SB_PLUGIN_URL.'/sb-includes/icons/'.$uicon;
 	if (!isset($filetypes[$ext]['name']))
+		/* translators: %s: a file extension, such as pdf */
 		$filetypes[$ext]['name'] = sprintf(__('%s file', 'sermon-browser'), $ext);
-	$type_name = esc_attr($filetypes[$ext]['name']);
-	echo '<a href="'.esc_url($url).'"><img class="site-icon" alt="'.$type_name.'" title="'.$type_name.'" src="'.esc_url($uicon).'"></a>';
+	echo '<a href="'.esc_url($url).'"><img class="site-icon" alt="'.esc_attr($filetypes[$ext]['name']).'" title="'.esc_attr($filetypes[$ext]['name']).'" src="'.esc_url($uicon).'"></a>';
 }
 
 // Print link to attached external URLs
@@ -666,20 +660,20 @@ function sb_print_url_link($url) {
 		else {
 			$param="file_name"; }
 		$url = rawurlencode($url);
-        echo ' <a href="'.esc_url(sb_display_url().sb_query_char(false).'download&'.$param.'='.$url).'">'.__('Download', 'sermon-browser').'</a>';
+        echo ' <a href="'.esc_url(sb_display_url().sb_query_char(false).'download&'.$param.'='.$url).'">'.esc_html__('Download', 'sermon-browser').'</a>';
 	}
 	echo '</div>';
 }
 
 //Decode base64 encoded data
 function sb_print_code($code) {
-	echo do_shortcode(sb_kses_embed(base64_decode($code)));
+	echo do_shortcode(sb_kses_embed(base64_decode($code))); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- filtered by sb_kses_embed()
 }
 
 //Prints preacher description
 function sb_print_preacher_description($sermon) {
 	if (strlen($sermon->preacher_description)>0) {
-		echo "<div class='preacher-description'><span class='about'>" . __('About', 'sermon-browser').' '.esc_html(stripslashes($sermon->preacher)).': </span>';
+		echo "<div class='preacher-description'><span class='about'>" . esc_html__('About', 'sermon-browser').' '.esc_html(stripslashes($sermon->preacher)).': </span>';
 		echo "<span class='description'>".wp_kses_post(stripslashes($sermon->preacher_description))."</span></div>";
 	}
 }
@@ -715,21 +709,21 @@ function sb_print_sameday_sermon_link($sermon) {
 	global $wpdb;
 	$same = $wpdb->get_results($wpdb->prepare("SELECT id, title FROM {$wpdb->prefix}sb_sermons WHERE DATE(datetime) = DATE(%s) AND id <> %d", $sermon->datetime, $sermon->id));
 	if (!$same) {
-		_e('None', 'sermon-browser');
+		esc_html_e('None', 'sermon-browser');
 		return;
 	}
 	$output = array();
 	foreach ($same as $cur)
-		$output[] = '<a href="'.sb_print_sermon_link($cur, false).'">'.esc_html(stripslashes($cur->title)).'</a>';
-	echo implode(', ', $output);
+		$output[] = '<a href="'.esc_url(sb_print_sermon_link($cur, false)).'">'.esc_html(stripslashes($cur->title)).'</a>';
+	echo wp_kses_post(implode(', ', $output));
 }
 
 //Gets single sermon from the database
 function sb_get_single_sermon($id) {
 	global $wpdb;
 	$id = (int) $id;
-	$sermon = $wpdb->get_row("SELECT m.id, m.title, m.datetime, m.start, m.end, m.description, p.id as pid, p.name as preacher, p.image as image, p.description as preacher_description, s.id as sid, s.name as service FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_preachers as p, {$wpdb->prefix}sb_services as s where m.preacher_id = p.id and m.service_id = s.id and m.id = {$id}");
-	$series = $wpdb->get_row("SELECT ss.id as ssid, ss.name as series FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_series as ss WHERE m.series_id = ss.id and m.id = {$id}");
+	$sermon = $wpdb->get_row($wpdb->prepare("SELECT m.id, m.title, m.datetime, m.start, m.end, m.description, p.id as pid, p.name as preacher, p.image as image, p.description as preacher_description, s.id as sid, s.name as service FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_preachers as p, {$wpdb->prefix}sb_services as s where m.preacher_id = p.id and m.service_id = s.id and m.id = %d", $id));
+	$series = $wpdb->get_row($wpdb->prepare("SELECT ss.id as ssid, ss.name as series FROM {$wpdb->prefix}sb_sermons as m, {$wpdb->prefix}sb_series as ss WHERE m.series_id = ss.id and m.id = %d", $id));
 	if ($sermon) {
 		if ($series) {
 			$sermon->series = $series->series;
@@ -740,8 +734,8 @@ function sb_get_single_sermon($id) {
 			$sermon->ssid = 0;
 		}
 		$file = $code = $tags = array();
-		$stuff = $wpdb->get_results("SELECT f.id, f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = $id ORDER BY id desc");
-		$rawtags = $wpdb->get_results("SELECT t.name FROM {$wpdb->prefix}sb_sermons_tags as st LEFT JOIN {$wpdb->prefix}sb_tags as t ON st.tag_id = t.id WHERE st.sermon_id = {$sermon->id} ORDER BY t.name asc");
+		$stuff = $wpdb->get_results($wpdb->prepare("SELECT f.id, f.type, f.name FROM {$wpdb->prefix}sb_stuff as f WHERE sermon_id = %d ORDER BY id desc", $id));
+		$rawtags = $wpdb->get_results($wpdb->prepare("SELECT t.name FROM {$wpdb->prefix}sb_sermons_tags as st LEFT JOIN {$wpdb->prefix}sb_tags as t ON st.tag_id = t.id WHERE st.sermon_id = %d ORDER BY t.name asc", $id));
 		foreach ($rawtags as $tag) {
 			$tags[] = $tag->name;
 		}
@@ -759,6 +753,18 @@ function sb_get_single_sermon($id) {
 		return false;
 }
 
+//Returns the translated heading for a filter
+function sb_filter_heading ($id) {
+	$headings = array(
+		'preacher' => __('Preacher', 'sermon-browser'),
+		'book' => __('Book', 'sermon-browser'),
+		'series' => __('Series', 'sermon-browser'),
+		'service' => __('Service', 'sermon-browser'),
+		'title' => __('Title', 'sermon-browser'),
+	);
+	return isset($headings[$id]) ? $headings[$id] : ucwords($id);
+}
+
 //Prints the filter line for a given parameter
 function sb_print_filter_line ($id, $results, $filter, $display, $max_num = 7) {
 	global $more_applied;
@@ -767,28 +773,28 @@ function sb_print_filter_line ($id, $results, $filter, $display, $max_num = 7) {
 		$translate_book = TRUE;
 		$translated_books = array_combine(sb_get_default('eng_bible_books'), sb_get_default('bible_books'));
 	}
-	echo "<div id = \"{$id}\" class=\"filter\">\r<span class=\"filter-heading\">".__(ucwords($id), 'sermon-browser').":</span> \r";
+	echo "<div id = \"".esc_attr($id)."\" class=\"filter\">\r<span class=\"filter-heading\">".esc_html(sb_filter_heading($id)).":</span> \r";
 	$i = 1;
 	$more = FALSE;
 	foreach ($results as $result) {
 		if ($i == $max_num) {
-			echo "<span id=\"{$id}-more\">";
+			echo "<span id=\"".esc_attr($id)."-more\">";
 			$more = TRUE;
 			$more_applied[] = $id;
 		}
 		if ($i != 1)
 			echo ", \r";
 			if ($translate_book) {
-				echo '<a href="'.sb_build_url(array($id => $result->$filter), false).'">'.esc_html(isset($translated_books[stripslashes($result->$display)]) ? $translated_books[stripslashes($result->$display)] : stripslashes($result->$display)).'</a>&nbsp;('.(int) $result->count.')';
+				echo '<a href="'.esc_url(sb_build_url(array($id => $result->$filter), false)).'">'.esc_html(isset($translated_books[stripslashes($result->$display)]) ? $translated_books[stripslashes($result->$display)] : stripslashes($result->$display)).'</a>&nbsp;('.(int) $result->count.')';
 			}
 			else {
-				echo '<a href="'.sb_build_url(array($id => $result->$filter), false).'">'.esc_html(stripslashes($result->$display)).'</a>&nbsp;('.(int) $result->count.')';
+				echo '<a href="'.esc_url(sb_build_url(array($id => $result->$filter), false)).'">'.esc_html(stripslashes($result->$display)).'</a>&nbsp;('.(int) $result->count.')';
 			}
 		$i++;
 	}
 	echo ".";
 	if ($more)
-		echo "</span>\r<span id=\"{$id}-more-link\" style=\"display:none\">&hellip; (<a  id=\"{$id}-toggle\" href=\"#\"><strong>".($i-$max_num).' '.__('more', 'sermon-browser').'</strong></a>)</span>';
+		echo "</span>\r<span id=\"".esc_attr($id)."-more-link\" style=\"display:none\">&hellip; (<a  id=\"".esc_attr($id)."-toggle\" href=\"#\"><strong>".(int) ($i-$max_num).' '.esc_html__('more', 'sermon-browser').'</strong></a>)</span>';
 	echo '</div>';
 }
 
@@ -797,7 +803,7 @@ function sb_print_date_filter_line ($dates) {
 	global $more_applied;
 	if (empty($dates))
 		return;
-	$date_output = "<div id = \"dates\" class=\"filter\">\r<span class=\"filter-heading\">".__('Date', 'sermon-browser').":</span> \r";
+	$date_output = "<div id = \"dates\" class=\"filter\">\r<span class=\"filter-heading\">".esc_html__('Date', 'sermon-browser').":</span> \r";
 	$first = $dates[0];
 	$last = end($dates);
 	$count = 0;
@@ -824,7 +830,7 @@ function sb_print_date_filter_line ($dates) {
 			if ($date->year !== $previous_year) {
 				if ($count !== 0)
 					$date_output .= '('.$count.'), ';
-				$date_output .= '<a href="'.sb_build_url(Array ('date' => $date->year.'-01-01', 'enddate' => $date->year.'-12-31'), false).'">'.$date->year.'</a> ';
+				$date_output .= '<a href="'.sb_build_url(Array ('date' => $date->year.'-01-01', 'enddate' => $date->year.'-12-31'), false).'">'.(int) $date->year.'</a> ';
 				$previous_year = $date->year;
 				$count = 1;
 			} else
@@ -833,7 +839,7 @@ function sb_print_date_filter_line ($dates) {
 		$date_output .= '('.$count.'), ';
 	}
 	if ($date_output != '')
-		echo rtrim($date_output, ', ')."</div>\r";
+		echo rtrim($date_output, ', ')."</div>\r"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built above from escaped URLs, names and integers
 }
 
 //Returns the filter URL minus a given parameter
@@ -875,8 +881,8 @@ function sb_print_filters($filter) {
 			}
 			return false;
 		});";
-		$js_hide = str_replace ('SHOW', __('Show filter', 'sermon-browser'), $js_hide);
-		$js_hide = str_replace ('HIDE', __('Hide filter', 'sermon-browser'), $js_hide);
+		$js_hide = str_replace ('SHOW', esc_js(__('Show filter', 'sermon-browser')), $js_hide);
+		$js_hide = str_replace ('HIDE', esc_js(__('Hide filter', 'sermon-browser')), $js_hide);
 	}
 	if ($filter['filter'] == 'oneclick') {
 		// One click filter
@@ -891,13 +897,13 @@ function sb_print_filters($filter) {
 					if ($filter_option == 'date') {
 						$date = is_string($_REQUEST['date']) ? $_REQUEST['date'] : '';
 						$enddate = isset($_REQUEST['enddate']) && is_string($_REQUEST['enddate']) ? $_REQUEST['enddate'] : '';
-						$output .= '<strong>'.__('Date', 'sermon-browser').'</strong>:&nbsp;';
+						$output .= '<strong>'.esc_html__('Date', 'sermon-browser').'</strong>:&nbsp;';
 						if (substr($date,0,4) == substr($enddate,0,4))
 							$output .= (int)substr($date,0,4).'&nbsp;(<a href="'.sb_url_minus_parameter('date', 'enddate').'">x</a>)';
 						if (substr($date,5,2) == substr($enddate,5,2))
 							$output .= ', '.esc_html(date_i18n('F', strtotime($date))).' (<a href="'.sb_build_url(Array ('date' => (int)substr($date,0,4).'-01-01', 'enddate' => (int)substr($date,0,4).'-12-31'), false).'">x</a>)';
 					} else {
-						$output .= '<strong>'.__(ucwords($filter_option), 'sermon-browser').'</strong>:&nbsp;*'.$filter_option.'*';
+						$output .= '<strong>'.esc_html(sb_filter_heading($filter_option)).'</strong>:&nbsp;*'.$filter_option.'*';
 						$output .= '&nbsp;(<a href="'.sb_url_minus_parameter($filter_option).'">x</a>)';
 					}
 				}
@@ -908,24 +914,27 @@ function sb_print_filters($filter) {
 		$ids = array();
 		foreach ($sermons as $sermon)
 			$ids[] = $sermon->id;
-		$ids = "('".implode ("', '", $ids)."')";
+		// Sermon ids (integers), so the queries below need no placeholders
+		$ids = '('.(count($ids) ? implode(', ', array_map('intval', $ids)) : '0').')';
 
-		$preachers = $wpdb->get_results("SELECT p.*, count(p.id) AS count FROM {$wpdb->prefix}sb_preachers AS p JOIN {$wpdb->prefix}sb_sermons AS sermons ON p.id = sermons.preacher_id WHERE sermons.id IN {$ids} GROUP BY p.id ORDER BY count DESC, MAX(sermons.datetime) DESC, p.name ASC");
-		$series = $wpdb->get_results("SELECT ss.*, count(ss.id) AS count FROM {$wpdb->prefix}sb_series AS ss JOIN {$wpdb->prefix}sb_sermons AS sermons ON ss.id = sermons.series_id  WHERE sermons.id IN {$ids} GROUP BY ss.id ORDER BY MAX(sermons.datetime) DESC, ss.name ASC");
-		$services = $wpdb->get_results("SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id  WHERE sermons.id IN {$ids} GROUP BY s.id ORDER BY count DESC, s.name ASC");
-		$book_count = $wpdb->get_results("SELECT bs.book_name AS name, count(distinct bs.sermon_id) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs JOIN {$wpdb->prefix}sb_books as b ON bs.book_name=b.name AND bs.sermon_id IN {$ids} GROUP BY b.id ORDER BY b.id");
-		$dates = $wpdb->get_results("SELECT YEAR(datetime) as year, MONTH (datetime) as month, DAY(datetime) as day FROM {$wpdb->prefix}sb_sermons WHERE id IN {$ids} ORDER BY datetime ASC");
+		$preachers = $wpdb->get_results("SELECT p.*, count(p.id) AS count FROM {$wpdb->prefix}sb_preachers AS p JOIN {$wpdb->prefix}sb_sermons AS sermons ON p.id = sermons.preacher_id WHERE sermons.id IN {$ids} GROUP BY p.id ORDER BY count DESC, MAX(sermons.datetime) DESC, p.name ASC"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $ids holds integers
+		$series = $wpdb->get_results("SELECT ss.*, count(ss.id) AS count FROM {$wpdb->prefix}sb_series AS ss JOIN {$wpdb->prefix}sb_sermons AS sermons ON ss.id = sermons.series_id  WHERE sermons.id IN {$ids} GROUP BY ss.id ORDER BY MAX(sermons.datetime) DESC, ss.name ASC"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $ids holds integers
+		$services = $wpdb->get_results("SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id  WHERE sermons.id IN {$ids} GROUP BY s.id ORDER BY count DESC, s.name ASC"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $ids holds integers
+		$book_count = $wpdb->get_results("SELECT bs.book_name AS name, count(distinct bs.sermon_id) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs JOIN {$wpdb->prefix}sb_books as b ON bs.book_name=b.name AND bs.sermon_id IN {$ids} GROUP BY b.id ORDER BY b.id"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $ids holds integers
+		$dates = $wpdb->get_results("SELECT YEAR(datetime) as year, MONTH (datetime) as month, DAY(datetime) as day FROM {$wpdb->prefix}sb_sermons WHERE id IN {$ids} ORDER BY datetime ASC"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $ids holds integers
 
 		$more_applied = array();
 		$output = str_replace ('*preacher*', isset($preachers[0]->name) ? esc_html(stripslashes($preachers[0]->name)) : '', $output);
-		$output = str_replace ('*book*', isset($_REQUEST['book']) ? esc_html__(wp_unslash($_REQUEST['book']), 'sermon-browser') : '', $output);
+		$book = isset($_REQUEST['book']) ? wp_unslash($_REQUEST['book']) : '';
+		$translated_books = array_combine(sb_get_default('eng_bible_books'), sb_get_default('bible_books'));
+		$output = str_replace ('*book*', esc_html(isset($translated_books[$book]) ? $translated_books[$book] : $book), $output);
 		$output = str_replace ('*service*', isset($services[0]->name) ? esc_html(stripslashes($services[0]->name)) : '', $output);
 		$output = str_replace ('*series*', isset($series[0]->name) ? esc_html(stripslashes($series[0]->name)) : '', $output);
 		$output = str_replace ('*title*', isset($_REQUEST['title']) ? esc_html(wp_unslash($_REQUEST['title'])) : '', $output);
 
 		echo "<span class=\"inline_controls\"><a href=\"#\" id=\"show_hide_filter\"></a></span>";
 		if ($output != '')
-			echo '<div class="filtered">'.__('Active filter', 'sermon-browser').': '.$output."</div>\r";
+			echo '<div class="filtered">'.esc_html__('Active filter', 'sermon-browser').': '.wp_kses_post($output)."</div>\r";
 		echo '<div id="mainfilter">';
 		if (count($preachers) > 1)
 			sb_print_filter_line ('preacher', $preachers, 'id', 'name', 7);
@@ -941,16 +950,17 @@ function sb_print_filters($filter) {
 			echo "<script type=\"text/javascript\">\r";
 			echo "\tjQuery(document).ready(function() {\r";
 			if ($hide_filter === TRUE)
-				echo $js_hide."\r";
+				echo $js_hide."\r"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JavaScript above, with its text escaped by esc_js()
 			if ($hide_custom_podcast === TRUE)
 				echo "\t\tjQuery('.podcastcustom').hide();\r";
 			if (count($more_applied) > 0) {
 				foreach ($more_applied as $element_id) {
-					echo "\t\tjQuery('#{$element_id}-more').hide();\r";
-					echo "\t\tjQuery('#{$element_id}-more-link').show();\r";
-					echo "\t\tjQuery('a#{$element_id}-toggle').click(function() {\r";
-					echo "\t\t\tjQuery('#{$element_id}-more').show();\r";
-					echo "\t\t\tjQuery('#{$element_id}-more-link').hide();\r";
+					$element_id = esc_js($element_id);
+					echo "\t\tjQuery('#{$element_id}-more').hide();\r"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped with esc_js() above
+					echo "\t\tjQuery('#{$element_id}-more-link').show();\r"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo "\t\tjQuery('a#{$element_id}-toggle').click(function() {\r"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo "\t\t\tjQuery('#{$element_id}-more').show();\r"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo "\t\t\tjQuery('#{$element_id}-more-link').hide();\r"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo "\t\t\treturn false;\r";
 					echo "\t\t});\r";
 				}
@@ -966,10 +976,10 @@ function sb_print_filters($filter) {
 		$services = $wpdb->get_results("SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id GROUP BY s.id ORDER BY count DESC, s.name ASC");
 		$book_count = $wpdb->get_results("SELECT bs.book_name AS name, count(distinct bs.sermon_id) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs JOIN {$wpdb->prefix}sb_books AS b ON bs.book_name = b.name GROUP BY b.id ORDER BY b.id");
 		$sb = array(
-			'Title' => 'm.title',
-			'Preacher' => 'preacher',
-			'Date' => 'm.datetime',
-			'Passage' => 'b.id',
+			__('Title', 'sermon-browser') => 'm.title',
+			__('Preacher', 'sermon-browser') => 'preacher',
+			__('Date', 'sermon-browser') => 'm.datetime',
+			__('Passage', 'sermon-browser') => 'b.id',
 		);
 		$di = array(
 			__('Ascending', 'sermon-browser') => 'asc',
@@ -984,70 +994,70 @@ function sb_print_filters($filter) {
 				<div style="clear:both">
 					<table class="sermonbrowser">
 						<tr>
-							<td class="fieldname"><?php _e('Preacher', 'sermon-browser') ?></td>
+							<td class="fieldname"><?php esc_html_e('Preacher', 'sermon-browser') ?></td>
 							<td class="field"><select name="preacher" id="preacher">
-									<option value="0" <?php echo (isset($_REQUEST['preacher']) && (int) $_REQUEST['preacher'] != 0) ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
+									<option value="0" <?php echo (isset($_REQUEST['preacher']) && (int) $_REQUEST['preacher'] != 0) ? '' : 'selected="selected"' ?>><?php esc_html_e('[All]', 'sermon-browser') ?></option>
 									<?php foreach ($preachers as $preacher): ?>
-									<option value="<?php echo $preacher->id ?>" <?php echo isset($_REQUEST['preacher']) && $_REQUEST['preacher'] == $preacher->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($preacher->name)).' ('.(int) $preacher->count.')' ?></option>
+									<option value="<?php echo (int) $preacher->id ?>" <?php echo isset($_REQUEST['preacher']) && $_REQUEST['preacher'] == $preacher->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($preacher->name)).' ('.(int) $preacher->count.')' ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
-							<td class="fieldname rightcolumn"><?php _e('Services', 'sermon-browser') ?></td>
+							<td class="fieldname rightcolumn"><?php esc_html_e('Services', 'sermon-browser') ?></td>
 							<td class="field"><select name="service" id="service">
-									<option value="0" <?php echo isset($_REQUEST['service']) && (int) $_REQUEST['service'] != 0 ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
+									<option value="0" <?php echo isset($_REQUEST['service']) && (int) $_REQUEST['service'] != 0 ? '' : 'selected="selected"' ?>><?php esc_html_e('[All]', 'sermon-browser') ?></option>
 									<?php foreach ($services as $service): ?>
-									<option value="<?php echo $service->id ?>" <?php echo isset($_REQUEST['service']) && $_REQUEST['service'] == $service->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($service->name)).' ('.(int) $service->count.')' ?></option>
+									<option value="<?php echo (int) $service->id ?>" <?php echo isset($_REQUEST['service']) && $_REQUEST['service'] == $service->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($service->name)).' ('.(int) $service->count.')' ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<td class="fieldname"><?php _e('Book', 'sermon-browser') ?></td>
+							<td class="fieldname"><?php esc_html_e('Book', 'sermon-browser') ?></td>
 							<td class="field"><select name="book">
-									<option value=""><?php _e('[All]', 'sermon-browser') ?></option>
+									<option value=""><?php esc_html_e('[All]', 'sermon-browser') ?></option>
 									<?php foreach ($book_count as $book): ?>
 									<option value="<?php echo esc_attr($book->name) ?>" <?php echo isset($_REQUEST['book']) && $_REQUEST['book'] == $book->name ? 'selected=selected' : '' ?>><?php echo esc_html(isset($translated_books[stripslashes($book->name)]) ? $translated_books[stripslashes($book->name)] : stripslashes($book->name)). ' ('.(int) $book->count.')' ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
-							<td class="fieldname rightcolumn"><?php _e('Series', 'sermon-browser') ?></td>
+							<td class="fieldname rightcolumn"><?php esc_html_e('Series', 'sermon-browser') ?></td>
 							<td class="field"><select name="series" id="series">
-									<option value="0" <?php echo (isset($_REQUEST['series']) && (int) $_REQUEST['series'] != 0) ? '' : 'selected="selected"' ?>><?php _e('[All]', 'sermon-browser') ?></option>
+									<option value="0" <?php echo (isset($_REQUEST['series']) && (int) $_REQUEST['series'] != 0) ? '' : 'selected="selected"' ?>><?php esc_html_e('[All]', 'sermon-browser') ?></option>
 									<?php foreach ($series as $item): ?>
-									<option value="<?php echo $item->id ?>" <?php echo isset($_REQUEST['series']) && $_REQUEST['series'] == $item->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($item->name)).' ('.(int) $item->count.')' ?></option>
+									<option value="<?php echo (int) $item->id ?>" <?php echo isset($_REQUEST['series']) && $_REQUEST['series'] == $item->id ? 'selected="selected"' : '' ?>><?php echo esc_html(stripslashes($item->name)).' ('.(int) $item->count.')' ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<td class="fieldname"><?php _e('Start date', 'sermon-browser') ?></td>
+							<td class="fieldname"><?php esc_html_e('Start date', 'sermon-browser') ?></td>
 							<td class="field"><input type="text" name="date" id="date" value="<?php echo (isset($_REQUEST['date']) ? esc_attr(wp_unslash($_REQUEST['date'])) : '') ?>" /></td>
-							<td class="fieldname rightcolumn"><?php _e('End date', 'sermon-browser') ?></td>
+							<td class="fieldname rightcolumn"><?php esc_html_e('End date', 'sermon-browser') ?></td>
 							<td class="field"><input type="text" name="enddate" id="enddate" value="<?php echo (isset($_REQUEST['enddate']) ? esc_attr(wp_unslash($_REQUEST['enddate'])) : '') ?>" /></td>
 						</tr>
 						<tr>
-							<td class="fieldname"><?php _e('Keywords', 'sermon-browser') ?></td>
+							<td class="fieldname"><?php esc_html_e('Keywords', 'sermon-browser') ?></td>
 							<td class="field" colspan="3"><input style="width: 98.5%" type="text" id="title" name="title" value="<?php echo (isset($_REQUEST['title']) ? esc_attr(wp_unslash($_REQUEST['title'])) : '') ?>" /></td>
 						</tr>
 						<tr>
-							<td class="fieldname"><?php _e('Sort by', 'sermon-browser') ?></td>
+							<td class="fieldname"><?php esc_html_e('Sort by', 'sermon-browser') ?></td>
 							<td class="field"><select name="sortby" id="sortby">
 									<?php foreach ($sb as $k => $v): ?>
-									<option value="<?php echo $v ?>" <?php echo $csb == $v ? 'selected="selected"' : '' ?>><?php _e($k, 'sermon-browser') ?></option>
+									<option value="<?php echo esc_attr($v) ?>" <?php echo $csb == $v ? 'selected="selected"' : '' ?>><?php echo esc_html($k) ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
-							<td class="fieldname rightcolumn"><?php _e('Direction', 'sermon-browser') ?></td>
+							<td class="fieldname rightcolumn"><?php esc_html_e('Direction', 'sermon-browser') ?></td>
 							<td class="field"><select name="dir" id="dir">
 									<?php foreach ($di as $k => $v): ?>
-									<option value="<?php echo $v ?>" <?php echo $cd == $v ? 'selected="selected"' : '' ?>><?php _e($k, 'sermon-browser') ?></option>
+									<option value="<?php echo esc_attr($v) ?>" <?php echo $cd == $v ? 'selected="selected"' : '' ?>><?php echo esc_html($k) ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="3">&nbsp;</td>
-							<td class="field"><input type="submit" class="filter" value="<?php _e('Filter &raquo;', 'sermon-browser') ?>">			</td>
+							<td class="field"><input type="submit" class="filter" value="<?php esc_attr_e('Filter &raquo;', 'sermon-browser') ?>">			</td>
 						</tr>
 					</table>
 					<input type="hidden" name="page" value="1">
@@ -1060,7 +1070,7 @@ function sb_print_filters($filter) {
 			jQuery('#enddate').datePicker({startDate:'01/01/1970'});
 			<?php if ($hide_filter === TRUE) { ?>
 			jQuery(document).ready(function() {
-				<?php echo $js_hide; ?>
+				<?php echo $js_hide; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JavaScript above, with its text escaped by esc_js() ?>
 			});
 			<?php } ?>
 		</script>
