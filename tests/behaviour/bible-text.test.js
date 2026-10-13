@@ -1,5 +1,6 @@
 /**
- * Bible text on sermon pages: [esvtext] (api.esv.org, with the site's key).
+ * Bible text on sermon pages: [esvtext] (api.esv.org, with the site's key) and [nettext]
+ * (labs.bible.org).
  *
  * tests/mu-plugins/sb-test-http.php answers the two APIs like the real ones, with a script
  * tag in the text, and logs every request.
@@ -41,6 +42,22 @@ describe( 'ESV text', () => {
 		await php( "sb_update_option( 'esv_api_key', 'test-esv-key' ); return true;" );
 		await sermonPage( 3 );
 		assert.deepEqual( ( await requests() ).map( ( url ) => new URL( url ).searchParams.get( 'q' ) ), [ 'Romans 5:1-11', 'Isaiah 53:4-6' ] );
+	} );
+} );
+
+describe( 'NET Bible text', () => {
+	before( () => useSingleTemplate( '<div class="bible-text">[nettext]</div>' ) );
+
+	it( 'is fetched from labs.bible.org and shown, filtered, with verse and chapter numbers', async () => {
+		const html = await sermonPage( 1 );
+		assert.deepEqual( await requests(), [ 'https://labs.bible.org/api/?passage=Romans%203%3A21-31&type=xml&formatting=para' ] );
+		assert.match( html, /<div class="net">\s*<h2>Romans 3:21-31<\/h2>/ );
+		assert.match( html, /<p class="bodytext"> <span class="verse-num">21<\/span>But now, apart from the law, the righteousness of God/ );
+		assert.match( html, /<span class="verse-num">22<\/span>namely/ );
+		assert.match( html, /<p class="bodytext"> <span class="chapter-num">4:1<\/span> What then shall we say\?/ );
+		assert.match( html, /\(<a href="https:\/\/netbible.org\/bible\/Romans%203%3A21-31">NET Bible<\/a>\)/ );
+		assert.doesNotMatch( html, /<script>alert\("net"\)/ );
+		assertNoLiveScript( html, 'NET Bible text' );
 	} );
 } );
 

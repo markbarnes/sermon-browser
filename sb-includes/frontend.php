@@ -426,7 +426,7 @@ function sb_get_xml ($content) {
 function sb_add_net_text ($start, $end) {
 	$reference = rawurlencode(wp_specialchars_decode(sb_tidy_reference ($start, $end)));
 	$old_chapter = $start['chapter'];
-	$net_url = "https://labs.bible.org/api/xml/verse.php?passage={$reference}";
+	$net_url = "https://labs.bible.org/api/?passage={$reference}&type=xml";
 	$xml = sb_get_xml(sb_download_page($net_url.'&formatting=para'));
 	if (!$xml)
 		return '';
