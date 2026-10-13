@@ -196,22 +196,6 @@ function sb_sermon_init () {
 	add_shortcode('sermons', 'sb_shortcode');
 	add_shortcode('sermon', 'sb_shortcode');
 
-	// Attempt to set php.ini directives
-	if (strpos(ini_get('disable_functions'), 'ini_set') === FALSE) {
-		if (sb_return_kbytes(ini_get('upload_max_filesize'))<15360)
-			ini_set('upload_max_filesize', '15M');
-		if (sb_return_kbytes(ini_get('post_max_size'))<15360)
-			ini_set('post_max_size', '15M');
-		if (sb_return_kbytes(ini_get('memory_limit'))<49152)
-			ini_set('memory_limit', '48M');
-		if (intval(ini_get('max_input_time'))<600)
-			ini_set('max_input_time','600');
-		if (intval(ini_get('max_execution_time'))<600)
-			ini_set('max_execution_time', '600');
-		if (ini_get('file_uploads')<>'1')
-			ini_set('file_uploads', '1');
-	}
-
 	// Check whether upgrade required
 	if (current_user_can('manage_options') && is_admin()) {
 		if (get_option('sb_sermon_db_version'))
