@@ -51,7 +51,7 @@ To check that the security tests catch what they should, run them against the or
 git checkout 297ef9f -- sermon.php sb-includes && node --test --test-concurrency=1 'tests/behaviour/security-*.test.js'; git checkout HEAD -- sermon.php sb-includes && git rm -q --cached sb-includes/widget.php && rm sb-includes/widget.php
 ```
 
-Against 0.45.22, 90 of the 123 security tests fail. Those that pass cover behaviour that was already correct, including the SQL cases, which were hardening rather than exploitable.
+Against 0.45.22, 95 of the 127 security tests fail (including the debug log check at the end of each file). Those that pass cover behaviour that was already correct, including the SQL cases, which were hardening rather than exploitable.
 
 ## Security model
 
