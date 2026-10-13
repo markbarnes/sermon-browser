@@ -35,3 +35,7 @@ foreach ( array( 'sb_preachers', 'sb_series', 'sb_services', 'sb_sermons', 'sb_s
 }
 require_once SB_INCLUDES_DIR . '/sb-install.php';
 sb_install();
+
+require __DIR__ . '/fixtures/interface-fixture-writer.php';
+require __DIR__ . '/fixtures/class-tables-fixture-writer.php';
+require __DIR__ . '/contracts/class-sermon-repository-contract.php';

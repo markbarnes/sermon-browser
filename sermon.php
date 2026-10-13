@@ -74,9 +74,13 @@ function sb_autoload($class) {
 		return;
 	$parts = explode('\\', strtolower(str_replace('_', '-', substr($class, strlen('SermonBrowser\\')))));
 	$name = array_pop($parts);
-	$file = __DIR__.'/sb-includes/classes/'.($parts ? implode('/', $parts).'/' : '').'class-'.$name.'.php';
-	if (is_readable($file))
-		require $file;
+	$folder = __DIR__.'/sb-includes/classes/'.($parts ? implode('/', $parts).'/' : '');
+	foreach (array('class-', 'interface-') as $prefix) {
+		if (is_readable($folder.$prefix.$name.'.php')) {
+			require $folder.$prefix.$name.'.php';
+			return;
+		}
+	}
 }
 
 /**
