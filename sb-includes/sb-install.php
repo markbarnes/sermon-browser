@@ -164,8 +164,7 @@ function sb_install() {
 
 //Default template for search results
 function sb_default_multi_template () {
-$multi = <<<HERE
-<div class="sermon-browser">
+$multi = '<div class="sermon-browser">
 	[filters_form]
    	<div class="sb-clear">
 		<h4>Subscribe to Podcast</h4>
@@ -214,15 +213,13 @@ $multi = <<<HERE
 	</table>
    	<div class="floatright">[next_page]</div>
    	<div class="floatleft">[previous_page]</div>
-</div>
-HERE;
+</div>';
 	return $multi;
 }
 
 //Default template for single sermon page
 function sb_default_single_template () {
-$single = <<<HERE
-<div class="sermon-browser-results">
+$single = '<div class="sermon-browser-results">
 	<h2>[sermon_title] <span class="scripture">([passages_loop][passage][/passages_loop])</span> [editlink]</h2>
 	[preacher_image]<span class="preacher">[preacher_link], [date]</span><br />
 	Part of the [series_link] series, preached at a [service_link] service<br />
@@ -248,15 +245,13 @@ $single = <<<HERE
 		</tr>
 	</table>
 	[esvtext]
-</div>
-HERE;
+</div>';
 	return $single;
 }
 
 //Default CSS
 function sb_default_css () {
-$css = <<<HERE
-.sermon-browser h2 {
+$css = '.sermon-browser h2 {
 	clear: both;
 }
 
@@ -477,14 +472,12 @@ h2 div.sb_edit_link {
 
 .sb-clear {
 	clear:both;
-}
-HERE;
+}';
    return str_replace('**SB_PATH**', SB_PLUGIN_URL, $css);
 }
 
 function sb_default_excerpt_template () {
-$multi = <<<HERE
-<div class="sermon-browser">
+$multi = '<div class="sermon-browser">
 	<table class="sermons">
 	[sermons_loop]
 		<tr>
@@ -504,8 +497,7 @@ $multi = <<<HERE
 		</tr>
    	[/sermons_loop]
 	</table>
-</div>
-HERE;
+</div>';
 	return $multi;
 }
 ?>
