@@ -24,7 +24,7 @@ $special_options = sb_special_option_names();
 foreach ($special_options as $option)
 	delete_option("sermonbrowser_{$option}");
 
-if (IS_MU) {
+if (is_multisite()) {
 	echo '<div id="message" class="updated fade"><p><b>'.esc_html__('All sermon data has been removed.', 'sermon-browser').'</b></div>';
 } else {
 	echo '<div id="message" class="updated fade"><p><b>'.esc_html__('Uninstall completed. The SermonBrowser plugin has been deactivated.', 'sermon-browser').'</b></div>';

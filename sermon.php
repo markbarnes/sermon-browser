@@ -83,19 +83,8 @@ function sb_autoload($class) {
 * Defines a number of constants used throughout the plugin
 */
 function sb_define_constants() {
-	$directories = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
-	if ($plugin_dir = $directories[count($directories)-1] == 'mu-plugins' || is_multisite()) {
-		define('IS_MU', TRUE);
-	} else {
-		define('IS_MU', FALSE);
-	}
-	if ($directories[count($directories)-1] == 'mu-plugins' )
-		define ('SB_PLUGIN_URL', content_url().'/'.$plugin_dir);
-	else
-		define ('SB_PLUGIN_URL', rtrim(content_url().'/plugins/'.plugin_basename(dirname(__FILE__)), '/'));
-	define ('SB_PLUGIN_DIR', sb_sanitise_path(defined('WP_CONTENT_DIR') ? WP_CONTENT_DIR : ABSPATH.'wp-content').'/plugins');
-	define ('SB_WP_CONTENT_DIR', sb_sanitise_path(WP_CONTENT_DIR));
-	define ('SB_INCLUDES_DIR', SB_PLUGIN_DIR.'/sermon-browser/sb-includes');
+	define ('SB_PLUGIN_URL', rtrim(content_url().'/plugins/'.plugin_basename(dirname(__FILE__)), '/'));
+	define ('SB_INCLUDES_DIR', sb_sanitise_path(__DIR__).'/sb-includes');
 	define ('SB_ABSPATH', sb_sanitise_path(ABSPATH));
 }
 

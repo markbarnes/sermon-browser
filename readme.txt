@@ -267,6 +267,7 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 * **Bug fix:** The Options page didn't show its error when the upload folder doesn't exist.
 * **Bug fix:** Some of the dashboard's sermon statistics and the help tab's links weren't translated.
 * **Change:** The plugin's home is now [on GitHub](https://github.com/markbarnes/sermon-browser), until it is back on WordPress.org. The sermonbrowser.com site, its forum and its tutorials are no longer maintained, so the plugin no longer links to them: the "Powered by" link (`[creditlink]`), the podcast feed's generator and the plugin's home page point to GitHub, and the Help page and help tabs now hold the help themselves, including a description of every template tag. Report problems on GitHub.
+* **Change:** Removed the global constants `IS_MU` (use WordPress's `is_multisite()`), `SB_PLUGIN_DIR` and `SB_WP_CONTENT_DIR`, and support for installing the plugin in `mu-plugins`, which didn't work: its URLs were wrong.
 * **Documentation:** The FAQ and installation instructions are brought up to date, and `[sermon_description]` and `[most_popular]` are documented. The changelog before 0.46.0 is in CHANGELOG.md on GitHub.
 * **Hardening:** The admin pages escape their output where it is printed, use prepared statements for every query, and sanitise request values where they are read, as the rest of the plugin has since 0.46.1. Plugin Check now reports nothing in the plugin except the templates' `eval()`.
 

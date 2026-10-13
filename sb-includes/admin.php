@@ -119,7 +119,7 @@ function sb_options() {
 		   switch ($checkSermonUpload) {
 			case "unwriteable":
 				echo '<div id="message" class="updated fade"><p><b>';
-				if (IS_MU AND !is_super_admin()) {
+				if (is_multisite() AND !is_super_admin()) {
 					esc_html_e('Upload is disabled. Please contact your administrator.', 'sermon-browser');
 				} else {
 					esc_html_e('Error: The upload folder is not writeable. You need to CHMOD the folder to 666 or 777.', 'sermon-browser');
@@ -128,7 +128,7 @@ function sb_options() {
 				break;
 			case "notexist":
 				echo '<div id="message" class="updated fade"><p><b>';
-				if (IS_MU AND !is_super_admin()) {
+				if (is_multisite() AND !is_super_admin()) {
 					esc_html_e('Upload is disabled. Please contact your administrator.', 'sermon-browser');
 				} else {
 					esc_html_e('Error: The upload folder you have specified does not exist.', 'sermon-browser');
@@ -147,7 +147,7 @@ function sb_options() {
 			wp_die( esc_html__( "You do not have the correct permissions to edit the SermonBrowser options", 'sermon-browser' ) );
 	}
 		$dir = rtrim(str_replace("\\", "/", sanitize_text_field(wp_unslash(isset($_POST['dir']) ? $_POST['dir'] : ''))), "/")."/";
-		if ((IS_MU && !is_super_admin()) || !sb_is_valid_upload_dir($dir)) {
+		if ((is_multisite() && !is_super_admin()) || !sb_is_valid_upload_dir($dir)) {
 			if ($dir != sb_get_option('upload_dir'))
 				{echo '<div id="message" class="updated fade"><p><b>'.esc_html__('The upload folder must be a folder inside your WordPress folder, such as wp-content/uploads/sermons/. It has not been changed.', 'sermon-browser').'</b></div>';}
 			$dir = sb_get_option('upload_dir');
@@ -222,7 +222,7 @@ function sb_options() {
 		<br style="clear:both"/>
 		<table border="0" class="widefat">
 			<?php
-				if (!IS_MU OR is_super_admin()) {
+				if (!is_multisite() OR is_super_admin()) {
 			?>
 			<tr>
                         <td align="right" style="vertical-align:middle"><?php esc_html_e('Upload folder', 'sermon-browser' ) ?>
@@ -328,7 +328,7 @@ function sb_options() {
 				$max_input = ini_get('max_input_time');
 				$max_memory = sb_return_kbytes(ini_get('memory_limit'));
 				$checkSermonUpload = sb_checkSermonUploadable();
-				if (IS_MU) {
+				if (is_multisite()) {
 					if ( $checkSermonUpload == "unwriteable" ) {
 						sb_display_error (__('The upload folder is not writeable. You need to specify a folder that you have permissions to write to.', 'sermon-browser'));
 					} elseif ( $checkSermonUpload == "notexist" ) {
@@ -436,7 +436,7 @@ function sb_options() {
 */
 function sb_uninstall () {
 	//Security check
-	if ( ! ( current_user_can( 'edit_plugins' ) || ( IS_MU && current_user_can( 'manage_options' ) ) ) ) {
+	if ( ! ( current_user_can( 'edit_plugins' ) || ( is_multisite() && current_user_can( 'manage_options' ) ) ) ) {
 			wp_die(esc_html__("You do not have the correct permissions to Uninstall SermonBrowser", 'sermon-browser'));
 	}
 	if ( isset( $_POST['uninstall'] ) ) {
@@ -449,7 +449,7 @@ function sb_uninstall () {
 ?>
 	<form method="post">
 	<div class="wrap">
-		<?php if (IS_MU) { ?>
+		<?php if (is_multisite()) { ?>
 			<h2> <?php esc_html_e('Reset SermonBrowser', 'sermon-browser'); ?></h2>
 			<p><?php
 					/* translators: %s: the name of the button */
@@ -476,7 +476,7 @@ function sb_uninstall () {
                                value="1"> <?php esc_html_e('Also remove all uploaded files', 'sermon-browser' ) ?></td>
 			</tr>
 		</table>
-            <p class="submit"><input type="submit" name="uninstall" value="<?php if ( IS_MU ) {
+            <p class="submit"><input type="submit" name="uninstall" value="<?php if ( is_multisite() ) {
 					esc_html_e('Delete all', 'sermon-browser' );
 				} else {
 					esc_html_e('Uninstall', 'sermon-browser' );
@@ -2570,7 +2570,7 @@ function sb_print_upload_form () {
 			<td class="submit"><input type="submit" name="save" value="<?php esc_attr_e('Upload', 'sermon-browser') ?> &raquo;" /></td>
 	<?php
 	} else
-		if (IS_MU) {
+		if (is_multisite()) {
 	?>
 			<td><?php esc_html_e('Upload is disabled. Please contact your systems administrator.', 'sermon-browser');?></td>
 	<?php
