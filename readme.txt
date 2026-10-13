@@ -354,6 +354,10 @@ Important security fixes. All users should upgrade to this version.
 
 * **Bug fix:** The drop-down filter can sort by preacher and by passage again, which had sorted by date since 0.45.12. Passages sort in Bible order of each sermon's first passage, with sermons that have none at the end; a preacher's sermons are listed newest first. Old links that sort by `p.name` or `b.id` still work.
 * **Bug fix:** After uploading or importing a file on the Files page with import options set, the Add Sermon page opened without the file's details, because the link to it was escaped for HTML inside a script.
+* **Bug fix:** Series, preacher and service names with HTML entities (such as an en dash saved as `&#8211;`) showed the entity in the admin pages' drop-down lists.
+* **Bug fix:** The Options page didn't show its error when the upload folder doesn't exist.
+* **Bug fix:** Some of the dashboard's sermon statistics and the help tab's links weren't translated.
+* **Hardening:** The admin pages escape their output where it is printed, use prepared statements for every query, and sanitise request values where they are read, as the rest of the plugin has since 0.46.1. Plugin Check now reports nothing in the plugin except the templates' `eval()`.
 
 = 0.47.0 (13 October 2026) =
 The plugin's code is reorganised, to prepare for moving sermons to a custom post type. Output is unchanged except where noted below.
