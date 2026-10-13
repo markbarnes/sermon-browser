@@ -353,6 +353,7 @@ Important security fixes. All users should upgrade to this version.
 = Unreleased =
 
 * **Bug fix:** The drop-down filter can sort by preacher and by passage again, which had sorted by date since 0.45.12. Passages sort in Bible order of each sermon's first passage, with sermons that have none at the end; a preacher's sermons are listed newest first. Old links that sort by `p.name` or `b.id` still work.
+* **Bug fix:** After uploading or importing a file on the Files page with import options set, the Add Sermon page opened without the file's details, because the link to it was escaped for HTML inside a script.
 
 = 0.47.0 (13 October 2026) =
 The plugin's code is reorganised, to prepare for moving sermons to a custom post type. Output is unchanged except where noted below.

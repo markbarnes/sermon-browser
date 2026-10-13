@@ -966,12 +966,12 @@ function sb_files() {
 						copy($downloaded_file, SB_ABSPATH.sb_get_option('upload_dir').$filename);
 						wp_delete_file($downloaded_file);
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0)", $filename));
-						echo "<script>document.location = '".esc_js(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id))."';</script>";
+						echo '<script>document.location = '.wp_json_encode(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.(int) $wpdb->insert_id)).';</script>';
 					}
 				}
 			} else {
 				$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'url', %s, 0, 0, 0)", $url));
-				echo "<script>document.location = '".esc_js(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id))."';</script>";
+				echo '<script>document.location = '.wp_json_encode(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.(int) $wpdb->insert_id)).';</script>';
 				die();
 			}
 		} else
@@ -987,7 +987,7 @@ function sb_files() {
 					if (sb_handle_upload($_FILES['upload'], untrailingslashit(SB_ABSPATH.sb_get_option('upload_dir')), $filename)) {
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0)", $filename));
 						if (sb_import_options_set ())
-							{echo "<script>document.location = '".esc_js(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id))."';</script>";}
+							{echo '<script>document.location = '.wp_json_encode(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.(int) $wpdb->insert_id)).';</script>';}
 						else
 							{echo '<div id="message" class="updated fade"><p><b>'.__('Files saved to database.', 'sermon-browser').'</b></div>';}
 					}
