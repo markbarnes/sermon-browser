@@ -344,7 +344,7 @@ table.podcast {
 
 .podcastall {
 	float:left;
-	background: #fff0c8 url(**SB_PATH**/podcast_background.png) repeat-x;
+	background: #fff0c8 url(**SB_PATH**/sb-includes/icons/podcast_background.png) repeat-x;
 	padding: 0.5em;
 	font-size: 1em;
 	-moz-border-radius: 7px;

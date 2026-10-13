@@ -353,6 +353,15 @@ describe( 'the stylesheet', () => {
 		assert.equal( stale.status, 200 );
 		assert.match( await stale.text(), /\.sermon-browser/ );
 	} );
+
+	it( 'uses images that exist', async () => {
+		const css = ( await visitor.request( '/sb-style.css' ) ).text;
+		const images = [ ...css.matchAll( /url\(([^)]+)\)/g ) ].map( ( match ) => match[ 1 ] );
+		assert.ok( images.length > 0 );
+		for ( const image of images ) {
+			assert.equal( ( await fetch( image ) ).status, 200, image );
+		}
+	} );
 } );
 
 describe( 'download counts', () => {
