@@ -128,7 +128,7 @@ function sb_hijack() {
 			header('X-Content-Type-Options: nosniff');
 			header('Content-Length: '.filesize($downloaded_file));
 			sb_output_file($downloaded_file);
-			@unlink($downloaded_file);
+			wp_delete_file($downloaded_file);
 		} else {
 			//Returns contents of external URL (doesn't force download)
 			sb_increase_download_count ($stored_url);
@@ -982,6 +982,33 @@ function sb_check_uploaded_file($tmp_name, $file_name, $images_only = false) {
 	if (!empty($filetype['proper_filename']))
 		$file_name = $filetype['proper_filename'];
 	return $file_name;
+}
+
+/**
+* Moves an uploaded file, already checked with sb_check_uploaded_file(), into a folder under the given name
+*
+* @param array $file the file's entry in $_FILES (name, type, tmp_name, error, size)
+* @param string $dir absolute path of the folder, without a trailing slash
+* @param string $file_name
+* @return boolean
+*/
+function sb_handle_upload($file, $dir, $file_name) {
+	if (!function_exists('wp_handle_upload'))
+		require_once(ABSPATH.'wp-admin/includes/file.php');
+	$use_dir = function ($uploads) use ($dir) {
+		$uploads['path'] = $dir;
+		$uploads['subdir'] = '';
+		$uploads['error'] = false;
+		return $uploads;
+	};
+	$use_name = function () use ($file_name) {
+		return $file_name;
+	};
+	add_filter('upload_dir', $use_dir);
+	// The type has been checked by sb_check_uploaded_file(), which may also have corrected the extension
+	$result = wp_handle_upload($file, array('test_form' => false, 'test_type' => false, 'unique_filename_callback' => $use_name));
+	remove_filter('upload_dir', $use_dir);
+	return empty($result['error']) && !empty($result['file']);
 }
 
 /**

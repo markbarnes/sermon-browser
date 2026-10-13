@@ -5,9 +5,9 @@ if (!defined('ABSPATH'))
 //Prints ISO date for podcast
 function sb_print_iso_date($sermon) {
 	if (is_object($sermon)) {
-		echo date('D, d M Y H:i:s O', strtotime($sermon->datetime));
+		echo gmdate('D, d M Y H:i:s O', strtotime($sermon->datetime));
 	} else
-		echo date('D, d M Y H:i:s O', strtotime($sermon));
+		echo gmdate('D, d M Y H:i:s O', strtotime($sermon));
 }
 
 //Prints size of file

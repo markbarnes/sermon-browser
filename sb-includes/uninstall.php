@@ -6,7 +6,7 @@ if (isset($_POST['wipe'])) {
 	if ($dh = @opendir($dir)) {
 		while (false !== ($file = readdir($dh))) {
 			if ($file != "." && $file != "..") {
-				@unlink($dir.($file));
+				wp_delete_file($dir.($file));
 			}
 		}
 		closedir($dh);

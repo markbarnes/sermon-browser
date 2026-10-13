@@ -571,9 +571,9 @@ function sb_manage_preachers() {
 			if (!$filename) {
 				$error = true;
 				$filename = '';
-				@unlink($_FILES['upload']['tmp_name']);
+				wp_delete_file($_FILES['upload']['tmp_name']);
 				echo '<div id="message" class="updated fade"><p><b>'.__('Preacher images must be JPEG, PNG, GIF or WebP files.', 'sermon-browser').'</b></div>';
-			} elseif (!@move_uploaded_file($_FILES['upload']['tmp_name'], SB_ABSPATH.$sermonUploadDir.'images/'.$filename)) {
+			} elseif (!sb_handle_upload($_FILES['upload'], SB_ABSPATH.$sermonUploadDir.'images', $filename)) {
 				$error = true;
 				$filename = '';
 				echo '<div id="message" class="updated fade"><p><b>'.__('Could not save uploaded file. Please try again.', 'sermon-browser').'</b></div>';
@@ -591,12 +591,12 @@ function sb_manage_preachers() {
 		} else {
 			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s, description = %s, image = %s WHERE id = $pid", $name, $description, $filename));
 			if ($old_image != $filename && sb_is_plain_file_name($old_image))
-				@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$old_image);
+				wp_delete_file(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$old_image);
 		}
 		if(isset($_POST['remove'])){
 			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s, description = %s, image = '' WHERE id = $pid", $name, $description));
 			if (sb_is_plain_file_name($filename))
-				{@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$filename);}
+				{wp_delete_file(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$filename);}
 		}
 		if(!$error)
 			echo "<script>document.location = '".admin_url('admin.php?page=sermon-browser/preachers.php&saved=true')."';</script>";
@@ -610,7 +610,7 @@ function sb_manage_preachers() {
 		else {
 			$p = $wpdb->get_row("SELECT image FROM {$wpdb->prefix}sb_preachers WHERE id = $die");
 			if ($p && sb_is_plain_file_name($p->image))
-				{@unlink(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$p->image);}
+				{wp_delete_file(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$p->image);}
 			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_preachers WHERE id = $die");
 		}
 	}
@@ -938,12 +938,12 @@ function sb_files() {
 					if (is_wp_error($downloaded_file))
 						{echo '<div id="message" class="updated fade"><p><b>'.__('Invalid URL.', 'sermon-browser').'</b></div>';}
 					elseif (!sb_check_uploaded_file($downloaded_file, $filename)) {
-						@unlink($downloaded_file);
+						wp_delete_file($downloaded_file);
 						echo '<div id="message" class="updated fade"><p><b>'.__('You are not permitted to upload files of that type.', 'sermon-browser').'</b></div>';
 					} else {
 						sb_protect_upload_dir();
 						copy($downloaded_file, SB_ABSPATH.sb_get_option('upload_dir').$filename);
-						@unlink($downloaded_file);
+						wp_delete_file($downloaded_file);
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0)", $filename));
 						echo "<script>document.location = '".esc_js(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id))."';</script>";
 					}
@@ -963,7 +963,7 @@ function sb_files() {
 				$dest = SB_ABSPATH.sb_get_option('upload_dir').$filename;
 				if($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = %s", $filename)) == 0 && !file_exists($dest)) {
 					sb_protect_upload_dir();
-					if (move_uploaded_file($_FILES['upload']['tmp_name'], $dest)) {
+					if (sb_handle_upload($_FILES['upload'], untrailingslashit(SB_ABSPATH.sb_get_option('upload_dir')), $filename)) {
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, 0, 0, 0)", $filename));
 						if (sb_import_options_set ())
 							{echo "<script>document.location = '".esc_js(admin_url('admin.php?page=sermon-browser/new_sermon.php&getid3='.$wpdb->insert_id))."';</script>";}
@@ -974,7 +974,7 @@ function sb_files() {
 					echo '<div id="message" class="updated fade"><p><b>'.esc_html($filename).__(' already exists.', 'sermon-browser').'</b></div>';
 				}
 			} else {
-				@unlink($_FILES['upload']['tmp_name']);
+				wp_delete_file($_FILES['upload']['tmp_name']);
 				echo '<div id="message" class="updated fade"><p><b>'.__('You are not permitted to upload files of that type.', 'sermon-browser').'</b></div>';
 			}
 		}
@@ -1438,7 +1438,7 @@ function sb_new_sermon() {
 					{$date = $date - strtotime('00:00') + strtotime($service_time);}
 			} else
 				{$date = $date - strtotime('00:00') + strtotime($_POST['time']);}
-			$date = date('Y-m-d H:i:s', $date);
+			$date = gmdate('Y-m-d H:i:s', $date);
 		} else
 			{$date = '1970-01-01 00:00';}
 		$description = isset($_POST['description']) ? (string) $_POST['description'] : '';
@@ -1477,14 +1477,14 @@ function sb_new_sermon() {
 				if ($filename) {
 					$dest = SB_ABSPATH.sb_get_option('upload_dir').$filename;
 					sb_protect_upload_dir();
-					if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = %s", $filename)) == 0 && !file_exists($dest) && move_uploaded_file($_FILES['upload']['tmp_name'][$uid], $dest)) {
+					if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}sb_stuff WHERE name = %s", $filename)) == 0 && !file_exists($dest) && sb_handle_upload(array('name' => $_FILES['upload']['name'][$uid], 'type' => $_FILES['upload']['type'][$uid], 'tmp_name' => $_FILES['upload']['tmp_name'][$uid], 'error' => $_FILES['upload']['error'][$uid], 'size' => $_FILES['upload']['size'][$uid]), untrailingslashit(SB_ABSPATH.sb_get_option('upload_dir')), $filename)) {
 						$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_stuff VALUES (null, 'file', %s, $id, 0, 0)", $filename));
 					} else {
 						echo '<div id="message" class="updated fade"><p><b>'.esc_html($filename).__(' already exists.', 'sermon-browser').'</b></div>';
 						$error = true;
 					}
 				} else {
-					@unlink($_FILES['upload']['tmp_name'][$uid]);
+					wp_delete_file($_FILES['upload']['tmp_name'][$uid]);
 					echo '<div id="message" class="updated fade"><p><b>'.__('You are not permitted to upload files of that type.', 'sermon-browser').'</b></div>';
 					$error = true;
 				}
@@ -1541,7 +1541,7 @@ function sb_new_sermon() {
 					$tempfilename = wp_tempnam('sermon-browser-id3');
 					if ($tempfilename && file_put_contents($tempfilename, wp_remote_retrieve_body($response)) !== false)
 						{$id3_raw_tags = $getID3->analyze($tempfilename);}
-					@unlink($tempfilename);
+					wp_delete_file($tempfilename);
 				}
 			} else {
 				$filename = $file_data->name;
@@ -1590,11 +1590,11 @@ function sb_new_sermon() {
 				$id3_tags['date'] = '';
 				if (count($date) >= 3) {
 					if ($date_format == 'uk')
-						{$id3_tags['date'] = date ('Y-m-d', mktime(0, 0, 0, $date[1], $date[0], $date[2]));}
+						{$id3_tags['date'] = gmdate('Y-m-d', gmmktime(0, 0, 0, $date[1], $date[0], $date[2]));}
 					elseif ($date_format == 'us')
-						{$id3_tags['date'] = date ('Y-m-d', mktime(0, 0, 0, $date[0], $date[1], $date[2]));}
+						{$id3_tags['date'] = gmdate('Y-m-d', gmmktime(0, 0, 0, $date[0], $date[1], $date[2]));}
 					elseif ($date_format == 'int')
-						{$id3_tags['date'] = date ('Y-m-d', mktime(0, 0, 0, $date[1], $date[2], $date[0]));}
+						{$id3_tags['date'] = gmdate('Y-m-d', gmmktime(0, 0, 0, $date[1], $date[2], $date[0]));}
 				}
 			}
 		}
@@ -2280,12 +2280,7 @@ function sb_checkSermonUploadable($foldername = "") {
 	$sermonUploadDir = SB_ABSPATH.sb_get_option('upload_dir').$foldername;
 	if (is_dir($sermonUploadDir)) {
 		//Dir exist
-		$fp = @fopen($sermonUploadDir.'sermontest.txt', 'w');
-		if ($fp) {
-			//Delete this test file
-			fclose($fp);
-			unset($fp);
-			@unlink($sermonUploadDir.'sermontest.txt');
+		if (wp_is_writable($sermonUploadDir)) {
 			return 'writeable';
 		} else {
 			return 'unwriteable';
@@ -2350,7 +2345,7 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 			$service = (int) $widget_sermon_instance['service'];
 			$series = (int) $widget_sermon_instance['series'];
 			$book = (int) $widget_sermon_instance['book'];
-			$title = strip_tags(stripslashes($widget_sermon_instance['title']));
+			$title = wp_strip_all_tags(stripslashes($widget_sermon_instance['title']));
 			$date = (int) $widget_sermon_instance['date'];
 			$options[$widget_number] = array( 'limit' => $limit, 'preacherz' => $preacherz, 'book' => $book, 'preacher' => $preacher, 'service' => $service, 'series' => $series, 'title' => $title, 'date' => $date);
 		}

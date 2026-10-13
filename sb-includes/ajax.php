@@ -104,7 +104,8 @@ if (isset($_POST['pname'])) { // preacher
 	}
 	$upload_dir = SB_ABSPATH.sb_get_option('upload_dir');
 	if (isset($_POST['del'])) {
-		if (!file_exists($upload_dir.$old_name) || unlink($upload_dir.$old_name)) {
+		wp_delete_file($upload_dir.$old_name);
+		if (!file_exists($upload_dir.$old_name)) {
 			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE id = {$fid};");
 			echo 'deleted';
 		} else

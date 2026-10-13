@@ -135,7 +135,7 @@ function sb_database_upgrade ($old_version) {
 					else {
 						$sermon_date->datetime = strtotime($service_time[$sermon_date->service_id])-strtotime('00:00')+strtotime($sermon_date->datetime);
 					}
-					$sermon_date->datetime = date ("Y-m-d H:i:s", $sermon_date->datetime);
+					$sermon_date->datetime = gmdate("Y-m-d H:i:s", $sermon_date->datetime);
 					$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons SET datetime = '{$sermon_date->datetime}' WHERE id={$sermon_date->id}");
 				}
 			}
