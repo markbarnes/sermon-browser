@@ -892,6 +892,8 @@ function sb_increase_download_count ($stuff_name) {
 * @return bool success or failure
 */
 function sb_output_file($filename) {
+	if (!is_readable($filename))
+		return false;
 	$handle = fopen($filename, 'rb');
 	if ($handle === false)
 		return false;

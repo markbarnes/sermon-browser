@@ -40,7 +40,7 @@ function sb_display_sermons($options = array()) {
 			if ($display_passage) {
 				$foo = sb_unserialize($sermon->start);
 				$bar = sb_unserialize($sermon->end);
-				echo "<span class=\"sermon-passage\"> (".sb_get_books($foo[0], $bar[0]).")</span>";
+				echo "<span class=\"sermon-passage\"> (".(isset($foo[0], $bar[0]) ? sb_get_books($foo[0], $bar[0]) : '').")</span>";
 			}
 			if ($display_preacher) {
 				echo "<span class=\"sermon-preacher\">".__('by', 'sermon-browser')." <a href=\"";
@@ -342,7 +342,7 @@ function sb_download_page ($page_url, $headers = array()) {
 
 // Returns human friendly Bible reference (e.g. John 3:1-16, not John 3:1-John 3:16)
 function sb_tidy_reference ($start, $end, $add_link = FALSE) {
-	if (!trim($start['book'])) {
+	if (!is_array($start) || !is_array($end) || !isset($start['book']) || !trim($start['book'])) {
 		return "";
 	}
 	$translated_books = array_combine(sb_get_default('eng_bible_books'), sb_get_default('bible_books'));
@@ -918,11 +918,13 @@ function sb_print_filters($filter) {
 					if ($output != '')
 						$output .= "\r, ";
 					if ($filter_option == 'date') {
+						$date = is_string($_REQUEST['date']) ? $_REQUEST['date'] : '';
+						$enddate = isset($_REQUEST['enddate']) && is_string($_REQUEST['enddate']) ? $_REQUEST['enddate'] : '';
 						$output .= '<strong>'.__('Date', 'sermon-browser').'</strong>:&nbsp;';
-						if (substr($_REQUEST['date'],0,4) == substr($_REQUEST['enddate'],0,4))
-							$output .= (int)substr($_REQUEST['date'],0,4).'&nbsp;(<a href="'.sb_url_minus_parameter('date', 'enddate').'">x</a>)';
-						if (substr($_REQUEST['date'],5,2) == substr($_REQUEST['enddate'],5,2))
-							$output .= ', '.esc_html(date_i18n('F', strtotime($_REQUEST['date']))).' (<a href="'.sb_build_url(Array ('date' => (int)substr($_REQUEST['date'],0,4).'-01-01', 'enddate' => (int)substr($_REQUEST['date'],0,4).'-12-31'), false).'">x</a>)';
+						if (substr($date,0,4) == substr($enddate,0,4))
+							$output .= (int)substr($date,0,4).'&nbsp;(<a href="'.sb_url_minus_parameter('date', 'enddate').'">x</a>)';
+						if (substr($date,5,2) == substr($enddate,5,2))
+							$output .= ', '.esc_html(date_i18n('F', strtotime($date))).' (<a href="'.sb_build_url(Array ('date' => (int)substr($date,0,4).'-01-01', 'enddate' => (int)substr($date,0,4).'-12-31'), false).'">x</a>)';
 					} else {
 						$output .= '<strong>'.__(ucwords($filter_option), 'sermon-browser').'</strong>:&nbsp;*'.$filter_option.'*';
 						$output .= '&nbsp;(<a href="'.sb_url_minus_parameter($filter_option).'">x</a>)';

@@ -198,7 +198,7 @@ if (isset($_POST['pname'])) { // preacher
 			<th style="text-align:center" scope="row"><?php echo (int) $file->id ?></th>
 			<td id="<?php echo $id_prefix ?><?php echo (int) $file->id ?>"><?php echo esc_html(substr($file->name, 0, strrpos($file->name, '.'))) ?></td>
 			<td style="text-align:center"><?php echo esc_html(sb_file_type_name($file->name, $filetypes)) ?></td>
-			<?php if (!isset($_POST['fetchU'])) { ?><td><?php echo esc_html(stripslashes($file->title)) ?></td><?php } ?>
+			<?php if (!isset($_POST['fetchU'])) { ?><td><?php echo esc_html(stripslashes((string) $file->title)) ?></td><?php } ?>
 			<td style="text-align:center">
 				<?php if (isset($_POST['fetchU'])) { ?><a href="<?php echo esc_url(admin_url("admin.php?page=sermon-browser/new_sermon.php&getid3={$file->id}")); ?>"><?php _e('Create sermon', 'sermon-browser') ?></a> | <?php } ?>
 				<?php sb_print_file_actions($file, $id_prefix) ?>

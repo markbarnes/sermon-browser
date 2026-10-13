@@ -1449,11 +1449,9 @@ function sb_new_sermon() {
 			$date = date('Y-m-d H:i:s', $date);
 		} else
 			{$date = '1970-01-01 00:00';}
-		if (!current_user_can('unfiltered_html')) {
-			$description = wp_kses($_POST['description'], $allowedposttags);
-		} else {
-			$description = $_POST['description'];
-		}
+		$description = isset($_POST['description']) ? (string) $_POST['description'] : '';
+		if (!current_user_can('unfiltered_html'))
+			$description = wp_kses($description, $allowedposttags);
 		// edit or not edit
 		if ( !isset($_GET['mid']) or !$_GET['mid'] ) { // new
 			//Security check
@@ -1482,7 +1480,7 @@ function sb_new_sermon() {
 		foreach (isset($_POST['file']) ? (array) $_POST['file'] : array() as $uid => $file) {
 			if ((int) $file != 0)
 				$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET sermon_id = $id WHERE id = %d AND type = 'file';", $file));
-			elseif ($_FILES['upload']['error'][$uid] == UPLOAD_ERR_OK) {
+			elseif (isset($_FILES['upload']['error'][$uid]) && $_FILES['upload']['error'][$uid] === UPLOAD_ERR_OK) {
 				$filename = sb_check_uploaded_file($_FILES['upload']['tmp_name'][$uid], $_FILES['upload']['name'][$uid]);
 				if ($filename) {
 					$dest = SB_ABSPATH.sb_get_option('upload_dir').$filename;
@@ -2393,11 +2391,12 @@ function sb_widget_sermon_control( $widget_args = 1 ) {
 	}
 
 	// Display widget form
-	if ( -1 == $number ) {
+	if ( -1 == $number )
+		$number = '%i%';
+	if ( !isset($options[$number]) ) {
 		$limit = '';
 		$preacherz = 0;
 		$book = 0;
-		$number = '%i%';
 		$preacher = '';
 		$service = '';
 		$series = '';
@@ -2484,9 +2483,9 @@ function sb_widget_popular_control() {
 
 	$title = esc_attr($options['title']);
 	$limit = esc_attr($options['limit']);
-	$display_sermons = (boolean) esc_attr($options['display_sermons']);
-	$display_series = (boolean) esc_attr($options['display_series']);
-	$display_preachers = (boolean) esc_attr($options['display_preachers']);
+	$display_sermons = (bool) esc_attr($options['display_sermons']);
+	$display_series = (bool) esc_attr($options['display_series']);
+	$display_preachers = (bool) esc_attr($options['display_preachers']);
 
 ?>
 		<p><?php _e('Title:'); ?> <input class="widefat" id="widget-popular-title" name="widget-popular-title" type="text" value="<?php echo $title; ?>" /></p>
