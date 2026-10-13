@@ -5,7 +5,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.46.0
+Stable tag: 0.46.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -262,6 +262,12 @@ If you want to change the output of Sermon Browser, you'll need to edit the temp
 
 == Upgrade Notice ==
 
+= 0.46.1 =
+Fixes NET Bible text and searching for titles with apostrophes, and removes Bible versions whose service no longer exists.
+
+= 0.46.0 =
+Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update as soon as possible.
+
 = 0.45.22 =
 Fixed sermons not deleting, and podcasts not downloading on iOS.
 
@@ -343,6 +349,21 @@ Important security fixes. All users should upgrade to this version.
 
 
 == Changelog ==
+
+= 0.46.1 (13 October 2026) =
+Preparation for reopening on WordPress.org, from the results of its Plugin Check.
+
+* **Security:** With SAVEQUERIES on, every page printed every database query (with its values) in an HTML comment that visitors could see. That output is gone.
+* **Bug fix:** NET Bible text (`[nettext]`) showed only the heading, because bible.org's old endpoint stopped working. It uses the current one.
+* **Bug fix:** Searching the sermon list for a title with an apostrophe (Paul's) found nothing.
+* **Bug fix:** Editing a page with the `[sermons]` shortcode in the block editor caused a fatal error.
+* **Bug fix:** The bundled translations weren't loaded on multisite networks.
+* **Change:** The KJV, ASV, YLT, WEB, AKJV, HNV, Reina Valera, Cornilescu and Synodal texts came from a service that no longer exists, so they already showed nothing. Their template tags now print nothing without trying, and `[esvtext]` without an API key shows nothing instead of falling back to the KJV.
+* **Change:** New installations no longer put a "Powered by Sermon Browser" link in the templates. Existing templates are unchanged.
+* **Change:** Removed the Pray for Japan page and the notices shown at random after saving a sermon.
+* **Change:** The plugin no longer changes PHP settings (memory limit, time limit and upload sizes) on every request.
+* **Change:** Updates from WordPress.org are allowed again (the Update URI header is gone), ready for the plugin to be reopened there.
+* **Hardening:** Output on the front end, in the feed and in AJAX responses is escaped where it is printed, every query uses prepared statements, request values are sanitised where they are read, and uploads, deleting and renaming files use WordPress's functions. The readme lists the external services the plugin uses.
 
 = 0.46.0 (12 October 2026) =
 Security release. The plugin was closed on WordPress.org in February 2022 for CVE-2022-0499; this version fixes that and the other problems found in a full review. Update from WordPress.org is disabled (Update URI), so install it by uploading a zip.
