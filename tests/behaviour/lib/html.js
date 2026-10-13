@@ -44,6 +44,8 @@ export function element( html, openingTag ) {
 export function normalize( text ) {
 	return text
 		.replaceAll( SITE, '{SITE}' )
+		// JSON-encoded URLs, as in the popular widget's inline script.
+		.replaceAll( SITE.replaceAll( '/', '\\/' ), '{SITE}' )
 		.replaceAll( SITE.replace( /^https?:/, 'itpc:' ), '{SITE_ITPC}' )
 		.replace( /(nonce=)[0-9a-f]{10}/g, '$1{NONCE}' )
 		// WordPress's audio player ids include the page's post id, which changes when the seed recreates the page.

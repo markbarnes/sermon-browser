@@ -22,7 +22,7 @@
 							jQuery("#popular_preachers_trigger_w").removeAttr("style");
 							jQuery.setSbCookie ("sermons");
 							jQuery("#sb_popular_wrapper_w").fadeOut("slow", function() {
-								jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-sermons_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=3\">Romans 5: peace with God<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=1\">Paul&#039;s letter: Faith &amp; Works<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=4\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
+								jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-sermons_w\"><ul><li><a href=\"{SITE}\/sermons\/?sermon_id=3\">Romans 5: peace with God<\/a><\/li><li><a href=\"{SITE}\/sermons\/?sermon_id=1\">Paul&#039;s letter: Faith &amp; Works<\/a><\/li><li><a href=\"{SITE}\/sermons\/?sermon_id=4\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
 							});
 							return false;
 						});jQuery("#popular_series_trigger_w").click(function() {
@@ -31,7 +31,7 @@
 							jQuery("#popular_preachers_trigger_w").removeAttr("style");
 							jQuery.setSbCookie ("series");
 							jQuery("#sb_popular_wrapper_w").fadeOut("slow", function() {
-								jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-series_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?series=1\">Romans<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?series=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
+								jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-series_w\"><ul><li><a href=\"{SITE}\/sermons\/?series=1\">Romans<\/a><\/li><li><a href=\"{SITE}\/sermons\/?series=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
 							});
 							return false;
 						});jQuery("#popular_preachers_trigger_w").click(function() {
@@ -40,7 +40,7 @@
 								jQuery("#popular_sermons_trigger_w").removeAttr("style");
 								jQuery.setSbCookie("preachers");
 								jQuery("#sb_popular_wrapper_w").fadeOut("slow", function() {
-									jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-preachers_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?preacher=1\">Dylan Jones<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?preacher=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
+									jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-preachers_w\"><ul><li><a href=\"{SITE}\/sermons\/?preacher=1\">Dylan Jones<\/a><\/li><li><a href=\"{SITE}\/sermons\/?preacher=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>").fadeIn("slow");
 								});
 								return false;
-							 });if (jQuery.getSbCookie() == "preachers") { jQuery("#popular_preachers_trigger_w").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-preachers_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?preacher=1\">Dylan Jones<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?preacher=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};if (jQuery.getSbCookie() == "series") { jQuery("#popular_series_trigger_w").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-series_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?series=1\">Romans<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?series=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};if (jQuery.getSbCookie() == "sermons") { jQuery("#popular_sermons_trigger_w").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-sermons_w\"><ul><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=3\">Romans 5: peace with God<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=1\">Paul&#039;s letter: Faith &amp; Works<\/a><\/li><li><a href=\"http:\/\/localhost:8891\/sermons\/?sermon_id=4\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};});</script></section>
+							 });if (jQuery.getSbCookie() == "preachers") { jQuery("#popular_preachers_trigger_w").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-preachers_w\"><ul><li><a href=\"{SITE}\/sermons\/?preacher=1\">Dylan Jones<\/a><\/li><li><a href=\"{SITE}\/sermons\/?preacher=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};if (jQuery.getSbCookie() == "series") { jQuery("#popular_series_trigger_w").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-series_w\"><ul><li><a href=\"{SITE}\/sermons\/?series=1\">Romans<\/a><\/li><li><a href=\"{SITE}\/sermons\/?series=3\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};if (jQuery.getSbCookie() == "sermons") { jQuery("#popular_sermons_trigger_w").attr("style", "font-weight:bold"); jQuery("#sb_popular_wrapper_w").html("<div class=\"popular-sermons_w\"><ul><li><a href=\"{SITE}\/sermons\/?sermon_id=3\">Romans 5: peace with God<\/a><\/li><li><a href=\"{SITE}\/sermons\/?sermon_id=1\">Paul&#039;s letter: Faith &amp; Works<\/a><\/li><li><a href=\"{SITE}\/sermons\/?sermon_id=4\">&lt;script&gt;alert(&quot;xss&quot;)&lt;\/script&gt;<\/a><\/li><\/ul><\/div>")};});</script></section>
