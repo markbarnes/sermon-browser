@@ -7,10 +7,11 @@
 */
 if (!defined('ABSPATH'))
 	exit;
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
 
 define ('SB_AJAX', true);
 
-if (!is_user_logged_in() || !isset($_POST['_sbnonce']) || !wp_verify_nonce($_POST['_sbnonce'], 'sb_ajax')) {
+if (!is_user_logged_in() || !isset($_POST['_sbnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_sbnonce'])), 'sb_ajax')) {
 	status_header(403);
 	die('-1');
 }
@@ -136,18 +137,20 @@ if (isset($_POST['pname'])) { // preacher
 	} else
 		$cond = '';
 	if (!empty($_POST['preacher'])) {
-		$cond .= $wpdb->prepare('and m.preacher_id = %d ', $_POST['preacher']);
+		$cond .= $wpdb->prepare('and m.preacher_id = %d ', (int) $_POST['preacher']);
 	}
 	if (!empty($_POST['series'])) {
-		$cond .= $wpdb->prepare('and m.series_id = %d ', $_POST['series']);
+		$cond .= $wpdb->prepare('and m.series_id = %d ', (int) $_POST['series']);
 	}
+	// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $cond is built with prepare(); $st and $per_page are integers
 	$m = $wpdb->get_results("SELECT SQL_CALC_FOUND_ROWS m.id, m.title, m.datetime, p.name as pname, s.name as sname, ss.name as ssname
 	FROM {$wpdb->prefix}sb_sermons as m
 	LEFT JOIN {$wpdb->prefix}sb_preachers as p ON m.preacher_id = p.id
 	LEFT JOIN {$wpdb->prefix}sb_services as s ON m.service_id = s.id
 	LEFT JOIN {$wpdb->prefix}sb_series as ss ON m.series_id = ss.id
 	WHERE 1=1 {$cond}
-	ORDER BY m.datetime desc, s.time desc LIMIT {$st}, {$per_page}"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $cond is built with prepare(); $st and $per_page are integers
+	ORDER BY m.datetime desc, s.time desc LIMIT {$st}, {$per_page}");
+	// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
 	$cnt = $wpdb->get_var("SELECT FOUND_ROWS()");
 	$i = 0;

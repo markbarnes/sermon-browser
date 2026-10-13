@@ -1,7 +1,8 @@
 <?php
 if (!defined('ABSPATH'))
 	exit;
-if (isset($_POST['wipe'])) {
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
+if (isset($_POST['wipe'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- sb_uninstall() checks the nonce before loading this file
 	$dir = SB_ABSPATH.sb_get_option('upload_dir');
 	if ($dh = @opendir($dir)) {
 		while (false !== ($file = readdir($dh))) {

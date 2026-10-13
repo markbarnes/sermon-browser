@@ -6,7 +6,7 @@ if (!defined('ABSPATH'))
 header('Content-Type: text/css');
 header('X-Content-Type-Options: nosniff');
 $lastModifiedDate = sb_get_option('style_date_modified');
-if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $lastModifiedDate) {
+if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime(sanitize_text_field(wp_unslash($_SERVER['HTTP_IF_MODIFIED_SINCE']))) >= $lastModifiedDate) {
 	if (php_sapi_name()=='CGI') {
 		Header("Status: 304 Not Modified");
 	} else {

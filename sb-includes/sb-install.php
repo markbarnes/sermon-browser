@@ -2,7 +2,7 @@
 if (!defined('ABSPATH'))
 	exit;
 function sb_install() {
-	// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery -- creating the plugin's own tables, with fixed SQL
+	// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery -- creating the plugin's own tables, with fixed SQL
 	global $wpdb;
 	$sermonUploadDir = sb_get_default('sermon_path');
 	require_once(SB_INCLUDES_DIR.'/dictionary.php');
@@ -161,7 +161,7 @@ function sb_install() {
 	sb_update_option('import_comments', false);
 	sb_update_option('import_filename', 'none');
 	sb_update_option('mp3_shortcode', '[audio mp3="%SERMONURL%"]');
-	// phpcs:enable
+	// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
 }
 
 //Default template for search results

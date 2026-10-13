@@ -1,6 +1,8 @@
 <?php
 if (!defined('ABSPATH'))
 	exit;
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
+// phpcs:disable WordPress.Security.NonceVerification.Recommended -- the sermon list, its filters, feed and downloads are read-only GET requests
 // Error message for people using the old function
 function display_sermons($options = array()) {
 	echo "This function is now deprecated. Use sb_display_sermons or the sermon browser widget, instead.";
@@ -464,7 +466,7 @@ function sb_build_url($arr, $clear = false) {
 	global $wpdb;
 	// Word list for URL building purpose
 	$wl = array('preacher', 'title', 'date', 'enddate', 'series', 'service', 'sortby', 'dir', 'book', 'stag', 'podcast');
-	$foo = array_merge((array) $_GET, (array) $_POST, $arr);
+	$foo = array_merge((array) $_GET, (array) $_POST, $arr); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the filter form is a read-only search; values are URL-encoded below
 	foreach ($foo as $k => $v) {
 		if (is_scalar($v) && (in_array($k, array_keys($arr)) || (in_array($k, $wl) && !$clear))) {
 			$bar[] = rawurlencode($k).'='.rawurlencode($v);
@@ -845,7 +847,7 @@ function sb_print_date_filter_line ($dates) {
 //Returns the filter URL minus a given parameter
 function sb_url_minus_parameter ($param1, $param2='') {
 	global $filter_options;
-	$existing_params = array_merge((array) $_GET, (array) $_POST);
+	$existing_params = array_merge((array) $_GET, (array) $_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the filter form is a read-only search; values are URL-encoded below
 	$returned_query = array();
 	foreach (array_keys($existing_params) as $query) {
 		if (in_array($query, $filter_options) && $query != $param1 && $query != $param2) {
@@ -895,8 +897,8 @@ function sb_print_filters($filter) {
 					if ($output != '')
 						$output .= "\r, ";
 					if ($filter_option == 'date') {
-						$date = is_string($_REQUEST['date']) ? $_REQUEST['date'] : '';
-						$enddate = isset($_REQUEST['enddate']) && is_string($_REQUEST['enddate']) ? $_REQUEST['enddate'] : '';
+						$date = isset($_REQUEST['date']) && is_string($_REQUEST['date']) ? sanitize_text_field(wp_unslash($_REQUEST['date'])) : '';
+						$enddate = isset($_REQUEST['enddate']) && is_string($_REQUEST['enddate']) ? sanitize_text_field(wp_unslash($_REQUEST['enddate'])) : '';
 						$output .= '<strong>'.esc_html__('Date', 'sermon-browser').'</strong>:&nbsp;';
 						if (substr($date,0,4) == substr($enddate,0,4))
 							$output .= (int)substr($date,0,4).'&nbsp;(<a href="'.sb_url_minus_parameter('date', 'enddate').'">x</a>)';
@@ -925,12 +927,12 @@ function sb_print_filters($filter) {
 
 		$more_applied = array();
 		$output = str_replace ('*preacher*', isset($preachers[0]->name) ? esc_html(stripslashes($preachers[0]->name)) : '', $output);
-		$book = isset($_REQUEST['book']) ? wp_unslash($_REQUEST['book']) : '';
+		$book = isset($_REQUEST['book']) ? sanitize_text_field(wp_unslash($_REQUEST['book'])) : '';
 		$translated_books = array_combine(sb_get_default('eng_bible_books'), sb_get_default('bible_books'));
 		$output = str_replace ('*book*', esc_html(isset($translated_books[$book]) ? $translated_books[$book] : $book), $output);
 		$output = str_replace ('*service*', isset($services[0]->name) ? esc_html(stripslashes($services[0]->name)) : '', $output);
 		$output = str_replace ('*series*', isset($series[0]->name) ? esc_html(stripslashes($series[0]->name)) : '', $output);
-		$output = str_replace ('*title*', isset($_REQUEST['title']) ? esc_html(wp_unslash($_REQUEST['title'])) : '', $output);
+		$output = str_replace ('*title*', isset($_REQUEST['title']) ? esc_html(sanitize_text_field(wp_unslash($_REQUEST['title']))) : '', $output);
 
 		echo "<span class=\"inline_controls\"><a href=\"#\" id=\"show_hide_filter\"></a></span>";
 		if ($output != '')
@@ -985,8 +987,10 @@ function sb_print_filters($filter) {
 			__('Ascending', 'sermon-browser') => 'asc',
 			__('Descending', 'sermon-browser') => 'desc',
 		);
-		$csb = isset($_REQUEST['sortby']) ? sanitize_text_field($_REQUEST['sortby']) : 'm.datetime';
-		$cd = (isset($_REQUEST['dir']) && (strtolower($_REQUEST['dir']) == 'asc' || strtolower($_REQUEST['dir']) == 'desc')) ? $_REQUEST['dir'] : 'desc';
+		$csb = isset($_REQUEST['sortby']) ? sanitize_text_field(wp_unslash($_REQUEST['sortby'])) : 'm.datetime';
+		$cd = isset($_REQUEST['dir']) ? strtolower(sanitize_text_field(wp_unslash($_REQUEST['dir']))) : '';
+		if ($cd != 'asc' && $cd != 'desc')
+			$cd = 'desc';
 		?>
 		<span class="inline_controls"><a href="#" id="show_hide_filter"></a></span>
 		<div id="mainfilter">
@@ -1031,13 +1035,13 @@ function sb_print_filters($filter) {
 						</tr>
 						<tr>
 							<td class="fieldname"><?php esc_html_e('Start date', 'sermon-browser') ?></td>
-							<td class="field"><input type="text" name="date" id="date" value="<?php echo (isset($_REQUEST['date']) ? esc_attr(wp_unslash($_REQUEST['date'])) : '') ?>" /></td>
+							<td class="field"><input type="text" name="date" id="date" value="<?php echo (isset($_REQUEST['date']) ? esc_attr(sanitize_text_field(wp_unslash($_REQUEST['date']))) : '') ?>" /></td>
 							<td class="fieldname rightcolumn"><?php esc_html_e('End date', 'sermon-browser') ?></td>
-							<td class="field"><input type="text" name="enddate" id="enddate" value="<?php echo (isset($_REQUEST['enddate']) ? esc_attr(wp_unslash($_REQUEST['enddate'])) : '') ?>" /></td>
+							<td class="field"><input type="text" name="enddate" id="enddate" value="<?php echo (isset($_REQUEST['enddate']) ? esc_attr(sanitize_text_field(wp_unslash($_REQUEST['enddate']))) : '') ?>" /></td>
 						</tr>
 						<tr>
 							<td class="fieldname"><?php esc_html_e('Keywords', 'sermon-browser') ?></td>
-							<td class="field" colspan="3"><input style="width: 98.5%" type="text" id="title" name="title" value="<?php echo (isset($_REQUEST['title']) ? esc_attr(wp_unslash($_REQUEST['title'])) : '') ?>" /></td>
+							<td class="field" colspan="3"><input style="width: 98.5%" type="text" id="title" name="title" value="<?php echo (isset($_REQUEST['title']) ? esc_attr(sanitize_text_field(wp_unslash($_REQUEST['title']))) : '') ?>" /></td>
 						</tr>
 						<tr>
 							<td class="fieldname"><?php esc_html_e('Sort by', 'sermon-browser') ?></td>
@@ -1080,7 +1084,7 @@ function sb_print_filters($filter) {
 // Returns the first MP3 file attached to a sermon
 // Stats have to be turned off for iTunes compatibility
 function sb_first_mp3($sermon, $stats= TRUE) {
-	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
 	if (stripos($user_agent, 'itunes') !== FALSE || stripos($user_agent, 'FeedBurner') !== FALSE)
 		$stats = FALSE;
 	$stuff = sb_get_stuff($sermon, true);

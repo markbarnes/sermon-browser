@@ -1,6 +1,8 @@
 <?php
 if (!defined('ABSPATH'))
 	exit;
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
+// phpcs:disable WordPress.Security.NonceVerification.Recommended -- the sermon list, its filters, feed and downloads are read-only GET requests
 
 //Prints ISO date for podcast
 function sb_print_iso_date($sermon) {
@@ -59,7 +61,7 @@ function sb_xml_entity_encode ($string) {
 // Convert filename to URL, perhaps with stats
 // Stats have to be turned off for iTunes compatibility
 function sb_podcast_file_url($media_name, $media_type) {
-	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+	$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
 	if (stripos($user_agent, 'itunes') !== FALSE || stripos($user_agent, 'FeedBurner') !== FALSE || stripos($user_agent, 'AppleCoreMedia') !== FALSE)
 		$stats = FALSE;
 	else

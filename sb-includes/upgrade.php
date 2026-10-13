@@ -1,6 +1,7 @@
 <?php
 if (!defined('ABSPATH'))
 	exit;
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- the plugin's own tables, which WordPress has no API or cache for; upgrading their schema
 
 // Checks for old-style sermonbrowser options (prior to 0.43)
 function sb_upgrade_options () {
@@ -70,8 +71,8 @@ function sb_database_upgrade ($old_version) {
 				sb_move_file(SB_ABSPATH.$oldSermonPath.$file->name, SB_ABSPATH.$sermonUploadDir.$file->name);
 			}
 			$table_name = $wpdb->prefix . "sb_preachers";
-			if($wpdb->get_var("show tables like '{$table_name}'") == $table_name) {
-				  $wpdb->query("ALTER TABLE {$table_name} ADD description TEXT NOT NULL, ADD image VARCHAR(255) NOT NULL");
+			if($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))) == $table_name) {
+				  $wpdb->query("ALTER TABLE {$table_name} ADD description TEXT NOT NULL, ADD image VARCHAR(255) NOT NULL"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- the plugin's table
 			}
 			update_option('sb_sermon_db_version', '1.1');
 		case '1.1':
@@ -100,7 +101,7 @@ function sb_database_upgrade ($old_version) {
 			$extra_indexes = $wpdb->get_results($wpdb->prepare("SELECT index_name, table_name FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = %s AND index_name LIKE %s", DB_NAME, $wpdb->esc_like('sermon_id_').'%'));
 			if (is_array($extra_indexes))
 				foreach ($extra_indexes as $extra_index)
-					$wpdb->query("ALTER TABLE {$extra_index->table_name} DROP INDEX {$extra_index->index_name}"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- names read from INFORMATION_SCHEMA
+					$wpdb->query("ALTER TABLE {$extra_index->table_name} DROP INDEX {$extra_index->index_name}"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- names read from INFORMATION_SCHEMA
 			//Remove duplicate tags added by a previous bug
 			$unique_tags = $wpdb->get_results("SELECT DISTINCT name FROM {$wpdb->prefix}sb_tags");
 			if (is_array($unique_tags)) {

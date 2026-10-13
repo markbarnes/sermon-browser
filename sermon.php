@@ -50,6 +50,8 @@ If you want to follow the logic of the code, start with sb_sermon_init, and trac
 The frontend output is inserted by sb_shortcode
 
 */
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- the plugin's own tables, which WordPress has no API or cache for
+// phpcs:disable WordPress.Security.NonceVerification.Recommended -- the sermon list, its filters, feed and downloads are read-only GET requests
 
 if (!defined('ABSPATH'))
 	exit;
@@ -79,9 +81,9 @@ function sb_hijack() {
 
 	wp_timezone_override_offset();
 
-	if (isset($_POST['sermon']) && $_POST['sermon'] == 1)
+	if (isset($_POST['sermon']) && (int) $_POST['sermon'] == 1) // phpcs:ignore WordPress.Security.NonceVerification.Missing -- ajax.php checks the nonce
 		require(SB_INCLUDES_DIR.'/ajax.php');
-	if (stripos($_SERVER['REQUEST_URI'], 'sb-style.css') !== FALSE || isset($_GET['sb-style']))
+	if ((isset($_SERVER['REQUEST_URI']) && stripos(sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])), 'sb-style.css') !== FALSE) || isset($_GET['sb-style']))
 		require(SB_INCLUDES_DIR.'/style.php');
 
 	if (!isset($_GET['download']) && !isset($_GET['show']))
@@ -89,9 +91,10 @@ function sb_hijack() {
 
 	// Local files: only names listed in the database are served, and only from the upload folder
 	if (isset($_GET['file_name'])) {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only compared with the names stored in sb_stuff
 		$file_name = sb_get_attachment_name(rawurldecode(wp_unslash($_GET['file_name'])), 'file');
 		if ($file_name === null || !sb_is_plain_file_name($file_name))
-			wp_die(esc_html(rawurldecode(wp_unslash($_GET['file_name']))).' '.esc_html__('not found', 'sermon-browser'), esc_html__('File not found', 'sermon-browser'), array('response' => 404));
+			wp_die(esc_html(rawurldecode(sanitize_text_field(wp_unslash($_GET['file_name'])))).' '.esc_html__('not found', 'sermon-browser'), esc_html__('File not found', 'sermon-browser'), array('response' => 404));
 		sb_increase_download_count ($file_name);
 		if (isset($_GET['download'])) {
 			//Forces sermon download of local file
@@ -105,17 +108,18 @@ function sb_hijack() {
 			sb_output_file($file_path);
 		} else {
 			//Returns local file (doesn't force download)
-			wp_redirect(sb_get_option('upload_url').rawurlencode($file_name));
+			wp_redirect(sb_get_option('upload_url').rawurlencode($file_name)); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- the upload folder, which may be on another host (a CDN)
 		}
 		die();
 	}
 
 	// External URLs: only URLs attached to a sermon, so the site can't be used as an open redirect or proxy
 	if (isset($_GET['url'])) {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only compared with the URLs stored in sb_stuff
 		$stored_url = sb_get_attachment_name(rawurldecode(wp_unslash($_GET['url'])), 'url');
 		$url = is_null($stored_url) ? '' : esc_url_raw(wp_specialchars_decode($stored_url, ENT_QUOTES), array('http', 'https'));
 		if ($url == '')
-			wp_die(esc_html(rawurldecode(wp_unslash($_GET['url']))).' '.esc_html__('not found', 'sermon-browser'), esc_html__('URL not found', 'sermon-browser'), array('response' => 404));
+			wp_die(esc_html(rawurldecode(sanitize_text_field(wp_unslash($_GET['url'])))).' '.esc_html__('not found', 'sermon-browser'), esc_html__('URL not found', 'sermon-browser'), array('response' => 404));
 		if (isset($_GET['download'])) {
 			//Forces sermon download of external URL
 			require_once (ABSPATH.'wp-admin/includes/file.php');
@@ -132,7 +136,7 @@ function sb_hijack() {
 		} else {
 			//Returns contents of external URL (doesn't force download)
 			sb_increase_download_count ($stored_url);
-			wp_redirect($url);
+			wp_redirect($url); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- only URLs attached to a sermon (checked above), which are usually on other hosts
 		}
 		die();
 	}
@@ -171,7 +175,7 @@ function sb_sermon_init () {
 	if (basename(dirname(__FILE__)) == 'mu-plugins')
 		load_muplugin_textdomain('sermon-browser', 'sb-includes');
 	else
-		load_plugin_textdomain('sermon-browser', false, dirname(plugin_basename(__FILE__)).'/sb-includes');
+		load_plugin_textdomain('sermon-browser', false, dirname(plugin_basename(__FILE__)).'/sb-includes'); // phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- the translations bundled in sb-includes
 
     if(defined('WPLANG')){
 		if (WPLANG != '')
@@ -183,8 +187,8 @@ function sb_sermon_init () {
 		require(SB_INCLUDES_DIR.'/podcast.php');
 
 	// Register custom CSS and javascript files
-	wp_register_script('sb_64', SB_PLUGIN_URL.'/sb-includes/64.js', false, SB_CURRENT_VERSION);
-	wp_register_script('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datePicker.js', array('jquery'), SB_CURRENT_VERSION);
+	wp_register_script('sb_64', SB_PLUGIN_URL.'/sb-includes/64.js', false, SB_CURRENT_VERSION, false);
+	wp_register_script('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datePicker.js', array('jquery'), SB_CURRENT_VERSION, false);
 	wp_register_style('sb_datepicker', SB_PLUGIN_URL.'/sb-includes/datepicker.css', false, SB_CURRENT_VERSION);
 	if (get_option('permalink_structure') == '') {
 		wp_register_style('sb_style', trailingslashit(home_url()).'?sb-style&', false, sb_get_option('style_date_modified'));
@@ -241,20 +245,20 @@ function sb_sermon_init () {
 * Add Sermons menu and sub-menus in admin
 */
 function sb_add_pages() {
-	add_menu_page(__('Sermons', 'sermon-browser'), __('Sermons', 'sermon-browser'), 'publish_posts', __FILE__, 'sb_manage_sermons', SB_PLUGIN_URL.'/sb-includes/sb-icon.png');
-	add_submenu_page(__FILE__, __('Sermons', 'sermon-browser'), __('Sermons', 'sermon-browser'), 'publish_posts', __FILE__, 'sb_manage_sermons');
+	add_menu_page(__('Sermons', 'sermon-browser'), __('Sermons', 'sermon-browser'), 'publish_posts', 'sermon-browser/sermon.php', 'sb_manage_sermons', SB_PLUGIN_URL.'/sb-includes/sb-icon.png');
+	add_submenu_page('sermon-browser/sermon.php', __('Sermons', 'sermon-browser'), __('Sermons', 'sermon-browser'), 'publish_posts', 'sermon-browser/sermon.php', 'sb_manage_sermons');
 	if (isset($_REQUEST['page']) && $_REQUEST['page'] == 'sermon-browser/new_sermon.php' && isset($_REQUEST['mid'])) {
-		add_submenu_page(__FILE__, __('Edit Sermon', 'sermon-browser'), __('Edit Sermon', 'sermon-browser'), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
+		add_submenu_page('sermon-browser/sermon.php', __('Edit Sermon', 'sermon-browser'), __('Edit Sermon', 'sermon-browser'), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
 	} else {
-		add_submenu_page(__FILE__, __('Add Sermon', 'sermon-browser'), __('Add Sermon', 'sermon-browser'), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
+		add_submenu_page('sermon-browser/sermon.php', __('Add Sermon', 'sermon-browser'), __('Add Sermon', 'sermon-browser'), 'publish_posts', 'sermon-browser/new_sermon.php', 'sb_new_sermon');
 	}
-	add_submenu_page(__FILE__, __('Files', 'sermon-browser'), __('Files', 'sermon-browser'), 'upload_files', 'sermon-browser/files.php', 'sb_files');
-	add_submenu_page(__FILE__, __('Preachers', 'sermon-browser'), __('Preachers', 'sermon-browser'), 'manage_categories', 'sermon-browser/preachers.php', 'sb_manage_preachers');
-	add_submenu_page(__FILE__, __('Series &amp; Services', 'sermon-browser'), __('Series &amp; Services', 'sermon-browser'), 'manage_categories', 'sermon-browser/manage.php', 'sb_manage_everything');
-	add_submenu_page(__FILE__, __('Options', 'sermon-browser'), __('Options', 'sermon-browser'), 'manage_options', 'sermon-browser/options.php', 'sb_options');
-	add_submenu_page(__FILE__, __('Templates', 'sermon-browser'), __('Templates', 'sermon-browser'), 'manage_options', 'sermon-browser/templates.php', 'sb_templates');
-	add_submenu_page(__FILE__, __('Uninstall', 'sermon-browser'), __('Uninstall', 'sermon-browser'), 'edit_plugins', 'sermon-browser/uninstall.php', 'sb_uninstall');
-	add_submenu_page(__FILE__, __('Help', 'sermon-browser'), __('Help', 'sermon-browser'), 'publish_posts', 'sermon-browser/help.php', 'sb_help');
+	add_submenu_page('sermon-browser/sermon.php', __('Files', 'sermon-browser'), __('Files', 'sermon-browser'), 'upload_files', 'sermon-browser/files.php', 'sb_files');
+	add_submenu_page('sermon-browser/sermon.php', __('Preachers', 'sermon-browser'), __('Preachers', 'sermon-browser'), 'manage_categories', 'sermon-browser/preachers.php', 'sb_manage_preachers');
+	add_submenu_page('sermon-browser/sermon.php', __('Series &amp; Services', 'sermon-browser'), __('Series &amp; Services', 'sermon-browser'), 'manage_categories', 'sermon-browser/manage.php', 'sb_manage_everything');
+	add_submenu_page('sermon-browser/sermon.php', __('Options', 'sermon-browser'), __('Options', 'sermon-browser'), 'manage_options', 'sermon-browser/options.php', 'sb_options');
+	add_submenu_page('sermon-browser/sermon.php', __('Templates', 'sermon-browser'), __('Templates', 'sermon-browser'), 'manage_options', 'sermon-browser/templates.php', 'sb_templates');
+	add_submenu_page('sermon-browser/sermon.php', __('Uninstall', 'sermon-browser'), __('Uninstall', 'sermon-browser'), 'edit_plugins', 'sermon-browser/uninstall.php', 'sb_uninstall');
+	add_submenu_page('sermon-browser/sermon.php', __('Help', 'sermon-browser'), __('Help', 'sermon-browser'), 'publish_posts', 'sermon-browser/help.php', 'sb_help');
 }
 
 /**
@@ -452,11 +456,11 @@ function sb_shortcode($atts, $content=null) {
 		}
 	} else {
 		if (isset($_REQUEST['sortby']))
-			$sort_criteria = esc_sql($_REQUEST['sortby']);
+			$sort_criteria = sanitize_text_field(wp_unslash($_REQUEST['sortby']));
 		else
 			$sort_criteria = 'm.datetime';
 		if (!empty($atts['dir']))
-			$dir = esc_sql($atts['dir']);
+			$dir = $atts['dir'];
 		elseif ($sort_criteria == 'm.datetime')
 			$dir = 'desc';
 		else
@@ -656,7 +660,7 @@ function sb_protect_upload_dir($dir = '') {
 		return;
 	$rules = "# Added by Sermon Browser: never run scripts from the sermon upload folder\n";
 	$rules .= "<FilesMatch \"\\.(?i:php[0-9]?|phtml|phar|pht|shtml|cgi|pl|py|sh)$\">\n\tRequire all denied\n</FilesMatch>\n";
-	@file_put_contents($dir.'.htaccess', $rules);
+	@file_put_contents($dir.'.htaccess', $rules); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents, PluginCheck.CodeAnalysis.WriteFile.ABSPATHDetected -- the upload folder, written directly like the uploads in it
 }
 
 /**
@@ -868,7 +872,7 @@ function sb_output_file($filename) {
 	if (ob_get_level() == 0)
 		ob_start();
 	while (!feof($handle)) {
-		set_time_limit(ini_get('max_execution_time'));
+		set_time_limit(ini_get('max_execution_time')); // phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged -- restarts the time limit for each chunk of a long download
 		$buffer = fread($handle, 1048576); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fread
 		echo $buffer; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the file's contents, sent as a download
 		ob_flush();
