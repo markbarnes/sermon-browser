@@ -66,7 +66,7 @@ class Podcast {
 
 	<lastBuildDate><?php self::print_date(isset($sermons[0]) ? $sermons[0]: time()) ?></lastBuildDate>
 	<pubDate><?php self::print_date(isset($sermons[0]) ? $sermons[0]: time()) ?></pubDate>
-	<generator>Wordpress Sermon Browser plugin <?php echo esc_xml(SB_CURRENT_VERSION) ?> (http://www.sermonbrowser.com/)</generator>
+	<generator>Wordpress Sermon Browser plugin <?php echo esc_xml(SB_CURRENT_VERSION) ?> (<?php echo esc_xml(Plugin::HOME_URL) ?>)</generator>
 	<docs>http://blogs.law.harvard.edu/tech/rss</docs>
 	<category>Religion &amp; Spirituality</category>
 	<itunes:category text="Religion &amp; Spirituality"></itunes:category>

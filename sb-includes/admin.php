@@ -214,9 +214,9 @@ function sb_options() {
 	// HTML for options page
 ?>
 	<div class="wrap">
-        <a href="http://www.sermonbrowser.com/"><img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>"
+        <img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>"
                                                      width="191" height="35"
-                                                     style="margin: 1em 2em; float: right;"/></a>
+                                                     style="margin: 1em 2em; float: right;"/>
 		<form method="post">
 		<h2><?php esc_html_e('Basic Options', 'sermon-browser') ?></h2>
 		<br style="clear:both"/>
@@ -534,7 +534,7 @@ function sb_templates () {
 	?>
 	<form method="post">
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
+		<img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" />
 		<h2><?php esc_html_e('Templates', 'sermon-browser') ?></h2>
 		<br/>
 		<table border="0" class="widefat">
@@ -656,7 +656,7 @@ function sb_manage_preachers() {
 	//Display HTML
 ?>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
+		<img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" />
 		<h2><?php echo $_GET['act'] == 'new' ? esc_html__('Add', 'sermon-browser') : esc_html__('Edit', 'sermon-browser') ?> <?php esc_html_e('preacher', 'sermon-browser') ?></h2>
 		<br style="clear:both">
 		<?php
@@ -715,7 +715,7 @@ function sb_manage_preachers() {
 	sb_do_alerts();
 ?>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
+		<img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" />
 		<h2><?php esc_html_e('Preachers', 'sermon-browser') ?> (<a href="<?php echo esc_url(admin_url('admin.php?page=sermon-browser/preachers.php&act=new')) ?>"><?php esc_html_e('add new', 'sermon-browser') ?></a>)</h2>
 		<br/>
 		<table class="widefat" style="width:auto">
@@ -891,7 +891,7 @@ function sb_manage_everything() {
 ?>
 	<a name="manage-<?php echo esc_attr($k) ?>"></a>
 	<div class="wrap">
-		<?php if ($k == 'Series') { ?><a href="http://www.sermonbrowser.com/"><img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a><?php } ?>
+		<?php if ($k == 'Series') { ?><img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" /><?php } ?>
 		<h2><?php echo esc_html($k) ?> (<a href="javascript:createNew<?php echo esc_attr($k) ?>()"><?php esc_html_e('add new', 'sermon-browser') ?></a>)</h2>
 		<br style="clear:both">
 		<table class="widefat" style="width:auto">
@@ -1151,7 +1151,7 @@ function sb_files() {
 	</script>
 	<a name="top"></a>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
+		<img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" />
 		<h2><?php esc_html_e('Upload Files', 'sermon-browser') ?></h2>
 		<?php if (!sb_import_options_set()) {
 			echo '<p class="plugin-update">';
@@ -1347,7 +1347,7 @@ function sb_manage_sermons() {
 		}
 	</script>
 	<div class="wrap">
-			<a href="http://www.sermonbrowser.com/"><img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
+			<img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" />
 			<h2>Filter</h2>
 			<form id="searchform" name="searchform">
 			<fieldset style="float:left; margin-right: 1em">
@@ -1790,7 +1790,7 @@ function sb_new_sermon() {
 	</script>
 	<?php sb_do_alerts(); ?>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
+		<img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" />
 		<h2><?php echo isset($_GET['mid']) ? esc_html__('Edit Sermon', 'sermon-browser') : esc_html__('Add Sermon', 'sermon-browser'); ?></h2>
 		<?php if (!isset($_GET['mid']) && !isset($_GET['getid3']) && sb_get_option('import_prompt')) {
 			if  (!sb_import_options_set()) {
@@ -2115,43 +2115,91 @@ function sb_help() {
 sb_do_alerts();
 ?>
 	<div class="wrap">
-		<a href="http://www.sermonbrowser.com/"><img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" /></a>
+		<img src="<?php echo esc_url( SB_PLUGIN_URL . '/sb-includes/logo-small.png' ); ?>" width="191" height ="35" style="margin: 1em 2em; float: right;" />
 		<div style="width:45%;float:right;clear:right">
-		<h2>Thank you</h2>
-		<p>Thanks to everyone who has helped with Sermon Browser:</p>
+		<h2><?php esc_html_e('Thank you', 'sermon-browser') ?></h2>
+		<p><?php esc_html_e('Thanks to everyone who has helped with Sermon Browser:', 'sermon-browser') ?></p>
 		<ul style="list-style-type:circle; margin-left: 2em">
 			<li><a href="http://codeandmore.com/">Tien Do Xuan</a> (help with initial coding).
-			<li>James Hudson, Matthew Hiatt, Mark Bouchard (code contributions)</li>
+			<li>James Hudson, Matthew Hiatt, Mark Bouchard, Ben Miller (code contributions)</li>
 			<li>Juan Carlos and Marvin Ortega (Spanish translation)</li>
 			<li><a href="http://www.fatcow.com/">FatCow</a> (Russian translation)</li>
 			<li><a href="http://intercer.net/">Lucian Mihailescu</a> (Romanian translation)</li>
 			<li>Monika Gause (German translation)</li>
 			<li><a href="http://www.djio.com.br/sermonbrowser-em-portugues-brasileiro-pt_br/">DJIO</a> (Brazilian Portugese translation)</li>
-			<li>Numerous <a href="http://www.sermonbrowser.com/forum/">forum contributors</a> for feature suggestions and bug reports</li>
+			<li><?php esc_html_e('Everyone who has reported bugs and suggested features', 'sermon-browser') ?></li>
 		</ul>
 	</div>
 		<div style="width:45%;float:left">
 		<h2><?php esc_html_e('Help page', 'sermon-browser') ?></h2>
-		<h3>Screencasts</h3>
-		<p>If you need help with using SermonBrowser for the first time, these five minute screencast tutorials should be your first port of call (the tutorials were created with an older version of SermonBrowser, and an older version of Wordpress, but things haven't changed a great deal):</p>
-		<ul>
-			<li><a href="http://www.sermonbrowser.com/tutorials/#efe-swf-1" target="_blank">Installation and Overview</a></li>
-			<li><a href="http://www.sermonbrowser.com/tutorials/#efe-swf-2" target="_blank">Basic Options</a></li>
-			<li><a href="http://www.sermonbrowser.com/tutorials/#efe-swf-3" target="_blank">Preachers, Series and Services</a></li>
-			<li><a href="http://www.sermonbrowser.com/tutorials/#efe-swf-4" target="_blank">Entering a new sermon</a></li>
-			<li><a href="http://www.sermonbrowser.com/tutorials/#efe-swf-5" target="_blank">Editing a sermon and adding embedded video</a></li>
+		<h3><?php esc_html_e('Getting started', 'sermon-browser') ?></h3>
+		<ol>
+			<li><?php esc_html_e('Create a page with the shortcode [sermons]. Your sermons will be listed there, with a search form, and each sermon has its own page.', 'sermon-browser') ?></li>
+			<li><?php
+				/* translators: 1: link to the Preachers page, 2: link to the Series & Services page */
+				printf(esc_html__('Add your preachers on the %1$s page, and your series and services on the %2$s page.', 'sermon-browser'), '<a href="'.esc_url(admin_url('admin.php?page=sermon-browser/preachers.php')).'">'.esc_html__('Preachers', 'sermon-browser').'</a>', '<a href="'.esc_url(admin_url('admin.php?page=sermon-browser/manage.php')).'">'.esc_html__('Series &amp; Services', 'sermon-browser').'</a>') ?></li>
+			<li><?php
+				/* translators: %s: link to the Add Sermon page */
+				printf(esc_html__('Add a sermon on the %s page, and attach its recording. You can upload an MP3, choose one already uploaded (on the Files page, or copied to the upload folder by FTP), link to a file elsewhere, or embed a video.', 'sermon-browser'), '<a href="'.esc_url(admin_url('admin.php?page=sermon-browser/new_sermon.php')).'">'.esc_html__('Add Sermon', 'sermon-browser').'</a>') ?></li>
+			<li><?php
+				/* translators: %s: link to the Options page */
+				printf(esc_html__('If your MP3 files are tagged with their title, preacher and series, set the import options on the %s page, and Sermon Browser will fill in the Add Sermon form for you.', 'sermon-browser'), '<a href="'.esc_url(admin_url('admin.php?page=sermon-browser/options.php')).'">'.esc_html__('Options', 'sermon-browser').'</a>') ?></li>
+			<li><?php esc_html_e('To show recent or popular sermons elsewhere on your site, add the Sermons, Sermon Browser tags or Most popular sermons widget.', 'sermon-browser') ?></li>
+		</ol>
+		<h3><?php esc_html_e('Shortcode', 'sermon-browser') ?></h3>
+		<p><?php esc_html_e('You can show one sermon, or a list of sermons, on any page or post, by adding the shortcode [sermons] with these options. For example, [sermons series=3 filter=none] lists the sermons in series 3 without the search form. The ids of preachers, series and services are on their admin pages.', 'sermon-browser') ?></p>
+		<ul style="list-style-type:disc; margin-left: 2em">
+			<li><code>id=52</code>, <code>id=latest</code>: <?php esc_html_e('one sermon, by its id, or the latest', 'sermon-browser') ?></li>
+			<li><code>preacher=6</code>, <code>series=11</code>, <code>service=2</code>: <?php esc_html_e('sermons by one preacher, in one series or at one service', 'sermon-browser') ?></li>
+			<li><code>book="1 John"</code>: <?php esc_html_e('sermons on a Bible book (its full name)', 'sermon-browser') ?></li>
+			<li><code>tag=hope</code>: <?php esc_html_e('sermons with a tag', 'sermon-browser') ?></li>
+			<li><code>limit=5</code>: <?php esc_html_e('the number of sermons on each page', 'sermon-browser') ?></li>
+			<li><code>dir=asc</code>, <code>dir=desc</code>: <?php esc_html_e('oldest or newest first', 'sermon-browser') ?></li>
+			<li><code>filter=dropdown</code>, <code>filter=oneclick</code>, <code>filter=none</code>: <?php esc_html_e('the kind of search form, or none', 'sermon-browser') ?></li>
+			<li><code>filterhide=show</code>, <code>filterhide=hide</code>: <?php esc_html_e('whether the search form starts open or folded away', 'sermon-browser') ?></li>
 		</ul>
-		<h3>Template tags</h3>
-		<p>If you want to change the way SermonBrowser displays on your website, you'll need to edit the templates and/or CSS file. Check out this guide to <a href="http://www.sermonbrowser.com/customisation/" target="_blank">template tags</a>.</p>
-		<h3>Shortcode</h3>
-		<p>You can put individual sermons or lists of sermons on any page of your website. You do this by adding a <a href="http://www.sermonbrowser.com/customisation/" target="_blank">shortcode</a> into a WordPress post or page.</p>
-		<h3>Frequently asked questions</h3>
-		<p>A <a href="http://www.sermonbrowser.com/faq/" target="_blank">comprehensive FAQ</a> is available on sermonbrowser.com.</p>
-		<h3>Further help</h3>
-		<p>If you have a problem that the FAQ doesn't answer, or you have a feature suggestion, please use the <a href="http://www.sermonbrowser.com/forum/" target="_blank">SermonBrowser forum</a>.</p>
+		<h3><?php esc_html_e('Templates', 'sermon-browser') ?></h3>
+		<p><?php
+			/* translators: %s: link to the Templates page */
+			printf(esc_html__('The %s page sets how the list of sermons and each sermon\'s page look, using HTML and these template tags. Its help tab lists them too.', 'sermon-browser'), '<a href="'.esc_url(admin_url('admin.php?page=sermon-browser/templates.php')).'">'.esc_html__('Templates', 'sermon-browser').'</a>') ?></p>
+		<?php sb_print_template_tag_help() ?>
+		<h3><?php esc_html_e('Questions and problems', 'sermon-browser') ?></h3>
+		<p><?php
+			/* translators: 1: link to the frequently asked questions, 2: link to report a problem */
+			printf(esc_html__('Answers to common questions are in the readme\'s %1$s. To report a problem or suggest a feature, %2$s.', 'sermon-browser'), '<a href="'.esc_url(SermonBrowser\Plugin::HELP_URL).'">'.esc_html__('frequently asked questions', 'sermon-browser').'</a>', '<a href="'.esc_url(SermonBrowser\Plugin::ISSUES_URL).'">'.esc_html__('open an issue on GitHub', 'sermon-browser').'</a>') ?></p>
 		</div>
-	</form>
+	</div>
 <?php
+}
+
+/**
+* Prints the template tags with their descriptions, grouped by the template they work in
+*/
+function sb_print_template_tag_help() {
+	require_once(SB_INCLUDES_DIR.'/dictionary.php');
+	$results = sb_search_results_dictionary();
+	$single = sb_sermon_page_dictionary();
+	$retired = sb_retired_template_tags();
+	$groups = array(
+		'both' => array(__('Both templates', 'sermon-browser'), array()),
+		'results' => array(__('Search results page only', 'sermon-browser'), array()),
+		'single' => array(__('Sermon page only', 'sermon-browser'), array()),
+	);
+	foreach (sb_template_tag_descriptions() as $tag => $description) {
+		if (isset($results[$tag]) && isset($single[$tag]))
+			$groups['both'][1][$tag] = $description;
+		elseif (isset($results[$tag]))
+			$groups['results'][1][$tag] = $description;
+		else
+			$groups['single'][1][$tag] = $description;
+	}
+	foreach ($groups as $group) {
+		echo '<h4>'.esc_html($group[0])."</h4>\n<dl>\n";
+		foreach ($group[1] as $tag => $description)
+			echo '<dt><code>'.esc_html($tag).'</code></dt><dd>'.esc_html($description)."</dd>\n";
+		echo "</dl>\n";
+	}
+	echo '<p>'.esc_html__('These tags print nothing, because the service that provided their Bible text no longer exists:', 'sermon-browser').' <code>'.esc_html(implode(' ', $retired))."</code></p>\n";
 }
 
 /***************************************
@@ -2616,6 +2664,15 @@ function sb_add_help_tab($screen) {
 		'title' => __('SermonBrowser Help', 'sermon-browser'),
 		'content' => sb_add_contextual_help(''),
 	));
+	if ($_GET['page'] == 'sermon-browser/templates.php') { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- only chooses the pages that get the help tab
+		ob_start();
+		sb_print_template_tag_help();
+		$screen->add_help_tab(array(
+			'id' => 'sermon-browser-template-tags',
+			'title' => __('Template tags', 'sermon-browser'),
+			'content' => ob_get_clean(),
+		));
+	}
 }
 
 function sb_add_contextual_help($help) {
@@ -2628,30 +2685,34 @@ function sb_add_contextual_help($help) {
 		switch (sanitize_text_field(wp_unslash($_GET['page']))) {
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 			case 'sermon-browser/sermon.php':
-				$out .= __('From this page you can edit or delete any of your sermons. The most recent sermons are found at the top. Use the filter options to quickly find the one you want.', 'sermon-browser');
+				$out .= esc_html__('From this page you can edit or delete any of your sermons. The most recent sermons are found at the top. Use the filter options to quickly find the one you want.', 'sermon-browser');
 				break;
 			case 'sermon-browser/new_sermon.php':
+				$out .= esc_html__('Choose the date the sermon was preached: its time comes from the service, unless you override it. Add as many Bible passages and attachments as you need. Tags, separated by commas, let visitors find sermons on a subject.', 'sermon-browser');
+				break;
 			case 'sermon-browser/files.php':
+				$out .= esc_html__('Files in the upload folder are listed here, whether they were uploaded on this page or copied there by FTP. Unlinked files are not attached to a sermon yet: create a sermon from one, or attach it on the Add Sermon page.', 'sermon-browser');
+				break;
 			case 'sermon-browser/preachers.php':
 			case 'sermon-browser/manage.php':
+				$out .= esc_html__('Preachers, series and services can only be deleted once no sermons use them. A service\'s default time is used for its sermons, unless a sermon overrides it.', 'sermon-browser');
+				break;
 			case 'sermon-browser/options.php':
-				$out .= __('It&#146;s important that these options are set correctly, as otherwise SermonBrowser won&#146;t behave as you expect.', 'sermon-browser').'<ul>';
-				$out .= '<li>'.__('The upload folder would normally be <b>wp-content/uploads/sermons</b>', 'sermon-browser').'</li>';
-				$out .= '<li>'.esc_html__('You should only change the public podcast feed if you re-direct your podcast using a service like Feedburner. Otherwise it should be the same as the private podcast feed.', 'sermon-browser').'</li>';
-				$out .= '<li>'.esc_html__('The MP3 shortcode you need will be in the documation of your favourite MP3 plugin. Use the tag %SERMONURL% in place of the URL of the MP3 file (e.g. [haiku url="%SERMONURL%"] or [audio:%SERMONURL%]).', 'sermon-browser').'</li></ul>';
+				$out .= wp_kses_post(__('It&#146;s important that these options are set correctly, as otherwise SermonBrowser won&#146;t behave as you expect.', 'sermon-browser')).'<ul>';
+				$out .= '<li>'.wp_kses_post(__('The upload folder would normally be <b>wp-content/uploads/sermons</b>', 'sermon-browser')).'</li>';
+				$out .= '<li>'.esc_html__('Only change the public podcast feed if your podcast is published through another service. Otherwise it should be the same as the private podcast feed.', 'sermon-browser').'</li>';
+				$out .= '<li>'.esc_html__('The MP3 shortcode shows a player for each MP3. The default, [audio mp3="%SERMONURL%"], uses WordPress\'s own player. To use another player plugin, enter its shortcode, with %SERMONURL% in place of the address of the MP3 file.', 'sermon-browser').'</li></ul>';
 				break;
 			case 'sermon-browser/templates.php':
-				/* translators: the two %s are the start and end of a link to the list of template tags */
-				$out .= sprintf(esc_html__('Template editing is one of the most powerful features of SermonBrowser. Be sure to look at the complete list of %stemplate tags%s.', 'sermon-browser'), '<a href="http://www.sermonbrowser.com/customisation/">', '</a>'); // phpcs:ignore WordPress.WP.I18n.UnorderedPlaceholdersText -- unchanged, so the existing translations still match
+				$out .= esc_html__('The templates set how the list of sermons and each sermon\'s page look. They are HTML, with template tags in square brackets for each part of a sermon: the Template tags tab lists them.', 'sermon-browser');
 				break;
 			case 'sermon-browser/uninstall.php':
 			case 'sermon-browser/help.php':
 		}
 	}
-	$out.= '</p><p><a href="http://www.sermonbrowser.com/tutorials/">'.esc_html__('Tutorial Screencasts', 'sermon-browser').'</a>';
-	$out.= ' | <a href="http://www.sermonbrowser.com/faq/">'.esc_html__('Frequently Asked Questions', 'sermon-browser').'</a>';
-	$out.= ' | <a href="http://www.sermonbrowser.com/forum/">'.esc_html__('Support Forum', 'sermon-browser').'</a>';
-	$out.= ' | <a href="http://www.sermonbrowser.com/customisation/">'.esc_html__('Shortcode syntax', 'sermon-browser').'</a>';
+	$out.= '</p><p><a href="'.esc_url(admin_url('admin.php?page=sermon-browser/help.php')).'">'.esc_html__('Help page', 'sermon-browser').'</a>';
+	$out.= ' | <a href="'.esc_url(SermonBrowser\Plugin::HELP_URL).'">'.esc_html__('Frequently Asked Questions', 'sermon-browser').'</a>';
+	$out.= ' | <a href="'.esc_url(SermonBrowser\Plugin::ISSUES_URL).'">'.esc_html__('Report a problem', 'sermon-browser').'</a>';
 	$out.= '</p></div>';
 	return $out;
 }

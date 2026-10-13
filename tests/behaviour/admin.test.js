@@ -1,10 +1,11 @@
 /**
  * The admin pages' forms that the security tests don't reach: saving a preacher, adding
  * and deleting a sermon, the redirects to the Add Sermon page after an upload or import,
- * and the widget settings forms.
+ * the widget settings forms, and the help.
  */
 import { before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { debugLog, one, php, query, seed } from './lib/wp.js';
 import { Client } from './lib/client.js';
 
@@ -122,6 +123,39 @@ describe( 'the widget settings forms', () => {
 		assert.deepEqual( options, { limit: 3, preacherz: 1, book: 1, preacher: 1, service: 0, series: 0, title: 'Latest "sermons"', date: 0 } );
 		assert.match( html, /name="widget-sermon\[4\]\[title\]" type="text" value="Latest &quot;sermons&quot;"/ );
 		assert.match( html, /<option value="1" selected="selected">Dylan Jones<\/option>/ );
+	} );
+} );
+
+describe( 'the help', () => {
+	const tags = () => php( "require_once SB_INCLUDES_DIR . '/dictionary.php'; return array( 'used' => array_values( array_unique( array_merge( array_keys( sb_search_results_dictionary() ), array_keys( sb_sermon_page_dictionary() ) ) ) ), 'described' => array_keys( sb_template_tag_descriptions() ), 'retired' => sb_retired_template_tags() );" );
+
+	it( 'describes every template tag, or lists it as retired', async () => {
+		const { used, described, retired } = await tags();
+		const opening = used.filter( ( tag ) => ! tag.startsWith( '[/' ) );
+		assert.deepEqual( [ ...described, ...retired ].sort(), opening.sort() );
+	} );
+
+	it( 'lists every template tag in the readme', async () => {
+		const { described, retired } = await tags();
+		const readme = readFileSync( new URL( '../../readme.txt', import.meta.url ), 'utf8' );
+		for ( const tag of [ ...described, ...retired ] ) {
+			assert.ok( readme.includes( tag ), `${ tag } is not in the readme` );
+		}
+	} );
+
+	it( 'shows the template tags on the Help page and in a help tab on the Templates page', async () => {
+		const help = await admin.adminPage( 'help.php' );
+		assert.match( help, /<dt><code>\[sermon_description\]<\/code><\/dt><dd>The sermon&#039;s description\.<\/dd>/ );
+		assert.match( help, /<h3>Questions and problems<\/h3>/ );
+		const templates = await admin.adminPage( 'templates.php' );
+		assert.match( templates, /id="tab-panel-sermon-browser-template-tags"/ );
+		assert.match( templates, /<dt><code>\[most_popular\]<\/code><\/dt>/ );
+	} );
+
+	it( 'no longer links to sermonbrowser.com', async () => {
+		for ( const page of [ 'sermon.php', 'new_sermon.php', 'files.php', 'preachers.php', 'manage.php', 'options.php', 'templates.php', 'uninstall.php', 'help.php' ] ) {
+			assert.doesNotMatch( await admin.adminPage( page ), /sermonbrowser\.com/, page );
+		}
 	} );
 } );
 

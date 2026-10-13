@@ -19,6 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Plugin {
 
 	/**
+	 * Where the plugin lives, its documentation (the readme's FAQ) and its issues.
+	 */
+	const HOME_URL   = 'https://github.com/markbarnes/sermon-browser';
+	const HELP_URL   = self::HOME_URL . '/blob/master/readme.txt';
+	const ISSUES_URL = self::HOME_URL . '/issues';
+
+	/**
 	 * Adds the hooks that start everything else.
 	 */
 	public static function load() {

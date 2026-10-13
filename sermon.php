@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Sermon Browser
-Plugin URI: http://www.sermonbrowser.com/
+Plugin URI: https://github.com/markbarnes/sermon-browser
 Description: Upload sermons to your website, where they can be searched, listened to, and downloaded. Easy to use with comprehensive help and tutorials.
 Author: Mark Barnes
 Text Domain: sermon-browser
-Version: 0.47.0
+Version: 0.47.1
 Author URI: https://www.markbarnes.net/
 Requires at least: 5.8
 Requires PHP: 7.4
@@ -39,7 +39,7 @@ classes/          - Classes (namespace SermonBrowser), loaded by sb_autoload(): 
                     filters, widgets, podcast feed, downloads, stylesheet, Bible text, page head and admin bar.
 admin.php         - The admin pages.
 ajax.php          - Handles the admin pages' AJAX requests.
-dictionary.php    - Compiles the templates' tags into PHP. Used when saving a template.
+dictionary.php    - Compiles the templates' tags into PHP, and describes them for the help. Used when saving a template.
 filetypes.php     - The names, icons and MIME types of the file types sermons may have attached.
 sb-install.php    - Installs the plugin's tables and default settings.
 uninstall.php     - Removes the plugin's tables, options and (if asked) files.
@@ -53,7 +53,7 @@ The sermon list and sermon pages are output by SermonBrowser\Shortcode::render()
 if (!defined('ABSPATH'))
 	exit;
 
-define('SB_CURRENT_VERSION', '0.47.0');
+define('SB_CURRENT_VERSION', '0.47.1');
 define('SB_DATABASE_VERSION', '1.7');
 define('SB_PLUGIN_FILE', __FILE__);
 sb_define_constants();

@@ -56,7 +56,7 @@ describe( 'the sermon list with customised settings', () => {
 		const html = await sermonBrowser();
 		assert.match( html, /<div class="sb-clear">Subscribe to podcast \(<a href="itpc:\/\/[^"]*\/sermons\/\?podcast">iTunes<\/a>, or <a href="http:\/\/[^"]*\/sermons\/\?podcast">other players<\/a>\)<\/div>/ );
 		assert.doesNotMatch( html, /Subscribe to Podcast/ );
-		assert.match( html, /<div id="poweredbysermonbrowser">Powered by <a href="http:\/\/www\.sermonbrowser\.com\/">Sermon Browser<\/a><\/div>/ );
+		assert.match( html, /<div id="poweredbysermonbrowser">Powered by <a href="https:\/\/github\.com\/markbarnes\/sermon-browser">Sermon Browser<\/a><\/div>/ );
 	} );
 
 	it( 'hides sermons without attachments from filtered lists too', async () => {

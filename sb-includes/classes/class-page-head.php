@@ -25,7 +25,7 @@ class Page_Head {
 	public static function add() {
 		global $post, $wpdb;
 		if ( isset( $post->ID ) && $post->ID != '' ) {
-			echo '<!-- Added by SermonBrowser (version ' . esc_html( SB_CURRENT_VERSION ) . ") - http://www.sermonbrowser.com/ -->\r";
+			echo '<!-- Added by SermonBrowser (version ' . esc_html( SB_CURRENT_VERSION ) . ") -->\r";
 			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Sermon podcast', 'sermon-browser' ) . '" href="' . esc_url( sb_get_option( 'podcast_url' ) ) . "\" />\r";
 			wp_enqueue_style( 'sb_style' );
 			$pageid = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE %s AND (post_status = 'publish' OR post_status = 'private') AND ID = %d AND post_date < NOW();", '%' . $wpdb->esc_like( '[sermons' ) . '%', $post->ID ) );
