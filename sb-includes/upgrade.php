@@ -97,20 +97,20 @@ function sb_database_upgrade ($old_version) {
 			update_option('sb_sermon_db_version', '1.4');
 		case '1.4' :
 			//Remove duplicate indexes added by a previous bug
-			$extra_indexes = $wpdb->get_results("SELECT index_name, table_name FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = '".DB_NAME."' AND index_name LIKE 'sermon_id_%'");
+			$extra_indexes = $wpdb->get_results($wpdb->prepare("SELECT index_name, table_name FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = %s AND index_name LIKE %s", DB_NAME, $wpdb->esc_like('sermon_id_').'%'));
 			if (is_array($extra_indexes))
 				foreach ($extra_indexes as $extra_index)
-					$wpdb->query("ALTER TABLE {$extra_index->table_name} DROP INDEX {$extra_index->index_name}");
+					$wpdb->query("ALTER TABLE {$extra_index->table_name} DROP INDEX {$extra_index->index_name}"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- names read from INFORMATION_SCHEMA
 			//Remove duplicate tags added by a previous bug
 			$unique_tags = $wpdb->get_results("SELECT DISTINCT name FROM {$wpdb->prefix}sb_tags");
 			if (is_array($unique_tags)) {
 				foreach ($unique_tags as $tag) {
-					$tag_ids = $wpdb->get_results("SELECT id FROM {$wpdb->prefix}sb_tags WHERE name='{$tag->name}'");
+					$tag_ids = $wpdb->get_results($wpdb->prepare("SELECT id FROM {$wpdb->prefix}sb_tags WHERE name = %s", $tag->name));
 					if (is_array($tag_ids)) {
 						foreach ($tag_ids as $tag_id) {
-							$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons_tags SET tag_id='{$tag_ids[0]->id}' WHERE tag_id='{$tag_id->id}'");
+							$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_sermons_tags SET tag_id = %d WHERE tag_id = %d", $tag_ids[0]->id, $tag_id->id));
 							if ($tag_ids[0]->id != $tag_id->id)
-								$wpdb->query("DELETE FROM {$wpdb->prefix}sb_tags WHERE id='{$tag_id->id}'");
+								$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}sb_tags WHERE id = %d", $tag_id->id));
 						}
 					}
 				}
@@ -136,7 +136,7 @@ function sb_database_upgrade ($old_version) {
 						$sermon_date->datetime = strtotime($service_time[$sermon_date->service_id])-strtotime('00:00')+strtotime($sermon_date->datetime);
 					}
 					$sermon_date->datetime = gmdate("Y-m-d H:i:s", $sermon_date->datetime);
-					$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons SET datetime = '{$sermon_date->datetime}' WHERE id={$sermon_date->id}");
+					$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_sermons SET datetime = %s WHERE id = %d", $sermon_date->datetime, $sermon_date->id));
 				}
 			}
 			sb_update_option('import_prompt', true);

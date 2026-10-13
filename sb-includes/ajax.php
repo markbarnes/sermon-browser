@@ -35,9 +35,9 @@ if (isset($_POST['pname'])) { // preacher
 		sb_ajax_require('manage_categories');
 		$pid = (int) $_POST['pid'];
 		if (isset($_POST['del'])) {
-			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_preachers WHERE id = $pid;");
+			$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}sb_preachers WHERE id = %d;", $pid));
 		} else {
-			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s WHERE id = $pid;", $pname));
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s WHERE id = %d;", $pname, $pid));
 		}
 		echo 'done';
 		die();
@@ -58,14 +58,14 @@ if (isset($_POST['pname'])) { // preacher
 		sb_ajax_require('manage_categories');
 		$sid = (int) $_POST['sid'];
 		if (isset($_POST['del'])) {
-			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_services WHERE id = $sid;");
+			$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}sb_services WHERE id = %d;", $sid));
 		} else {
-			$old_time = $wpdb->get_var("SELECT time FROM {$wpdb->prefix}sb_services WHERE id = $sid;");
+			$old_time = $wpdb->get_var($wpdb->prepare("SELECT time FROM {$wpdb->prefix}sb_services WHERE id = %d;", $sid));
 			if (!$old_time)
 				$old_time = '00:00';
 			$difference = (int) (strtotime($stime) - strtotime($old_time));
-			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_services SET name = %s, time = %s WHERE id = $sid;", $sname, $stime));
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_sermons SET datetime = DATE_ADD(datetime, INTERVAL {$difference} SECOND) WHERE override = 0 AND service_id = $sid;");
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_services SET name = %s, time = %s WHERE id = %d;", $sname, $stime, $sid));
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_sermons SET datetime = DATE_ADD(datetime, INTERVAL %d SECOND) WHERE override = 0 AND service_id = %d;", $difference, $sid));
 		}
 		echo 'done';
 		die();
@@ -81,9 +81,9 @@ if (isset($_POST['pname'])) { // preacher
 		sb_ajax_require('manage_categories');
 		$ssid = (int) $_POST['ssid'];
 		if (isset($_POST['del'])) {
-			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_series WHERE id = $ssid;");
+			$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}sb_series WHERE id = %d;", $ssid));
 		} else {
-			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_series SET name = %s WHERE id = $ssid;", $ssname));
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_series SET name = %s WHERE id = %d;", $ssname, $ssid));
 		}
 		echo 'done';
 		die();
@@ -106,7 +106,7 @@ if (isset($_POST['pname'])) { // preacher
 	if (isset($_POST['del'])) {
 		wp_delete_file($upload_dir.$old_name);
 		if (!file_exists($upload_dir.$old_name)) {
-			$wpdb->query("DELETE FROM {$wpdb->prefix}sb_stuff WHERE id = {$fid};");
+			$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}sb_stuff WHERE id = %d;", $fid));
 			echo 'deleted';
 		} else
 			echo 'failed';
@@ -118,7 +118,7 @@ if (isset($_POST['pname'])) { // preacher
 			die();
 		}
 		if (!file_exists($upload_dir.$fname) && sb_move_file($upload_dir.$old_name, $upload_dir.$fname)) {
-			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET name = %s WHERE id = $fid;", $fname));
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET name = %s WHERE id = %d;", $fname, $fid));
 			echo 'renamed';
 		} else
 			echo 'failed';
@@ -136,10 +136,10 @@ if (isset($_POST['pname'])) { // preacher
 	} else
 		$cond = '';
 	if (!empty($_POST['preacher'])) {
-		$cond .= 'and m.preacher_id = ' . (int) $_POST['preacher'] . ' ';
+		$cond .= $wpdb->prepare('and m.preacher_id = %d ', $_POST['preacher']);
 	}
 	if (!empty($_POST['series'])) {
-		$cond .= 'and m.series_id = ' . (int) $_POST['series'] . ' ';
+		$cond .= $wpdb->prepare('and m.series_id = %d ', $_POST['series']);
 	}
 	$m = $wpdb->get_results("SELECT SQL_CALC_FOUND_ROWS m.id, m.title, m.datetime, p.name as pname, s.name as sname, ss.name as ssname
 	FROM {$wpdb->prefix}sb_sermons as m
@@ -147,7 +147,7 @@ if (isset($_POST['pname'])) { // preacher
 	LEFT JOIN {$wpdb->prefix}sb_services as s ON m.service_id = s.id
 	LEFT JOIN {$wpdb->prefix}sb_series as ss ON m.series_id = ss.id
 	WHERE 1=1 {$cond}
-	ORDER BY m.datetime desc, s.time desc LIMIT {$st}, {$per_page}");
+	ORDER BY m.datetime desc, s.time desc LIMIT {$st}, {$per_page}"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $cond is built with prepare(); $st and $per_page are integers
 
 	$cnt = $wpdb->get_var("SELECT FOUND_ROWS()");
 	$i = 0;
@@ -157,12 +157,12 @@ if (isset($_POST['pname'])) { // preacher
 			<th style="text-align:center" scope="row"><?php echo (int) $sermon->id ?></th>
 			<td><?php echo esc_html(stripslashes($sermon->title)) ?></td>
 			<td><?php echo esc_html(stripslashes($sermon->pname)) ?></td>
-			<td><?php echo ($sermon->datetime == '1970-01-01 00:00:00') ? __('Unknown', 'sermon-browser') : esc_html(date_i18n('d M y', strtotime($sermon->datetime))); ?></td>
+			<td><?php echo ($sermon->datetime == '1970-01-01 00:00:00') ? esc_html__('Unknown', 'sermon-browser') : esc_html(date_i18n('d M y', strtotime($sermon->datetime))); ?></td>
 			<td><?php echo esc_html(stripslashes($sermon->sname)) ?></td>
 			<td><?php echo esc_html(stripslashes($sermon->ssname)) ?></td>
 			<td><?php echo (int) sb_sermon_stats($sermon->id) ?></td>
 			<td style="text-align:center">
-				<a href="<?php echo esc_url(admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}")); ?>"><?php _e('Edit', 'sermon-browser') ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo esc_url(wp_nonce_url(admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"), 'sermon_manage_sermons', 'sermon_manage_sermons_nonce')); ?>"><?php _e('Delete', 'sermon-browser'); ?></a> |
+				<a href="<?php echo esc_url(admin_url("admin.php?page=sermon-browser/new_sermon.php&mid={$sermon->id}")); ?>"><?php esc_html_e('Edit', 'sermon-browser') ?></a> | <a onclick="return confirm('Are you sure?')" href="<?php echo esc_url(wp_nonce_url(admin_url("admin.php?page=sermon-browser/sermon.php&mid={$sermon->id}"), 'sermon_manage_sermons', 'sermon_manage_sermons_nonce')); ?>"><?php esc_html_e('Delete', 'sermon-browser'); ?></a> |
 				<a href="<?php echo esc_url(sb_display_url().sb_query_char(false).'sermon_id='.(int) $sermon->id);?>">View</a>
 			</td>
 		</tr>
@@ -182,10 +182,10 @@ if (isset($_POST['pname'])) { // preacher
 	$per_page = (int) sb_get_option('sermons_per_page');
 	if (isset($_POST['fetchU'])) {
 		$st = max(0, (int) $_POST['fetchU'] - 1);
-		$abc = $wpdb->get_results("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.sermon_id = 0 AND f.type = 'file' ORDER BY f.name LIMIT {$st}, {$per_page}");
+		$abc = $wpdb->get_results($wpdb->prepare("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.sermon_id = 0 AND f.type = 'file' ORDER BY f.name LIMIT %d, %d", $st, $per_page));
 	} elseif (isset($_POST['fetchL'])) {
 		$st = max(0, (int) $_POST['fetchL'] - 1);
-		$abc = $wpdb->get_results("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.sermon_id <> 0 AND f.type = 'file' ORDER BY f.name LIMIT {$st}, {$per_page}");
+		$abc = $wpdb->get_results($wpdb->prepare("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.sermon_id <> 0 AND f.type = 'file' ORDER BY f.name LIMIT %d, %d", $st, $per_page));
 	} else {
 		$s = sanitize_text_field(wp_unslash($_POST['search']));
 		$abc = $wpdb->get_results($wpdb->prepare("SELECT f.*, s.title FROM {$wpdb->prefix}sb_stuff AS f LEFT JOIN {$wpdb->prefix}sb_sermons AS s ON f.sermon_id = s.id WHERE f.name LIKE %s AND f.type = 'file' ORDER BY f.name;", '%'.$wpdb->esc_like($s).'%'));
@@ -195,20 +195,20 @@ if (isset($_POST['pname'])) { // preacher
 ?>
 <?php if (count($abc) >= 1): ?>
 	<?php foreach ($abc as $file): ?>
-		<tr class="file <?php echo (++$i % 2 == 0) ? 'alternate' : '' ?>" id="<?php echo $id_prefix ?>file<?php echo (int) $file->id ?>">
+		<tr class="file <?php echo (++$i % 2 == 0) ? 'alternate' : '' ?>" id="<?php echo esc_attr($id_prefix) ?>file<?php echo (int) $file->id ?>">
 			<th style="text-align:center" scope="row"><?php echo (int) $file->id ?></th>
-			<td id="<?php echo $id_prefix ?><?php echo (int) $file->id ?>"><?php echo esc_html(substr($file->name, 0, strrpos($file->name, '.'))) ?></td>
+			<td id="<?php echo esc_attr($id_prefix) ?><?php echo (int) $file->id ?>"><?php echo esc_html(substr($file->name, 0, strrpos($file->name, '.'))) ?></td>
 			<td style="text-align:center"><?php echo esc_html(sb_file_type_name($file->name, $filetypes)) ?></td>
 			<?php if (!isset($_POST['fetchU'])) { ?><td><?php echo esc_html(stripslashes((string) $file->title)) ?></td><?php } ?>
 			<td style="text-align:center">
-				<?php if (isset($_POST['fetchU'])) { ?><a href="<?php echo esc_url(admin_url("admin.php?page=sermon-browser/new_sermon.php&getid3={$file->id}")); ?>"><?php _e('Create sermon', 'sermon-browser') ?></a> | <?php } ?>
+				<?php if (isset($_POST['fetchU'])) { ?><a href="<?php echo esc_url(admin_url("admin.php?page=sermon-browser/new_sermon.php&getid3={$file->id}")); ?>"><?php esc_html_e('Create sermon', 'sermon-browser') ?></a> | <?php } ?>
 				<?php sb_print_file_actions($file, $id_prefix) ?>
 			</td>
 		</tr>
 	<?php endforeach ?>
 <?php else: ?>
 	<tr>
-		<td><?php _e('No results', 'sermon-browser') ?></td>
+		<td><?php esc_html_e('No results', 'sermon-browser') ?></td>
 	</tr>
 <?php endif ?>
 <?php

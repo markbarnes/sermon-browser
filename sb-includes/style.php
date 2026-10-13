@@ -19,6 +19,6 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MOD
 $expires = 60*60*24*7;
 header("Cache-Control: max-age=".$expires);
 header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
-print (sb_get_option('css_style'));
+print (sb_get_option('css_style')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the stylesheet admins edit on the Templates page, sent as text/css with nosniff
 die();
 ?>

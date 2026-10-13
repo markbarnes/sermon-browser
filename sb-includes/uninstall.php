@@ -15,8 +15,8 @@ if (isset($_POST['wipe'])) {
 $tables = array ('sb_preachers', 'sb_series', 'sb_services', 'sb_sermons', 'sb_stuff', 'sb_books', 'sb_books_sermons', 'sb_sermons_tags', 'sb_tags');
 global $wpdb;
 foreach ($tables as $table)
-	if ($wpdb->get_var("show tables like '{$wpdb->prefix}{$table}'") == $wpdb->prefix.$table)
-		$wpdb->query("DROP TABLE {$wpdb->prefix}{$table}");
+	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($wpdb->prefix.$table))) == $wpdb->prefix.$table)
+		$wpdb->query("DROP TABLE {$wpdb->prefix}{$table}"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange -- the plugin's own tables, listed above
 
 delete_option('sermonbrowser_options');
 $special_options = sb_special_option_names();
@@ -24,9 +24,9 @@ foreach ($special_options as $option)
 	delete_option("sermonbrowser_{$option}");
 
 if (IS_MU) {
-	echo '<div id="message" class="updated fade"><p><b>'.__('All sermon data has been removed.', 'sermon-browser').'</b></div>';
+	echo '<div id="message" class="updated fade"><p><b>'.esc_html__('All sermon data has been removed.', 'sermon-browser').'</b></div>';
 } else {
-	echo '<div id="message" class="updated fade"><p><b>'.__('Uninstall completed. The SermonBrowser plugin has been deactivated.', 'sermon-browser').'</b></div>';
+	echo '<div id="message" class="updated fade"><p><b>'.esc_html__('Uninstall completed. The SermonBrowser plugin has been deactivated.', 'sermon-browser').'</b></div>';
 	$activeplugins = get_option('active_plugins');
 	array_splice($activeplugins, array_search('sermon-browser/sermon.php', $activeplugins), 1 );
 	do_action('deactivate_sermon-browser/sermon.php');

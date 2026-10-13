@@ -2,6 +2,7 @@
 if (!defined('ABSPATH'))
 	exit;
 function sb_install() {
+	// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery -- creating the plugin's own tables, with fixed SQL
 	global $wpdb;
 	$sermonUploadDir = sb_get_default('sermon_path');
 	require_once(SB_INCLUDES_DIR.'/dictionary.php');
@@ -11,7 +12,7 @@ function sb_install() {
 		sb_mkdir(SB_ABSPATH.$sermonUploadDir.'images');
 
 	$table_name = "{$wpdb->prefix}sb_preachers";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
+	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))) != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			name VARCHAR(30) NOT NULL,
@@ -25,7 +26,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_series";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
+	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))) != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			name VARCHAR(255) NOT NULL,
@@ -38,7 +39,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_services";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
+	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))) != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			name VARCHAR(255) NOT NULL,
@@ -53,7 +54,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_sermons";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
+	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))) != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			title VARCHAR(255) NOT NULL,
@@ -73,7 +74,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_books_sermons";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
+	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))) != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			book_name VARCHAR(30) NOT NULL,
@@ -89,7 +90,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_books";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
+	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))) != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			name VARCHAR(30) NOT NULL,
@@ -99,7 +100,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_stuff";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
+	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))) != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT ,
 			type VARCHAR(30) NOT NULL,
@@ -113,7 +114,7 @@ function sb_install() {
 	}
 
 	$table_name = "{$wpdb->prefix}sb_tags";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
+	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))) != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id int(10) NOT NULL auto_increment,
 			name varchar(255) default NULL,
@@ -124,7 +125,7 @@ function sb_install() {
    }
 
 	$table_name = "{$wpdb->prefix}sb_sermons_tags";
-	if ($wpdb->get_var("SHOW TABLES LIKE '{$table_name}'") != $table_name) {
+	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))) != $table_name) {
 		$sql = "CREATE TABLE {$table_name} (
 			id INT(10) NOT NULL AUTO_INCREMENT,
 			sermon_id INT(10) NOT NULL,
@@ -148,7 +149,7 @@ function sb_install() {
 	sb_update_option('single_output', sb_compile_template(sb_default_single_template(), sb_sermon_page_dictionary()));
 	$books = sb_get_default('eng_bible_books');
 	foreach ($books as $book)
-		$wpdb->query("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, '{$book}')");
+		$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_books VALUES (null, %s)", $book));
 	sb_update_option('db_version', SB_DATABASE_VERSION);
 	sb_update_option('filter_type', 'oneclick');
 	sb_update_option('filter_hide', 'hide');
@@ -160,6 +161,7 @@ function sb_install() {
 	sb_update_option('import_comments', false);
 	sb_update_option('import_filename', 'none');
 	sb_update_option('mp3_shortcode', '[audio mp3="%SERMONURL%"]');
+	// phpcs:enable
 }
 
 //Default template for search results

@@ -5,9 +5,9 @@ if (!defined('ABSPATH'))
 //Prints ISO date for podcast
 function sb_print_iso_date($sermon) {
 	if (is_object($sermon)) {
-		echo gmdate('D, d M Y H:i:s O', strtotime($sermon->datetime));
+		echo esc_xml(gmdate('D, d M Y H:i:s O', strtotime($sermon->datetime)));
 	} else
-		echo gmdate('D, d M Y H:i:s O', strtotime($sermon));
+		echo esc_xml(gmdate('D, d M Y H:i:s O', strtotime($sermon)));
 }
 
 //Prints size of file
@@ -25,7 +25,7 @@ function sb_media_size($media_name, $media_type) {
 function sb_mp3_duration($media_name, $media_type) {
 	global $wpdb;
 	if (strtolower(substr($media_name, -3)) == 'mp3' && $media_type == 'Files') {
-		$duration = $wpdb->get_var("SELECT duration FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' AND name = '".esc_sql($media_name)."'");
+		$duration = $wpdb->get_var($wpdb->prepare("SELECT duration FROM {$wpdb->prefix}sb_stuff WHERE type = 'file' AND name = %s", $media_name));
 		if ($duration)
 			return $duration;
 		else {
@@ -35,7 +35,7 @@ function sb_mp3_duration($media_name, $media_type) {
 			$getID3 = new getID3;
 			$MediaFileInfo = $getID3->analyze(SB_ABSPATH.sb_get_option('upload_dir').$media_name);
 			$duration = isset($MediaFileInfo['playtime_string']) ? $MediaFileInfo['playtime_string'] : '';
-			$wpdb->query("UPDATE {$wpdb->prefix}sb_stuff SET duration = '".esc_sql($duration)."' WHERE type = 'file' AND name = '".esc_sql($media_name)."'");
+			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_stuff SET duration = %s WHERE type = 'file' AND name = %s", $duration, $media_name));
 			return $duration;
 		}
 	}
@@ -81,7 +81,7 @@ function sb_mime_type($media_name) {
 	require (SB_INCLUDES_DIR.'/filetypes.php');
 	$extension = strtolower(substr($media_name, strrpos($media_name, '.') + 1));
 	if (array_key_exists ($extension, $filetypes))
-		return ' type="'.$filetypes[$extension]['content-type'].'"';
+		return ' type="'.esc_attr($filetypes[$extension]['content-type']).'"';
 }
 
 $sermons = sb_get_sermons(
@@ -110,11 +110,11 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 ?>
 <rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-	<atom:link href="<?php echo sb_xml_entity_encode(sb_get_option('podcast_url')) ?>" rel="self" type="application/rss+xml" />
-	<title><?php echo sb_xml_entity_encode(get_bloginfo('name')) ?> Podcast</title>
+	<atom:link href="<?php echo sb_xml_entity_encode(sb_get_option('podcast_url')) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by sb_xml_entity_encode() ?>" rel="self" type="application/rss+xml" />
+	<title><?php echo sb_xml_entity_encode(get_bloginfo('name')) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by sb_xml_entity_encode() ?> Podcast</title>
 	<itunes:author></itunes:author>
-	<description><?php echo sb_xml_entity_encode(get_bloginfo('description')) ?></description>
-	<link><?php echo sb_xml_entity_encode(site_url()) ?></link>
+	<description><?php echo sb_xml_entity_encode(get_bloginfo('description')) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by sb_xml_entity_encode() ?></description>
+	<link><?php echo sb_xml_entity_encode(site_url()) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by sb_xml_entity_encode() ?></link>
 	<language>en-us</language>
 	<copyright></copyright>
 	<itunes:explicit>no</itunes:explicit>
@@ -125,7 +125,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 
 	<lastBuildDate><?php sb_print_iso_date(isset($sermons[0]) ? $sermons[0]: time()) ?></lastBuildDate>
 	<pubDate><?php sb_print_iso_date(isset($sermons[0]) ? $sermons[0]: time()) ?></pubDate>
-	<generator>Wordpress Sermon Browser plugin <?php echo SB_CURRENT_VERSION ?> (http://www.sermonbrowser.com/)</generator>
+	<generator>Wordpress Sermon Browser plugin <?php echo esc_xml(SB_CURRENT_VERSION) ?> (http://www.sermonbrowser.com/)</generator>
 	<docs>http://blogs.law.harvard.edu/tech/rss</docs>
 	<category>Religion &amp; Spirituality</category>
 	<itunes:category text="Religion &amp; Spirituality"></itunes:category>
@@ -144,20 +144,20 @@ echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 								$mp3count++;
 ?>
 <item>
-		<guid><?php echo sb_podcast_file_url($media_name, $media_type) ?></guid>
-		<title><?php echo sb_xml_entity_encode(stripslashes($sermon->title)) ?></title>
-		<link><?php echo sb_xml_entity_encode(sb_display_url().sb_query_char(false).'sermon_id='.(int) $sermon->id) ?></link>
-		<itunes:author><?php echo sb_xml_entity_encode(stripslashes($sermon->preacher)) ?></itunes:author>
+		<guid><?php echo sb_podcast_file_url($media_name, $media_type) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by sb_xml_entity_encode() ?></guid>
+		<title><?php echo sb_xml_entity_encode(stripslashes($sermon->title)) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by sb_xml_entity_encode() ?></title>
+		<link><?php echo sb_xml_entity_encode(sb_display_url().sb_query_char(false).'sermon_id='.(int) $sermon->id) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by sb_xml_entity_encode() ?></link>
+		<itunes:author><?php echo sb_xml_entity_encode(stripslashes($sermon->preacher)) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by sb_xml_entity_encode() ?></itunes:author>
 <?php if ($sermon->description) { ?>
-		<description><?php echo sb_xml_cdata(stripslashes($sermon->description)) ?></description>
-		<itunes:summary><?php echo sb_xml_cdata(stripslashes($sermon->description)) ?></itunes:summary>
+		<description><?php echo sb_xml_cdata(stripslashes($sermon->description)) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the sermon description, in a CDATA section ?></description>
+		<itunes:summary><?php echo sb_xml_cdata(stripslashes($sermon->description)) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the sermon description, in a CDATA section ?></itunes:summary>
 <?php } ?>
-		<enclosure url="<?php echo sb_podcast_file_url($media_name, $media_type).'" '.sb_media_size($media_name, $media_type).sb_mime_type($media_name); ?> />
+		<enclosure url="<?php echo sb_podcast_file_url($media_name, $media_type).'" '.sb_media_size($media_name, $media_type).sb_mime_type($media_name); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by sb_xml_entity_encode(), (int) and esc_attr() ?> />
 <?php   $duration = sb_mp3_duration($media_name, $media_type);
 		if ($duration) { ?>
-		<itunes:duration><?php echo sb_xml_entity_encode($duration) ?></itunes:duration>
+		<itunes:duration><?php echo sb_xml_entity_encode($duration) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by sb_xml_entity_encode() ?></itunes:duration>
 <?php } ?>
-		<category><?php echo sb_xml_entity_encode(stripslashes($sermon->service)) ?></category>
+		<category><?php echo sb_xml_entity_encode(stripslashes($sermon->service)) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped for XML by sb_xml_entity_encode() ?></category>
 		<pubDate><?php sb_print_iso_date($sermon) ?></pubDate>
 	</item>
 	<?php
