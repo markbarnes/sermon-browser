@@ -105,6 +105,44 @@ describe( 'filters', () => {
 			await php( "sb_update_option( 'filter_type', 'oneclick' ); return true;" );
 		}
 	} );
+
+	// A preacher's sermons are listed newest first, whichever way the preachers are sorted.
+	for ( const [ sortby, dir, expected ] of [
+		[ 'preacher', 'asc', [ 4, 3, 1, 5, 2 ] ],
+		[ 'preacher', 'desc', [ 2, 3, 1, 5, 4 ] ],
+		[ 'p.name', 'asc', [ 4, 3, 1, 5, 2 ] ],
+		// Bible order of each sermon's first passage; sermons without a passage go last.
+		[ 'passage', 'asc', [ 2, 4, 1, 3, 5 ] ],
+		[ 'passage', 'desc', [ 3, 1, 4, 2, 5 ] ],
+		[ 'b.id', 'asc', [ 2, 4, 1, 3, 5 ] ],
+	] ) {
+		it( `sorts by ${ sortby } (${ dir })`, async () => {
+			const html = await sermonBrowser( `sortby=${ sortby }&dir=${ dir }` );
+			assert.deepEqual( listedTitles( element( html, '<table class="sermons">' ) ), expected );
+		} );
+	}
+
+	it( 'sorts by passage when filtered by book, listing each sermon once', async () => {
+		// Sermon 3's first passage is Romans 5, its second Isaiah 53.
+		const html = await sermonBrowser( 'book=Romans&sortby=passage&dir=desc' );
+		assert.deepEqual( listedTitles( element( html, '<table class="sermons">' ) ), [ 3, 1 ] );
+		const isaiah = await sermonBrowser( 'book=Isaiah&sortby=passage&dir=asc' );
+		assert.deepEqual( listedTitles( element( isaiah, '<table class="sermons">' ) ), [ 3 ] );
+	} );
+
+	it( 'offers sorting by preacher and passage in the drop-down filter, selected when chosen', async () => {
+		await php( "sb_update_option( 'filter_type', 'dropdown' ); return true;" );
+		try {
+			const sortby = ( html ) => element( html, '<select name="sortby" id="sortby">' );
+			const options = [ ...sortby( await sermonBrowser() ).matchAll( /<option value="([^"]*)"/g ) ].map( ( match ) => match[ 1 ] );
+			assert.deepEqual( options, [ 'm.title', 'preacher', 'm.datetime', 'passage' ] );
+			for ( const [ query, selected ] of [ [ 'sortby=preacher', 'preacher' ], [ 'sortby=passage', 'passage' ], [ 'sortby=p.name', 'preacher' ], [ 'sortby=b.id', 'passage' ] ] ) {
+				assert.match( sortby( await sermonBrowser( query ) ), new RegExp( `<option value="${ selected }" selected="selected">` ), query );
+			}
+		} finally {
+			await php( "sb_update_option( 'filter_type', 'oneclick' ); return true;" );
+		}
+	} );
 } );
 
 describe( 'sermon pages', () => {

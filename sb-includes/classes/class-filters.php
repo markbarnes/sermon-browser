@@ -182,14 +182,16 @@ class Filters {
 			$services         = $wpdb->get_results( "SELECT s.*, count(s.id) AS count FROM {$wpdb->prefix}sb_services AS s JOIN {$wpdb->prefix}sb_sermons AS sermons ON s.id = sermons.service_id GROUP BY s.id ORDER BY count DESC, s.name ASC" );
 			$book_count       = $wpdb->get_results( "SELECT bs.book_name AS name, count(distinct bs.sermon_id) AS count FROM {$wpdb->prefix}sb_books_sermons AS bs JOIN {$wpdb->prefix}sb_books AS b ON bs.book_name = b.name GROUP BY b.id ORDER BY b.id" );
 			$sb               = array(
-				__( 'Title', 'sermon-browser' ) => 'm.title',
-				__( 'Date', 'sermon-browser' )  => 'm.datetime',
+				__( 'Title', 'sermon-browser' )    => 'm.title',
+				__( 'Preacher', 'sermon-browser' ) => 'preacher',
+				__( 'Date', 'sermon-browser' )     => 'm.datetime',
+				__( 'Passage', 'sermon-browser' )  => 'passage',
 			);
 			$di               = array(
 				__( 'Ascending', 'sermon-browser' )  => 'asc',
 				__( 'Descending', 'sermon-browser' ) => 'desc',
 			);
-			$csb              = isset( $_REQUEST['sortby'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['sortby'] ) ) : 'm.datetime';
+			$csb              = isset( $_REQUEST['sortby'] ) ? sb_normalise_sortby( sanitize_text_field( wp_unslash( $_REQUEST['sortby'] ) ) ) : 'm.datetime';
 			$cd               = isset( $_REQUEST['dir'] ) ? strtolower( sanitize_text_field( wp_unslash( $_REQUEST['dir'] ) ) ) : '';
 			if ( $cd != 'asc' && $cd != 'desc' ) {
 				$cd = 'desc';

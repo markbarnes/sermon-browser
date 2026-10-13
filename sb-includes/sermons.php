@@ -60,9 +60,23 @@ function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0, $
 	$order = array_merge($default_order, (array)$order);
 	if ( strtolower($order['dir']) != 'desc' and strtolower($order['dir']) != 'asc' )
 		$order['dir'] = $default_order['dir'];
-	$valid_sortby_values = array( 'm.id', 'm.title', 'm.datetime', 'm.start', 'm.end', 'p.id', 'p.name', 's.id', 's.name', 'ss.id', 'ss.name');
+	$order['by'] = sb_normalise_sortby($order['by']);
+	$valid_sortby_values = array( 'm.id', 'm.title', 'm.datetime', 'm.start', 'm.end', 'p.id', 's.id', 's.name', 'ss.id', 'ss.name', 'preacher', 'passage');
 	if ( !in_array($order['by'], $valid_sortby_values) )
 		$order['by'] = $default_order['by'];
+	// Sorting by preacher or passage lists ties newest first; sermons without a passage go last
+	$sort_columns = $sort_join = '';
+	if ($order['by'] == 'preacher') {
+		$order_by = "p.name {$order['dir']}, m.datetime desc";
+	} elseif ($order['by'] == 'passage') {
+		// Sort on each sermon's first passage, joined separately so a book filter can't list a sermon twice
+		$sort_columns = ', (sort_b.id IS NULL) AS sort_no_passage, sort_b.id AS sort_book, sort_bs.chapter AS sort_chapter, sort_bs.verse AS sort_verse';
+		$sort_join = "LEFT JOIN {$wpdb->prefix}sb_books_sermons as sort_bs ON sort_bs.sermon_id = m.id AND sort_bs.order = 0 AND sort_bs.type = 'start'
+		LEFT JOIN {$wpdb->prefix}sb_books as sort_b ON sort_bs.book_name = sort_b.name";
+		$order_by = "sort_no_passage asc, sort_book {$order['dir']}, sort_chapter {$order['dir']}, sort_verse {$order['dir']}, m.datetime desc";
+	} else {
+		$order_by = "{$order['by']} {$order['dir']}";
+	}
 	$page = (int) $page;
 	$cond = '1=1 ';
 	// Text saved by the Add Sermon page is stored with quotes escaped (God\'s), so searches match both forms
@@ -103,7 +117,7 @@ function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0, $
 	$limit = max(1, (int) $limit);
 	$offset = $limit * max(0, $page - 1);
 	// $cond is built from prepared fragments; the ORDER BY column and direction are checked against lists above
-	return "SELECT SQL_CALC_FOUND_ROWS DISTINCT m.id, m.title, m.description, m.datetime, m.time, m.start, m.end, p.id as pid, p.name as preacher, p.description as preacher_description, p.image, s.id as sid, s.name as service, ss.id as ssid, ss.name as series
+	return "SELECT SQL_CALC_FOUND_ROWS DISTINCT m.id, m.title, m.description, m.datetime, m.time, m.start, m.end, p.id as pid, p.name as preacher, p.description as preacher_description, p.image, s.id as sid, s.name as service, ss.id as ssid, ss.name as series{$sort_columns}
 		FROM {$wpdb->prefix}sb_sermons as m
 		LEFT JOIN {$wpdb->prefix}sb_preachers as p ON m.preacher_id = p.id
 		LEFT JOIN {$wpdb->prefix}sb_services as s ON m.service_id = s.id
@@ -113,7 +127,19 @@ function sb_create_multi_sermon_query ($filter, $order, $page = 1, $limit = 0, $
 		LEFT JOIN {$wpdb->prefix}sb_sermons_tags as st ON st.sermon_id = m.id
 		LEFT JOIN {$wpdb->prefix}sb_tags as t ON t.id = st.tag_id
 		LEFT JOIN {$wpdb->prefix}sb_stuff as stuff ON stuff.sermon_id = m.id
-		WHERE {$cond} ORDER BY {$order['by']} {$order['dir']} LIMIT {$offset}, {$limit}";
+		{$sort_join}
+		WHERE {$cond} ORDER BY {$order_by} LIMIT {$offset}, {$limit}";
+}
+
+/**
+* Maps the sort values of old links to the ones the sermon list uses now
+*
+* @param string $sortby
+* @return string
+*/
+function sb_normalise_sortby($sortby) {
+	$old_values = array( 'p.name' => 'preacher', 'b.id' => 'passage' );
+	return isset($old_values[$sortby]) ? $old_values[$sortby] : $sortby;
 }
 
 /**
