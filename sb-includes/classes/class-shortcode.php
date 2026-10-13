@@ -32,7 +32,7 @@ class Shortcode {
 	 * @return string
 	 */
 	public static function render( $atts, $content = null ) {
-		global $wpdb, $record_count;
+		global $record_count;
 		ob_start();
 		$atts = shortcode_atts(
 			array(
@@ -55,9 +55,8 @@ class Shortcode {
 		if ( $atts['id'] != '' ) {
 			if ( strtolower( $atts['id'] ) == 'latest' ) {
 				$atts['id'] = '';
-				$wpdb->query( 'SET SQL_BIG_SELECTS=1' );
-				$query      = $wpdb->get_results( sb_create_multi_sermon_query( $atts, array(), 1, 1 ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- prepared by sb_create_multi_sermon_query()
-				$atts['id'] = $query[0]->id;
+				$latest     = Storage::sermons()->find( sb_sermon_query( $atts, array(), 1, 1 ) )->sermons;
+				$atts['id'] = $latest ? $latest[0]->id : 0;
 			}
 			$sermon = sb_get_single_sermon( (int) $atts['id'] );
 			if ( $sermon ) {

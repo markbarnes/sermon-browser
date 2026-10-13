@@ -262,6 +262,15 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 
 == Changelog ==
 
+= 0.48.0 (unreleased) =
+Sermons are read through one storage layer, the first step towards storing them as WordPress posts.
+
+* **Bug fix:** The page of a sermon whose passages were saved empty by an old version (stored as `null`) stopped with a fatal error on PHP 8.
+* **Bug fix:** `[sermons id="latest"]` printed PHP warnings when no sermon matched its filters.
+* **Change:** Sermon lists sort only by date, title, preacher and passage, the orders the filters offer; links that ask for another column (such as `sortby=s.name`) sort by date.
+* **Change:** Filtering by date leaves out sermons whose date is unknown.
+* **Development:** Sermons are read through a repository (`SermonBrowser\Sermon_Repository`) that returns `SermonBrowser\Sermon` objects, instead of queries spread through the plugin, with PHPUnit contract tests that any storage must pass.
+
 = 0.47.1 (13 October 2026) =
 Restores sorting by preacher and passage, finishes escaping the admin pages, and moves the plugin's help from sermonbrowser.com into the plugin.
 

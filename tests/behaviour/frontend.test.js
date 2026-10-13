@@ -8,7 +8,7 @@
  */
 import { after, before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { debugLog, defaultTemplates, one, php, phpString, seed, setOptions, SITE, useTemplates } from './lib/wp.js';
+import { debugLog, defaultTemplates, one, php, phpString, query, seed, setOptions, SITE, useTemplates } from './lib/wp.js';
 import { Client } from './lib/client.js';
 import { element, matchesSnapshot } from './lib/html.js';
 
@@ -180,6 +180,21 @@ describe( 'sermon pages', () => {
 		const html = await sermonBrowser( 'sermon_id=5' );
 		matchesSnapshot( html, 'sermon-5.html' );
 		assert.match( html, /<h2>Christmas morning: Unto us a child is born <span class="scripture">\(\)<\/span>/ );
+	} );
+
+	// Some sermons saved by old versions store their passages as a serialized null.
+	it( 'shows a sermon whose passages are stored as null like one with none', async () => {
+		await query( "UPDATE wp_sb_sermons SET start = 'N;', end = 'N;' WHERE id = 5" );
+		try {
+			matchesSnapshot( await sermonBrowser( 'sermon_id=5' ), 'sermon-5.html' );
+		} finally {
+			await query( "UPDATE wp_sb_sermons SET start = 'a:0:{}', end = 'a:0:{}' WHERE id = 5" );
+		}
+	} );
+
+	it( 'shows the latest sermon, or says there is none, with [sermons id="latest"]', async () => {
+		assert.match( await php( 'return do_shortcode( \'[sermons id="latest"]\' );' ), /Romans 5: peace with God/ );
+		assert.match( await php( 'return do_shortcode( \'[sermons id="latest" preacher="99"]\' );' ), /No sermons found\./ );
 	} );
 
 	it( 'says when a sermon does not exist', async () => {

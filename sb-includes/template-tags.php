@@ -127,10 +127,6 @@ function sb_build_url($arr, $clear = false) {
 
 // Formats date into words
 function sb_formatted_date ($sermon) {
-	if (isset($sermon->time) && $sermon->time != '')
-		$sermon_time = $sermon->time;
-	else
-		$sermon_time = sb_default_time ($sermon->sid);
 	if ($sermon->datetime == '1970-01-01 00:00:00')
 		return __('Unknown Date', 'sermon-browser');
 	else
