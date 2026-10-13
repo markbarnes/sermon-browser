@@ -62,124 +62,19 @@ function sb_print_most_popular() {
 	SermonBrowser\Widgets\Popular::display($args);
 }
 
-//Downloads external webpage. Used to add Bible passages to sermon page.
-function sb_download_page ($page_url, $headers = array()) {
-	$response = wp_safe_remote_get($page_url, array ('headers' => $headers, 'timeout' => 10));
-	if (is_wp_error($response) || wp_remote_retrieve_response_code($response) != 200)
-		return '';
-	return wp_remote_retrieve_body($response);
-}
-
-// Returns human friendly Bible reference (e.g. John 3:1-16, not John 3:1-John 3:16)
-function sb_tidy_reference ($start, $end, $add_link = FALSE) {
-	if (!is_array($start) || !is_array($end) || !isset($start['book']) || !trim($start['book'])) {
-		return "";
-	}
-	$translated_books = array_combine(sb_get_default('eng_bible_books'), sb_get_default('bible_books'));
-	$start_book = esc_html(isset($translated_books[trim($start['book'])]) ? $translated_books[trim($start['book'])] : trim($start['book']));
-	$end_book = esc_html(isset($translated_books[trim($end['book'])]) ? $translated_books[trim($end['book'])] : trim($end['book']));
-	$start_chapter = (int) $start['chapter'];
-	$end_chapter = (int) $end['chapter'];
-	$start_verse = (int) $start['verse'];
-	$end_verse = (int) $end['verse'];
-	if ($add_link) {
-		$start_book = "<a href=\"".sb_get_book_link(trim($start['book']))."\">{$start_book}</a>";
-		$end_book = "<a href=\"".sb_get_book_link(trim($end['book']))."\">{$end_book}</a>";
-	}
-	if ($start_book == $end_book) {
-		if ($start_chapter == $end_chapter) {
-			if ($start_verse == $end_verse) {
-				$reference = "$start_book $start_chapter:$start_verse";
-			} else {
-				$reference = "$start_book $start_chapter:$start_verse-$end_verse";
-			}
-		} else {
-			 $reference = "$start_book $start_chapter:$start_verse-$end_chapter:$end_verse";
-		}
-	} else {
-		$reference =  "$start_book $start_chapter:$start_verse - $end_book $end_chapter:$end_verse";
-	}
-	return $reference;
-}
-
 //Print unstyled bible passage
 function sb_print_bible_passage ($start, $end) {
-	echo "<p class='bible-passage'>".wp_kses_post(sb_tidy_reference($start, $end))."</p>";
+	echo "<p class='bible-passage'>".wp_kses_post(SermonBrowser\Bible::reference($start, $end))."</p>";
 }
 
 // Returns human friendly Bible reference with link to filter
 function sb_get_books($start, $end) {
-	return sb_tidy_reference ($start, $end, TRUE);
+	return SermonBrowser\Bible::reference($start, $end, TRUE);
 }
 
-//Add Bible text to single sermon page
-//Other versions (KJV, ASV and so on) came from api.preachingcentral.com, which no longer exists, so their template tags print nothing
+//Returns the text of a Bible passage (esv or net) for the single sermon page
 function sb_add_bible_text ($start, $end, $version) {
-	if ($version == 'esv')
-		return sb_add_esv_text ($start, $end);
-	elseif ($version == 'net')
-		return sb_add_net_text ($start, $end);
-	else
-		return '';
-}
-
-//Returns ESV text
-function sb_add_esv_text ($start, $end) {
-	$api_key = sb_get_option('esv_api_key');
-	if ($api_key) {
-		$header = array('Authorization' => 'Token '.$api_key);
-		$esv_url = 'https://api.esv.org/v3/passage/html/?q='.rawurlencode(wp_specialchars_decode(sb_tidy_reference ($start, $end))).'&include-headings=false&include-footnotes=false';
-		$api_body = sb_download_page ($esv_url, $header);
-		$decode = json_decode ($api_body);
-		if (is_object($decode) && isset($decode->passages) && is_array($decode->passages)) {
-			return wp_kses_post(implode ('', $decode->passages));
-		}
-	}
-	return '';
-}
-
-// Converts XML string to object
-function sb_get_xml ($content) {
-	if ($content == '')
-		return false;
-	$previous = libxml_use_internal_errors(true);
-	try {
-		$xml = new SimpleXMLElement($content, LIBXML_NONET);
-	} catch (Exception $e) {
-		$xml = false;
-	}
-	libxml_use_internal_errors($previous);
-	return $xml;
-}
-
-//Returns NET Bible text
-function sb_add_net_text ($start, $end) {
-	$reference = rawurlencode(wp_specialchars_decode(sb_tidy_reference ($start, $end)));
-	$old_chapter = $start['chapter'];
-	// https://labs.bible.org/api_web_service
-	$net_url = "https://labs.bible.org/api/?passage={$reference}&type=xml";
-	$xml = sb_get_xml(sb_download_page($net_url.'&formatting=para'));
-	if (!$xml)
-		return '';
-	$output='';
-	$items = $xml->item;
-	foreach ($items as $item) {
-		if ($item->text != '[[EMPTY]]') {
-			if (substr($item->text, 0, 8) == '<p class') {
-				$paraend = stripos($item->text, '>', 8)+1;
-				$output .= "\n".substr($item->text, 0, $paraend);
-				$item->text = substr ($item->text, $paraend);
-			}
-			if ($old_chapter == $item->chapter) {
-				$output .= " <span class=\"verse-num\">".(int) $item->verse."</span>";
-			} else {
-				$output .= " <span class=\"chapter-num\">".(int) $item->chapter.":".(int) $item->verse."</span> ";
-				$old_chapter = strval($item->chapter);
-			}
-			$output .= 	$item->text;
-		}
-	}
-	return "<div class=\"net\">\r<h2>".sb_tidy_reference ($start, $end)."</h2><p>".wp_kses_post($output)." (<a href=\"https://netbible.org/bible/{$reference}\">NET Bible</a>)</p></div>";
+	return SermonBrowser\Bible::text($start, $end, $version);
 }
 
 //Adds edit sermon link if current user has edit rights
