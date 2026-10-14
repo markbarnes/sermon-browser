@@ -94,6 +94,37 @@ describe( 'the page head', () => {
 	} );
 } );
 
+describe( 'the drop-down filter', () => {
+	it( 'shows the filtered list when its form is submitted', async () => {
+		await php( "sb_update_option( 'filter_type', 'dropdown' ); return true;" );
+		try {
+			const form = element( await page(), '<form method="post" id="sermon-filter"' );
+			const action = form.match( /action="([^"]+)"/ )[ 1 ];
+			// Every field the browser sends: inputs as they are, selects with their selected option.
+			const fields = {};
+			for ( const [ , attributes ] of form.matchAll( /<input([^>]*)>/g ) ) {
+				const name = attributes.match( /name="([^"]+)"/ );
+				if ( name ) {
+					fields[ name[ 1 ] ] = attributes.match( /value="([^"]*)"/ )[ 1 ];
+				}
+			}
+			for ( const [ , name, options ] of form.matchAll( /<select name="([^"]+)"[^>]*>([\s\S]*?)<\/select>/g ) ) {
+				const selected = options.match( /<option value="([^"]*)"[^>]*selected/ ) || options.match( /<option value="([^"]*)"/ );
+				fields[ name ] = selected[ 1 ];
+			}
+			fields.preacher = '4';
+
+			const response = await visitor.request( action, { form: fields } );
+			assert.equal( response.status, 200 );
+			const list = element( response.text, '<div class="sermon-browser' );
+			assert.match( list, /Sermon 6/ );
+			assert.doesNotMatch( list, /Sermon [7-9]|Sermon 1[0-2]/ );
+		} finally {
+			await php( "sb_update_option( 'filter_type', 'oneclick' ); return true;" );
+		}
+	} );
+} );
+
 describe( 'the debug log', () => {
 	it( 'has no PHP errors, warnings or notices from these views', async () => {
 		assert.deepEqual( await debugLog(), [] );

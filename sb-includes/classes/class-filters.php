@@ -262,7 +262,6 @@ class Filters {
 							<td class="field"><input type="submit" class="filter" value="<?php esc_attr_e( 'Filter &raquo;', 'sermon-browser' ); ?>">			</td>
 						</tr>
 					</table>
-					<input type="hidden" name="page" value="1">
 				</div>
 			</form>
 		</div>
