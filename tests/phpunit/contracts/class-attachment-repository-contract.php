@@ -35,9 +35,26 @@ abstract class Attachment_Repository_Contract extends WP_UnitTestCase {
 	 */
 	abstract protected function writer();
 
+	/**
+	 * For 'sermons', 'preachers', 'series' and 'services', each fixture id => the id it was stored with.
+	 *
+	 * @var array[]
+	 */
+	private $stored;
+
 	public function set_up() {
 		parent::set_up();
-		$this->writer()->write( require dirname( __DIR__ ) . '/fixtures/sermons.php' );
+		$this->stored = $this->writer()->write( require dirname( __DIR__ ) . '/fixtures/sermons.php' );
+	}
+
+	/**
+	 * Returns a fixture sermon from the sermon repository.
+	 *
+	 * @param int $id The fixture's id.
+	 * @return SermonBrowser\Sermon|null
+	 */
+	private function sermon( $id ) {
+		return $this->sermons()->get( $this->stored['sermons'][ $id ] );
 	}
 
 	public function test_find_returns_a_file_or_url_by_what_it_holds() {
@@ -47,7 +64,7 @@ abstract class Attachment_Repository_Contract extends WP_UnitTestCase {
 		$this->assertInstanceOf( Attachment::class, $file );
 		$this->assertSame( array( Attachment::FILE, '2026-03-01-faith-and-works.mp3', 5, '34:12' ), array( $file->type, $file->content, $file->downloads, $file->duration ) );
 		$this->assertSame( array( Attachment::URL, 2 ), array( $url->type, $url->downloads ) );
-		$this->assertSame( $this->sermons()->get( 1 )->attachments[2]->id, $file->id );
+		$this->assertSame( $this->sermon( 1 )->attachments[2]->id, $file->id );
 	}
 
 	public function test_find_returns_files_attached_to_no_sermon() {
@@ -66,16 +83,16 @@ abstract class Attachment_Repository_Contract extends WP_UnitTestCase {
 		$this->repository()->record_download( $this->repository()->find( Attachment::FILE, '2026-03-08-peace-with-god.mp3' ) );
 		$this->repository()->record_download( $this->repository()->find( Attachment::FILE, '2026-03-08-peace-with-god.mp3' ) );
 
-		$this->assertSame( 6, $this->sermons()->get( 1 )->attachments[2]->downloads );
-		$this->assertSame( 2, $this->sermons()->get( 1 )->attachments[1]->downloads );
-		$this->assertSame( 2, $this->sermons()->get( 3 )->attachments[0]->downloads );
+		$this->assertSame( 6, $this->sermon( 1 )->attachments[2]->downloads );
+		$this->assertSame( 2, $this->sermon( 1 )->attachments[1]->downloads );
+		$this->assertSame( 2, $this->sermon( 3 )->attachments[0]->downloads );
 	}
 
 	public function test_set_duration_keeps_an_mp3s_length() {
 		$this->repository()->set_duration( $this->repository()->find( Attachment::FILE, '2026-03-08-peace-with-god.mp3' ), '41:07' );
 
 		$this->assertSame( '41:07', $this->repository()->find( Attachment::FILE, '2026-03-08-peace-with-god.mp3' )->duration );
-		$this->assertSame( '41:07', $this->sermons()->get( 3 )->attachments[0]->duration );
+		$this->assertSame( '41:07', $this->sermon( 3 )->attachments[0]->duration );
 		$this->assertSame( '34:12', $this->repository()->find( Attachment::FILE, '2026-03-01-faith-and-works.mp3' )->duration );
 	}
 }

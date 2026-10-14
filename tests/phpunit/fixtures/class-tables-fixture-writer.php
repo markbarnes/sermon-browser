@@ -13,9 +13,10 @@
 class Tables_Fixture_Writer implements Fixture_Writer {
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} The tables keep the fixtures' ids.
 	 *
 	 * @param array $fixtures As tests/phpunit/fixtures/sermons.php returns.
+	 * @return array[] Each fixture id => itself.
 	 */
 	public function write( array $fixtures ) {
 		global $wpdb;
@@ -74,6 +75,15 @@ class Tables_Fixture_Writer implements Fixture_Writer {
 				$this->attach( $id, $attachment );
 			}
 		}
+		$same = function ( $records ) {
+			return array_combine( array_keys( $records ), array_keys( $records ) );
+		};
+		return array(
+			'sermons'   => $same( $fixtures['sermons'] ),
+			'preachers' => $same( $fixtures['preachers'] ),
+			'series'    => $same( $fixtures['series'] ),
+			'services'  => $same( $fixtures['services'] ),
+		);
 	}
 
 	/**
