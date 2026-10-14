@@ -67,6 +67,8 @@ class Plugin {
 			load_plugin_textdomain( 'sermon-browser', false, dirname( plugin_basename( SB_PLUGIN_FILE ) ) . '/sb-includes' ); // phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- the translations bundled in sb-includes
 		}
 
+		Post_Types::register();
+
 		if ( defined( 'WPLANG' ) && WPLANG != '' ) {
 			setlocale( LC_ALL, WPLANG . '.UTF-8' );
 		}

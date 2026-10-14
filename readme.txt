@@ -273,6 +273,7 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 
 = Unreleased =
 * **Bug fix:** The drop-down filter's Filter button showed "Page not found" instead of the filtered sermons. Its form sent a hidden `page` field the plugin never used, which WordPress 5.5 and later treat as a request for a page of a post split into pages.
+* **Development:** Registers a post type, `sb_sermon`, and taxonomies (`sb_preacher`, `sb_series`, `sb_service`, `sb_sermon_tag`, `sb_bible_book`), which sermons will be stored in instead of the plugin's own tables. They are hidden and unused for now: no pages, admin screens, REST routes or rewrite rules.
 
 = 0.49.1 (13 October 2026) =
 * **Change:** The date fields in the drop-down filter and on the Add Sermon page use the browser's own date picker, instead of a bundled script from 2006 and its stylesheet.
