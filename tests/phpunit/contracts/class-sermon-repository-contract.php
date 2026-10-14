@@ -151,7 +151,7 @@ abstract class Sermon_Repository_Contract extends WP_UnitTestCase {
 		$this->assertSame( 'Europe/London', $sermon->date->getTimezone()->getName() );
 		$this->assertSame( '', $sermon->time );
 
-		$this->assertSame( array( 1, 'Dylan Jones', '<p>Pastor since 2015.</p>', 'profile.jpg' ), array( $this->fixture( 'preachers', $sermon->preacher->id ), $sermon->preacher->name, $sermon->preacher->description, $sermon->preacher->image ) );
+		$this->assertSame( array( 1, 'Dylan Jones', 'Pastor <em>since</em> 2015.', 'profile.jpg' ), array( $this->fixture( 'preachers', $sermon->preacher->id ), $sermon->preacher->name, $sermon->preacher->description, $sermon->preacher->image ) );
 		$this->assertSame( array( 1, 'Romans' ), array( $this->fixture( 'series', $sermon->series->id ), $sermon->series->name ) );
 		$this->assertSame( array( 1, 'Sunday Morning', '10:30' ), array( $this->fixture( 'services', $sermon->service->id ), $sermon->service->name, $sermon->service->time ) );
 		$this->assertEquals( array( new Passage( new Verse( 'Romans', 3, 21 ), new Verse( 'Romans', 3, 31 ) ) ), $sermon->passages );

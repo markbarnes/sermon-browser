@@ -11,7 +11,7 @@
 
 return array(
 	'preachers' => array(
-		1 => array( 'Dylan Jones', '<p>Pastor since 2015.</p>', 'profile.jpg' ),
+		1 => array( 'Dylan Jones', 'Pastor <em>since</em> 2015.', 'profile.jpg' ),
 		2 => array( 'Rhiannon Llŷr', '', '' ),
 		3 => array( "Aled O'Brien", '', '' ),
 	),

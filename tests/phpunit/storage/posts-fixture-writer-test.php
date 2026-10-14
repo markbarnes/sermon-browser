@@ -114,8 +114,7 @@ class Posts_Fixture_Writer_Test extends WP_UnitTestCase {
 
 	public function test_stores_a_preachers_description_and_image_and_a_services_time() {
 		$preacher = get_term( $this->stored['preachers'][1] );
-		// WordPress keeps only basic inline tags in a term's description.
-		$this->assertSame( 'Pastor since 2015.', $preacher->description );
+		$this->assertSame( 'Pastor <em>since</em> 2015.', $preacher->description );
 		$this->assertSame( 'profile.jpg', get_term_meta( $preacher->term_id, 'sb_image', true ) );
 		$this->assertSame( '9:30', get_term_meta( $this->stored['services'][3], 'sb_time', true ) );
 	}
