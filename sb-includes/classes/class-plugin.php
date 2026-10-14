@@ -34,6 +34,9 @@ class Plugin {
 		add_action( 'widgets_init', array( Widgets\Recent_Sermons::class, 'register' ) );
 		add_action( 'widgets_init', array( Widgets\Tag_Cloud::class, 'register' ) );
 		add_action( 'widgets_init', array( Widgets\Popular::class, 'register' ) );
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			\WP_CLI::add_command( 'sermon-browser', CLI_Command::class );
+		}
 	}
 
 	/**

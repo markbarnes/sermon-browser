@@ -98,4 +98,45 @@ class Post_Types {
 			);
 		}
 	}
+
+	/**
+	 * Deletes every sermon, link and term in the post types and taxonomies, and the media library's
+	 * records of sermon files (attachments with a download count), leaving the files themselves.
+	 */
+	public static function delete_all() {
+		global $wpdb;
+		$keep_files = function () {
+			return '';
+		};
+		add_filter( 'wp_delete_file', $keep_files );
+		try {
+			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- finds the plugin's attachments by meta, which WP_Query would load in full
+			$posts = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT ID FROM {$wpdb->posts} WHERE post_type IN (%s, %s)
+					UNION SELECT p.ID FROM {$wpdb->posts} AS p JOIN {$wpdb->postmeta} AS pm ON pm.post_id = p.ID AND pm.meta_key = 'sb_downloads' WHERE p.post_type = 'attachment'",
+					self::SERMON,
+					self::LINK
+				)
+			);
+			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			foreach ( $posts as $id ) {
+				wp_delete_post( (int) $id, true );
+			}
+			foreach ( array( self::PREACHER, self::SERIES, self::SERVICE, self::TAG, self::BOOK ) as $taxonomy ) {
+				$terms = get_terms(
+					array(
+						'taxonomy'   => $taxonomy,
+						'hide_empty' => false,
+						'fields'     => 'ids',
+					)
+				);
+				foreach ( $terms as $term ) {
+					wp_delete_term( $term, $taxonomy );
+				}
+			}
+		} finally {
+			remove_filter( 'wp_delete_file', $keep_files );
+		}
+	}
 }

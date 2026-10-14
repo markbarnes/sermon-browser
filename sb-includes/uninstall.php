@@ -19,6 +19,9 @@ foreach ($tables as $table)
 	if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($wpdb->prefix.$table))) == $wpdb->prefix.$table)
 		$wpdb->query("DROP TABLE {$wpdb->prefix}{$table}"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange -- the plugin's own tables, listed above
 
+// Sermons copied to posts and terms; files are deleted above only if asked
+SermonBrowser\Post_Types::delete_all();
+
 delete_option('sermonbrowser_options');
 $special_options = sb_special_option_names();
 foreach ($special_options as $option)
