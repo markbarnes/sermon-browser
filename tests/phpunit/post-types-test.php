@@ -52,6 +52,18 @@ class Post_Types_Test extends WP_UnitTestCase {
 		$this->assertFalse( $post_type->can_export );
 	}
 
+	public function test_registers_a_post_type_for_links_and_embeds_hidden_like_sermons() {
+		$this->assertSame( 'sb_link', Post_Types::LINK );
+		$sermon = get_post_type_object( Post_Types::SERMON );
+		$link   = get_post_type_object( Post_Types::LINK );
+		$this->assertNotNull( $link );
+		foreach ( array( 'public', 'publicly_queryable', 'exclude_from_search', 'show_ui', 'show_in_menu', 'show_in_nav_menus', 'show_in_admin_bar', 'show_in_rest', 'query_var', 'rewrite', 'has_archive', 'can_export', 'delete_with_user' ) as $setting ) {
+			$this->assertSame( $sermon->$setting, $link->$setting, $setting );
+		}
+		$this->assertFalse( is_post_type_viewable( $link ) );
+		$this->assertSame( array(), get_object_taxonomies( Post_Types::LINK ) );
+	}
+
 	public function test_keeps_sermons_when_their_author_is_deleted() {
 		$author = self::factory()->user->create( array( 'role' => 'author' ) );
 		$sermon = self::factory()->post->create(
@@ -89,6 +101,7 @@ class Post_Types_Test extends WP_UnitTestCase {
 		foreach ( array_merge( array( Post_Types::SERMON ), self::taxonomies() ) as $name ) {
 			$this->assertStringNotContainsString( $name, $rules );
 		}
+		$this->assertStringNotContainsString( Post_Types::LINK, $rules );
 	}
 
 	public function test_stores_sermons_with_their_terms() {

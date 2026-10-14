@@ -1,6 +1,6 @@
 <?php
 /**
- * The sermon post type and its taxonomies.
+ * The post types and taxonomies sermons are stored in.
  *
  * @package SermonBrowser
  */
@@ -12,16 +12,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Registers the post type and taxonomies that sermons will be stored in instead of the plugin's
- * tables. Until the plugin reads from them they are hidden: no pages, feeds, admin screens,
- * REST routes or rewrite rules, so registering them changes nothing a visitor or editor sees.
+ * Registers the post types and taxonomies that sermons will be stored in instead of the plugin's
+ * tables: sermons, with preachers, series, services, tags and Bible books as taxonomies; a sermon's
+ * files as media library attachments; and its URLs and embed code as links, a post type of their own
+ * whose posts are children of the sermon. Until the plugin reads from them they are hidden: no pages,
+ * feeds, admin screens, REST routes or rewrite rules, so registering them changes nothing a visitor
+ * or editor sees.
  */
 class Post_Types {
 
 	/**
-	 * The post type's and taxonomies' names, prefixed so they can't clash with other plugins'.
+	 * The post types' and taxonomies' names, prefixed so they can't clash with other plugins'.
 	 */
 	const SERMON   = 'sb_sermon';
+	const LINK     = 'sb_link';
 	const PREACHER = 'sb_preacher';
 	const SERIES   = 'sb_series';
 	const SERVICE  = 'sb_service';
@@ -29,32 +33,38 @@ class Post_Types {
 	const BOOK     = 'sb_bible_book';
 
 	/**
-	 * Registers the post type and its taxonomies. Runs on init, after the translations are loaded.
+	 * Registers the post types and taxonomies. Runs on init, after the translations are loaded.
 	 */
 	public static function register() {
-		register_post_type(
-			self::SERMON,
-			array(
-				'labels'              => array(
-					'name'          => __( 'Sermons', 'sermon-browser' ),
-					'singular_name' => __( 'Sermon', 'sermon-browser' ),
-				),
-				'public'              => false,
-				'publicly_queryable'  => false,
-				'exclude_from_search' => true,
-				'show_ui'             => false,
-				'show_in_menu'        => false,
-				'show_in_nav_menus'   => false,
-				'show_in_admin_bar'   => false,
-				'show_in_rest'        => false,
-				'query_var'           => false,
-				'rewrite'             => false,
-				'has_archive'         => false,
-				'can_export'          => false,
-				'delete_with_user'    => false,
-				'supports'            => array( 'title', 'editor' ),
-			)
+		$post_types = array(
+			self::SERMON => array( __( 'Sermons', 'sermon-browser' ), __( 'Sermon', 'sermon-browser' ) ),
+			self::LINK   => array( __( 'Sermon links', 'sermon-browser' ), __( 'Sermon link', 'sermon-browser' ) ),
 		);
+		foreach ( $post_types as $post_type => $labels ) {
+			register_post_type(
+				$post_type,
+				array(
+					'labels'              => array(
+						'name'          => $labels[0],
+						'singular_name' => $labels[1],
+					),
+					'public'              => false,
+					'publicly_queryable'  => false,
+					'exclude_from_search' => true,
+					'show_ui'             => false,
+					'show_in_menu'        => false,
+					'show_in_nav_menus'   => false,
+					'show_in_admin_bar'   => false,
+					'show_in_rest'        => false,
+					'query_var'           => false,
+					'rewrite'             => false,
+					'has_archive'         => false,
+					'can_export'          => false,
+					'delete_with_user'    => false,
+					'supports'            => array( 'title', 'editor' ),
+				)
+			);
+		}
 
 		$taxonomies = array(
 			self::PREACHER => array( __( 'Preachers', 'sermon-browser' ), __( 'Preacher', 'sermon-browser' ) ),
