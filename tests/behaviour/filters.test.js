@@ -1,8 +1,8 @@
 /**
  * The sermon list's filters in the cases the seed alone doesn't reach: a filter line
  * long enough to fold the rest behind "more", dates within one year (listed by month),
- * several filters at once, the drop-down filter's year, pinned preachers, and what the
- * filters add to the page's head (the filtered feed's link).
+ * several filters at once, the drop-down filter's year and how its menus narrow, pinned
+ * preachers, and what the filters add to the page's head (the filtered feed's link).
  *
  * Adds seven preachers with a sermon each in April and May 2026, and removes the 2025
  * sermon, so every sermon is in 2026.
@@ -126,6 +126,25 @@ describe( 'the drop-down filter', () => {
 		} finally {
 			await query( 'DELETE FROM {prefix}sb_sermons WHERE id = 90' );
 		}
+	} ) );
+
+	it( 'narrows each menu to the sermons the other menus choose, keeping its own alternatives', () => dropdown( async () => {
+		const options = ( form, name ) => [ ...element( form, `<select name="${ name }"` ).matchAll( /<option value="([^"]*)"[^>]*>([^<]*)</g ) ].map( ( match ) => [ match[ 1 ], match[ 2 ] ] );
+		const all = element( await filters(), '<form method="get" id="sermon-filter"' );
+		const form = element( await filters( 'preacher=4' ), '<form method="get" id="sermon-filter"' );
+		// Preacher 4's one sermon is in 2026, in the first series and service.
+		assert.deepEqual( options( form, 'sermon_year' ), [ [ '', '[All]' ], [ '2026', '2026 (1)' ] ] );
+		assert.equal( options( form, 'series' ).length, 2 );
+		assert.equal( options( form, 'service' ).length, 2 );
+		// The preacher menu counts without its own choice, so it still offers every preacher.
+		assert.deepEqual( options( form, 'preacher' ), options( all, 'preacher' ) );
+		assert.match( form, /<option value="4" selected="selected">Preacher 4 \(1\)/ );
+	} ) );
+
+	it( 'keeps a choice that no sermon matches alongside the others, counting 0', () => dropdown( async () => {
+		const form = element( await filters( 'preacher=4&sermon_year=2024' ), '<form method="get" id="sermon-filter"' );
+		assert.match( form, /<option value="4" selected="selected">Preacher 4 \(0\)/ );
+		assert.match( form, /<option value="2024" selected="selected">2024 \(0\)/ );
 	} ) );
 
 	it( 'has a "Show filter" link only when the filter starts hidden', async () => {

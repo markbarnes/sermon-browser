@@ -171,13 +171,13 @@ class Filters {
 		} elseif ( $filter['filter'] == 'dropdown' ) {
 			// Drop-down filter
 			$translated_books = array_combine( sb_get_default( 'eng_bible_books' ), sb_get_default( 'bible_books' ) );
-			$facets           = Storage::sermons()->facets( new Sermon_Query() );
-			$preachers        = self::pinned_first( $facets->preachers );
-			$series           = $facets->series;
-			$services         = $facets->services;
-			$book_count       = $facets->books;
-			$years            = self::years( $facets->dates );
+			$facets           = self::menu_facets( $filter );
 			$current_year     = Sermon_Query::year_from_request();
+			$preachers        = self::pinned_first( self::with_chosen( $facets['preacher']->preachers, 'preacher' ) );
+			$series           = self::with_chosen( $facets['series']->series, 'series' );
+			$services         = self::with_chosen( $facets['service']->services, 'service' );
+			$book_count       = self::with_chosen( $facets['book']->books, 'book' );
+			$years            = self::years( $facets['year']->dates );
 			$sb               = array(
 				__( 'Title', 'sermon-browser' )    => 'm.title',
 				__( 'Preacher', 'sermon-browser' ) => 'preacher',
@@ -192,6 +192,11 @@ class Filters {
 			$cd               = isset( $_REQUEST['dir'] ) ? strtolower( sanitize_text_field( wp_unslash( $_REQUEST['dir'] ) ) ) : '';
 			if ( $cd != 'asc' && $cd != 'desc' ) {
 				$cd = 'desc';
+			}
+			// Like the other menus, the year menu keeps a year no sermon matches alongside the other choices.
+			if ( $current_year && ! isset( $years[ $current_year ] ) ) {
+				$years[ $current_year ] = 0;
+				krsort( $years );
 			}
 			?>
 		<?php if ( $hide_filter ) : ?>
@@ -291,6 +296,76 @@ class Filters {
 		</script>
 	<?php // The tab before this tag is printed, as it always was.
 		}
+	}
+
+	/**
+	 * Returns the sermons each drop-down menu counts: those matching the choices in the other menus (and the keywords),
+	 * so choosing in one menu narrows the others, while each menu still offers the alternatives to its own choice.
+	 *
+	 * Menus whose queries are the same share one set of counts, so a list with no filter counts once.
+	 *
+	 * @param array $filter The shortcode's attributes, with the current filters.
+	 * @return Sermon_Facets[] Keyed by preacher, series, service, book and year.
+	 */
+	private static function menu_facets( array $filter ) {
+		$menus  = array(
+			'preacher' => array( 'preacher' => 0 ),
+			'series'   => array( 'series' => 0 ),
+			'service'  => array( 'service' => 0 ),
+			'book'     => array( 'book' => '' ),
+			'year'     => array(
+				'date'    => '',
+				'enddate' => '',
+			),
+		);
+		$counts = array();
+		$facets = array();
+		foreach ( $menus as $menu => $cleared ) {
+			$query                   = Sermon_Query::from_filters( array_merge( $filter, $cleared, array( 'id' => 0 ) ) );
+			$query->with_attachments = (bool) sb_get_option( 'hide_no_attachments' );
+			$key                     = md5( serialize( $query ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize -- a cache key only
+			if ( ! isset( $counts[ $key ] ) ) {
+				$counts[ $key ] = Storage::sermons()->facets( $query );
+			}
+			$facets[ $menu ] = $counts[ $key ];
+		}
+		return $facets;
+	}
+
+	/**
+	 * Returns a menu's choices, adding the one the request asks for with a count of 0 when no sermon matches it
+	 * alongside the other menus' choices (a link to an empty list), so the menu still shows what was chosen.
+	 *
+	 * @param Facet[] $items Choices with sermons.
+	 * @param string  $field preacher, series, service or book.
+	 * @return Facet[]
+	 */
+	private static function with_chosen( array $items, $field ) {
+		$chosen = isset( $_REQUEST[ $field ] ) && is_string( $_REQUEST[ $field ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ $field ] ) ) : '';
+		if ( 'book' !== $field ) {
+			$chosen = (int) $chosen;
+		}
+		if ( ! $chosen ) {
+			return $items;
+		}
+		foreach ( $items as $item ) {
+			if ( ( 'book' === $field ? $item->name : $item->id ) === $chosen ) {
+				return $items;
+			}
+		}
+		$all = array(
+			'preacher' => 'preachers',
+			'series'   => 'series',
+			'service'  => 'services',
+			'book'     => 'books',
+		);
+		foreach ( Storage::sermons()->facets( new Sermon_Query() )->{ $all[ $field ] } as $item ) {
+			if ( ( 'book' === $field ? $item->name : $item->id ) === $chosen ) {
+				$items[] = new Facet( $item->id, $item->name, 0 );
+				break;
+			}
+		}
+		return $items;
 	}
 
 	/**
