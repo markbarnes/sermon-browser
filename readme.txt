@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.49.2
+Stable tag: 0.49.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -248,6 +248,9 @@ The tags for other Bible versions (`[kjvtext]`, `[asvtext]`, `[ylttext]`, `[webt
 
 == Upgrade Notice ==
 
+= 0.49.3 =
+The drop-down filter chooses a year instead of start and end dates, and preachers can be pinned to the top of the filter.
+
 = 0.49.2 =
 Fixes the drop-down filter, whose button showed "Page not found". Filtered lists now have their own address.
 
@@ -273,6 +276,10 @@ Fixes NET Bible text and searching for titles with apostrophes, and removes Bibl
 Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update as soon as possible.
 
 == Changelog ==
+
+= 0.49.3 (26 November 2026) =
+* **Change:** The drop-down filter has a Year menu, listing each year with sermons and how many, instead of start and end date fields. Addresses with `date` and `enddate` still work, and win over a year.
+* **New:** A preacher can be pinned to the top of the filter (Preachers → Edit → "Pin to the top of the filter"), ahead of preachers with more sermons. The Preachers page marks pinned preachers.
 
 = 0.49.2 (26 November 2026) =
 * **Bug fix:** The drop-down filter's button showed "Page not found" instead of the sermons. It sent a `page` field, which WordPress read as its own page number.
