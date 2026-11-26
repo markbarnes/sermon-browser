@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.49.1
+Stable tag: 0.49.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -248,6 +248,9 @@ The tags for other Bible versions (`[kjvtext]`, `[asvtext]`, `[ylttext]`, `[webt
 
 == Upgrade Notice ==
 
+= 0.49.2 =
+Fixes the drop-down filter, whose button showed "Page not found". Filtered lists now have their own address.
+
 = 0.49.1 =
 Date fields use the browser's own date picker; two old bundled scripts are removed.
 
@@ -274,9 +277,14 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 = Unreleased =
 * **New:** WP-CLI commands to copy sermons, preachers, series, services and attachments from the plugin's tables to WordPress posts and terms, ahead of the plugin storing them there: `wp sermon-browser migrate` (with `--dry-run` to see what it would do) and `wp sermon-browser verify`. The tables are only read, and the site keeps showing sermons from them. Running it again brings the copy up to date. Files stay where they are, registered in the media library.
 * **Change:** Uninstalling also removes the copied posts and terms (files stay unless you choose to remove them).
-* **Bug fix:** The drop-down filter's Filter button showed "Page not found" instead of the filtered sermons. Its form sent a hidden `page` field the plugin never used, which WordPress 5.5 and later treat as a request for a page of a post split into pages.
 * **Development:** Registers post types, `sb_sermon` and `sb_link` (a sermon's URLs and embed code), and taxonomies (`sb_preacher`, `sb_series`, `sb_service`, `sb_sermon_tag`, `sb_bible_book`), which sermons will be stored in instead of the plugin's own tables. They are hidden and unused for now: no pages, admin screens, REST routes or rewrite rules. `SermonBrowser\Verse::key()` gives a verse as a number in Bible order (Romans 3:21 is 45003021), and `Verse::from_key()` turns it back.
 * **Development:** `SermonBrowser\Storage\Posts\Sermon_Repository` and `Attachment_Repository` read published sermons, their files (media library attachments in the upload folder) and their URLs and embed code from the post types, passing the same tests as the repositories that read the plugin's tables. The plugin doesn't use them yet.
+
+= 0.49.2 (26 November 2026) =
+* **Bug fix:** The drop-down filter's button showed "Page not found" instead of the sermons. It sent a `page` field, which WordPress read as its own page number.
+* **Change:** The drop-down filter puts the choices in the page's address, so a filtered list can be bookmarked or shared, and Back returns to it.
+* **Change:** Each field of the drop-down filter has a label that screen readers announce, and each cell an `sb-filter-{field}` class for themes. "Services" is now "Service".
+* **Change:** The "Show filter" link is printed only when the filter starts hidden. Otherwise it was an empty link that keyboard users could still reach.
 
 = 0.49.1 (13 October 2026) =
 * **Change:** The date fields in the drop-down filter and on the Add Sermon page use the browser's own date picker, instead of a bundled script from 2006 and its stylesheet.

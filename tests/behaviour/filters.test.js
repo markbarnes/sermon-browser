@@ -61,6 +61,62 @@ describe( 'the one-click filter', () => {
 	} );
 } );
 
+describe( 'the drop-down filter', () => {
+	const dropdown = async ( callback, hide = true ) => {
+		await php( `sb_update_option( 'filter_type', 'dropdown' ); sb_update_option( 'filter_hide', ${ hide ? "'hide'" : 'false' } ); return true;` );
+		try {
+			await callback();
+		} finally {
+			await php( "sb_update_option( 'filter_type', 'oneclick' ); sb_update_option( 'filter_hide', 'hide' ); return true;" );
+		}
+	};
+
+	it( 'is a GET form with a label for every field', () => dropdown( async () => {
+		const form = element( await filters(), '<form method="get" id="sermon-filter"' );
+		for ( const field of [ 'preacher', 'service', 'book', 'series', 'date', 'enddate', 'title', 'sortby', 'dir' ] ) {
+			assert.match( form, new RegExp( `<td class="fieldname[^"]* sb-filter-${ field }"><label for="${ field }">` ) );
+			assert.match( form, new RegExp( `<td class="field sb-filter-${ field }"[^>]*>(<select|<input)[^>]* id="${ field }"` ) );
+		}
+		// WordPress reads a "page" field as its own page number and answers "Page not found".
+		assert.doesNotMatch( form, /name="page"/ );
+	} ) );
+
+	it( 'shows the filtered list when its form is submitted', () => dropdown( async () => {
+		const form = element( await page(), '<form method="get" id="sermon-filter"' );
+		const action = form.match( /action="([^"]+)"/ )[ 1 ];
+		// Every field the browser sends: inputs as they are, selects with their selected option.
+		const fields = new URLSearchParams();
+		for ( const [ , attributes ] of form.matchAll( /<input([^>]*)>/g ) ) {
+			const name = attributes.match( /name="([^"]+)"/ );
+			if ( name ) {
+				fields.set( name[ 1 ], attributes.match( /value="([^"]*)"/ )[ 1 ] );
+			}
+		}
+		for ( const [ , name, options ] of form.matchAll( /<select name="([^"]+)"[^>]*>([\s\S]*?)<\/select>/g ) ) {
+			const selected = options.match( /<option value="([^"]*)"[^>]*selected/ ) || options.match( /<option value="([^"]*)"/ );
+			fields.set( name, selected[ 1 ] );
+		}
+		fields.set( 'preacher', '4' );
+
+		const response = await visitor.request( `${ action }${ action.includes( '?' ) ? '&' : '?' }${ fields }` );
+		assert.equal( response.status, 200 );
+		const list = element( response.text, '<div class="sermon-browser' );
+		assert.match( list, /Sermon 6/ );
+		assert.doesNotMatch( list, /Sermon [7-9]|Sermon 1[0-2]/ );
+	} ) );
+
+	it( 'finds sermons from the address its fields make, keeping the choices', () => dropdown( async () => {
+		const response = await visitor.request( '/sermons/?preacher=1&service=0&book=&series=0&date=&enddate=&title=&sortby=m.datetime&dir=desc' );
+		assert.equal( response.status, 200 );
+		assert.match( response.text, /<option value="1" selected="selected">Dylan Jones/ );
+	} ) );
+
+	it( 'has a "Show filter" link only when the filter starts hidden', async () => {
+		await dropdown( async () => assert.match( await sermonBrowser(), /id="show_hide_filter"/ ) );
+		await dropdown( async () => assert.doesNotMatch( await sermonBrowser(), /id="show_hide_filter"/ ), false );
+	} );
+} );
+
 describe( 'the page head', () => {
 	it( 'links to the podcast and the stylesheet on the sermons page', async () => {
 		const html = await page();
@@ -91,37 +147,6 @@ describe( 'the page head', () => {
 		const html = await visitor.html( '/sermon-widgets/?preacher=1' );
 		assert.match( html, /title="Sermon podcast"/ );
 		assert.doesNotMatch( html, /Custom sermon podcast|sb_datepicker/ );
-	} );
-} );
-
-describe( 'the drop-down filter', () => {
-	it( 'shows the filtered list when its form is submitted', async () => {
-		await php( "sb_update_option( 'filter_type', 'dropdown' ); return true;" );
-		try {
-			const form = element( await page(), '<form method="post" id="sermon-filter"' );
-			const action = form.match( /action="([^"]+)"/ )[ 1 ];
-			// Every field the browser sends: inputs as they are, selects with their selected option.
-			const fields = {};
-			for ( const [ , attributes ] of form.matchAll( /<input([^>]*)>/g ) ) {
-				const name = attributes.match( /name="([^"]+)"/ );
-				if ( name ) {
-					fields[ name[ 1 ] ] = attributes.match( /value="([^"]*)"/ )[ 1 ];
-				}
-			}
-			for ( const [ , name, options ] of form.matchAll( /<select name="([^"]+)"[^>]*>([\s\S]*?)<\/select>/g ) ) {
-				const selected = options.match( /<option value="([^"]*)"[^>]*selected/ ) || options.match( /<option value="([^"]*)"/ );
-				fields[ name ] = selected[ 1 ];
-			}
-			fields.preacher = '4';
-
-			const response = await visitor.request( action, { form: fields } );
-			assert.equal( response.status, 200 );
-			const list = element( response.text, '<div class="sermon-browser' );
-			assert.match( list, /Sermon 6/ );
-			assert.doesNotMatch( list, /Sermon [7-9]|Sermon 1[0-2]/ );
-		} finally {
-			await php( "sb_update_option( 'filter_type', 'oneclick' ); return true;" );
-		}
 	} );
 } );
 
