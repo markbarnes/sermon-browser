@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.49.4
+Stable tag: 0.49.5
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -248,6 +248,9 @@ The tags for other Bible versions (`[kjvtext]`, `[asvtext]`, `[ylttext]`, `[webt
 
 == Upgrade Notice ==
 
+= 0.49.5 =
+The drop-down filter lists preachers A to Z, after any pinned preachers.
+
 = 0.49.4 =
 The drop-down filter's menus narrow to the choices that have sermons alongside the others.
 
@@ -279,6 +282,9 @@ Fixes NET Bible text and searching for titles with apostrophes, and removes Bibl
 Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update as soon as possible.
 
 == Changelog ==
+
+= 0.49.5 (26 November 2026) =
+* **Change:** The drop-down filter's Preacher menu lists preachers A to Z (pinned preachers first, also A to Z), instead of by number of sermons. The one-click filter is unchanged.
 
 = 0.49.4 (26 November 2026) =
 * **Change:** Each menu of the drop-down filter lists only the choices that have sermons alongside the other menus' choices, with their counts: choosing a preacher leaves that preacher's books, series, services and years. Each menu still offers the alternatives to its own choice. A choice no sermon matches stays in its menu, counting 0. Counts leave out sermons without files when the list does.
