@@ -173,7 +173,7 @@ class Filters {
 			$translated_books = array_combine( sb_get_default( 'eng_bible_books' ), sb_get_default( 'bible_books' ) );
 			$facets           = self::menu_facets( $filter );
 			$current_year     = Sermon_Query::year_from_request();
-			$preachers        = self::pinned_first( self::with_chosen( $facets['preacher']->preachers, 'preacher' ) );
+			$preachers        = self::pinned_first( self::by_name( self::with_chosen( $facets['preacher']->preachers, 'preacher' ) ) );
 			$series           = self::with_chosen( $facets['series']->series, 'series' );
 			$services         = self::with_chosen( $facets['service']->services, 'service' );
 			$book_count       = self::with_chosen( $facets['book']->books, 'book' );
@@ -365,6 +365,23 @@ class Filters {
 				break;
 			}
 		}
+		return $items;
+	}
+
+	/**
+	 * Returns choices in alphabetical order, so a long menu (such as preachers) can be scanned, and a letter typed jumps
+	 * to its names.
+	 *
+	 * @param Facet[] $items Choices.
+	 * @return Facet[]
+	 */
+	private static function by_name( array $items ) {
+		usort(
+			$items,
+			function ( $a, $b ) {
+				return strnatcasecmp( $a->name, $b->name );
+			}
+		);
 		return $items;
 	}
 
