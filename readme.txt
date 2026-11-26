@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.49.1
+Stable tag: 0.49.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -248,6 +248,9 @@ The tags for other Bible versions (`[kjvtext]`, `[asvtext]`, `[ylttext]`, `[webt
 
 == Upgrade Notice ==
 
+= 0.49.2 =
+Fixes the drop-down filter, whose button showed "Page not found". Filtered lists now have their own address.
+
 = 0.49.1 =
 Date fields use the browser's own date picker; two old bundled scripts are removed.
 
@@ -270,6 +273,12 @@ Fixes NET Bible text and searching for titles with apostrophes, and removes Bibl
 Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update as soon as possible.
 
 == Changelog ==
+
+= 0.49.2 (26 November 2026) =
+* **Bug fix:** The drop-down filter's button showed "Page not found" instead of the sermons. It sent a `page` field, which WordPress read as its own page number.
+* **Change:** The drop-down filter puts the choices in the page's address, so a filtered list can be bookmarked or shared, and Back returns to it.
+* **Change:** Each field of the drop-down filter has a label that screen readers announce, and each cell an `sb-filter-{field}` class for themes. "Services" is now "Service".
+* **Change:** The "Show filter" link is printed only when the filter starts hidden. Otherwise it was an empty link that keyboard users could still reach.
 
 = 0.49.1 (13 October 2026) =
 * **Change:** The date fields in the drop-down filter and on the Add Sermon page use the browser's own date picker, instead of a bundled script from 2006 and its stylesheet.
