@@ -1,8 +1,8 @@
 /**
  * The sermon list's filters in the cases the seed alone doesn't reach: a filter line
  * long enough to fold the rest behind "more", dates within one year (listed by month),
- * several filters at once, and what the filters add to the page's head (the filtered
- * feed's link, the drop-down filter's date picker).
+ * several filters at once, the drop-down filter's year, pinned preachers, and what the
+ * filters add to the page's head (the filtered feed's link).
  *
  * Adds seven preachers with a sermon each in April and May 2026, and removes the 2025
  * sermon, so every sermon is in 2026.
@@ -73,9 +73,10 @@ describe( 'the drop-down filter', () => {
 
 	it( 'is a GET form with a label for every field', () => dropdown( async () => {
 		const form = element( await filters(), '<form method="get" id="sermon-filter"' );
-		for ( const field of [ 'preacher', 'service', 'book', 'series', 'date', 'enddate', 'title', 'sortby', 'dir' ] ) {
-			assert.match( form, new RegExp( `<td class="fieldname[^"]* sb-filter-${ field }"><label for="${ field }">` ) );
-			assert.match( form, new RegExp( `<td class="field sb-filter-${ field }"[^>]*>(<select|<input)[^>]* id="${ field }"` ) );
+		for ( const field of [ 'preacher', 'service', 'book', 'series', 'sermon_year', 'title', 'sortby', 'dir' ] ) {
+			const css = field.replace( 'sermon_', '' );
+			assert.match( form, new RegExp( `<td class="fieldname[^"]* sb-filter-${ css }"><label for="${ field }">` ) );
+			assert.match( form, new RegExp( `<td class="field sb-filter-${ css }"[^>]*>(<select|<input)[^>]* id="${ field }"` ) );
 		}
 		// WordPress reads a "page" field as its own page number and answers "Page not found".
 		assert.doesNotMatch( form, /name="page"/ );
@@ -111,10 +112,66 @@ describe( 'the drop-down filter', () => {
 		assert.match( response.text, /<option value="1" selected="selected">Dylan Jones/ );
 	} ) );
 
+	it( 'offers each year with sermons, newest first, instead of date fields', () => dropdown( async () => {
+		await query( "INSERT INTO {prefix}sb_sermons (id, title, preacher_id, datetime, service_id, series_id, start, end, description, time, override, page_id) VALUES (90, 'Sermon 90', 2, '2024-06-02 10:30:00', 1, 1, 'a:0:{}', 'a:0:{}', '', '', 0, 0)" );
+		try {
+			const form = element( await filters(), '<form method="get" id="sermon-filter"' );
+			const count = Number( await php( "global $wpdb; return (int) $wpdb->get_var( \"SELECT COUNT(*) FROM {$wpdb->prefix}sb_sermons WHERE datetime LIKE '2026%'\" );" ) );
+			assert.deepEqual( [ ...element( form, '<select name="sermon_year"' ).matchAll( /<option value="(\d*)"[^>]*>([^<]*)</g ) ].map( ( match ) => [ match[ 1 ], match[ 2 ] ] ), [ [ '', '[All]' ], [ '2026', `2026 (${ count })` ], [ '2024', '2024 (1)' ] ] );
+			assert.doesNotMatch( form, /type="date"/ );
+
+			const html = await sermonBrowser( 'preacher=0&sermon_year=2024' );
+			assert.match( html, /<option value="2024" selected="selected">/ );
+			assert.deepEqual( [ ...html.matchAll( /sermon_id=(\d+)/g ) ].map( ( match ) => Number( match[ 1 ] ) ).filter( ( id, i, ids ) => ids.indexOf( id ) === i ), [ 90 ] );
+		} finally {
+			await query( 'DELETE FROM {prefix}sb_sermons WHERE id = 90' );
+		}
+	} ) );
+
 	it( 'has a "Show filter" link only when the filter starts hidden', async () => {
 		await dropdown( async () => assert.match( await sermonBrowser(), /id="show_hide_filter"/ ) );
 		await dropdown( async () => assert.doesNotMatch( await sermonBrowser(), /id="show_hide_filter"/ ), false );
 	} );
+} );
+
+describe( 'a year', () => {
+	it( 'lists that year\'s sermons and keeps the year in the list\'s links', async () => {
+		const html = await page( 'sermon_year=2026' );
+		assert.match( html, /title="Custom sermon podcast" href="[^"]*\/sermons\/\?sermon_year=2026&#038;podcast=1/ );
+		assert.doesNotMatch( await sermonBrowser( 'sermon_year=2025' ), /sermon_id=/ );
+	} );
+
+	it( 'is ignored unless it is four digits, and dates in the address win', async () => {
+		const ids = async ( query ) => [ ...( await sermonBrowser( query ) ).matchAll( /sermon_id=(\d+)/g ) ].map( ( match ) => match[ 1 ] ).join();
+		assert.equal( await ids( 'sermon_year=26' ), await ids() );
+		assert.match( await sermonBrowser( 'sermon_year=2025&date=2026-01-01&enddate=2026-12-31' ), /sermon_id=/ );
+	} );
+} );
+
+describe( 'pinned preachers', () => {
+	const pinned = async ( ids, callback ) => {
+		await php( `sb_update_option( 'pinned_preachers', ${ JSON.stringify( ids ).replace( '[', 'array(' ).replace( ']', ')' ) } ); return true;` );
+		try {
+			await callback();
+		} finally {
+			await php( "sb_update_option( 'pinned_preachers', array() ); return true;" );
+		}
+	};
+
+	it( 'come first in the one-click filter', () => pinned( [ 7 ], async () => {
+		const preachers = element( await sermonBrowser(), '<div id = "preacher"' );
+		assert.deepEqual( [ ...preachers.split( '<span id="preacher-more">' )[ 0 ].matchAll( /preacher=(\d+)/g ) ].map( ( match ) => Number( match[ 1 ] ) ), [ 7, 1, 10, 9, 8, 6 ] );
+	} ) );
+
+	it( 'come first in the drop-down filter, in their usual order', () => pinned( [ 9, 4 ], async () => {
+		await php( "sb_update_option( 'filter_type', 'dropdown' ); return true;" );
+		try {
+			const select = element( await filters(), '<select name="preacher"' );
+			assert.deepEqual( [ ...select.matchAll( /<option value="(\d+)"/g ) ].map( ( match ) => Number( match[ 1 ] ) ).slice( 0, 4 ), [ 0, 9, 4, 1 ] );
+		} finally {
+			await php( "sb_update_option( 'filter_type', 'oneclick' ); return true;" );
+		}
+	} ) );
 } );
 
 describe( 'the page head', () => {
@@ -129,18 +186,6 @@ describe( 'the page head', () => {
 	it( 'links to the filtered podcast when the list is filtered', async () => {
 		const html = await page( 'preacher=1' );
 		assert.match( html, /<link rel="alternate" type="application\/rss\+xml" title="Custom sermon podcast" href="[^"]*\/sermons\/\?preacher=1&#038;podcast=1&#038;dir=desc&#038;sortby=m\.datetime" \/>/ );
-	} );
-
-	it( 'uses the browser\'s date fields for the drop-down filter, with no bundled date picker', async () => {
-		await php( "sb_update_option( 'filter_type', 'dropdown' ); return true;" );
-		try {
-			const html = await page();
-			assert.match( html, /<input type="date" name="date" id="date" value="" \/>/ );
-			assert.match( html, /<input type="date" name="enddate" id="enddate" value="" \/>/ );
-			assert.doesNotMatch( html, /sb_datepicker|datePicker/ );
-		} finally {
-			await php( "sb_update_option( 'filter_type', 'oneclick' ); return true;" );
-		}
 	} );
 
 	it( 'links to the podcast on every other page too, but adds nothing else', async () => {

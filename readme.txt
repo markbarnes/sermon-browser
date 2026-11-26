@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.49.2
+Stable tag: 0.49.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -248,6 +248,9 @@ The tags for other Bible versions (`[kjvtext]`, `[asvtext]`, `[ylttext]`, `[webt
 
 == Upgrade Notice ==
 
+= 0.49.3 =
+The drop-down filter chooses a year instead of start and end dates, and preachers can be pinned to the top of the filter.
+
 = 0.49.2 =
 Fixes the drop-down filter, whose button showed "Page not found". Filtered lists now have their own address.
 
@@ -279,6 +282,10 @@ Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update 
 * **Change:** Uninstalling also removes the copied posts and terms (files stay unless you choose to remove them).
 * **Development:** Registers post types, `sb_sermon` and `sb_link` (a sermon's URLs and embed code), and taxonomies (`sb_preacher`, `sb_series`, `sb_service`, `sb_sermon_tag`, `sb_bible_book`), which sermons will be stored in instead of the plugin's own tables. They are hidden and unused for now: no pages, admin screens, REST routes or rewrite rules. `SermonBrowser\Verse::key()` gives a verse as a number in Bible order (Romans 3:21 is 45003021), and `Verse::from_key()` turns it back.
 * **Development:** `SermonBrowser\Storage\Posts\Sermon_Repository` and `Attachment_Repository` read published sermons, their files (media library attachments in the upload folder) and their URLs and embed code from the post types, passing the same tests as the repositories that read the plugin's tables. The plugin doesn't use them yet.
+
+= 0.49.3 (26 November 2026) =
+* **Change:** The drop-down filter has a Year menu, listing each year with sermons and how many, instead of start and end date fields. Addresses with `date` and `enddate` still work, and win over a year.
+* **New:** A preacher can be pinned to the top of the filter (Preachers → Edit → "Pin to the top of the filter"), ahead of preachers with more sermons. The Preachers page marks pinned preachers.
 
 = 0.49.2 (26 November 2026) =
 * **Bug fix:** The drop-down filter's button showed "Page not found" instead of the sermons. It sent a `page` field, which WordPress read as its own page number.

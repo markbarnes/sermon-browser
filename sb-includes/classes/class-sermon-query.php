@@ -105,6 +105,8 @@ class Sermon_Query {
 	/**
 	 * Returns the filters a request asks for (preacher=1 and so on), with '' for those it doesn't give.
 	 *
+	 * A year (sermon_year=2024, from the drop-down filter) means that year's dates, unless the request gives dates itself.
+	 *
 	 * @return array Keys title, preacher, date, enddate, series, service, book and tag (from stag).
 	 */
 	public static function filters_from_request() {
@@ -112,16 +114,34 @@ class Sermon_Query {
 		$text = fn( $name ) => isset( $_REQUEST[ $name ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ $name ] ) ) : '';
 		$id   = fn( $name ) => isset( $_REQUEST[ $name ] ) ? (int) $_REQUEST[ $name ] : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+		$date    = $text( 'date' );
+		$enddate = $text( 'enddate' );
+		$year    = self::year_from_request();
+		if ( $year && '' === $date && '' === $enddate ) {
+			$date    = $year . '-01-01';
+			$enddate = $year . '-12-31 23:59:59';
+		}
 		return array(
 			'title'    => $text( 'title' ),
 			'preacher' => $id( 'preacher' ),
-			'date'     => $text( 'date' ),
-			'enddate'  => $text( 'enddate' ),
+			'date'     => $date,
+			'enddate'  => $enddate,
 			'series'   => $id( 'series' ),
 			'service'  => $id( 'service' ),
 			'book'     => $text( 'book' ),
 			'tag'      => $text( 'stag' ),
 		);
+	}
+
+	/**
+	 * Returns the year a request asks for (sermon_year=2024), or 0 for none or one that isn't a four-digit year.
+	 *
+	 * @return int
+	 */
+	public static function year_from_request() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- the sermon list's filters are read-only GET requests
+		$year = isset( $_REQUEST['sermon_year'] ) && is_string( $_REQUEST['sermon_year'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['sermon_year'] ) ) : '';
+		return preg_match( '/^[0-9]{4}$/', $year ) ? (int) $year : 0;
 	}
 
 	/**

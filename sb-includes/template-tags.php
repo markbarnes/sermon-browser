@@ -91,7 +91,7 @@ function sb_edit_link ($id) {
 function sb_build_url($arr, $clear = false) {
 	global $wpdb;
 	// Word list for URL building purpose
-	$wl = array('preacher', 'title', 'date', 'enddate', 'series', 'service', 'sortby', 'dir', 'book', 'stag', 'podcast');
+	$wl = array('preacher', 'title', 'date', 'enddate', 'sermon_year', 'series', 'service', 'sortby', 'dir', 'book', 'stag', 'podcast');
 	$foo = array_merge((array) $_GET, (array) $_POST, $arr); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the filter form is a read-only search; values are URL-encoded below
 	foreach ($foo as $k => $v) {
 		if (is_scalar($v) && (in_array($k, array_keys($arr)) || (in_array($k, $wl) && !$clear))) {
