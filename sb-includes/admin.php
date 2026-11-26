@@ -587,6 +587,19 @@ function sb_print_template_faults() {
 }
 
 /**
+* Pins a preacher to the top of the sermon filter, or unpins them
+*
+* @param int $id Preacher's id.
+* @param bool $pinned Whether to pin.
+*/
+function sb_set_preacher_pinned($id, $pinned) {
+	$ids = array_diff(SermonBrowser\Filters::pinned_preachers(), array((int) $id));
+	if ($pinned)
+		{$ids[] = (int) $id;}
+	sb_update_option('pinned_preachers', array_values($ids));
+}
+
+/**
 * Display the preachers page and handle changes
 */
 function sb_manage_preachers() {
@@ -640,11 +653,14 @@ function sb_manage_preachers() {
 			{$filename = $old_image;}
 		if ($pid == 0) {
 			$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}sb_preachers VALUES (null, %s, %s, %s)", $name, $description, $filename));
+			$pid = (int) $wpdb->insert_id;
 		} else {
 			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s, description = %s, image = %s WHERE id = %d", $name, $description, $filename, $pid));
 			if ($old_image != $filename && sb_is_plain_file_name($old_image))
 				wp_delete_file(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$old_image);
 		}
+		if ($pid)
+			{sb_set_preacher_pinned($pid, isset($_POST['pinned']));}
 		if(isset($_POST['remove'])){
 			$wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}sb_preachers SET name = %s, description = %s, image = '' WHERE id = %d", $name, $description, $pid));
 			if (sb_is_plain_file_name($filename))
@@ -664,6 +680,7 @@ function sb_manage_preachers() {
 			if ($p && sb_is_plain_file_name($p->image))
 				{wp_delete_file(SB_ABSPATH.sb_get_option('upload_dir').'images/'.$p->image);}
 			$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}sb_preachers WHERE id = %d", $die));
+			sb_set_preacher_pinned($die, false);
 		}
 	}
 
@@ -717,6 +734,12 @@ function sb_manage_preachers() {
 						</div>
 					</td>
 				</tr>
+				<tr>
+					<td>
+						<label><input type="checkbox" name="pinned" value="1" <?php checked(isset($preacher->id) && in_array((int) $preacher->id, SermonBrowser\Filters::pinned_preachers(), true)) ?>> <strong><?php esc_html_e('Pin to the top of the filter', 'sermon-browser') ?></strong></label>
+						<p class="description"><?php esc_html_e('Pinned preachers are listed first in the sermon filter, before those with more sermons.', 'sermon-browser') ?></p>
+					</td>
+				</tr>
 			</table>
 		</fieldset>
             <?php wp_nonce_field( 'sermon_manage_preachers', 'sermon_manage_preachers_nonce' ); ?>
@@ -748,7 +771,7 @@ function sb_manage_preachers() {
 				<?php foreach ((array) $preachers as $preacher): ?>
 					<tr class="<?php $i=0; echo (++$i % 2 == 0) ? 'alternate' : '' ?>">
 						<td style="text-align:center"><?php echo (int) $preacher->id ?></td>
-						<td><?php echo esc_html(stripslashes($preacher->name)) ?></td>
+						<td><?php echo esc_html(stripslashes($preacher->name)) ?><?php echo in_array((int) $preacher->id, SermonBrowser\Filters::pinned_preachers(), true) ? ' &mdash; ' . esc_html__('Pinned', 'sermon-browser') : '' ?></td>
 						<td style="text-align:center"><?php echo ($preacher->image == '') ? '' : '<img alt="" src="'.esc_url(trailingslashit(site_url()).sb_get_option('upload_dir').'images/'.rawurlencode($preacher->image)).'">' ?></td>
 						<td style="text-align:center"><?php echo (int) $preacher->sermon_count ?></td>
 						<td style="text-align:center">

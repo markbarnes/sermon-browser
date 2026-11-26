@@ -108,7 +108,7 @@ class Filters {
 			$query                   = Sermon_Query::from_filters( $filter );
 			$query->with_attachments = (bool) sb_get_option( 'hide_no_attachments' );
 			$facets                  = Storage::sermons()->facets( $query );
-			$preachers  = $facets->preachers;
+			$preachers  = self::pinned_first( $facets->preachers );
 			$series     = $facets->series;
 			$services   = $facets->services;
 			$book_count = $facets->books;
@@ -172,10 +172,12 @@ class Filters {
 			// Drop-down filter
 			$translated_books = array_combine( sb_get_default( 'eng_bible_books' ), sb_get_default( 'bible_books' ) );
 			$facets           = Storage::sermons()->facets( new Sermon_Query() );
-			$preachers        = $facets->preachers;
+			$preachers        = self::pinned_first( $facets->preachers );
 			$series           = $facets->series;
 			$services         = $facets->services;
 			$book_count       = $facets->books;
+			$years            = self::years( $facets->dates );
+			$current_year     = Sermon_Query::year_from_request();
 			$sb               = array(
 				__( 'Title', 'sermon-browser' )    => 'm.title',
 				__( 'Preacher', 'sermon-browser' ) => 'preacher',
@@ -243,10 +245,14 @@ class Filters {
 							</td>
 						</tr>
 						<tr>
-							<td class="fieldname sb-filter-date"><label for="date"><?php esc_html_e( 'Start date', 'sermon-browser' ); ?></label></td>
-							<td class="field sb-filter-date"><input type="date" name="date" id="date" value="<?php echo ( isset( $_REQUEST['date'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['date'] ) ) ) : '' ); ?>" /></td>
-							<td class="fieldname rightcolumn sb-filter-enddate"><label for="enddate"><?php esc_html_e( 'End date', 'sermon-browser' ); ?></label></td>
-							<td class="field sb-filter-enddate"><input type="date" name="enddate" id="enddate" value="<?php echo ( isset( $_REQUEST['enddate'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['enddate'] ) ) ) : '' ); ?>" /></td>
+							<td class="fieldname sb-filter-year"><label for="sermon_year"><?php esc_html_e( 'Year', 'sermon-browser' ); ?></label></td>
+							<td class="field sb-filter-year" colspan="3"><select name="sermon_year" id="sermon_year">
+									<option value=""><?php esc_html_e( '[All]', 'sermon-browser' ); ?></option>
+									<?php foreach ( $years as $year => $count ) : ?>
+									<option value="<?php echo (int) $year; ?>" <?php echo $current_year === $year ? 'selected="selected"' : ''; ?>><?php echo (int) $year . ' (' . (int) $count . ')'; ?></option>
+									<?php endforeach ?>
+								</select>
+							</td>
 						</tr>
 						<tr>
 							<td class="fieldname sb-filter-title"><label for="title"><?php esc_html_e( 'Keywords', 'sermon-browser' ); ?></label></td>
@@ -285,6 +291,56 @@ class Filters {
 		</script>
 	<?php // The tab before this tag is printed, as it always was.
 		}
+	}
+
+	/**
+	 * Returns preachers with the pinned ones (Preachers → Edit → "Pin to the top of the filter") first, keeping the
+	 * order within each group.
+	 *
+	 * @param Facet[] $preachers Preachers, in the repository's order.
+	 * @return Facet[]
+	 */
+	private static function pinned_first( array $preachers ) {
+		$pinned = self::pinned_preachers();
+		if ( ! $pinned ) {
+			return $preachers;
+		}
+		$first = array();
+		$rest  = array();
+		foreach ( $preachers as $preacher ) {
+			if ( in_array( $preacher->id, $pinned, true ) ) {
+				$first[] = $preacher;
+			} else {
+				$rest[] = $preacher;
+			}
+		}
+		return array_merge( $first, $rest );
+	}
+
+	/**
+	 * Returns the ids of the pinned preachers.
+	 *
+	 * @return int[]
+	 */
+	public static function pinned_preachers() {
+		$pinned = sb_get_option( 'pinned_preachers' );
+		return is_array( $pinned ) ? array_values( array_filter( array_map( 'intval', $pinned ) ) ) : array();
+	}
+
+	/**
+	 * Returns how many sermons were preached in each year, newest year first.
+	 *
+	 * @param \DateTimeImmutable[] $dates Each sermon's date.
+	 * @return int[] Counts, keyed by year.
+	 */
+	private static function years( array $dates ) {
+		$years = array();
+		foreach ( $dates as $date ) {
+			$year           = (int) $date->format( 'Y' );
+			$years[ $year ] = ( isset( $years[ $year ] ) ? $years[ $year ] : 0 ) + 1;
+		}
+		krsort( $years );
+		return $years;
 	}
 
 	/**

@@ -56,6 +56,23 @@ describe( 'the Preachers page', () => {
 		assert.deepEqual( { ...preacher }, { name: "Dafydd O\\'Brien", description: 'Visiting from Swansea.' } );
 		assert.match( await admin.adminPage( 'preachers.php' ), /<td>Dafydd O&#039;Brien<\/td>/ );
 	} );
+
+	it( 'pins a preacher to the top of the filter, and unpins them', async () => {
+		const save = async ( pinned ) => {
+			const form = { save: 'Save', pid: '2', name: 'Rhiannon Llŷr', description: 'Visiting preacher from Aberystwyth.', sermon_manage_preachers_nonce: await admin.nonce( 'preachers.php&act=edit&pid=2', 'sermon_manage_preachers_nonce' ) };
+			if ( pinned ) {
+				form.pinned = '1';
+			}
+			const response = await admin.request( '/wp-admin/admin.php?page=sermon-browser/preachers.php&act=edit&pid=2', { form } );
+			assert.match( redirect( response.text ), /preachers\.php&saved=true$/ );
+		};
+		await save( true );
+		assert.deepEqual( await php( 'return SermonBrowser\\Filters::pinned_preachers();' ), [ 2 ] );
+		assert.match( await admin.adminPage( 'preachers.php' ), /<td>Rhiannon Llŷr &mdash; Pinned<\/td>/ );
+		assert.match( await admin.adminPage( 'preachers.php&act=edit&pid=2' ), /<input type="checkbox" name="pinned" value="1"  checked='checked'>/ );
+		await save( false );
+		assert.deepEqual( await php( 'return SermonBrowser\\Filters::pinned_preachers();' ), [] );
+	} );
 } );
 
 describe( 'the Add Sermon page', () => {
