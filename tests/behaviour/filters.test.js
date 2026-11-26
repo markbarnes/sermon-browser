@@ -182,11 +182,15 @@ describe( 'pinned preachers', () => {
 		assert.deepEqual( [ ...preachers.split( '<span id="preacher-more">' )[ 0 ].matchAll( /preacher=(\d+)/g ) ].map( ( match ) => Number( match[ 1 ] ) ), [ 7, 1, 10, 9, 8, 6 ] );
 	} ) );
 
-	it( 'come first in the drop-down filter, in their usual order', () => pinned( [ 9, 4 ], async () => {
+	it( 'come first in the drop-down filter, which lists each group A to Z', () => pinned( [ 9, 4 ], async () => {
 		await php( "sb_update_option( 'filter_type', 'dropdown' ); return true;" );
 		try {
 			const select = element( await filters(), '<select name="preacher"' );
-			assert.deepEqual( [ ...select.matchAll( /<option value="(\d+)"/g ) ].map( ( match ) => Number( match[ 1 ] ) ).slice( 0, 4 ), [ 0, 9, 4, 1 ] );
+			const names = [ ...select.matchAll( /<option value="(\d+)"[^>]*>([^<]*)</g ) ].map( ( match ) => match[ 2 ].replace( / \(\d+\)$/, '' ) );
+			const rest = names.slice( 3 );
+			assert.deepEqual( names.slice( 0, 3 ), [ '[All]', 'Preacher 4', 'Preacher 9' ] );
+			assert.deepEqual( rest, [ ...rest ].sort( ( a, b ) => a.localeCompare( b, 'en', { numeric: true, sensitivity: 'base' } ) ) );
+			assert.ok( rest.indexOf( 'Preacher 5' ) < rest.indexOf( 'Preacher 10' ) );
 		} finally {
 			await php( "sb_update_option( 'filter_type', 'oneclick' ); return true;" );
 		}
