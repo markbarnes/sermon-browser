@@ -4,7 +4,7 @@ Tags: sermons, church, podcast, bible, audio
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.49.3
+Stable tag: 0.49.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -248,6 +248,9 @@ The tags for other Bible versions (`[kjvtext]`, `[asvtext]`, `[ylttext]`, `[webt
 
 == Upgrade Notice ==
 
+= 0.49.4 =
+The drop-down filter's menus narrow to the choices that have sermons alongside the others.
+
 = 0.49.3 =
 The drop-down filter chooses a year instead of start and end dates, and preachers can be pinned to the top of the filter.
 
@@ -276,6 +279,9 @@ Fixes NET Bible text and searching for titles with apostrophes, and removes Bibl
 Security release: fixes CVE-2022-0499 and other serious vulnerabilities. Update as soon as possible.
 
 == Changelog ==
+
+= 0.49.4 (26 November 2026) =
+* **Change:** Each menu of the drop-down filter lists only the choices that have sermons alongside the other menus' choices, with their counts: choosing a preacher leaves that preacher's books, series, services and years. Each menu still offers the alternatives to its own choice. A choice no sermon matches stays in its menu, counting 0. Counts leave out sermons without files when the list does.
 
 = 0.49.3 (26 November 2026) =
 * **Change:** The drop-down filter has a Year menu, listing each year with sermons and how many, instead of start and end date fields. Addresses with `date` and `enddate` still work, and win over a year.
