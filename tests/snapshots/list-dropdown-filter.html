@@ -1,20 +1,20 @@
 <div class="sermon-browser">
-			<span class="inline_controls"><a href="#" id="show_hide_filter"></a></span>
-		<div id="mainfilter">
-			<form method="post" id="sermon-filter" action="{SITE}/sermons/">
-				<div style="clear:both">
+					<span class="inline_controls"><a href="#" id="show_hide_filter"></a></span>
+				<div id="mainfilter">
+			<form method="get" id="sermon-filter" action="{SITE}/sermons/">
+								<div style="clear:both">
 					<table class="sermonbrowser">
 						<tr>
-							<td class="fieldname">Preacher</td>
-							<td class="field"><select name="preacher" id="preacher">
+							<td class="fieldname sb-filter-preacher"><label for="preacher">Preacher</label></td>
+							<td class="field sb-filter-preacher"><select name="preacher" id="preacher">
 									<option value="0" selected="selected">[All]</option>
 																		<option value="1" >Dylan Jones (3)</option>
 																		<option value="3" >&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt; (1)</option>
 																		<option value="2" >Rhiannon Llŷr (1)</option>
 																	</select>
 							</td>
-							<td class="fieldname rightcolumn">Services</td>
-							<td class="field"><select name="service" id="service">
+							<td class="fieldname rightcolumn sb-filter-service"><label for="service">Service</label></td>
+							<td class="field sb-filter-service"><select name="service" id="service">
 									<option value="0" selected="selected">[All]</option>
 																		<option value="1" >Sunday Morning (2)</option>
 																		<option value="3" >&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt; (1)</option>
@@ -24,8 +24,8 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="fieldname">Book</td>
-							<td class="field"><select name="book">
+							<td class="fieldname sb-filter-book"><label for="book">Book</label></td>
+							<td class="field sb-filter-book"><select name="book" id="book">
 									<option value="">[All]</option>
 																		<option value="Psalm" >Psalm (1)</option>
 																		<option value="Isaiah" >Isaiah (1)</option>
@@ -33,8 +33,8 @@
 																		<option value="Romans" >Romans (2)</option>
 																	</select>
 							</td>
-							<td class="fieldname rightcolumn">Series</td>
-							<td class="field"><select name="series" id="series">
+							<td class="fieldname rightcolumn sb-filter-series"><label for="series">Series</label></td>
+							<td class="field sb-filter-series"><select name="series" id="series">
 									<option value="0" selected="selected">[All]</option>
 																		<option value="3" >&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt; (1)</option>
 																		<option value="1" >Romans (2)</option>
@@ -43,37 +43,36 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="fieldname">Start date</td>
-							<td class="field"><input type="date" name="date" id="date" value="" /></td>
-							<td class="fieldname rightcolumn">End date</td>
-							<td class="field"><input type="date" name="enddate" id="enddate" value="" /></td>
+							<td class="fieldname sb-filter-date"><label for="date">Start date</label></td>
+							<td class="field sb-filter-date"><input type="date" name="date" id="date" value="" /></td>
+							<td class="fieldname rightcolumn sb-filter-enddate"><label for="enddate">End date</label></td>
+							<td class="field sb-filter-enddate"><input type="date" name="enddate" id="enddate" value="" /></td>
 						</tr>
 						<tr>
-							<td class="fieldname">Keywords</td>
-							<td class="field" colspan="3"><input style="width: 98.5%" type="text" id="title" name="title" value="" /></td>
+							<td class="fieldname sb-filter-title"><label for="title">Keywords</label></td>
+							<td class="field sb-filter-title" colspan="3"><input style="width: 100%; box-sizing: border-box" type="text" id="title" name="title" value="" /></td>
 						</tr>
 						<tr>
-							<td class="fieldname">Sort by</td>
-							<td class="field"><select name="sortby" id="sortby">
+							<td class="fieldname sb-filter-sortby"><label for="sortby">Sort by</label></td>
+							<td class="field sb-filter-sortby"><select name="sortby" id="sortby">
 																		<option value="m.title" >Title</option>
 																		<option value="preacher" >Preacher</option>
 																		<option value="m.datetime" selected="selected">Date</option>
 																		<option value="passage" >Passage</option>
 																	</select>
 							</td>
-							<td class="fieldname rightcolumn">Direction</td>
-							<td class="field"><select name="dir" id="dir">
+							<td class="fieldname rightcolumn sb-filter-dir"><label for="dir">Direction</label></td>
+							<td class="field sb-filter-dir"><select name="dir" id="dir">
 																		<option value="asc" >Ascending</option>
 																		<option value="desc" selected="selected">Descending</option>
 																	</select>
 							</td>
 						</tr>
 						<tr>
-							<td colspan="3">&nbsp;</td>
-							<td class="field"><input type="submit" class="filter" value="Filter &raquo;">			</td>
+							<td class="sb-filter-spacer" colspan="3">&nbsp;</td>
+							<td class="field sb-filter-submit"><input type="submit" class="filter" value="Filter &raquo;">			</td>
 						</tr>
 					</table>
-					<input type="hidden" name="page" value="1">
 				</div>
 			</form>
 		</div>

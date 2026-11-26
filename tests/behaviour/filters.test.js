@@ -61,6 +61,38 @@ describe( 'the one-click filter', () => {
 	} );
 } );
 
+describe( 'the drop-down filter', () => {
+	const dropdown = async ( callback, hide = true ) => {
+		await php( `sb_update_option( 'filter_type', 'dropdown' ); sb_update_option( 'filter_hide', ${ hide ? "'hide'" : 'false' } ); return true;` );
+		try {
+			await callback();
+		} finally {
+			await php( "sb_update_option( 'filter_type', 'oneclick' ); sb_update_option( 'filter_hide', 'hide' ); return true;" );
+		}
+	};
+
+	it( 'is a GET form with a label for every field', () => dropdown( async () => {
+		const form = element( await filters(), '<form method="get" id="sermon-filter"' );
+		for ( const field of [ 'preacher', 'service', 'book', 'series', 'date', 'enddate', 'title', 'sortby', 'dir' ] ) {
+			assert.match( form, new RegExp( `<td class="fieldname[^"]* sb-filter-${ field }"><label for="${ field }">` ) );
+			assert.match( form, new RegExp( `<td class="field sb-filter-${ field }"[^>]*>(<select|<input)[^>]* id="${ field }"` ) );
+		}
+		// WordPress reads a "page" field as its own page number and answers "Page not found".
+		assert.doesNotMatch( form, /name="page"/ );
+	} ) );
+
+	it( 'finds sermons from the address its fields make, keeping the choices', () => dropdown( async () => {
+		const response = await visitor.request( '/sermons/?preacher=1&service=0&book=&series=0&date=&enddate=&title=&sortby=m.datetime&dir=desc' );
+		assert.equal( response.status, 200 );
+		assert.match( response.text, /<option value="1" selected="selected">Dylan Jones/ );
+	} ) );
+
+	it( 'has a "Show filter" link only when the filter starts hidden', async () => {
+		await dropdown( async () => assert.match( await sermonBrowser(), /id="show_hide_filter"/ ) );
+		await dropdown( async () => assert.doesNotMatch( await sermonBrowser(), /id="show_hide_filter"/ ), false );
+	} );
+} );
+
 describe( 'the page head', () => {
 	it( 'links to the podcast and the stylesheet on the sermons page', async () => {
 		const html = await page();

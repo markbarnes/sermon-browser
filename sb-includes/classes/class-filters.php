@@ -123,7 +123,9 @@ class Filters {
 			$output             = str_replace( '*series*', isset( $series[0]->name ) ? esc_html( $series[0]->name ) : '', $output );
 			$output             = str_replace( '*title*', isset( $_REQUEST['title'] ) ? esc_html( sanitize_text_field( wp_unslash( $_REQUEST['title'] ) ) ) : '', $output );
 
-			echo '<span class="inline_controls"><a href="#" id="show_hide_filter"></a></span>';
+			if ( $hide_filter ) {
+				echo '<span class="inline_controls"><a href="#" id="show_hide_filter"></a></span>';
+			}
 			if ( $output != '' ) {
 				echo '<div class="filtered">' . esc_html__( 'Active filter', 'sermon-browser' ) . ': ' . wp_kses_post( $output ) . "</div>\r";
 			}
@@ -190,22 +192,31 @@ class Filters {
 				$cd = 'desc';
 			}
 			?>
+		<?php if ( $hide_filter ) : ?>
 		<span class="inline_controls"><a href="#" id="show_hide_filter"></a></span>
+		<?php endif; ?>
 		<div id="mainfilter">
-			<form method="post" id="sermon-filter" action="<?php echo esc_url( sb_display_url() ); ?>">
+			<form method="get" id="sermon-filter" action="<?php echo esc_url( sb_display_url() ); ?>">
+				<?php
+				// A GET form drops the query in its action, so a sermons page without a permalink (?page_id=) keeps it as fields.
+				parse_str( (string) wp_parse_url( sb_display_url(), PHP_URL_QUERY ), $display_args );
+				foreach ( $display_args as $name => $value ) :
+					?>
+				<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+				<?php endforeach; ?>
 				<div style="clear:both">
 					<table class="sermonbrowser">
 						<tr>
-							<td class="fieldname"><?php esc_html_e( 'Preacher', 'sermon-browser' ); ?></td>
-							<td class="field"><select name="preacher" id="preacher">
+							<td class="fieldname sb-filter-preacher"><label for="preacher"><?php esc_html_e( 'Preacher', 'sermon-browser' ); ?></label></td>
+							<td class="field sb-filter-preacher"><select name="preacher" id="preacher">
 									<option value="0" <?php echo ( isset( $_REQUEST['preacher'] ) && (int) $_REQUEST['preacher'] != 0 ) ? '' : 'selected="selected"'; ?>><?php esc_html_e( '[All]', 'sermon-browser' ); ?></option>
 									<?php foreach ( $preachers as $preacher ) : ?>
 									<option value="<?php echo (int) $preacher->id; ?>" <?php echo isset( $_REQUEST['preacher'] ) && $_REQUEST['preacher'] == $preacher->id ? 'selected="selected"' : ''; ?>><?php echo esc_html( $preacher->name ) . ' (' . (int) $preacher->count . ')'; ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
-							<td class="fieldname rightcolumn"><?php esc_html_e( 'Services', 'sermon-browser' ); ?></td>
-							<td class="field"><select name="service" id="service">
+							<td class="fieldname rightcolumn sb-filter-service"><label for="service"><?php esc_html_e( 'Service', 'sermon-browser' ); ?></label></td>
+							<td class="field sb-filter-service"><select name="service" id="service">
 									<option value="0" <?php echo isset( $_REQUEST['service'] ) && (int) $_REQUEST['service'] != 0 ? '' : 'selected="selected"'; ?>><?php esc_html_e( '[All]', 'sermon-browser' ); ?></option>
 									<?php foreach ( $services as $service ) : ?>
 									<option value="<?php echo (int) $service->id; ?>" <?php echo isset( $_REQUEST['service'] ) && $_REQUEST['service'] == $service->id ? 'selected="selected"' : ''; ?>><?php echo esc_html( $service->name ) . ' (' . (int) $service->count . ')'; ?></option>
@@ -214,16 +225,16 @@ class Filters {
 							</td>
 						</tr>
 						<tr>
-							<td class="fieldname"><?php esc_html_e( 'Book', 'sermon-browser' ); ?></td>
-							<td class="field"><select name="book">
+							<td class="fieldname sb-filter-book"><label for="book"><?php esc_html_e( 'Book', 'sermon-browser' ); ?></label></td>
+							<td class="field sb-filter-book"><select name="book" id="book">
 									<option value=""><?php esc_html_e( '[All]', 'sermon-browser' ); ?></option>
 									<?php foreach ( $book_count as $book ) : ?>
 									<option value="<?php echo esc_attr( $book->name ); ?>" <?php echo isset( $_REQUEST['book'] ) && $_REQUEST['book'] == $book->name ? 'selected=selected' : ''; ?>><?php echo esc_html( isset( $translated_books[ $book->name ] ) ? $translated_books[ $book->name ] : $book->name ) . ' (' . (int) $book->count . ')'; ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
-							<td class="fieldname rightcolumn"><?php esc_html_e( 'Series', 'sermon-browser' ); ?></td>
-							<td class="field"><select name="series" id="series">
+							<td class="fieldname rightcolumn sb-filter-series"><label for="series"><?php esc_html_e( 'Series', 'sermon-browser' ); ?></label></td>
+							<td class="field sb-filter-series"><select name="series" id="series">
 									<option value="0" <?php echo ( isset( $_REQUEST['series'] ) && (int) $_REQUEST['series'] != 0 ) ? '' : 'selected="selected"'; ?>><?php esc_html_e( '[All]', 'sermon-browser' ); ?></option>
 									<?php foreach ( $series as $item ) : ?>
 									<option value="<?php echo (int) $item->id; ?>" <?php echo isset( $_REQUEST['series'] ) && $_REQUEST['series'] == $item->id ? 'selected="selected"' : ''; ?>><?php echo esc_html( $item->name ) . ' (' . (int) $item->count . ')'; ?></option>
@@ -232,25 +243,25 @@ class Filters {
 							</td>
 						</tr>
 						<tr>
-							<td class="fieldname"><?php esc_html_e( 'Start date', 'sermon-browser' ); ?></td>
-							<td class="field"><input type="date" name="date" id="date" value="<?php echo ( isset( $_REQUEST['date'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['date'] ) ) ) : '' ); ?>" /></td>
-							<td class="fieldname rightcolumn"><?php esc_html_e( 'End date', 'sermon-browser' ); ?></td>
-							<td class="field"><input type="date" name="enddate" id="enddate" value="<?php echo ( isset( $_REQUEST['enddate'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['enddate'] ) ) ) : '' ); ?>" /></td>
+							<td class="fieldname sb-filter-date"><label for="date"><?php esc_html_e( 'Start date', 'sermon-browser' ); ?></label></td>
+							<td class="field sb-filter-date"><input type="date" name="date" id="date" value="<?php echo ( isset( $_REQUEST['date'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['date'] ) ) ) : '' ); ?>" /></td>
+							<td class="fieldname rightcolumn sb-filter-enddate"><label for="enddate"><?php esc_html_e( 'End date', 'sermon-browser' ); ?></label></td>
+							<td class="field sb-filter-enddate"><input type="date" name="enddate" id="enddate" value="<?php echo ( isset( $_REQUEST['enddate'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['enddate'] ) ) ) : '' ); ?>" /></td>
 						</tr>
 						<tr>
-							<td class="fieldname"><?php esc_html_e( 'Keywords', 'sermon-browser' ); ?></td>
-							<td class="field" colspan="3"><input style="width: 98.5%" type="text" id="title" name="title" value="<?php echo ( isset( $_REQUEST['title'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['title'] ) ) ) : '' ); ?>" /></td>
+							<td class="fieldname sb-filter-title"><label for="title"><?php esc_html_e( 'Keywords', 'sermon-browser' ); ?></label></td>
+							<td class="field sb-filter-title" colspan="3"><input style="width: 100%; box-sizing: border-box" type="text" id="title" name="title" value="<?php echo ( isset( $_REQUEST['title'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['title'] ) ) ) : '' ); ?>" /></td>
 						</tr>
 						<tr>
-							<td class="fieldname"><?php esc_html_e( 'Sort by', 'sermon-browser' ); ?></td>
-							<td class="field"><select name="sortby" id="sortby">
+							<td class="fieldname sb-filter-sortby"><label for="sortby"><?php esc_html_e( 'Sort by', 'sermon-browser' ); ?></label></td>
+							<td class="field sb-filter-sortby"><select name="sortby" id="sortby">
 									<?php foreach ( $sb as $k => $v ) : ?>
 									<option value="<?php echo esc_attr( $v ); ?>" <?php echo $csb == $v ? 'selected="selected"' : ''; ?>><?php echo esc_html( $k ); ?></option>
 									<?php endforeach ?>
 								</select>
 							</td>
-							<td class="fieldname rightcolumn"><?php esc_html_e( 'Direction', 'sermon-browser' ); ?></td>
-							<td class="field"><select name="dir" id="dir">
+							<td class="fieldname rightcolumn sb-filter-dir"><label for="dir"><?php esc_html_e( 'Direction', 'sermon-browser' ); ?></label></td>
+							<td class="field sb-filter-dir"><select name="dir" id="dir">
 									<?php foreach ( $di as $k => $v ) : ?>
 									<option value="<?php echo esc_attr( $v ); ?>" <?php echo $cd == $v ? 'selected="selected"' : ''; ?>><?php echo esc_html( $k ); ?></option>
 									<?php endforeach ?>
@@ -258,11 +269,10 @@ class Filters {
 							</td>
 						</tr>
 						<tr>
-							<td colspan="3">&nbsp;</td>
-							<td class="field"><input type="submit" class="filter" value="<?php esc_attr_e( 'Filter &raquo;', 'sermon-browser' ); ?>">			</td>
+							<td class="sb-filter-spacer" colspan="3">&nbsp;</td>
+							<td class="field sb-filter-submit"><input type="submit" class="filter" value="<?php esc_attr_e( 'Filter &raquo;', 'sermon-browser' ); ?>">			</td>
 						</tr>
 					</table>
-					<input type="hidden" name="page" value="1">
 				</div>
 			</form>
 		</div>
